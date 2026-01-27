@@ -7,7 +7,6 @@ import Newsletter from "../Form/Newsletter";
 function Footer() {
   return (
     <footer className="w-full bg-black text-white">
-      {/* Top */}
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-10 md:grid-cols-4">
           {/* Brand */}
@@ -43,6 +42,7 @@ function Footer() {
             </div>
           </div>
 
+          {/* Navigation */}
           <div className="md:col-span-1 md:pl-6">
             <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400">
               NAVIGATION
@@ -96,21 +96,12 @@ function Footer() {
 
           <div className="md:col-span-1 md:flex md:justify-end">
             <div className="w-full max-w-sm rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-[0_20px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl">
-              <h3 className="text-xl font-semibold leading-6">
-                RESTEZ
-                <br />
-                CONNECTÉ
-              </h3>
-
-              <div className="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-xl shadow-[0_20px_70px_rgba(0,0,0,0.55)]">
-                <Newsletter />
-              </div>
+              <Newsletter />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-6 text-[10px] tracking-[0.35em] text-white/35 md:flex-row md:items-center md:justify-between">
           <div>© 2026 MARS.AI PROTOCOL · MARSEILLE HUB</div>
