@@ -11,12 +11,12 @@ function Newsletter() {
         <input
           type="email"
           placeholder="Email Signal"
-          className="h-12 min-w-0 flex-1 rounded-full bg-white/10 px-5 text-sm text-white placeholder-white/45 outline-none ring-1 ring-white/10 backdrop-blur transition focus:ring-2 focus:ring-fuchsia-500"
+          className="h-10 min-w-0 flex-1 rounded-full bg-white/10 px-5 text-sm text-white placeholder-white/60 outline-none ring-1 ring-white/15 backdrop-blur transition focus:ring-2 focus:ring-fuchsia-500"
         />
 
         <button
           type="submit"
-          className="h-12 shrink-0 rounded-full bg-white px-6 text-xs font-semibold uppercase tracking-widest text-black transition hover:bg-fuchsia-500 hover:text-white"
+          className="h-10 w-14 shrink-0 rounded-full bg-white text-[11px] font-semibold uppercase tracking-wider text-black transition hover:bg-fuchsia-500 hover:text-white"
         >
           OK
         </button>

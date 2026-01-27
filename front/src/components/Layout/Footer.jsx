@@ -94,8 +94,9 @@ function Footer() {
             </ul>
           </div>
 
-          <div className="md:col-span-1 md:flex md:justify-end">
-            <div className="w-full max-w-sm rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-[0_20px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl">
+          <div className="md:col-span-1 min-w-0 md:flex md:justify-end">
+
+            <div className="w-full max-w-md rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-[0_20px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl">
               <Newsletter />
             </div>
           </div>
