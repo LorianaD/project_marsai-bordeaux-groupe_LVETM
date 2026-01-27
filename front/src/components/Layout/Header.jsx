@@ -4,7 +4,7 @@ function Header() {
     return(
         <header className="w-full bg-transparent">
 
-            <div className="mx-auto flex h-[180px] max-w-[1220px] items-center justify-between px-8">
+            <div className="mx-auto flex h-[180px] items-center justify-between px-8">
 
                 <div>
                     <Link to="home" className="flex items-center gap-0 text-xs font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
