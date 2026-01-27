@@ -6,8 +6,8 @@ import Newsletter from "../Form/Newsletter";
 
 function Footer() {
   return (
-    <footer className="w-full bg-black text-white">
-      <div className="mx-auto max-w-6xl px-6 py-14">
+    <footer className="w-full bg-black dark:bg-transparent text-white">
+      <div className="mx-auto px-6 py-14">
         <div className="grid gap-10 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
