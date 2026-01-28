@@ -14,6 +14,7 @@ function Header() {
 
                 <nav className="">
                     <ul className="flex items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
+                        <li><Link to="home">ACCUEIL</Link></li>
                         <li><Link>GALERIE</Link></li>
                         <li><Link>PROGRAMME & INFOS</Link></li>
                         <li><Link>JURY</Link></li>
