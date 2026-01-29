@@ -33,7 +33,12 @@ function SectionHero() {
                     <p className="text-[11px] leading-relaxed text-white/45">2 jours d'immersion au cœur de Marseille.</p>                
                 </div>
                 <div className="mt-7 flex items-center gap-4">
-                    <button className="h-11 rounded-full bg-white px-6 text-[11px] font-bold tracking-[0.18em] text-black">VOIR LES FILMS</button>
+                    <button className="h-11 rounded-full bg-white px-6 text-[11px] font-bold tracking-[0.18em] text-black flex justify-center items-center">
+                        <span className="flex">VOIR LES FILMS</span>
+                        <div className="h-[48px] w-[48px] flex justify-center items-center">
+                            <img src="../src/assets/imgs/icones/arrowRight.svg" alt=""/>
+                        </div>
+                    </button>
                     <button className="h-11 rounded-full border border-white/20 bg-white/10 px-7 text-[10px] font-bold tracking-[0.20em] text-white/70 backdrop-blur-sm hover:bg-white/15 hover:text-white">EN SAVOIR PLUS</button>
                 </div>                
             </div>
