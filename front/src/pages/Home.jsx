@@ -1,8 +1,12 @@
+import SectionConcept from "../components/Home/SectionConcept.jsx"
+import SectionHero from "../components/Home/SectionHero.jsx"
+
 function Home() {
     return(
-        <div>
-            <h2>Home</h2>
-        </div>        
+        <>
+            < SectionHero />
+            < SectionConcept />
+        </>
     )
 }
 
