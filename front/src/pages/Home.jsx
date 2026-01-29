@@ -1,5 +1,6 @@
 import SectionAward from "../components/Home/SectionAward.jsx"
 import SectionConcept from "../components/Home/SectionConcept.jsx"
+import SectionGoal from "../components/Home/SectionGoal.jsx"
 import SectionHero from "../components/Home/SectionHero.jsx"
 
 function Home() {
@@ -8,6 +9,7 @@ function Home() {
             < SectionHero />
             < SectionConcept />
             < SectionAward />
+            < SectionGoal />
         </div>
     )
 }
