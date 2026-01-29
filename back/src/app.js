@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // route test
-app.get("/", (res) => {
+app.get("/", (req,res) => {
   res.json({
     message: "the site is running"
   });
