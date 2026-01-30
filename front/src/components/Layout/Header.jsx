@@ -22,7 +22,7 @@ function Header() {
                 </nav>
 
                 <div className="flex items-center gap-3">
-                    <Link className="rounded-full bg-gradient-to-r from-[#2B7FFF] to-[#9810FA] px-8 py-2 text-[11px] font-semibold text-white">Participer</Link>
+                    <Link to="/participation" className="rounded-full bg-gradient-to-r from-[#2B7FFF] to-[#9810FA] px-8 py-2 text-[11px] font-semibold text-white">Participer</Link>
                     <button className="h-8 w-12 overflow-hidden rounded-md bg-transparent shadow-none" aria-label="Change language">
                         <img src="./src/assets/imgs/icones/english.png" alt="change-language" className="h-full w-full "/>
                     </button>
