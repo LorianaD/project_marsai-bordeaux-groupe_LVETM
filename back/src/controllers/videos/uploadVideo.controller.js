@@ -81,7 +81,7 @@ async function uploadVideoController(req, res) {
       discovery_source,
     } = req.body;
 
-    // Champs requis (texte)
+    
     const required = {
       title_en,
       synopsis,
@@ -122,26 +122,26 @@ async function uploadVideoController(req, res) {
       });
     }
 
-    // --- NORMALISATION director_gender POUR ENUM('Mrs','Mr') ---
+    
     const genderRaw = String(director_gender || "")
       .trim()
       .toLowerCase();
 
     let directorGenderDb = null;
 
-    // Masculin -> Mr
+    
     if (["m", "mr", "male", "homme", "man", "monsieur"].includes(genderRaw)) {
       directorGenderDb = "Mr";
     }
 
-    // Féminin -> Mrs
+    
     if (
       ["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)
     ) {
       directorGenderDb = "Mrs";
     }
 
-    // Si le client envoie déjà "Mr"/"Mrs" avec la bonne casse
+    
     if (director_gender === "Mr" || director_gender === "Mrs") {
       directorGenderDb = director_gender;
     }

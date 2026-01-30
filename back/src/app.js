@@ -1,6 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import path from "path";
+
 
 import router from "./routes/index.js";
 import videosRouter from "./routes/videos.js";
@@ -17,6 +19,8 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => {
   res.json({ message: "the site is running" });
 });
+
+app.use("/uploads", express.static(path.resolve("uploads")));
 
 // routes API
 app.use("/api", router);
