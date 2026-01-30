@@ -2,7 +2,7 @@ import { Link } from "react-router"
 
 function Header() {
     return(
-        <header className="w-full bg-transparent p-[30px]">
+        <header className="w-full bg-transparent p-[30px] z-10000">
 
             <div className="mx-auto flex items-center justify-between px-8">
 

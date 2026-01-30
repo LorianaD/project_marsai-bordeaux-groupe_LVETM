@@ -15,7 +15,7 @@ function SectionEvent() {
                         <li>Interrogations stimulantes sur la création</li>
                     </ol>
                 </p>
-                <button className="inline-block h-[42px] px-[25px] py-[13px] gap-[8px] justify-center items-start rounded-[100px] border-[rgba(15,15,15,0.1)] bg-[rgba(0,0,0,0.05)]">
+                <button className="inline-block h-[42px] px-[25px] py-[13px] gap-[8px] justify-center items-center rounded-[100px] border-[rgba(15,15,15,0.1)] bg-[rgba(0,0,0,0.05)]">
                     <div>
                         <img src="/src/assets/imgs/icones/iconCalendar.svg" alt="" />
                     </div>
