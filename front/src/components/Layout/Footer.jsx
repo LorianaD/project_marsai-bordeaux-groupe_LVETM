@@ -9,7 +9,7 @@ function Footer() {
     <footer className="w-full bg-black dark:bg-transparent text-white">
       <div className="mx-auto px-6 py-14">
         <div className="grid gap-10 md:grid-cols-4">
-          {/* Brand */}
+          
           <div className="md:col-span-1">
             <h2 className="text-3xl font-semibold tracking-tight">
               MARS<span className="text-fuchsia-500">AI</span>
@@ -42,7 +42,7 @@ function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
+          
           <div className="md:col-span-1 md:pl-6">
             <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400">
               NAVIGATION
