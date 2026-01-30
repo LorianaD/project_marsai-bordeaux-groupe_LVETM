@@ -3,8 +3,8 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  /* color-scheme: light dark; */
+
   background-color: #242424;
 
   font-synthesis: none;
@@ -15,7 +15,6 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
     background-color: #ffffff;
   }
 }
