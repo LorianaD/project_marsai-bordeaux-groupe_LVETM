@@ -1,12 +1,11 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: 'Arimo', sans-serif;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  /* color-scheme: light dark; */
+
   background-color: #242424;
 
   font-synthesis: none;
@@ -17,11 +16,6 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
     background-color: #ffffff;
-  }
-
-  button {
-    background-color: #f9f9f9;
   }
 }
