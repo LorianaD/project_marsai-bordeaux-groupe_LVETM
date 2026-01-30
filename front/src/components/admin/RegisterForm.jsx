@@ -8,56 +8,82 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-
-  console.log(lastName);
-  
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState(""); 
+  const [success, setSuccess] = useState("")
   const [error, setError] = useState("");
 
-   // voir avec Atif si je creer aussi une const pour comparer les mp avec des operateurs ?!!!!!!!!!
-
+  /* =================================================
+  fonction pour verifier le formulaire a sa soumission
+  ==================================================*/
   const handleSubmit = (e) => {
-
-    /* ==================================
-     empeche le rechargement de la page
+    /* =================================
+    empeche le rechargement de la page
     ================================== */
     e.preventDefault();
+
+  /*=============================
+  reset du state error et success
+  =============================*/
+    setError("");
+    setSuccess("");
 
     /* ================================================================================== 
     Vérifie si les datas sont bien saisie dans les input sinon renvoi un message d'erreur 
     =================================================================================== */
     if (!email.trim() || !firstName.trim() || !lastName.trim() || !password.trim() || !verifyPassword.trim()) 
       {
-        console.log("ici il manque une donnée au moins si ce message s'affiche")
-        setError("Veuillez remplir tous les champs");
+        setError("Please fill in all fields");
         return;
       }
-
-    console.log(" si ce message s'affiche alors c'est que tous les champs sont remplis ");
     
+    /*===============================================================================
+    condition et contrainte pour lastname et firstname minimum 3 et max 30 caractères
+    ===============================================================================*/
 
-    // setError("");
+    if (lastName.length < 3) {
+      setError("Lastname must be at least 3 character");
+      return;
+    } else if (lastName.length > 30) {
+      setError("Lastname must be no more than 30 characters");
+      return;
+    }
 
-    // console.log("Envoi des données:", {
-    //   email,
-    //   firstName,
-    //   lastName,
-    //   password,
-    //   verifyPassword,
-    // });
+    if (firstName.length < 3) {
+      setError("Firstname must be at least 3 character");
+      return;
+    } else if (firstName.length > 30) {
+      setError("Firstname must be no more than 30 characters");
+      return;
+    }
 
-    // setEmail("");
-    // setFirstName("");
-    // setLastName("");
-    // setPassword("");
-    // setVerifyPassword("");
+    /*==================================
+      Validation de la regex pour le mdp
+    ==================================*/
+    if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!?#$^&*@]).{12,}$/.test(password)) {
+        setError("Password must be at least 12 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (!?#$^&*@)");
+        return
+      }
+    
+    if (password != verifyPassword) {
+        setError("Password and confirmation password do not match.");
+        return
+    }
+
+    console.log("Sending data:", {
+      email,
+      firstName,
+      lastName,
+      password,
+      verifyPassword,
+    });
   };
 
   return (
-    /* ========================
-    formulaire d'energistrement 
-    =========================*/
+
+    /* ====================================
+    formulaire d'energistrement utilisateur
+    =====================================*/
     <form onSubmit={handleSubmit}>
       <div>
         <label>E-mail address* :</label>
@@ -87,7 +113,7 @@ function RegisterForm() {
       <div>
         <label>New-password*:</label>
         <input
-          type="new-password"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -96,13 +122,14 @@ function RegisterForm() {
       <div>
         <label>Confirm your password*:</label>
         <input
-          type="current-password"
+          type="password"
           value={verifyPassword}
           onChange={(e) => setVerifyPassword(e.target.value)}
         />
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p>{error}</p>}
+      {success && <p>{success}</p>}
 
       <button type="submit">Register</button>
     </form>
