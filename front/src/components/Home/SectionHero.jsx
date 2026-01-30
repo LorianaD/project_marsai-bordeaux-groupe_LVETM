@@ -41,13 +41,20 @@ function SectionHero() {
 
                 <div className="flex items-start justify-end gap-6 py-0 px-[217.773px] pl-[223.82px]">
                     <button className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
-                        <span className="">VOIR LES FILMS</span>
-                        <div className="">
+                        <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
+                            Participer
+                        </span>
+                        <div className="w-[20px] h-[20px]">
                             <img src="../src/assets/imgs/icones/arrowRight.svg" alt=""/>
                         </div>
                     </button>
-                    <button className="">
-                        EN SAVOIR PLUS
+                    <button className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
+                        <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
+                            EN SAVOIR PLUS
+                        </span>
+                        <span className="flex flex-col justify-center text-[#AD46FF] text-center text-[24px] font-bold leading-[0] uppercase">
+                            +
+                        </span>
                     </button>
                 </div> 
 
