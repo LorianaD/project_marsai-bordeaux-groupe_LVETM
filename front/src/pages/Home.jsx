@@ -5,6 +5,7 @@ import SectionEvent from "../components/Home/SectionEvent.jsx"
 import SectionGoal from "../components/Home/SectionGoal.jsx"
 import SectionHero from "../components/Home/SectionHero.jsx"
 import SectionLocalisation from "../components/Home/SectionLocalisation.jsx"
+import SectionPartner from "../components/Home/SectionPartner.jsx"
 
 function Home() {
     return(
@@ -16,6 +17,7 @@ function Home() {
             < SectionEvent />
             < SectionClosingEvent />
             < SectionLocalisation />
+            < SectionPartner />
         </div>
     )
 }
