@@ -7,15 +7,15 @@ function Header() {
             <div className="mx-auto flex items-center justify-between px-8">
 
                 <div>
-                    <Link to="home" className="flex items-center gap-0 text-xs font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
+                    <Link to="/" className="flex items-center gap-0 text-xs font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
                         <span>MARS</span>
                         <span className="font-bold text-[#A855F7]">AI</span>
                     </Link></div>
 
                 <nav className="">
                     <ul className="flex items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
-                        <li><Link to="home">ACCUEIL</Link></li>
-                        <li><Link>GALERIE</Link></li>
+                        <li><Link to="/">ACCUEIL</Link></li>
+                        <li><Link to="/gallery">GALERIE</Link></li>
                         <li><Link>PROGRAMME & INFOS</Link></li>
                         <li><Link>JURY</Link></li>
                     </ul>

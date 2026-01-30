@@ -14,7 +14,7 @@ export default function ParticipationUploadPage() {
   return (
     <div className="min-h-screen px-4 py-10">
       <div className="mx-auto w-full max-w-5xl">
-        <h1 className="mb-10 text-center text-3xl font-semibold">
+        <h1 className="mb-10 text-center text-3xl font-semibold dark:text-white">
           FORMULAIRE DE PARTICIPATION
         </h1>
 
