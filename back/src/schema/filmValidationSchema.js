@@ -3,11 +3,13 @@
 //AJOUTER VERIFICATION 16/9 et taille des fichiers
 //Ajout de la vérif de la durée et de la taille du fichier vidéo
 //verifier birthday
-// voir si l'on doit envoyer null en bdd au lieu de "" pour les phones numbers
+// voir si l'on doit envoyer null en bdd au lieu de "" pour les phones numbers//voir si "" est stocké comme null
 // voir si rating dans memo_selector va etre utilisé    rating: z
 //        .number({ message: "Video duration is required." })
 //        .positive({ message: "Video duration must be positive." })
 //verifier si role a ete passé en admin
+//varchar manquant en bdd sur description dans table event
+//Faire length et date dans Event
 
 
 /********************************************* 
@@ -551,16 +553,79 @@ export const createSocialMediaSchema = z.object({
         .optional(),
 })
 
+/********************************************* 
+ * Schéma pour l'ajout dans awards
+ *********************************************/
+export const createAwardSchema = z.object({
 
+    title: z
+        .string({ message: "Url must be a string." })
+        .trim()
+        .min(1, "title is required.")
+        .max(255, "Url must not exceed 255 characters."),
 
+    img: z
+        .string({message:"Img must be a string."})
+        .trim()
+        .min(1, "Img is required.")
+        .max(250, "Img must not exceed 250 characters.")
+        .refine(
+            (value) => {
+                // Récuperation et vérification de la validité de l'extension.
+                const extension = value.substring(value.lastIndexOf(".")).toLowerCase();
+                return pictureFormats.includes(extension);
+            },
+            `Unsupported img format. Accepted formats: ${pictureFormats.join(", ")}`
+        ),
+
+    rank: z
+        .number({ message: "Rank is required." })
+        .positive({ message: "Rank must be positive." }),
+})
+/********************************************* 
+ * Schéma pour l'ajout dans events
+ *********************************************/
+export const createEventSchema = z.object({
+
+    title: z
+        .string({ message: "Title must be a string." })
+        .trim()
+        .min(1, "Title is required.")
+        .max(255, "Title must not exceed 255 characters."),
+
+    description: z
+        .string({message:"Description must be a string."})
+        .trim()
+        .max(500, "Description must not exceed 500 characters.")
+        .or(z.literal(""))
+        .optional(),
+
+    // date: z
+    //     .string({message:"Date must be a string"})
+    //     .trim()
+    //     .min(1, "Date is required")
+    //     .refine(
+    //         value => !isNaN(new Date(value).getTime()),
+    //         { message: "Date must be a valid date" }
+    //     )
+    //     .refine(
+    //         value => new Date(value).getTime() >= Date.now(),
+    //         { message: "Date cannot be in the past" }
+    //     ),
+
+    // length: z
+    //     .number({ message: "Length is required." })
+    //     .positive({ message: "Length must be positive." }), 
+
+    stock: z
+        .preprocess(
+            value => Number(value),// transforme string -> number
+            z // schéma qui valide la valeur transformée
+                .number({ message: "Stock is required." })
+                .int({ message: "Stock must be an integer." })
+                .nonnegative({ message: "Stock must be 0 or positive." })
+        )
+})
 /********************************************* 
  * Schéma pour l'ajout dans still
- *********************************************/
-
-/********************************************* 
- * Schéma pour l'ajout dans award
- *********************************************/
-
-/********************************************* 
- * Schéma pour l'ajout dans event
  *********************************************/
