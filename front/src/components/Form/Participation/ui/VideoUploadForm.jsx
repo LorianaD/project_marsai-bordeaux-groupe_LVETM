@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, TextArea } from "./Field";
 
-
 export default function VideoUploadForm() {
+  //  Ici je stocke tous les fichiers que l’utilisateur va envoyer
+  // - video = le fichier vidéo principal
+  // - cover = l’image de couverture
+  // - stills = plusieurs images (max 3)
+  // - subtitles = plusieurs fichiers .srt
   const [files, setFiles] = useState({
     video: null,
     cover: null,
@@ -10,6 +14,8 @@ export default function VideoUploadForm() {
     subtitles: [],
   });
 
+  //  Ici je stocke tous les champs texte du formulaire
+  // Tout ce que l’utilisateur tape dans les inputs, ça finit ici
   const [form, setForm] = useState({
     youtube_video_id: "",
     title: "",
@@ -34,13 +40,19 @@ export default function VideoUploadForm() {
     discovery_source: "",
   });
 
-  // Préremplir avec le profil blanc
+  //  Au chargement du composant :
+  // je regarde si j’ai déjà un "profil réalisateur" stocké dans le navigateur
+  // (c’est pratique : ça évite de retaper email / prénom / nom)
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
 
     try {
+      //  On récupère l’objet stocké (c’est une string JSON)
       const p = JSON.parse(saved);
+
+      //  On pré-remplit quelques champs du formulaire
+      // On garde ce qui existe déjà, et on remplace seulement si on a une valeur
       setForm((f) => ({
         ...f,
         email: p.email || f.email,
@@ -49,32 +61,50 @@ export default function VideoUploadForm() {
         director_gender: p.gender || f.director_gender,
       }));
     } catch (err) {
+      // 👉 Si le JSON est cassé / invalide, on ne bloque pas l’appli
       console.warn("directorProfile invalide dans localStorage:", err);
     }
   }, []);
 
+  //  Fonction “update” :
+  // Quand l’utilisateur tape dans un champ texte,
+  // on récupère le name + value, et on met à jour form
   function update(e) {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   }
 
+  //  Fonction “updateFile” :
+  // Quand l’utilisateur choisit un fichier, on le met dans "files"
   function updateFile(e) {
     const { name, files: inputFiles } = e.target;
     if (!inputFiles) return;
 
+    //  Cas spécial : stills = plusieurs fichiers MAIS on limite à 3
     if (name === "stills") {
       setFiles((f) => ({ ...f, stills: Array.from(inputFiles).slice(0, 3) }));
+
+      //  Cas spécial : subtitles = plusieurs fichiers (pas de limite ici)
     } else if (name === "subtitles") {
       setFiles((f) => ({ ...f, subtitles: Array.from(inputFiles) }));
+
+      //  Cas classique : video / cover = 1 seul fichier
     } else {
       setFiles((f) => ({ ...f, [name]: inputFiles[0] }));
     }
   }
 
+  //  “canSubmit” = est-ce qu’on a le droit d’envoyer ?
+  // useMemo = on recalcule seulement quand form ou files change
+  // Ici c’est une grosse checklist :
+  // si un champ obligatoire manque -> canSubmit = false
   const canSubmit = useMemo(() => {
+    //  duration vient d’un input, donc c’est une string
+    // on la transforme en nombre pour vérifier que c’est valide
     const durationNum = Number(form.duration);
 
     return (
+      // ----- champs film obligatoires -----
       form.title.trim() &&
       form.title_en.trim() &&
       form.synopsis.trim() &&
@@ -83,9 +113,13 @@ export default function VideoUploadForm() {
       form.country.trim() &&
       Number.isFinite(durationNum) &&
       durationNum > 0 &&
+
+      // ----- déclaration IA obligatoires -----
       form.tech_resume.trim() &&
       form.ai_tech.trim() &&
       form.creative_resume.trim() &&
+
+      // ----- infos réal obligatoires -----
       form.email.trim() &&
       form.director_name.trim() &&
       form.director_lastname.trim() &&
@@ -94,6 +128,8 @@ export default function VideoUploadForm() {
       form.address.trim() &&
       form.director_country.trim() &&
       form.discovery_source.trim() &&
+
+      // ----- fichiers obligatoires -----
       files.video &&
       files.cover &&
       files.stills.length > 0 &&
@@ -101,30 +137,40 @@ export default function VideoUploadForm() {
     );
   }, [form, files]);
 
+  //  Quand on envoie le formulaire
   async function submit(e) {
-    e.preventDefault();
-    if (!canSubmit) return;
+    e.preventDefault(); //  Empêche la page de se recharger
+    if (!canSubmit) return; //  Si c’est pas valide, on n’envoie pas
 
     try {
+      //  FormData = format spécial pour envoyer du texte + des fichiers
       const fd = new FormData();
 
-      // Champs texte
+      //  1) On ajoute tous les champs texte dans la FormData
       Object.entries(form).forEach(([k, v]) => {
+        //  On évite d’envoyer des valeurs vides
         if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
       });
 
-      // Fichiers (multer)
+      //  2) On ajoute les fichiers (côté serveur, souvent géré par multer)
       fd.append("video", files.video);
       fd.append("cover", files.cover);
+
+      //  stills et subtitles peuvent avoir plusieurs fichiers :
+      // on les append plusieurs fois avec le même nom
       files.stills.forEach((f) => fd.append("stills", f));
       files.subtitles.forEach((f) => fd.append("subtitles", f));
 
+      //  3) On envoie au backend
+      // Ici tu appelles /api/videos en POST avec la FormData
       const res = await fetch("/api/videos", {
         method: "POST",
         body: fd,
       });
 
-      // Attention: si le serveur renvoie un HTML d’erreur, res.json() peut throw
+      // ⚠️ Petite précaution :
+      // Parfois le serveur renvoie une page HTML d’erreur au lieu de JSON,
+      // donc res.json() peut planter
       let data = null;
       try {
         data = await res.json();
@@ -132,6 +178,7 @@ export default function VideoUploadForm() {
         data = null;
       }
 
+      //  Si la réponse n’est pas OK, on construit un message d’erreur propre
       if (!res.ok) {
         const msg =
           data?.details ||
@@ -140,30 +187,35 @@ export default function VideoUploadForm() {
         throw new Error(msg);
       }
 
+      //  Si tout va bien : message de succès
       alert(`Upload OK ✅ (videoId: ${data.videoId})`);
     } catch (err) {
+      //  Si ça plante : on log + on alerte l’utilisateur
       console.error("Upload error:", err);
       alert(err.message || "Erreur upload");
     }
   }
 
   return (
+    //  Le formulaire complet
+    // onSubmit appelle submit()
     <form onSubmit={submit} className="w-full text-white">
       <div className="space-y-12">
         <h2 className="text-center text-2xl font-semibold">MA VIDÉO</h2>
 
-        {/* Identité */}
+        {/* ===================== 01. Identité du film ===================== */}
         <section className="space-y-6">
           <h3 className="text-purple-400 font-semibold">
             01. IDENTITÉ DU FILM
           </h3>
 
+          {/* Inputs “ligne 1” */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field label="Titre du court métrage" required>
               <TextInput
-                name="title"
+                name="title"                //  correspond à form.title
                 value={form.title}
-                onChange={update}
+                onChange={update}           //  met à jour form automatiquement
                 className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
@@ -205,6 +257,7 @@ export default function VideoUploadForm() {
               />
             </Field>
 
+            {/* Optionnel */}
             <Field label="Lien YouTube (optionnel)">
               <TextInput
                 name="youtube_video_id"
@@ -215,6 +268,7 @@ export default function VideoUploadForm() {
             </Field>
           </div>
 
+          {/* Synopsys */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field label="Synopsis (original)" required>
               <TextArea
@@ -236,7 +290,7 @@ export default function VideoUploadForm() {
           </div>
         </section>
 
-        {/* Déclaration IA */}
+        {/* ===================== 02. Déclaration IA ===================== */}
         <section className="space-y-6">
           <h3 className="text-purple-400 font-semibold">
             02. DÉCLARATION USAGE IA
@@ -272,7 +326,7 @@ export default function VideoUploadForm() {
           </Field>
         </section>
 
-        {/* Réalisateur */}
+        {/* ===================== 03. Infos réalisateur ===================== */}
         <section className="space-y-6">
           <h3 className="text-purple-400 font-semibold">
             03. INFORMATIONS RÉALISATEUR
@@ -353,6 +407,7 @@ export default function VideoUploadForm() {
               />
             </Field>
 
+            {/* Optionnels */}
             <Field label="Mobile (optionnel)">
               <TextInput
                 name="mobile_number"
@@ -373,7 +428,7 @@ export default function VideoUploadForm() {
           </div>
         </section>
 
-        {/* Fichiers */}
+        {/* ===================== 04. Fichiers ===================== */}
         <section className="space-y-6">
           <h3 className="text-purple-400 font-semibold">04. FICHIERS</h3>
 
@@ -381,9 +436,9 @@ export default function VideoUploadForm() {
             <Field label="Vidéo" required>
               <input
                 type="file"
-                name="video"
+                name="video"              // 👉 va remplir files.video
                 accept="video/*"
-                onChange={updateFile}
+                onChange={updateFile}     // 👉 met à jour le state files
                 className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
               />
             </Field>
@@ -391,7 +446,7 @@ export default function VideoUploadForm() {
             <Field label="Cover" required>
               <input
                 type="file"
-                name="cover"
+                name="cover"              // 👉 va remplir files.cover
                 accept="image/*"
                 onChange={updateFile}
                 className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
@@ -401,9 +456,9 @@ export default function VideoUploadForm() {
             <Field label="Stills (max 3)" required>
               <input
                 type="file"
-                name="stills"
+                name="stills"             // 👉 va remplir files.stills (tableau)
                 accept="image/*"
-                multiple
+                multiple                  // 👉 autorise plusieurs fichiers
                 onChange={updateFile}
                 className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
               />
@@ -412,7 +467,7 @@ export default function VideoUploadForm() {
             <Field label="Sous-titres (.srt)" required>
               <input
                 type="file"
-                name="subtitles"
+                name="subtitles"          // 👉 va remplir files.subtitles (tableau)
                 accept=".srt"
                 multiple
                 onChange={updateFile}
@@ -422,6 +477,9 @@ export default function VideoUploadForm() {
           </div>
         </section>
 
+        {/*  Bouton envoyer
+            - disabled si canSubmit = false
+            - donc impossible d’envoyer si manque un champ/fichier */}
         <div className="flex justify-center pt-2">
           <button
             type="submit"
