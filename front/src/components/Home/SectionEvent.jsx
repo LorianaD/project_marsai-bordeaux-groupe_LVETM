@@ -30,26 +30,26 @@ function SectionEvent() {
 
             <div className="grid h-[259.5px] grid-cols-3 gap-8 self-stretch text-left">
 
-                <div className="self-stretch row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[#F1F1F1] bg-[#F1F1F1] p-[40px] flex flex-col gap-[30px]">
+                <div className="self-stretch row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px] hover:border-[#F1F1F1] hover:bg-[#F1F1F1] hover:text-black">
                     <div className="h-[40px] w-[40px]">
                         <img src="/src/assets/imgs/icones/iconPlay.svg" alt="" />
                     </div>
-                    <h3 className="text-black text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase">Projections</h3>
-                    <p className="text-black/60 text-[14px] font-normal leading-[22.75px]">Diffusion sur écran géant en présence des réalisateurs.</p>
+                    <h3 className="text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase">Projections</h3>
+                    <p className="text-[14px] font-normal leading-[22.75px]">Diffusion sur écran géant en présence des réalisateurs.</p>
                 </div>
-                <div className="self-stretch row-start-1 row-span-1 col-start-2 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px]">
+                <div className="self-stretch row-start-1 row-span-1 col-start-2 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px] hover:border-[#F1F1F1] hover:bg-[#F1F1F1] hover:text-black">
                     <div className="h-[40px] w-[40px]">
                         <img src="/src/assets/imgs/icones/iconPeople.svg" alt="" />
                     </div>
-                    <h3 className="text-black text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase">Workshops</h3>
-                    <p className="text-black/60 text-[14px] font-normal leading-[22.75px]">Sessions pratiques pour maîtriser les outils IA.</p>
+                    <h3 className="text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase">Workshops</h3>
+                    <p className="text-[14px] font-normal leading-[22.75px]">Sessions pratiques pour maîtriser les outils IA.</p>
                 </div>
-                <div className="self-stretch row-start-1 row-span-1 col-start-3 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px]">
+                <div className="self-stretch row-start-1 row-span-1 col-start-3 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px] hover:border-[#F1F1F1] hover:bg-[#F1F1F1] hover:text-black">
                     <div className="h-[40px] w-[40px]">
                         <img src="/src/assets/imgs/icones/iconAward.svg" alt="" />
                     </div>
-                    <h3 className="text-black text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase">Awards</h3>
-                    <p className="text-black/60 text-[14px] font-normal leading-[22.75px]">Cérémonie de clôture récompensant l'audace.</p>
+                    <h3 className="text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase">Awards</h3>
+                    <p className="text-[14px] font-normal leading-[22.75px]">Cérémonie de clôture récompensant l'audace.</p>
                 </div>
 
             </div>

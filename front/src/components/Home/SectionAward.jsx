@@ -1,4 +1,49 @@
+import { useEffect, useState } from "react";
+import { fetchVideos } from "../../services/Videos/VideosApi";
+import { Link } from "react-router";
+
 function SectionAward() {
+
+    const [videos, setVideos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [errorMsg, setErrorMsg] = useState("");
+
+    useEffect(() => {
+
+        let isMounted = true;
+        console.log(isMounted); 
+
+        async function load() {
+            try {
+                console.log("try dans HomevideoList useEffect ok");
+                
+                setLoading(true);
+                setErrorMsg("");
+
+                const data = await fetchVideos();
+                const list = Array.isArray(data) ? data : (data?.videos ?? []);
+
+                // on garde seulement 3 vidéos (les 3 premières)
+                const first = list.slice(0, 3);
+
+                if (isMounted) setVideos(first);
+
+            } catch (err) {
+
+                if (isMounted) setErrorMsg(err?.message || "Erreur inconnue");
+
+            } finally {
+
+                if (isMounted) setLoading(false);
+
+            }
+        }
+
+        load();
+        return () => { isMounted = false; };
+
+    }, []);
+
     return(
         <section className="flex flex-col items-center justify-center gap-[80px] px-[100px] self-stretch">
 
@@ -26,19 +71,51 @@ function SectionAward() {
             </div>
 
             <div className="grid h-[346.875px] grid-cols-3 gap-8 shrink-0 self-stretch">
-                <div className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5">
-                    <div className="w-[337px]">
-                        <img src="#" alt="" />
+
+                {loading && (
+                    <div>
+                        <span className="loading loading-spinner loading-md"></span>
+                        <p>Loading videos…</p>
                     </div>
-                    <div className="flex h-[175px] flex-col items-start gap-2 pt-[40px] px-[40px] pb-0 self-stretch">
-                        <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase text-left">
-                            Nom de la video
-                        </h3>
-                        <p className="text-[#000000] dark:text-white/80 text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
-                            Director
-                        </p>
+                )}
+
+                {!loading && errorMsg && (
+                    <div className="col-span-3 alert alert-error">
+                        <span>Couldn’t load videos: {errorMsg}</span>
                     </div>
-                </div>
+                )}
+
+                {!loading && !errorMsg && videos.length === 0 && (
+                    <div className="col-span-3 alert">
+                        <span>No videos yet.</span>
+                    </div>
+                )}
+
+                {!loading && !errorMsg && videos.map((video) => {
+                    const title = video?.title ?? "Untitled";
+                    const director = video?.director ?? video?.author ?? "Unknown director";
+                    const coverUrl = video?.coverUrl ?? video?.cover ?? video?.thumbnailUrl ?? "";
+
+                    return (
+
+                        <div key={video.id} className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5">
+                            <div className="w-[337px]">
+                                <Link to={`/gallery/${videos.id}`} aria-label={`Voir le film ${videos.title}`}>
+                                    <img src={coverUrl} alt={title} loading="lazy" />
+                                </Link>
+                            </div>
+                            <div className="flex h-[175px] flex-col items-start gap-2 pt-[40px] px-[40px] pb-0 self-stretch">
+                                <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase text-left">
+                                    { title }
+                                </h3>
+                                <p className="text-[#000000] dark:text-white/80 text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                                    { director }
+                                </p>
+                            </div>
+                        </div>
+
+                    )
+                })}
             </div>
             
         </section>

@@ -6,10 +6,11 @@ import SectionGoal from "../components/Home/SectionGoal.jsx"
 import SectionHero from "../components/Home/SectionHero.jsx"
 import SectionLocalisation from "../components/Home/SectionLocalisation.jsx"
 import SectionPartner from "../components/Home/SectionPartner.jsx"
+import SectionProjected from "../components/Home/SectionProjected.jsx"
 
 function Home() {
     return(
-        <div className="flex pb-[50px] flex-col items-center gap-[50px] self-stretch">
+        <div className="flex pb-[50px] flex-col items-center gap-[50px] self-stretch dark:text-[#FFFFFF]">
             < SectionHero />
             < SectionConcept />
             < SectionAward />
@@ -17,6 +18,7 @@ function Home() {
             < SectionEvent />
             < SectionClosingEvent />
             < SectionLocalisation />
+            < SectionProjected />
             < SectionPartner />
         </div>
     )
