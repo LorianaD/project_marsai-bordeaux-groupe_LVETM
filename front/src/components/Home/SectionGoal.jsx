@@ -40,7 +40,6 @@ function SectionGoal() {
                     </p>
                 </div>                
             </div>
-            <div className="w-[800px] h-[523px] absolute left-[240px] top-[0.375px] bg-[rgba(152,16,250,0.05)] blur-[150px]"></div>
         </section>
     )
 }

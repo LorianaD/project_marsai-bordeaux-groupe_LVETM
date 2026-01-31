@@ -1,3 +1,5 @@
+import Localisation from "../Maps/Localisation"
+
 function SectionLocalisation() {
     return(
         <section className="flex flex-col gap-[30px] py-[100px] px-[75px] self-stretch text-[#000000] dark:text-[#FFFFFF]">
@@ -36,17 +38,7 @@ function SectionLocalisation() {
                     </div>
                 </div>
                 <div className="rounded-[40px] border border-[rgba(138,138,138,0.10)] bg-transparent shadow-[0_0_100px_rgba(0,0,0,0.50)]">
-                    <div className="relative w-full aspect-[16/7]">
-                        <iframe
-                        title="Google Map"
-                        className="absolute inset-0 h-full w-full border-0"
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        // Remplace l'URL par ton embed
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!...etc"
-                        allowFullScreen
-                        />
-                    </div>
+                    < Localisation />
                 </div>
             </div>
         </section>
