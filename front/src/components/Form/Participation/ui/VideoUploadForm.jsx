@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, TextArea } from "./Field";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function VideoUploadForm() {
   //  Ici je stocke tous les fichiers que l’utilisateur va envoyer
@@ -163,7 +164,7 @@ export default function VideoUploadForm() {
 
       //  3) On envoie au backend
       // Ici tu appelles /api/videos en POST avec la FormData
-      const res = await fetch("/api/videos", {
+      const res = await fetch(`${API_URL}/api/videos`, {
         method: "POST",
         body: fd,
       });
