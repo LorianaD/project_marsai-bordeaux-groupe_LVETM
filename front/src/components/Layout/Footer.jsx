@@ -1,3 +1,6 @@
+import { Link } from "react-router"
+// import { useTranslation } from "react-i18next";
+
 import fb from "../../assets/imgs/icones/fb.png";
 import insta from "../../assets/imgs/icones/insta.png";
 import youtube from "../../assets/imgs/icones/youtube.png";
@@ -6,112 +9,108 @@ import Newsletter from "../Form/Newsletter";
 
 function Footer() {
   return (
-    <footer className="w-full bg-black dark:bg-transparent text-white">
-      <div className="mx-auto px-6 py-14">
-        <div className="grid gap-10 md:grid-cols-4">
-          
-          <div className="md:col-span-1">
-            <h2 className="text-3xl font-semibold tracking-tight">
-              MARS<span className="text-fuchsia-500">AI</span>
-            </h2>
+    <footer className="hidden md:block flex w-full flex-col items-center justify-center gap-[40px] p-[40px] border-t-2 border-[rgba(0,0,0,0.05)] bg-[rgba(0,34,91,0.05)] text-[#000000] dark:text-[#FFFFFF]">
 
-            <p className="mt-6 max-w-xs text-sm italic leading-6 text-white/45">
-              “La plateforme mondiale de la narration générative, ancrée dans la
-              lumière de Marseille.”
-            </p>
+      <div className="flex items-start justify-center gap-[50px] self-stretch w-full p-[30px]">
+        
+        <div className="md:col-span-1">
+          <h2 className="text-3xl font-semibold tracking-tight">
+            MARS<span className="text-fuchsia-500">AI</span>
+          </h2>
 
-            <div className="mt-7 flex items-center gap-4">
-              {[
-                { src: fb, alt: "Facebook" },
-                { src: insta, alt: "Instagram" },
-                { src: youtube, alt: "YouTube" },
-                { src: x, alt: "X" },
-              ].map((i) => (
-                <a
-                  key={i.alt}
-                  href="#"
-                  className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur transition hover:border-white/30 hover:bg-white/10"
-                >
-                  <img
-                    src={i.src}
-                    alt={i.alt}
-                    className="h-5 w-5 opacity-80 transition group-hover:opacity-100"
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
+          <p className="mt-6 max-w-xs text-sm italic leading-6">
+            “La plateforme mondiale de la narration générative, ancrée dans la
+            lumière de Marseille.”
+          </p>
 
-          
-          <div className="md:col-span-1 md:pl-6">
-            <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400">
-              NAVIGATION
-            </h3>
-            <ul className="mt-6 space-y-4 text-sm text-white/55">
-              <li>
-                <a className="hover:text-white" href="#">
-                  Galerie
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#">
-                  Programme
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#">
-                  Top 50
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#">
-                  Billetterie
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-1">
-            <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400">
-              LÉGAL
-            </h3>
-            <ul className="mt-6 space-y-4 text-sm text-white/55">
-              <li>
-                <a className="hover:text-white" href="#">
-                  Partenaires
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-1 min-w-0 md:flex md:justify-end">
-
-            <div className="w-full max-w-md rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-[0_20px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl">
-              <Newsletter />
-            </div>
+          <div className="mt-7 flex items-center gap-4">
+            {[
+              { src: fb, alt: "Facebook" },
+              { src: insta, alt: "Instagram" },
+              { src: youtube, alt: "YouTube" },
+              { src: x, alt: "X" },
+            ].map((i) => (
+              <a
+                key={i.alt}
+                href="#"
+                className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur transition hover:border-white/30 hover:bg-white/10"
+              >
+                <img
+                  src={i.src}
+                  alt={i.alt}
+                  className="h-5 w-5 opacity-80 transition group-hover:opacity-100"
+                />
+              </a>
+            ))}
           </div>
         </div>
+
+        
+        <div className="md:col-span-1 md:pl-6">
+          <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400">
+            NAVIGATION
+          </h3>
+          <ul className="mt-6 space-y-4 text-sm">
+            <li>
+              <Link className="" to="/gallery">
+                Galerie
+              </Link>
+            </li>
+            <li>
+              <Link className="" to="/events">
+                Programme
+              </Link>
+            </li>
+            <li>
+              <Link className="" to="/gallery">
+                Top 50
+              </Link>
+            </li>
+            <li>
+              <Link className="" to="/events">
+                Billetterie
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="md:col-span-1">
+          <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400">
+            LÉGAL
+          </h3>
+          <ul className="mt-6 space-y-4 text-sm">
+            <li>
+              <Link className="" to="#">
+                Partenaires
+              </Link>
+            </li>
+            <li>
+              <Link className="" to="/faq">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link className="" to="/contact">
+                Contact
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <Newsletter />
+        </div>
+
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-6 text-[10px] tracking-[0.35em] text-white/35 md:flex-row md:items-center md:justify-between">
-          <div>© 2026 MARS.AI PROTOCOL · MARSEILLE HUB</div>
-          <div className="flex items-center gap-8">
-            <span>DESIGN SYSTEME CYBER-PREMIUM</span>
-            <a href="#" className="hover:text-white/70">
-              LÉGAL
-            </a>
-          </div>
+
+      <div className="flex h-[80px] items-center justify-between self-stretch border-t border-[rgba(0,0,0,0.50)] opacity-70">
+        <span className="text-[10px] font-bold leading-[15px] tracking-[5px] uppercase">© 2026 MARS.AI PROTOCOL · MARSEILLE HUB</span>
+        <div className="flex w-[424.133px] h-[15px] items-start gap-[48px]">
+          <span className="text-[10px] font-bold leading-[15px] tracking-[5px] uppercase">DESIGN SYSTEME CYBER-PREMIUM</span>
+          <Link to="/legal" className="text-[10px] font-bold leading-[15px] tracking-[5px] uppercase">
+            LÉGAL
+          </Link>
         </div>
       </div>
     </footer>
