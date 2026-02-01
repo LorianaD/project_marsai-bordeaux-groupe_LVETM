@@ -1,33 +1,68 @@
 import { Link } from "react-router"
+import { useTranslation } from "react-i18next";
+
+import englishFlag from "../../assets/imgs/icones/englishFlag.png";
+import frenchFlag from "../../assets/imgs/icones/franceFlag.png";
+
+import mobileNavIcon from "../../assets/imgs/icones/mobile-nav.svg";
 
 function Header() {
+    console.log("function header ok");
+    
+    const { t, i18n } = useTranslation("header");
+
+    const toggleLang = () => {
+
+        const next = i18n.language?.startsWith("fr") ? "en" : "fr";
+        i18n.changeLanguage(next);
+        localStorage.setItem("lang", next);
+
+    };
+
+    const isFr = i18n.language?.startsWith("fr");
+
     return(
-        <header className="w-full bg-transparent p-[30px] z-10000">
+        <header className="flex items-center justify-between w-full p-2 m-[20px] rounded-full border border-[rgba(255,255,255,0.10)] bg-[#FFFFFF] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] md:md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] text-[#3B82F6] dark:text-[#FFFFFF]">
+            
+            <Link to="/">
+                <h1 className="text-center font-bold uppercase text-[#4D79C1] text-[14px] leading-[20px] tracking-[-0.7px] md:text-[20px] md:leading-[28px] md:tracking-[-0.5px]">
+                    <span>MARS</span>
+                    <span className="bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent">
+                        AI
+                    </span>
+                </h1>
+            </Link>
+            
+            <nav className="hidden md:block">
+                <ul className="flex items-center justify-center gap-[41px] text-[16px] font-bold leading-[15px] tracking-[3px] uppercase">
+                    <li><Link to="/">{t("home")}</Link></li>
+                    <li><Link to="/gallery">{t("gallery")}</Link></li>
+                    <li><Link to="/events">{t("program")}</Link></li>
+                    <li><Link to="/jury">{t("jury")}</Link></li>
+                </ul>
+            </nav>
 
-            <div className="mx-auto flex items-center justify-between px-8">
+            <div className="hidden md:flex items-center justify-center gap-[34px]">
+                <Link to="/participation" className="flex items-center justify-center gap-[10px] px-[40px] py-[10px] rounded-[20px] bg-[linear-gradient(90deg,#2B7FFF_0%,#9810FA_100%)] text-white text-center text-[16px] font-bold leading-[16px] uppercase">
+                    {t("participate")}
+                </Link>
+                <button
+                    type="button"
+                    onClick={toggleLang}
+                    className="h-[46px] cursor-pointer"
+                    aria-label={isFr ? "Switch to English" : "Passer en français"}
+                    title={isFr ? "English" : "Français"}
+                >
+                    <img
+                        src={isFr ? englishFlag : frenchFlag}
+                        alt={isFr ? "English" : "Français"}
+                        className="h-full w-full "
+                    />
+                </button>
+            </div>
 
-                <div>
-                    <Link to="/" className="flex items-center gap-0 text-xs font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
-                        <span>MARS</span>
-                        <span className="font-bold text-[#A855F7]">AI</span>
-                    </Link></div>
-
-                <nav className="">
-                    <ul className="flex items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-[#4F6BFF] dark:text-white">
-                        <li><Link to="/">ACCUEIL</Link></li>
-                        <li><Link to="/gallery">GALERIE</Link></li>
-                        <li><Link to="/events">PROGRAMME & INFOS</Link></li>
-                        <li><Link to="/jury">JURY</Link></li>
-                    </ul>
-                </nav>
-
-                <div className="flex items-center gap-3">
-                    <Link to="/participation" className="rounded-full bg-gradient-to-r from-[#2B7FFF] to-[#9810FA] px-8 py-2 text-[11px] font-semibold text-white">Participer</Link>
-                    <button className="h-8 w-12 overflow-hidden rounded-md bg-transparent shadow-none" aria-label="Change language">
-                        <img src="./src/assets/imgs/icones/english.png" alt="change-language" className="h-full w-full "/>
-                    </button>
-                </div>
-
+            <div className="flex md:hidden w-[35.973px] h-[35.973px] flex-col items-center justify-center p-[8px] shrink-0">
+                <img src={ mobileNavIcon } alt="" />
             </div>
 
         </header>

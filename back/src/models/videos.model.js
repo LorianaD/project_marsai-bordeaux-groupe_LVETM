@@ -84,6 +84,7 @@ async function createVideo(payload, connection = pool) {
     INSERT INTO videos (
       youtube_video_id,
       video_file_name,
+      title,
       title_en,
       synopsis,
       synopsis_en,
@@ -112,6 +113,7 @@ async function createVideo(payload, connection = pool) {
   const params = [
     payload.youtube_video_id ?? null,
     payload.video_file_name,
+    payload.title,
     payload.title_en,
     payload.synopsis,
     payload.synopsis_en,

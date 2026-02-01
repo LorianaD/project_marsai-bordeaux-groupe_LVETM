@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchVideos } from "../../services/Videos/VideosApi";
 import { Link } from "react-router";
+import { VideoListApi } from "../../services/Videos/VideosListApi";
 
 function SectionAward() {
 
@@ -20,7 +20,7 @@ function SectionAward() {
                 setLoading(true);
                 setErrorMsg("");
 
-                const data = await fetchVideos();
+                const data = await VideoListApi();
                 const list = Array.isArray(data) ? data : (data?.videos ?? []);
 
                 // on garde seulement 3 vidéos (les 3 premières)
@@ -51,13 +51,21 @@ function SectionAward() {
                 <div>
                     <div className="flex items-center gap-[12px]">
                         <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]"/>
-                        <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">Le projet MARS.AI</p>
+                        <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">
+                            Le projet MARS.AI
+                        </p>
                     </div>
                     <h2>
-                        <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">Films en </span>
-                        <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">compétition</span>
+                        <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
+                            Films en 
+                        </span>
+                        <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
+                            compétition
+                        </span>
                     </h2>
-                    <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.</p>
+                    <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">
+                        Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.
+                    </p>
                 </div>
                 <button className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px]">
                     <span className="flex text-[#000000] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase dark:text-[#FFFFFF]">
