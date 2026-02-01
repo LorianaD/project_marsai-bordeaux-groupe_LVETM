@@ -1,22 +1,21 @@
 function Newsletter() {
   return (
-    <form className="w-full">
-      <h2 className="text-lg font-semibold leading-6 text-white">
-        RESTEZ
-        <br />
-        CONNECTÉ
+    <form className="flex flex-1 flex-col items-center justify-center gap-[25px] p-[41px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)]">
+      <h2 className="text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full">
+        <span>RESTEZ</span>
+        <span className="block">CONNECTÉ</span>
       </h2>
 
-      <div className="mt-6 flex w-full min-w-0 items-center gap-3">
+      <div className="flex items-start gap-[10px] self-stretch">
         <input
           type="email"
           placeholder="Email Signal"
-          className="h-10 min-w-0 flex-1 rounded-full bg-white/10 px-5 text-sm text-white placeholder-white/60 outline-none ring-1 ring-white/15 backdrop-blur transition focus:ring-2 focus:ring-fuchsia-500"
+          className="flex h-[54px] flex-1 items-center px-[24px] py-[16px] rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[14px] placeholder:font-normal"
         />
 
         <button
           type="submit"
-          className="h-10 w-14 shrink-0 rounded-full bg-white text-[11px] font-semibold uppercase tracking-wider text-black transition hover:bg-fuchsia-500 hover:text-white"
+          className="flex w-[68.406px] h-[54px] items-center justify-center rounded-[16px] bg-[linear-gradient(270deg,#3B82F6_-0.39%,#C27AFF_100.48%)] text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase text-white"
         >
           OK
         </button>
