@@ -22,7 +22,7 @@ function Header() {
     const isFr = i18n.language?.startsWith("fr");
 
     return(
-        <header className="flex items-center justify-between w-full p-2 m-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 text-[#3B82F6] dark:text-[#FFFFFF]">
+        <header className="flex items-center justify-between w-full p-2 my-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 text-[#3B82F6] dark:text-[#FFFFFF]">
             
             <Link to="/">
                 <h1 className="text-center font-bold uppercase text-[14px] leading-[20px] tracking-[-0.7px] md:text-[20px] md:leading-[28px] md:tracking-[-0.5px]">

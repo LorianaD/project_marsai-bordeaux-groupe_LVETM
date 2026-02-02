@@ -5,8 +5,8 @@ function SectionConcept() {
     const { t } = useTranslation("home");
 
     return(
-        <section className="flex justify-center items-center gap-[10px] px-[80px] py-[10px]">
-            <div className="grid h-[218.75px] grid-cols-4 gap-6 self-stretch  text-left">
+        <section className="flex justify-center items-center gap-[10px] md:px-[80px] py-[10px]">
+            <div className="grid md:h-[218.75px] md:grid-cols-4 gap-6 self-stretch text-left">
                 <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
                     <h3 className="uppercase text-[#C27AFF] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
                         {t("concept.OneMinute.title")}
