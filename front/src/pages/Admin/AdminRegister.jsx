@@ -1,4 +1,4 @@
-import RegisterForm from "../../components/admin/registerForm";
+import RegisterForm from "../../components/admin/registerForm.jsx";
 
 
 // ==================================
