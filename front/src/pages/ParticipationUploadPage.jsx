@@ -9,15 +9,32 @@ export default function ParticipationUploadPage() {
   const [step, setStep] = useState(1);
 
   //  Au chargement de la page :
-  // on regarde si le profil réalisateur a déjà été rempli
+  // on regarde si le profil réalisateur a déjà été rempli (et COMPLET)
   useEffect(() => {
     //  On récupère ce qui est stocké dans le navigateur
     const saved = localStorage.getItem("directorProfile");
+    if (!saved) return;
 
-    //  Si on trouve quelque chose :
-    // ça veut dire que l’utilisateur a déjà rempli l’étape 1
-    // donc on l’envoie directement à l’étape 2
-    if (saved) setStep(2);
+    try {
+      const p = JSON.parse(saved);
+
+      // ✅ On vérifie que le profil contient bien les infos importantes
+      // (sinon on reste à l’étape 1)
+      const isComplete =
+        p.email &&
+        p.firstName &&
+        p.lastName &&
+        p.gender &&
+        p.birthday &&
+        p.address &&
+        p.director_country &&
+        p.discovery_source;
+
+      if (isComplete) setStep(2);
+    } catch {
+      //  Si le localStorage contient un JSON cassé,
+      // on ignore et on reste à l’étape 1
+    }
   }, []);
 
   return (
