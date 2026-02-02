@@ -1,133 +1,157 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { VideoListApi } from "../../services/Videos/VideosListApi";
+import { fetchVideos } from "../../services/Videos/VideosListApi";
+// ✅ MODIF: on importe le bon export (dans ton service, la fonction s’appelle fetchVideos)
+
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// ✅ AJOUT: on garde l’adresse du backend pour reconstruire l’URL des covers
 
 function SectionAward() {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
-    const [videos, setVideos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [errorMsg, setErrorMsg] = useState("");
+  useEffect(() => {
+    let isMounted = true;
 
-    useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+        setErrorMsg("");
 
-        let isMounted = true;
-        console.log(isMounted); 
+        const data = await fetchVideos();
+        // ✅ MODIF: on appelle fetchVideos (au lieu de VideoListApi)
 
-        async function load() {
-            try {
-                console.log("try dans HomevideoList useEffect ok");
-                
-                setLoading(true);
-                setErrorMsg("");
+        const list = Array.isArray(data) ? data : (data?.videos ?? []);
 
-                const data = await VideoListApi();
-                const list = Array.isArray(data) ? data : (data?.videos ?? []);
+        // ✅ (inchangé) on garde seulement 3 vidéos (les 3 premières)
+        const first = list.slice(0, 3);
 
-                // on garde seulement 3 vidéos (les 3 premières)
-                const first = list.slice(0, 3);
+        if (isMounted) setVideos(first);
+      } catch (err) {
+        if (isMounted) setErrorMsg(err?.message || "Erreur inconnue");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    }
 
-                if (isMounted) setVideos(first);
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
-            } catch (err) {
+  return (
+    <section className="flex flex-col items-center justify-center gap-[80px] px-[100px] self-stretch">
+      <div className="flex justify-between items-end self-stretch shrink-[0]">
+        <div>
+          <div className="flex items-center gap-[12px]">
+            <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]" />
+            <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">
+              Le projet MARS.AI
+            </p>
+          </div>
+          <h2>
+            <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
+              Films en
+            </span>
+            <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
+              compétition
+            </span>
+          </h2>
+          <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">
+            Découvrez une sélection d'œuvres pionnières explorant les nouvelles
+            frontières de l'imaginaire assisté par l'IA.
+          </p>
+        </div>
 
-                if (isMounted) setErrorMsg(err?.message || "Erreur inconnue");
+        <Link
+          to="/gallery"
+          className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px]"
+        >
+          <span className="flex text-[#000000] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase dark:text-[#FFFFFF]">
+            Voir la sélection
+          </span>
+          <div className="h-[48px] w-[48px] flex justify-center items-center w-[20px] h-[20px]">
+            <img
+              src="../src/assets/imgs/icones/arrowRight.svg"
+              alt=""
+              className=" dark:hidden"
+            />
+            <img
+              src="../src/assets/imgs/icones/arrowRightWhite.svg"
+              alt=""
+              className="hidden dark:block"
+            />
+          </div>
+        </Link>
+      </div>
 
-            } finally {
+      <div className="grid h-[346.875px] grid-cols-3 gap-8 shrink-0 self-stretch">
+        {loading && (
+          <div>
+            <span className="loading loading-spinner loading-md"></span>
+            <p>Loading videos…</p>
+          </div>
+        )}
 
-                if (isMounted) setLoading(false);
+        {!loading && errorMsg && (
+          <div className="col-span-3 alert alert-error">
+            <span>Couldn’t load videos: {errorMsg}</span>
+          </div>
+        )}
 
-            }
-        }
+        {!loading && !errorMsg && videos.length === 0 && (
+          <div className="col-span-3 alert">
+            <span>No videos yet.</span>
+          </div>
+        )}
 
-        load();
-        return () => { isMounted = false; };
+        {!loading &&
+          !errorMsg &&
+          videos.map((video) => {
+            const title = video?.title || video?.title_en || "Untitled";
+            // ✅ MODIF: ton API renvoie souvent title_en, donc on le prend aussi
 
-    }, []);
+            const director =
+              `${video?.director_name || ""} ${video?.director_lastname || ""}`.trim() ||
+              "Unknown director";
+            // ✅ MODIF: ton API renvoie director_name / director_lastname, pas "director"
 
-    return(
-        <section className="flex flex-col items-center justify-center gap-[80px] px-[100px] self-stretch">
+            const coverUrl = video?.cover
+              ? `${API_BASE}/uploads/covers/${video.cover}`
+              : "";
+            // ✅ MODIF: cover est juste un NOM de fichier → on reconstruit la vraie URL publique
 
-            <div className="flex justify-between items-end self-stretch shrink-[0]">
-                <div>
-                    <div className="flex items-center gap-[12px]">
-                        <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]"/>
-                        <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">
-                            Le projet MARS.AI
-                        </p>
-                    </div>
-                    <h2>
-                        <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
-                            Films en 
-                        </span>
-                        <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
-                            compétition
-                        </span>
-                    </h2>
-                    <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">
-                        Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.
-                    </p>
+            return (
+              <div
+                key={video.id}
+                className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
+              >
+                <div className="w-[337px]">
+                  <Link
+                    to={`/gallery/${video.id}`}
+                    aria-label={`Voir le film ${title}`}
+                  >
+                    {/* ✅ MODIF: on utilise coverUrl (URL complète), pas video.cover */}
+                    <img src={coverUrl} alt={title} loading="lazy" />
+                  </Link>
                 </div>
-                <Link to="/gallery" className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px]">
-                    <span className="flex text-[#000000] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase dark:text-[#FFFFFF]">
-                        Voir la sélection
-                    </span>
-                    <div className="h-[48px] w-[48px] flex justify-center items-center w-[20px] h-[20px]">
-                        <img src="../src/assets/imgs/icones/arrowRight.svg" alt="" className=" dark:hidden"/>
-                        <img src="../src/assets/imgs/icones/arrowRightWhite.svg" alt="" className="hidden dark:block"/>
-                    </div>
-                </Link>
-            </div>
 
-            <div className="grid h-[346.875px] grid-cols-3 gap-8 shrink-0 self-stretch">
-
-                {loading && (
-                    <div>
-                        <span className="loading loading-spinner loading-md"></span>
-                        <p>Loading videos…</p>
-                    </div>
-                )}
-
-                {!loading && errorMsg && (
-                    <div className="col-span-3 alert alert-error">
-                        <span>Couldn’t load videos: {errorMsg}</span>
-                    </div>
-                )}
-
-                {!loading && !errorMsg && videos.length === 0 && (
-                    <div className="col-span-3 alert">
-                        <span>No videos yet.</span>
-                    </div>
-                )}
-
-                {!loading && !errorMsg && videos.map((video) => {
-                    const title = video?.title ?? "Untitled";
-                    const director = video?.director ?? video?.author ?? "Unknown director";
-                    const coverUrl = video?.coverUrl ?? video?.cover ?? video?.thumbnailUrl ?? "";
-
-                    return (
-
-                        <div key={video.id} className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5">
-                            <div className="w-[337px]">
-                                <Link to={`/gallery/${videos.id}`} aria-label={`Voir le film ${videos.title}`}>
-                                    <img src={coverUrl} alt={title} loading="lazy" />
-                                </Link>
-                            </div>
-                            <div className="flex h-[175px] flex-col items-start gap-2 pt-[40px] px-[40px] pb-0 self-stretch">
-                                <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase text-left">
-                                    { title }
-                                </h3>
-                                <p className="text-[#000000] dark:text-white/80 text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
-                                    { director }
-                                </p>
-                            </div>
-                        </div>
-
-                    )
-                })}
-            </div>
-            
-        </section>
-    )
+                <div className="flex h-[175px] flex-col items-start gap-2 pt-[40px] px-[40px] pb-0 self-stretch">
+                  <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase text-left">
+                    {title}
+                  </h3>
+                  <p className="text-[#000000] dark:text-white/80 text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                    {director}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+      </div>
+    </section>
+  );
 }
 
-export default SectionAward
+export default SectionAward;
