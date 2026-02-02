@@ -92,9 +92,9 @@ function Header() {
 
                     {/* panel */}
                     <div className="relative z-10 mx-auto mt-4 w-[calc(100%-20px)]">
-                        <NavMobile onClose={closeNav} />
+                        <NavMobile onClose={closeNav} onToggleLang={toggleLang} OnIsFr={isFr} />
                     </div>
-                    
+
                 </div>
             )}
         </>
