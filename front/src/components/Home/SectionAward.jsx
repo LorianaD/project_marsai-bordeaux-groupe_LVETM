@@ -98,7 +98,7 @@ function SectionAward() {
         </Link>
       </div>
 
-      <div className="inline-grid gap-y-8 grid-cols-1 auto-rows-max md:grid md:h-[347px] md:grid-cols-3 md:gap-8 shrink-0 self-stretch w-full">
+      <div className="grid w-full grid-cols-1 gap-y-8 md:grid-cols-3 md:gap-8">
 
         {loading && (
           <div>
@@ -136,7 +136,7 @@ function SectionAward() {
 
               <div
                 key={video.id}
-                className="w-full flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
+                className="w-full overflow-hidden rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
               >
                 <div className="w-full md:w-[337px]">
                   <Link
