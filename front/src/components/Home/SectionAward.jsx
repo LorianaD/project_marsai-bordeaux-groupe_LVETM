@@ -53,7 +53,7 @@ function SectionAward() {
   }, []);
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[25px] md:gap-[80px] pl-[25px] md:px-[100px] self-stretch">
+    <section className="flex flex-col items-center justify-center gap-[25px] md:gap-[80px] p-[25px] md:px-[100px] self-stretch">
 
       <div className="flex flex-col md:flex-row justify-between items-end self-stretch shrink-[0] gap-[20px] p-[20px]">
         <div>
@@ -138,14 +138,16 @@ function SectionAward() {
                 key={video.id}
                 className="w-full overflow-hidden rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
               >
-                <div className="w-full md:w-[337px]">
-                  <Link
-                    to={`/gallery/${video.id}`}
-                    aria-label={t("award.ariaViewFilm", { title })}
-                  >
-                    <img src={coverUrl} alt={title} loading="lazy" />
-                  </Link>
-                </div>
+                
+                <Link
+                  to={`/gallery/${video.id}`}
+                  aria-label={t("award.ariaViewFilm", { title })}
+                >
+                  <div className="w-full aspect-video overflow-hidden rounded-t-[40px]">  
+                    <img src={coverUrl} alt={title} loading="lazy" className="h-full w-full object-cover"/>
+                  </div>
+                </Link>
+                
 
                 <div className="flex h-[175px] flex-col items-start gap-2 pt-[40px] px-[40px] pb-0 self-stretch">
                   <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase text-left">
