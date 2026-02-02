@@ -10,6 +10,7 @@
 //verifier si role a ete passé en admin
 //varchar manquant en bdd sur description dans table event
 //Faire length et date dans Event
+//Verif date (bdd attends a l'envers 2000/12/31. sur front uplaod video 30/12/2000)
 
 
 /********************************************* 
@@ -162,17 +163,15 @@ export const createFilmSchema = z.object({
         .enum(["Mrs", "Mr"]),
 
     birthday: z
-        .string({message:"Birthday must be a string"})
+        .string({ message: "Birthday must be a string" })
         .trim()
         .min(1, "Birthday is required")
-        .refine(
-            value => !isNaN(new Date(value).getTime()),
-            { message: "Birthday must be a valid date" }
-        )
-        .refine(
-            value => new Date(value).getTime() <= Date.now(),
-            { message: "Birthday cannot be in the future" }
-        ),
+        .refine(value => {
+            const [day, month, year] = value.split("-").map(Number)
+            if (!day || !month || !year) return false
+            const d = new Date(year, month - 1, day)
+            return !isNaN(d.getTime()) && d.getTime() <= Date.now()
+        }, { message: "Birthday must be a valid date in the past" }),
 
     mobile_number: z
         .string({ message: "Mobile number must be a string" })
@@ -229,7 +228,17 @@ export const createFilmSchema = z.object({
 
     upload_status: z
         .enum(["Pending", "Uploading", "Processing", "Published", "Failed"]),
+
+    size: z
+        .number()
 })
+
+/********************************************* 
+ * Schéma pour la taille du fichier vidéo
+ *********************************************/
+
+
+
 
 /********************************************* 
  * Schéma pour l'ajout d'un user
@@ -353,7 +362,7 @@ export const createTagSchema = z.object({
 })
 
 /************************************************
- * Schéma pour l'ajout d'un email pour news letter
+ * Schéma pour l'ajout d'un email pour inscription news letter
  ************************************************/
 export const createNewsLetterSubscriptionSchema = z.object({
     email: z
@@ -398,7 +407,7 @@ export const createPartenerSchema = z.object({
 })
 
 /********************************************* 
- * Schéma pour l'ajout d'un partenaire
+ * Schéma pour l'ajout dans faq
  *********************************************/
 export const createFaqSchema = z.object({
 
@@ -600,22 +609,21 @@ export const createEventSchema = z.object({
         .or(z.literal(""))
         .optional(),
 
-    // date: z
-    //     .string({message:"Date must be a string"})
-    //     .trim()
-    //     .min(1, "Date is required")
-    //     .refine(
-    //         value => !isNaN(new Date(value).getTime()),
-    //         { message: "Date must be a valid date" }
-    //     )
-    //     .refine(
-    //         value => new Date(value).getTime() >= Date.now(),
-    //         { message: "Date cannot be in the past" }
-    //     ),
+    date : z
+        .string({ message: "Date must be a string" })
+        .trim()
+        .min(1, "Date is required")
+        .refine(value => {
+            const [day, month, year] = value.split("-").map(Number)
+            if (!day || !month || !year) return false
 
-    // length: z
-    //     .number({ message: "Length is required." })
-    //     .positive({ message: "Length must be positive." }), 
+            const dateObject = new Date(year, month - 1, day)
+            if (isNaN(dateObject.getTime())) return false
+
+            const today = new Date()
+            today.setHours(0, 0, 0, 0) // configure l'heure a 0 pour la comparaison
+            return dateObject.getTime() >= today.getTime()
+        }, { message: "Date must be today or in the future" }),
 
     stock: z
         .preprocess(
@@ -629,3 +637,23 @@ export const createEventSchema = z.object({
 /********************************************* 
  * Schéma pour l'ajout dans still
  *********************************************/
+
+
+//Helper pour fisrtname et last name
+/*
+const zName = (fieldName: string, max = 100) =>
+  z.string({ message: `${fieldName} must be a string.` })
+   .trim()
+   .min(1, `${fieldName} is required.`)
+   .max(max, `${fieldName} must not exceed ${max} characters.`)
+   .regex(/^[\p{L}\s'-]+$/u, `${fieldName} can only contain letters, spaces, apostrophes or hyphens.`)
+
+
+firstname: zName("Firstname"),
+lastname: zName("Lastname"),
+*/
+
+
+//Champ url
+//a la place de .url pour la vérif :
+//.refine(value => value === "" || isValidUrl(value), { message: "Url must be valid" })
