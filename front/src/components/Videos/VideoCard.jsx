@@ -14,7 +14,7 @@ export default function VideoCard({ video, apiBase }) {
   return (
     <article className="w-full">
       <div className="relative overflow-hidden rounded-2xl">
-        {/* ✅ COVER CLIQUABLE VERS PAGE DÉTAIL */}
+        {/* COVER CLIQUABLE VERS PAGE DÉTAIL */}
         <Link
           to={`/gallery/${video.id}`}
           className="relative z-10 block"

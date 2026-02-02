@@ -8,14 +8,14 @@ import notFound from "./middlewares/notFound.js";
 
 const app = express();
 
-// ✅ AJOUT: on récupère le vrai dossier de ce fichier app.js (back/src)
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ AJOUT: on pointe exactement vers back/uploads (sans dépendre du dossier de lancement)
+//  on pointe exactement vers back/uploads (sans dépendre du dossier de lancement)
 const uploadsDir = path.join(__dirname, "..", "uploads");
 
-// ✅ AJOUT: log utile pour vérifier où Express sert les fichiers
+// log utile pour vérifier où Express sert les fichiers
 console.log("STATIC /uploads ->", uploadsDir);
 
 // middlewares globaux
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// ✅ FIX: maintenant /uploads va lire dans back/uploads
+//  maintenant /uploads va lire dans back/uploads
 app.use("/uploads", express.static(uploadsDir));
 
 // routes API
