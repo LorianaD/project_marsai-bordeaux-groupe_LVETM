@@ -80,35 +80,37 @@ async function findVideoFileById(id) {
 
 // CREATE (compatible transaction via connection)
 async function createVideo(payload, connection = pool) {
-  const sql = `
-    INSERT INTO videos (
-      youtube_video_id,
-      video_file_name,
-      title,
-      title_en,
-      synopsis,
-      synopsis_en,
-      cover,
-      language,
-      country,
-      duration,
-      tech_resume,
-      ai_tech,
-      creative_resume,
-      email,
-      director_name,
-      director_lastname,
-      director_gender,
-      birthday,
-      mobile_number,
-      home_number,
-      address,
-      director_country,
-      discovery_source,
-      upload_status
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+const sql = `
+  INSERT INTO videos (
+    youtube_video_id,
+    video_file_name,
+    title,
+    title_en,
+    synopsis,
+    synopsis_en,
+    cover,
+    language,
+    country,
+    duration,
+    tech_resume,
+    ai_tech,
+    creative_resume,
+    email,
+    director_name,
+    director_lastname,
+    director_gender,
+    birthday,
+    mobile_number,
+    home_number,
+    address,
+    director_country,
+    discovery_source,
+    upload_status
+  )
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+
 
   const params = [
     payload.youtube_video_id ?? null,

@@ -78,6 +78,7 @@ async function uploadVideoController(req, res) {
     // (ce sont les champs de ton formulaire React)
     const {
       youtube_video_id,
+      title, // ✅ AJOUT : le titre FR manquait
       title_en,
       synopsis,
       synopsis_en,
@@ -102,6 +103,7 @@ async function uploadVideoController(req, res) {
     //  On liste les champs obligatoires
     // Comme ça, on peut facilement dire “il manque quoi”
     const required = {
+      title, // ✅ AJOUT
       title_en,
       synopsis,
       synopsis_en,
@@ -180,34 +182,51 @@ async function uploadVideoController(req, res) {
       });
     }
 
+    // Petit helper : transformer les champs optionnels vides en null
+    // (pour éviter "" en base et surtout éviter undefined)
+    const toNullIfEmpty = (v) => {
+      if (v === undefined || v === null) return null;
+      const s = String(v).trim();
+      return s === "" ? null : s;
+    };
+
     //   Payload final : c’est ce qu’on va enregistrer dans la table video
     // - on met les fichiers (noms générés par multer)
     // - on “trim” les strings
     // - on met null pour ce qui est optionnel
     // - et on met upload_status = Pending (en attente)
     const payload = {
-      youtube_video_id: youtube_video_id ?? null,
+      youtube_video_id: toNullIfEmpty(youtube_video_id),
+
       video_file_name: videoFile.filename,
       cover: coverFile.filename,
+
+      title: String(title).trim(), 
       title_en: String(title_en).trim(),
+
       synopsis: String(synopsis).trim(),
       synopsis_en: String(synopsis_en).trim(),
       language: String(language).trim(),
       country: String(country).trim(),
       duration: durationNum,
+
       tech_resume: String(tech_resume).trim(),
       ai_tech: String(ai_tech).trim(),
       creative_resume: String(creative_resume).trim(),
+
       email: String(email).trim(),
       director_name: String(director_name).trim(),
       director_lastname: String(director_lastname).trim(),
-      director_gender: directorGenderDb, // ✅ valeur clean : Mr / Mrs
+      director_gender: directorGenderDb, 
       birthday: String(birthday).trim(),
-      mobile_number: mobile_number ?? null,
-      home_number: home_number ?? null,
+
+      mobile_number: toNullIfEmpty(mobile_number), 
+      home_number: toNullIfEmpty(home_number),     
+
       address: String(address).trim(),
       director_country: String(director_country).trim(),
       discovery_source: String(discovery_source).trim(),
+
       upload_status: "Pending",
     };
 
