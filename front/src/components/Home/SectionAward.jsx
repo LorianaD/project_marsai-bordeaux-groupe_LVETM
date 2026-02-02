@@ -1,37 +1,47 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { fetchVideos } from "../../services/Videos/VideosListApi";
-// ✅ MODIF: on importe le bon export (dans ton service, la fonction s’appelle fetchVideos)
+import { useTranslation } from "react-i18next";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
-// ✅ AJOUT: on garde l’adresse du backend pour reconstruire l’URL des covers
 
 function SectionAward() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
+  const { t, i18n } = useTranslation("home");
+  const isFr = i18n.language?.startsWith("fr");
+
   useEffect(() => {
     let isMounted = true;
 
     async function load() {
+      console.log("function");
+      
       try {
+
+        console.log("try dans HomevideoList useEffect ok");
+
         setLoading(true);
         setErrorMsg("");
 
         const data = await fetchVideos();
-        // ✅ MODIF: on appelle fetchVideos (au lieu de VideoListApi)
 
         const list = Array.isArray(data) ? data : (data?.videos ?? []);
 
-        // ✅ (inchangé) on garde seulement 3 vidéos (les 3 premières)
         const first = list.slice(0, 3);
 
         if (isMounted) setVideos(first);
+
       } catch (err) {
+
         if (isMounted) setErrorMsg(err?.message || "Erreur inconnue");
+
       } finally {
+
         if (isMounted) setLoading(false);
+
       }
     }
 
@@ -39,40 +49,41 @@ function SectionAward() {
     return () => {
       isMounted = false;
     };
+
   }, []);
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[80px] px-[100px] self-stretch">
-      <div className="flex justify-between items-end self-stretch shrink-[0]">
+    <section className="flex flex-col items-center justify-center gap-[25px] md:gap-[80px] pl-[25px] md:px-[100px] self-stretch">
+
+      <div className="flex flex-col md:flex-row justify-between items-end self-stretch shrink-[0] gap-[20px] p-[20px]">
         <div>
           <div className="flex items-center gap-[12px]">
             <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]" />
             <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">
-              Le projet MARS.AI
+              {t("award.eyebrow")}
             </p>
           </div>
-          <h2>
-            <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
-              Films en
+          <h2 className="text-[#000000] text-[48px] md:text-[96px] font-bold leading-[48px] md:leading-[96px] tracking-[-2.4px] md:tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
+            <span className="block">
+              {t("award.title1")}
             </span>
-            <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
-              compétition
+            <span className="block bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
+              {t("award.title2")}
             </span>
           </h2>
-          <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">
-            Découvrez une sélection d'œuvres pionnières explorant les nouvelles
-            frontières de l'imaginaire assisté par l'IA.
+          <p className="text-[#000000] text-[20px] leading-[32.5px] text-left dark:text-[#FFFFFF]">
+            {t("award.description")}
           </p>
         </div>
 
         <Link
           to="/gallery"
-          className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px]"
+          className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px] gap-[10px]"
         >
           <span className="flex text-[#000000] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase dark:text-[#FFFFFF]">
-            Voir la sélection
+            {t("award.ctaSeeMore")}
           </span>
-          <div className="h-[48px] w-[48px] flex justify-center items-center w-[20px] h-[20px]">
+          <div className="flex justify-center items-center w-[20px] h-[20px]">
             <img
               src="../src/assets/imgs/icones/arrowRight.svg"
               alt=""
@@ -87,53 +98,51 @@ function SectionAward() {
         </Link>
       </div>
 
-      <div className="grid h-[346.875px] grid-cols-3 gap-8 shrink-0 self-stretch">
+      <div className="grid w-full grid-cols-1 gap-y-8 md:grid-cols-3 md:gap-8">
+
         {loading && (
           <div>
             <span className="loading loading-spinner loading-md"></span>
-            <p>Loading videos…</p>
+            <p>{t("award.loading")}</p>
           </div>
         )}
 
         {!loading && errorMsg && (
           <div className="col-span-3 alert alert-error">
-            <span>Couldn’t load videos: {errorMsg}</span>
+            <span>{t("award.error")} {errorMsg}</span>
           </div>
         )}
 
         {!loading && !errorMsg && videos.length === 0 && (
           <div className="col-span-3 alert">
-            <span>No videos yet.</span>
+            <span>{t("award.notFound")}</span>
           </div>
         )}
 
         {!loading &&
           !errorMsg &&
           videos.map((video) => {
-            const title = video?.title || video?.title_en || "Untitled";
-            // ✅ MODIF: ton API renvoie souvent title_en, donc on le prend aussi
+            const title = isFr ? (video?.title || video?.title_en || "Sans titre") : (video?.title_en || video?.title || "Untitled");
 
             const director =
               `${video?.director_name || ""} ${video?.director_lastname || ""}`.trim() ||
               "Unknown director";
-            // ✅ MODIF: ton API renvoie director_name / director_lastname, pas "director"
 
             const coverUrl = video?.cover
               ? `${API_BASE}/uploads/covers/${video.cover}`
               : "";
-            // ✅ MODIF: cover est juste un NOM de fichier → on reconstruit la vraie URL publique
 
             return (
+
               <div
                 key={video.id}
-                className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
+                className="w-full overflow-hidden rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
               >
-                <div className="w-[337px]">
+                <div className="w-full md:w-[337px]">
                   <Link
                     to={`/gallery/${video.id}`}
-                    aria-label={`Voir le film ${title}`}
+                    aria-label={t("award.ariaViewFilm", { title })}
                   >
-                    {/* ✅ MODIF: on utilise coverUrl (URL complète), pas video.cover */}
                     <img src={coverUrl} alt={title} loading="lazy" />
                   </Link>
                 </div>

@@ -8,5 +8,34 @@
       "desc2": "2 days of immersion in the heart of Marseille.",
       "ctaParticipate": "participate",
       "ctaLearnMore": "Learn more"
+   },
+   "concept":{
+      "OneMinute":{
+         "title": "1 minute",
+         "description": "Ultra-short format for maximum impact."
+      },
+      "free": {
+         "title": "Free",
+         "description": "Conferences and workshops accessible."
+      },
+      "forAll": {
+        "title": "For everyone",
+        "description": "Professionals, students, and the curious."
+      },
+      "expertise": {
+        "title": "Expertise",
+        "description": "World leaders in generative AI."
+      }      
+   },
+   "award": {
+      "eyebrow": "The MARS.AI Project",
+      "title1": "Films in",
+      "title2": "Competition",
+      "description": "Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.",
+      "ctaSeeMore": "View the selection",
+      "loading":"Loading videos…",
+      "error":"Couldn’t load videos:",
+      "notFound":"No videos yet.",
+      "ariaViewFilm": "View film: {{title}}"
    }
 }

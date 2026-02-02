@@ -43,7 +43,7 @@ function SectionHero() {
                     <p>{t("hero.desc2")}</p>
                 </div>
 
-                <div className="flex flex-col md:flex-row md:items-start md:justify-end gap-6 py-0 px-[217.773px] pl-[223.82px]">
+                <div className="flex flex-col intem-center justify-center px-[50px] md:flex-row md:items-start md:justify-end gap-6 md:px-[220px]">
                     <Link to="participation" className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
                         <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
                             {t("hero.ctaParticipate")}
