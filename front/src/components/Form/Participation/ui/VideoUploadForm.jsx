@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Field, TextInput, TextArea, Select } from "./Field"; // ✅ AJOUT: Select pour faire des listes déroulantes
-const API_URL = import.meta.env.VITE_API_URL;
+import { Field, TextInput, TextArea, Select } from "./Field";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function VideoUploadForm() {
   const [files, setFiles] = useState({
@@ -34,13 +34,10 @@ export default function VideoUploadForm() {
     discovery_source: "",
   });
 
-  //  AJOUT: liste des pays (pour le champ "Pays" du film)
   const [countries, setCountries] = useState([]);
-  //  AJOUT: états simples pour gérer chargement et erreur
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
 
-  //  AJOUT: au chargement, je récupère la liste des pays depuis l’API
   useEffect(() => {
     let alive = true;
 
@@ -139,6 +136,7 @@ export default function VideoUploadForm() {
       form.address.trim() &&
       form.director_country.trim() &&
       form.discovery_source.trim() &&
+      form.mobile_number.trim() && // ✅ AJOUT: ici on force le mobile à être rempli
       files.video &&
       files.cover &&
       files.stills.length > 0 &&
@@ -216,7 +214,6 @@ export default function VideoUploadForm() {
               />
             </Field>
 
-            {/* ✅ AJOUT: langue en liste déroulante (plus simple et plus propre qu’un texte libre) */}
             <Field label="Langue" required>
               <Select
                 name="language"
@@ -240,17 +237,15 @@ export default function VideoUploadForm() {
               </Select>
             </Field>
 
-            {/* ✅ AJOUT: pays en liste déroulante chargée depuis l’API */}
             <Field label="Pays" required>
               <Select
                 name="country"
                 value={form.country}
                 onChange={update}
-                disabled={countriesLoading || !!countriesErr} // ✅ AJOUT: si ça charge/bug, on bloque
+                disabled={countriesLoading || !!countriesErr} // ✅ AJOUT: on bloque le select tant que ça charge / si ça a crash
                 className="bg-neutral-800 text-white"
               >
                 <option value="">
-                  {/* ✅ AJOUT: texte selon l’état */}
                   {countriesLoading
                     ? "Chargement des pays…"
                     : countriesErr
@@ -265,7 +260,6 @@ export default function VideoUploadForm() {
                 ))}
               </Select>
 
-              {/* ✅ AJOUT: message d’erreur si l’API plante */}
               {countriesErr ? (
                 <div className="mt-2 text-xs text-red-200">{countriesErr}</div>
               ) : null}
@@ -276,7 +270,7 @@ export default function VideoUploadForm() {
                 name="duration"
                 value={form.duration}
                 onChange={update}
-                placeholder="120"
+                placeholder="60"
                 className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
@@ -345,6 +339,36 @@ export default function VideoUploadForm() {
               className="bg-neutral-800 text-white placeholder:text-neutral-500"
             />
           </Field>
+        </section>
+
+        {/* ✅ AJOUT: Mobile obligatoire (comme tu l’as demandé) */}
+        <section className="space-y-6">
+          <h3 className="text-purple-400 font-semibold">03. CONTACT</h3>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Field label="Mobile" required>
+              <TextInput
+                name="mobile_number"
+                value={form.mobile_number}
+                onChange={update}
+                type="tel" // ✅ AJOUT: pour dire “c’est un numéro de téléphone”
+                placeholder="06..."
+                required // ✅ AJOUT: obligatoire côté navigateur
+                className="bg-neutral-800 text-white placeholder:text-neutral-500"
+              />
+            </Field>
+
+            <Field label="Fixe (optionnel)">
+              <TextInput
+                name="home_number"
+                value={form.home_number}
+                onChange={update}
+                type="tel" // ✅ AJOUT: idem
+                placeholder="01..."
+                className="bg-neutral-800 text-white placeholder:text-neutral-500"
+              />
+            </Field>
+          </div>
         </section>
 
         <section className="space-y-6">

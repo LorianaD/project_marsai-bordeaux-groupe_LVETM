@@ -62,12 +62,10 @@ export function TextArea({
   );
 }
 
-export function Select({ name, value, onChange, children, className = "" }) {
+export function Select({ children, className = "", ...props }) {
   return (
     <select
-      name={name}
-      value={value}
-      onChange={onChange}
+      {...props} 
       className={[
         "w-full rounded-xl bg-neutral-100 px-4 py-3 text-sm text-neutral-700 outline-none",
         className,
@@ -77,3 +75,4 @@ export function Select({ name, value, onChange, children, className = "" }) {
     </select>
   );
 }
+
