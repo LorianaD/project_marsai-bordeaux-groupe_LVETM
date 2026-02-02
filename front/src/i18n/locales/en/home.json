@@ -26,5 +26,16 @@
         "title": "Expertise",
         "description": "World leaders in generative AI."
       }      
+   },
+   "award": {
+      "eyebrow": "The MARS.AI Project",
+      "title1": "Films in",
+      "title2": "Competition",
+      "description": "Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.",
+      "ctaSeeMore": "View the selection",
+      "loading":"Loading videos…",
+      "error":"Couldn’t load videos:",
+      "notFound":"No videos yet.",
+      "ariaViewFilm": "View film: {{title}}"
    }
 }

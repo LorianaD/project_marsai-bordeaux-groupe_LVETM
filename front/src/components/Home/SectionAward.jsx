@@ -10,7 +10,8 @@ function SectionAward() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
+  const isFr = i18n.language?.startsWith("fr");
 
   useEffect(() => {
     let isMounted = true;
@@ -59,14 +60,14 @@ function SectionAward() {
           <div className="flex items-center gap-[12px]">
             <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]" />
             <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">
-              Le projet MARS.AI
+              {t("award.eyebrow")}
             </p>
           </div>
-          <h2>
-            <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
+          <h2 className="text-[#000000] text-[48px] md:text-[96px] font-bold leading-[48px] md:leading-[96px] tracking-[-2.4px] md:tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
+            <span className="block">
               {t("award.title1")}
             </span>
-            <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
+            <span className="block bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
               {t("award.title2")}
             </span>
           </h2>
@@ -80,7 +81,7 @@ function SectionAward() {
           className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px]"
         >
           <span className="flex text-[#000000] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase dark:text-[#FFFFFF]">
-            Voir la sélection
+            {t("award.ctaSeeMore")}
           </span>
           <div className="h-[48px] w-[48px] flex justify-center items-center w-[20px] h-[20px]">
             <img
@@ -102,26 +103,26 @@ function SectionAward() {
         {loading && (
           <div>
             <span className="loading loading-spinner loading-md"></span>
-            <p>Loading videos…</p>
+            <p>{t("award.loading")}</p>
           </div>
         )}
 
         {!loading && errorMsg && (
           <div className="col-span-3 alert alert-error">
-            <span>Couldn’t load videos: {errorMsg}</span>
+            <span>{t("award.error")} {errorMsg}</span>
           </div>
         )}
 
         {!loading && !errorMsg && videos.length === 0 && (
           <div className="col-span-3 alert">
-            <span>No videos yet.</span>
+            <span>{t("award.notFound")}</span>
           </div>
         )}
 
         {!loading &&
           !errorMsg &&
           videos.map((video) => {
-            const title = video?.title || video?.title_en || "Untitled";
+            const title = isFr ? (video?.title || video?.title_en || "Sans titre") : (video?.title_en || video?.title || "Untitled");
 
             const director =
               `${video?.director_name || ""} ${video?.director_lastname || ""}`.trim() ||
@@ -140,7 +141,7 @@ function SectionAward() {
                 <div className="w-[337px]">
                   <Link
                     to={`/gallery/${video.id}`}
-                    aria-label={`Voir le film ${title}`}
+                    aria-label={t("award.ariaViewFilm", { title })}
                   >
                     <img src={coverUrl} alt={title} loading="lazy" />
                   </Link>

@@ -28,9 +28,14 @@
       }      
    },
    "award":{
+      "eyebrow":"Le projet MARS.AI",
       "title1":"Films en",
       "title2":"compétition",
       "description":"Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.",
-      "ctaWatch":"",
+      "ctaSeeMore":"Voir la sélection",
+      "loading":"Chargement des vidéos...",
+      "error":"Impossible de charger les vidéos:",
+      "notFound":"Pas encore de vidéos.",
+      "ariaViewFilm": "Voir le film : {{title}}"
    }
 }
