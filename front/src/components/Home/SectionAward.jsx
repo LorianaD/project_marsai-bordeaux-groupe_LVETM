@@ -53,9 +53,9 @@ function SectionAward() {
   }, []);
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[80px] px-[100px] self-stretch">
+    <section className="flex flex-col items-center justify-center gap-[25px] md:gap-[80px] pl-[25px] md:px-[100px] self-stretch">
 
-      <div className="flex justify-between items-end self-stretch shrink-[0]">
+      <div className="flex flex-col md:flex-row justify-between items-end self-stretch shrink-[0] gap-[20px] p-[20px]">
         <div>
           <div className="flex items-center gap-[12px]">
             <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]" />
@@ -71,19 +71,19 @@ function SectionAward() {
               {t("award.title2")}
             </span>
           </h2>
-          <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">
+          <p className="text-[#000000] text-[20px] leading-[32.5px] text-left dark:text-[#FFFFFF]">
             {t("award.description")}
           </p>
         </div>
 
         <Link
           to="/gallery"
-          className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px]"
+          className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px] gap-[10px]"
         >
           <span className="flex text-[#000000] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase dark:text-[#FFFFFF]">
             {t("award.ctaSeeMore")}
           </span>
-          <div className="h-[48px] w-[48px] flex justify-center items-center w-[20px] h-[20px]">
+          <div className="flex justify-center items-center w-[20px] h-[20px]">
             <img
               src="../src/assets/imgs/icones/arrowRight.svg"
               alt=""
@@ -98,7 +98,7 @@ function SectionAward() {
         </Link>
       </div>
 
-      <div className="grid h-[346.875px] grid-cols-3 gap-8 shrink-0 self-stretch">
+      <div className="inline-grid gap-y-8 grid-cols-1 auto-rows-max md:grid md:h-[347px] md:grid-cols-3 md:gap-8 shrink-0 self-stretch w-full">
 
         {loading && (
           <div>
@@ -136,9 +136,9 @@ function SectionAward() {
 
               <div
                 key={video.id}
-                className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
+                className="w-full flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
               >
-                <div className="w-[337px]">
+                <div className="w-full md:w-[337px]">
                   <Link
                     to={`/gallery/${video.id}`}
                     aria-label={t("award.ariaViewFilm", { title })}
