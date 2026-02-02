@@ -74,7 +74,8 @@ export default function DirectorForm({ onNext }) {
       form.birthday.trim() &&
       form.director_country.trim() &&
       form.address.trim() &&
-      form.discovery_source.trim()
+      form.discovery_source.trim() &&
+      form.mobile_number.trim() // ✅ AJOUT: maintenant le mobile est obligatoire pour passer à l’étape 2
     );
   }, [form]);
 
@@ -211,12 +212,14 @@ export default function DirectorForm({ onNext }) {
             />
           </Field>
 
-          <Field label="Mobile (optionnel)">
+          <Field label="Mobile" required>
             <TextInput
               name="mobile_number"
               value={form.mobile_number}
               onChange={update}
               placeholder="06..."
+              type="tel" 
+              required 
             />
           </Field>
 
