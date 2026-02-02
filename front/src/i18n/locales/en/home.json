@@ -8,5 +8,23 @@
       "desc2": "2 days of immersion in the heart of Marseille.",
       "ctaParticipate": "participate",
       "ctaLearnMore": "Learn more"
+   },
+   "concept":{
+      "OneMinute":{
+         "title": "1 minute",
+         "description": "Ultra-short format for maximum impact."
+      },
+      "free": {
+         "title": "Free",
+         "description": "Conferences and workshops accessible."
+      },
+      "forAll": {
+        "title": "For everyone",
+        "description": "Professionals, students, and the curious."
+      },
+      "expertise": {
+        "title": "Expertise",
+        "description": "World leaders in generative AI."
+      }      
    }
 }
