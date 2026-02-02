@@ -6,7 +6,7 @@ export default function VideoUploadForm() {
   const [files, setFiles] = useState({
     video: null,
     cover: null,
-    stills: [],
+    stills: [null, null, null],
     subtitles: [],
   });
 
@@ -46,7 +46,9 @@ export default function VideoUploadForm() {
         setCountriesLoading(true);
         setCountriesErr("");
 
-        const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
+        const res = await fetch(
+          "https://restcountries.com/v3.1/all?fields=name",
+        );
         const data = await res.json();
 
         const list = Array.isArray(data)
@@ -113,6 +115,14 @@ export default function VideoUploadForm() {
     }
   }
 
+  function updateStill(index, file) {
+    setFiles((f) => {
+      const next = [...f.stills];
+      next[index] = file || null; 
+      return { ...f, stills: next };
+    });
+  }
+
   const canSubmit = useMemo(() => {
     const durationNum = Number(form.duration);
 
@@ -136,10 +146,10 @@ export default function VideoUploadForm() {
       form.address.trim() &&
       form.director_country.trim() &&
       form.discovery_source.trim() &&
-      form.mobile_number.trim() && // ✅ AJOUT: ici on force le mobile à être rempli
+      form.mobile_number.trim() &&
       files.video &&
       files.cover &&
-      files.stills.length > 0 &&
+      files.stills.every(Boolean) &&
       files.subtitles.length > 0
     );
   }, [form, files]);
@@ -157,7 +167,10 @@ export default function VideoUploadForm() {
 
       fd.append("video", files.video);
       fd.append("cover", files.cover);
-      files.stills.forEach((f) => fd.append("stills", f));
+      files.stills.forEach((f) => {
+        if (f) fd.append("stills", f);
+      });
+
       files.subtitles.forEach((f) => fd.append("subtitles", f));
 
       const res = await fetch(`${API_URL}/api/videos`, {
@@ -395,16 +408,34 @@ export default function VideoUploadForm() {
               />
             </Field>
 
-            <Field label="Stills (max 3)" required>
-              <input
-                type="file"
-                name="stills"
-                accept="image/*"
-                multiple
-                onChange={updateFile}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
-              />
-            </Field>
+           
+<Field label="Still 1" required>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => updateStill(0, e.target.files?.[0])} 
+    className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+  />
+</Field>
+
+<Field label="Still 2" required>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => updateStill(1, e.target.files?.[0])} 
+    className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+  />
+</Field>
+
+<Field label="Still 3" required>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => updateStill(2, e.target.files?.[0])} 
+    className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+  />
+</Field>
+
 
             <Field label="Sous-titres (.srt)" required>
               <input
