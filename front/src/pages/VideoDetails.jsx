@@ -161,7 +161,8 @@ export default function VideoDetails() {
         if (!res.ok) throw new Error(data?.error || "Erreur chargement vidéo");
 
         //  Sinon, on stocke la vidéo
-        if (alive) setVideo(data);
+        if (alive) setVideo(data.video);
+
       } catch (e) {
         if (alive) setErr(e?.message || "Erreur");
       } finally {
