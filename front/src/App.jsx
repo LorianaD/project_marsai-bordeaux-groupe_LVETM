@@ -7,14 +7,14 @@ import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/admin/register" element={<AdminRegister />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      
     </>
   );
 }
