@@ -26,5 +26,11 @@
         "title": "Expertise",
         "description": "Leaders mondiaux de l’IA générative."
       }      
+   },
+   "award":{
+      "title1":"Films en",
+      "title2":"compétition",
+      "description":"Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.",
+      "ctaWatch":"",
    }
 }

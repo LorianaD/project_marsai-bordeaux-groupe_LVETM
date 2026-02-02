@@ -1,37 +1,46 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { fetchVideos } from "../../services/Videos/VideosListApi";
-// ✅ MODIF: on importe le bon export (dans ton service, la fonction s’appelle fetchVideos)
+import { useTranslation } from "react-i18next";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
-// ✅ AJOUT: on garde l’adresse du backend pour reconstruire l’URL des covers
 
 function SectionAward() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
+  const { t } = useTranslation("home");
+
   useEffect(() => {
     let isMounted = true;
 
     async function load() {
+      console.log("function");
+      
       try {
+
+        console.log("try dans HomevideoList useEffect ok");
+
         setLoading(true);
         setErrorMsg("");
 
         const data = await fetchVideos();
-        // ✅ MODIF: on appelle fetchVideos (au lieu de VideoListApi)
 
         const list = Array.isArray(data) ? data : (data?.videos ?? []);
 
-        // ✅ (inchangé) on garde seulement 3 vidéos (les 3 premières)
         const first = list.slice(0, 3);
 
         if (isMounted) setVideos(first);
+
       } catch (err) {
+
         if (isMounted) setErrorMsg(err?.message || "Erreur inconnue");
+
       } finally {
+
         if (isMounted) setLoading(false);
+
       }
     }
 
@@ -39,10 +48,12 @@ function SectionAward() {
     return () => {
       isMounted = false;
     };
+
   }, []);
 
   return (
     <section className="flex flex-col items-center justify-center gap-[80px] px-[100px] self-stretch">
+
       <div className="flex justify-between items-end self-stretch shrink-[0]">
         <div>
           <div className="flex items-center gap-[12px]">
@@ -53,15 +64,14 @@ function SectionAward() {
           </div>
           <h2>
             <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
-              Films en
+              {t("award.title1")}
             </span>
             <span className="flex text-[#000000] text-[96px] font-bold leading-[96px] tracking-[-4.8px] uppercase bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
-              compétition
+              {t("award.title2")}
             </span>
           </h2>
           <p className="text-[#000000] text-[20px] font-normal leading-[32.5px] text-left dark:text-[#FFFFFF]">
-            Découvrez une sélection d'œuvres pionnières explorant les nouvelles
-            frontières de l'imaginaire assisté par l'IA.
+            {t("award.description")}
           </p>
         </div>
 
@@ -88,6 +98,7 @@ function SectionAward() {
       </div>
 
       <div className="grid h-[346.875px] grid-cols-3 gap-8 shrink-0 self-stretch">
+
         {loading && (
           <div>
             <span className="loading loading-spinner loading-md"></span>
@@ -111,19 +122,17 @@ function SectionAward() {
           !errorMsg &&
           videos.map((video) => {
             const title = video?.title || video?.title_en || "Untitled";
-            // ✅ MODIF: ton API renvoie souvent title_en, donc on le prend aussi
 
             const director =
               `${video?.director_name || ""} ${video?.director_lastname || ""}`.trim() ||
               "Unknown director";
-            // ✅ MODIF: ton API renvoie director_name / director_lastname, pas "director"
 
             const coverUrl = video?.cover
               ? `${API_BASE}/uploads/covers/${video.cover}`
               : "";
-            // ✅ MODIF: cover est juste un NOM de fichier → on reconstruit la vraie URL publique
 
             return (
+
               <div
                 key={video.id}
                 className="flex flex-col items-start self-stretch p-px row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5"
@@ -133,7 +142,6 @@ function SectionAward() {
                     to={`/gallery/${video.id}`}
                     aria-label={`Voir le film ${title}`}
                   >
-                    {/* ✅ MODIF: on utilise coverUrl (URL complète), pas video.cover */}
                     <img src={coverUrl} alt={title} loading="lazy" />
                   </Link>
                 </div>
