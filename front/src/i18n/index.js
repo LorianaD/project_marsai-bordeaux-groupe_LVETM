@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 
 import headerFR from "./locales/fr/header.json";
 import headerEN from "./locales/en/header.json";
+import homeFR from "./locales/fr/home.json";
+import homeEN from "./locales/en/home.json";
 
 i18n
   .use(LanguageDetector)
@@ -15,8 +17,14 @@ i18n
     interpolation: { escapeValue: false },
 
     resources: {
-      fr: { header: headerFR },
-      en: { header: headerEN },
+      fr: { 
+        header: headerFR,
+        home: homeFR,
+      },
+      en: {
+        header: headerEN,
+        home: homeEN,
+      },
     },
 
     detection: {
