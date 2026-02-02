@@ -118,7 +118,7 @@ export default function VideoUploadForm() {
   function updateStill(index, file) {
     setFiles((f) => {
       const next = [...f.stills];
-      next[index] = file || null; 
+      next[index] = file || null;
       return { ...f, stills: next };
     });
   }
@@ -149,7 +149,7 @@ export default function VideoUploadForm() {
       form.mobile_number.trim() &&
       files.video &&
       files.cover &&
-      files.stills.every(Boolean) &&
+      files.stills[0] && // ✅ MODIF: on exige seulement Still 1 (minimum 1 image)
       files.subtitles.length > 0
     );
   }, [form, files]);
@@ -167,6 +167,9 @@ export default function VideoUploadForm() {
 
       fd.append("video", files.video);
       fd.append("cover", files.cover);
+
+      // ✅ IMPORTANT: on n’envoie que les stills qui existent vraiment
+      // comme ça Still 2 / Still 3 peuvent rester vides sans casser l’upload
       files.stills.forEach((f) => {
         if (f) fd.append("stills", f);
       });
@@ -255,7 +258,7 @@ export default function VideoUploadForm() {
                 name="country"
                 value={form.country}
                 onChange={update}
-                disabled={countriesLoading || !!countriesErr} // ✅ AJOUT: on bloque le select tant que ça charge / si ça a crash
+                disabled={countriesLoading || !!countriesErr}
                 className="bg-neutral-800 text-white"
               >
                 <option value="">
@@ -354,7 +357,6 @@ export default function VideoUploadForm() {
           </Field>
         </section>
 
-        {/* ✅ AJOUT: Mobile obligatoire (comme tu l’as demandé) */}
         <section className="space-y-6">
           <h3 className="text-purple-400 font-semibold">03. CONTACT</h3>
 
@@ -364,9 +366,9 @@ export default function VideoUploadForm() {
                 name="mobile_number"
                 value={form.mobile_number}
                 onChange={update}
-                type="tel" // ✅ AJOUT: pour dire “c’est un numéro de téléphone”
+                type="tel"
                 placeholder="06..."
-                required // ✅ AJOUT: obligatoire côté navigateur
+                required
                 className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
@@ -376,7 +378,7 @@ export default function VideoUploadForm() {
                 name="home_number"
                 value={form.home_number}
                 onChange={update}
-                type="tel" // ✅ AJOUT: idem
+                type="tel"
                 placeholder="01..."
                 className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
@@ -408,34 +410,35 @@ export default function VideoUploadForm() {
               />
             </Field>
 
-           
-<Field label="Still 1" required>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => updateStill(0, e.target.files?.[0])} 
-    className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
-  />
-</Field>
+            {/* ✅ MODIF: Still 1 = obligatoire (minimum 1 image) */}
+            <Field label="Still 1" required>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => updateStill(0, e.target.files?.[0])}
+                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+              />
+            </Field>
 
-<Field label="Still 2" required>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => updateStill(1, e.target.files?.[0])} 
-    className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
-  />
-</Field>
+            {/* ✅ MODIF: Still 2 = optionnel (donc PAS required) */}
+            <Field label="Still 2 (optionnel)">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => updateStill(1, e.target.files?.[0])}
+                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+              />
+            </Field>
 
-<Field label="Still 3" required>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => updateStill(2, e.target.files?.[0])} 
-    className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
-  />
-</Field>
-
+            {/* ✅ MODIF: Still 3 = optionnel (donc PAS required) */}
+            <Field label="Still 3 (optionnel)">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => updateStill(2, e.target.files?.[0])}
+                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+              />
+            </Field>
 
             <Field label="Sous-titres (.srt)" required>
               <input
