@@ -79,5 +79,20 @@
             "description":"Cérémonie de clôture récompensant l'audace."
          }
       }
+   },
+   "closingEvent":{
+      "eyebrow":"Soirée de Clôture",
+      "title":"MARS.A.I",
+      "title2":"NIGHT",
+      "description":{
+         "ligne1":"Fête Électro mêlant IA et futurs souhaitables.",
+         "ligne2":"Une expérience immersive sonore et visuelle."
+      },
+      "card":{
+         "date":"13 JUIN",
+         "hour":"DÈS 19H00",
+         "localisation":"MARSEILLE",
+         "ctaBooking":"Réserver"
+      }
    }
 }

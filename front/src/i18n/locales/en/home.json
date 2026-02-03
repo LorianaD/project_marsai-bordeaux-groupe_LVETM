@@ -79,5 +79,20 @@
             "description":"Closing ceremony rewarding boldness."
          }
       }
+   },
+  "closingEvent": {
+      "eyebrow": "Closing Night",
+      "title": "MARS.A.I",
+      "title2": "NIGHT",
+      "description": {
+         "ligne1": "An electro party blending AI and desirable futures.",
+         "ligne2": "An immersive sound and visual experience."
+      },
+      "card": {
+         "date": "JUNE 13",
+         "hour": "FROM 7:00 PM",
+         "localisation": "MARSEILLE",
+         "ctaBooking": "Book now"
+      }
    }
 }
