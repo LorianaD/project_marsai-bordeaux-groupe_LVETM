@@ -94,5 +94,33 @@
          "localisation": "MARSEILLE",
          "ctaBooking": "Book now"
       }
+   },
+   "localisationEvent":{
+      "eyebrow":"The venue",
+      "venue": {
+         "namePart1": "La",
+         "namePart2": "Plateforme",
+         "cityTagline": "Marseille, Hub Créatif"
+      },
+      "address": {
+         "street": "12 Rue d'Uzes",
+         "postalCode": "13002",
+         "city": "Marseille"
+      },
+      "access": {
+         "tram": "Tram T2/T3 – Arenc Le Silo stop"
+      },
+      "spaces": [
+         {
+            "name": "Salle des Sucres",
+            "description": "A future sanctuary for talks and the Mars.A.I awards ceremony. A majestic space blending heritage and technology.",
+            "color":"#51A2FF"
+         },
+         {
+            "name": "Salle PLAZA",
+            "description": "The festival’s epicenter: welcome desk, activities, workshops, and food. The meeting point for all participants.",
+            "color": "#C27AFF"
+         }
+      ]
    }
 }

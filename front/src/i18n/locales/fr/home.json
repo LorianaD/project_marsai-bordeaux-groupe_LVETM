@@ -94,5 +94,33 @@
          "localisation":"MARSEILLE",
          "ctaBooking":"Réserver"
       }
+   },
+   "localisationEvent":{
+      "eyebrow":"Le lieu",
+      "venue": {
+         "namePart1": "La",
+         "namePart2": "Plateforme",
+         "cityTagline": "Marseille, Hub Créatif"
+      },
+      "address": {
+         "street": "12 Rue d'Uzes",
+         "postalCode": "13002",
+         "city": "Marseille"
+      },
+      "access": {
+         "tram": "Accès Tram T2/T3 – Arrêt Arenc Le Silo"
+      },
+      "spaces": [
+         {
+            "name": "Salle des Sucres",
+            "description": "Futur sanctuaire des conférences et de la remise des prix de Mars.A.I. Un espace majestueux alliant patrimoine et technologie.",
+            "color":"#51A2FF"
+         },
+         {
+            "name": "Salle PLAZA",
+            "description": "L'épicentre du festival : accueil, animations, workshops et restauration. Le point de rencontre de tous les participants.",
+            "color": "#C27AFF"
+         }
+      ]
    }
 }
