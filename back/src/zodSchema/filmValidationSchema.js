@@ -1,16 +1,13 @@
-//Voir si toute les images en bdd doivent avoir les meme contrainte que le poster dilm en poids et formatmime
-//manquera la validation des entrée CMS
+//Voir si toute les images en bdd doivent avoir les memes contrainte que le poster dilm en poids et formatmime
+//manque la validation des entrée CMS
 //AJOUTER VERIFICATION 16/9 et taille des fichiers
 //Ajout de la vérif de la durée et de la taille du fichier vidéo
-//verifier birthday
-// voir si l'on doit envoyer null en bdd au lieu de "" pour les phones numbers//voir si "" est stocké comme null
 // voir si rating dans memo_selector va etre utilisé    rating: z
 //        .number({ message: "Video duration is required." })
 //        .positive({ message: "Video duration must be positive." })
 //verifier si role a ete passé en admin
 //varchar manquant en bdd sur description dans table event
 //Faire length et date dans Event
-//Verif date (bdd attends a l'envers 2000/12/31. sur front uplaod video 30/12/2000)
 
 
 /********************************************* 
@@ -228,16 +225,20 @@ export const createFilmSchema = z.object({
 
     upload_status: z
         .enum(["Pending", "Uploading", "Processing", "Published", "Failed"]),
-
-    size: z
-        .number()
 })
 
 /********************************************* 
- * Schéma pour la taille du fichier vidéo
+ * Schéma pour le fichier vidéo
  *********************************************/
+export const createFilmFileSchema = z.object({
 
-
+    size: z
+        .number({ message: "File size is required"})
+        .positive({message: "File size must be positive"})
+        .max(MAX_VIDEO_FILE_SIZE, {
+            message: `File size must not exceed ${MAX_FILE_SIZE_IN_MO} MB`
+        }),
+})
 
 
 /********************************************* 
@@ -361,102 +362,6 @@ export const createTagSchema = z.object({
         .max(55, "Name  must not exceed 55 characters."),
 })
 
-/************************************************
- * Schéma pour l'ajout d'un email pour inscription news letter
- ************************************************/
-export const createNewsLetterSubscriptionSchema = z.object({
-    email: z
-        .string({message:"Email must be a string."})
-        .trim()
-        .min(1,"Email is required.")
-        .max(255, "Email must not exceed 255 characters.")
-        .email({ message: "Email format is invalid." }),
-})
-
-/********************************************* 
- * Schéma pour l'ajout d'un partenaire
- *********************************************/
-export const createPartenerSchema = z.object({
-
-    name: z
-        .string({message:"Name must be a string."})
-        .trim()
-        .min(1,"Name is required.")
-        .max(255, "Name must not exceed 255 characters."),
-
-    img: z
-        .string({message:"Img must be a string."})
-        .trim()
-        .min(1, "Img is required.")
-        .max(250, "Img must not exceed 250 characters.")
-        .refine(
-            (value) => {
-                // Récuperation et vérification de la validité de l'extension.
-                const extension = value.substring(value.lastIndexOf(".")).toLowerCase();
-                return pictureFormats.includes(extension);
-            },
-            `Unsupported img format. Accepted formats: ${pictureFormats.join(", ")}`
-        ),
-
-    url: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .min(1, "Url is required.")
-        .max(255, "Url must not exceed 255 characters.")
-        .url({ message: "Url must be a valid URL." }),
-})
-
-/********************************************* 
- * Schéma pour l'ajout dans faq
- *********************************************/
-export const createFaqSchema = z.object({
-
-    question: z
-        .string({message:"Question must be a string."})
-        .trim()
-        .min(1, "Question is required.")
-        .max(500, "Question must not exceed 500 characters."),
-
-    answer: z
-        .string({message:"Answer must be a string."})
-        .trim()
-        .min(1, "Answer is required.")
-        .max(500, "Answer must not exceed 500 characters."),
-})
-
-/********************************************* 
- * Schéma pour l'ajout dans memo_selector
- *********************************************/
-export const createMemoSelectorSchema = z.object({
-
-    status: z
-        .enum(["Accepted", "Rejected", "To be processed"]),
-
-    comment: z
-        .string({message:"Comment must be a string."})
-        .trim()
-        .max(500, "Comment must not exceed 500 characters.")
-        .or(z.literal(""))
-        .optional(),
-
-})
-
-/********************************************* 
- * Schéma pour l'ajout dans admin_video
- *********************************************/
-export const createAdminVideoSchema = z.object({
-
-    status: z
-        .enum(["Video Accepted", "Video Rejected", "Video Banned", "Featured"]),
-
-    comment: z
-        .string({message:"Comment must be a string."})
-        .trim()
-        .max(500, "Comment must not exceed 500 characters.")
-        .or(z.literal(""))
-        .optional(),
-})
-
 /********************************************* 
  * Schéma pour l'ajout dans contributor
  *********************************************/
@@ -500,140 +405,10 @@ export const createContributorSchema = z.object({
     
 })
 
-/********************************************* 
- * Schéma pour l'ajout dans social media
- *********************************************/
-export const createSocialMediaSchema = z.object({
 
-    instagram: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
 
-    facebook: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
 
-    tiktok: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
 
-    linkedin: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
-
-    youtube: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
-
-    website: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
-
-    x: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .max(500, "Url must not exceed 500 characters.")
-        .url({ message: "Url must be a valid URL." })
-        .or(z.literal(""))
-        .optional(),
-})
-
-/********************************************* 
- * Schéma pour l'ajout dans awards
- *********************************************/
-export const createAwardSchema = z.object({
-
-    title: z
-        .string({ message: "Url must be a string." })
-        .trim()
-        .min(1, "title is required.")
-        .max(255, "Url must not exceed 255 characters."),
-
-    img: z
-        .string({message:"Img must be a string."})
-        .trim()
-        .min(1, "Img is required.")
-        .max(250, "Img must not exceed 250 characters.")
-        .refine(
-            (value) => {
-                // Récuperation et vérification de la validité de l'extension.
-                const extension = value.substring(value.lastIndexOf(".")).toLowerCase();
-                return pictureFormats.includes(extension);
-            },
-            `Unsupported img format. Accepted formats: ${pictureFormats.join(", ")}`
-        ),
-
-    rank: z
-        .number({ message: "Rank is required." })
-        .positive({ message: "Rank must be positive." }),
-})
-/********************************************* 
- * Schéma pour l'ajout dans events
- *********************************************/
-export const createEventSchema = z.object({
-
-    title: z
-        .string({ message: "Title must be a string." })
-        .trim()
-        .min(1, "Title is required.")
-        .max(255, "Title must not exceed 255 characters."),
-
-    description: z
-        .string({message:"Description must be a string."})
-        .trim()
-        .max(500, "Description must not exceed 500 characters.")
-        .or(z.literal(""))
-        .optional(),
-
-    date : z
-        .string({ message: "Date must be a string" })
-        .trim()
-        .min(1, "Date is required")
-        .refine(value => {
-            const [day, month, year] = value.split("-").map(Number)
-            if (!day || !month || !year) return false
-
-            const dateObject = new Date(year, month - 1, day)
-            if (isNaN(dateObject.getTime())) return false
-
-            const today = new Date()
-            today.setHours(0, 0, 0, 0) // configure l'heure a 0 pour la comparaison
-            return dateObject.getTime() >= today.getTime()
-        }, { message: "Date must be today or in the future" }),
-
-    stock: z
-        .preprocess(
-            value => Number(value),// transforme string -> number
-            z // schéma qui valide la valeur transformée
-                .number({ message: "Stock is required." })
-                .int({ message: "Stock must be an integer." })
-                .nonnegative({ message: "Stock must be 0 or positive." })
-        )
-})
 /********************************************* 
  * Schéma pour l'ajout dans still
  *********************************************/

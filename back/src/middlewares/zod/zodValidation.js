@@ -35,7 +35,7 @@ export function validate(schema, options ={}) {
                     }))
                 });
             }
-            //Erreur autres que celle de zod
+            //// Gestion des erreurs qui ne sont pas des erreurs de validation Zod
             return res.status(400).json({
                 success:false,
                 message:"Validation error",
