@@ -253,21 +253,7 @@ export default function AdminEvents() {
                 </p>
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="hidden rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs text-white/80 hover:bg-white/10 md:inline-flex"
-              >
-                Conversations
-              </button>
-              <button
-                type="button"
-                className="rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-4 py-2 text-xs font-semibold tracking-[0.18em] uppercase"
-              >
-                Inscription
-              </button>
-            </div>
+            
           </div>
 
           {/* Hero */}
