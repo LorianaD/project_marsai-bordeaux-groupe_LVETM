@@ -141,5 +141,10 @@
             "color": "#F6339A"
          }
       ]
+   },
+   "partnersSection": {
+      "eyebrow": "Nos Soutiens",
+      "titleLine1": "Ils soutiennent ",
+      "titleLine2": "le futur"
    }
 }
