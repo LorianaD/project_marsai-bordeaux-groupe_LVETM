@@ -178,7 +178,7 @@ async function createVideo(payload, connection = pool) {
     payload.director_gender,
     payload.birthday,
     payload.mobile_number ?? null, // optionnel → null si vide
-    payload.home_number ?? null,   // optionnel → null si vide
+    payload.home_number ?? null, // optionnel → null si vide
     payload.address,
     payload.director_country,
     payload.discovery_source,
@@ -195,6 +195,104 @@ async function createVideo(payload, connection = pool) {
 }
 
 // ======================================================================
+//  5) ADMIN : LISTE DE TOUTES LES VIDÉOS (Pending inclus)
+// ======================================================================
+async function findAllVideosAdmin() {
+  const sql = `
+    SELECT
+      v.id,
+      v.title,
+      v.title_en,
+      v.synopsis,
+      v.synopsis_en,
+      v.cover,
+      v.duration,
+      v.country,
+      v.language,
+      v.director_name,
+      v.director_lastname,
+      v.director_country,
+      v.upload_status,
+      v.featured,
+      v.created_at
+    FROM videos v
+    ORDER BY v.created_at DESC, v.id DESC
+  `;
+
+  const [rows] = await pool.execute(sql);
+  return rows;
+}
+
+// ======================================================================
+//  6) ADMIN : UPDATE STATUS
+// ======================================================================
+async function updateVideoStatus(id, upload_status) {
+  const sql = `
+    UPDATE videos
+    SET upload_status = ?
+    WHERE id = ?
+  `;
+
+  const [result] = await pool.execute(sql, [upload_status, id]);
+  return result.affectedRows; // 0 si id inexistant
+}
+
+// ======================================================================
+//  7) ADMIN : UPDATE FEATURED
+// ======================================================================
+async function updateVideoFeatured(id, featured) {
+  const sql = `
+    UPDATE videos
+    SET featured = ?
+    WHERE id = ?
+  `;
+
+  const [result] = await pool.execute(sql, [featured ? 1 : 0, id]);
+  return result.affectedRows;
+}
+
+// ======================================================================
+//  8) ADMIN : DÉTAIL D’UNE VIDÉO (tous statuts)
+// ======================================================================
+async function findOneVideoByIdAdmin(id) {
+  const sql = `
+    SELECT
+      id,
+      youtube_video_id,
+      video_file_name,
+      title,
+      title_en,
+      synopsis,
+      synopsis_en,
+      cover,
+      duration,
+      country,
+      language,
+      tech_resume,
+      ai_tech,
+      creative_resume,
+      email,
+      director_name,
+      director_lastname,
+      director_gender,
+      birthday,
+      mobile_number,
+      home_number,
+      address,
+      director_country,
+      discovery_source,
+      upload_status,
+      featured,
+      created_at
+    FROM videos
+    WHERE id = ?
+  `;
+
+  const [rows] = await pool.execute(sql, [id]);
+  return rows[0] || null;
+}
+
+// ======================================================================
 // Export du "model" :
 // ça permet aux controllers d’appeler ces fonctions facilement
 export default {
@@ -202,4 +300,9 @@ export default {
   findOnePublishedVideoById,
   findVideoFileById,
   createVideo,
+  //  ADMIN
+  findAllVideosAdmin,
+  updateVideoStatus,
+  updateVideoFeatured,
+  findOneVideoByIdAdmin,
 };
