@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
-import DirectorForm from "../components/Form/Participation/ui/DirectorForm";
-import VideoUploadForm from "../components/Form/Participation/ui/VideoUploadForm";
+import {
+  DirectorForm,
+  VideoUploadForm,
+  TeamCompositionForm,
+} from "../components/Form/Participation/ui";
 
 export default function ParticipationUploadPage() {
   //  Étape actuelle du formulaire
   // 1 = infos du réalisateur
   // 2 = upload de la vidéo
+  // 3 = équipe + certificat
   const [step, setStep] = useState(1);
 
   //  Au chargement de la page :
   // on regarde si le profil réalisateur a déjà été rempli (et COMPLET)
   useEffect(() => {
-    //  On récupère ce qui est stocké dans le navigateur
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
 
     try {
       const p = JSON.parse(saved);
 
-      // ✅ On vérifie que le profil contient bien les infos importantes
-      // (sinon on reste à l’étape 1)
       const isComplete =
         p.email &&
         p.firstName &&
@@ -32,21 +33,17 @@ export default function ParticipationUploadPage() {
 
       if (isComplete) setStep(2);
     } catch {
-      //  Si le localStorage contient un JSON cassé,
-      // on ignore et on reste à l’étape 1
+      // JSON cassé → on ignore et on reste à l’étape 1
     }
   }, []);
 
   return (
     <div className="min-h-screen px-4 py-10">
       <div className="mx-auto w-full max-w-5xl">
-        {/* Titre de la page */}
         <h1 className="mb-10 text-center text-3xl font-semibold dark:text-white">
           FORMULAIRE DE PARTICIPATION
         </h1>
 
-        {/*  Indicateur d’étapes (juste visuel)
-            On met l’étape active en gras */}
         <div className="mb-8 flex items-center justify-center gap-3 text-sm">
           <span className={step === 1 ? "font-semibold" : "text-neutral-400"}>
             1. Réalisateur
@@ -55,34 +52,42 @@ export default function ParticipationUploadPage() {
           <span className={step === 2 ? "font-semibold" : "text-neutral-400"}>
             2. Upload vidéo
           </span>
+          <span className="text-neutral-300">→</span>
+          <span className={step === 3 ? "font-semibold" : "text-neutral-400"}>
+            3. Équipe & certificat
+          </span>
         </div>
 
-        {/*  Ici on affiche UN SEUL formulaire à la fois
-            selon l’étape courante */}
-        {step === 1 ? (
-          //  Étape 1 :
-          // formulaire avec les infos du réalisateur
-          // on passe une fonction "onNext" pour passer à l’étape 2
-          <DirectorForm onNext={() => setStep(2)} />
-        ) : (
-          //  Étape 2 :
-          // formulaire d’upload de la vidéo
-          <div className="rounded-2xl bg-black p-6 md:p-10">
-            {/* Bouton retour (facultatif) */}
+        {step === 1 && <DirectorForm onNext={() => setStep(2)} />}
+
+        {step === 2 && (
+          <div className="rounded-2xl bg-white p-6 md:p-10 text-neutral-900 dark:bg-black dark:text-white">
             <div className="mb-6">
               <button
                 type="button"
-                //  Si on clique, on revient à l’étape 1
                 onClick={() => setStep(1)}
-                className="text-sm text-neutral-300 hover:text-white"
+                className="text-sm text-neutral-500 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white"
               >
                 ← Retour profil réalisateur
               </button>
             </div>
 
-            {/* Formulaire pour envoyer la vidéo */}
             <VideoUploadForm />
+
+            <div className="mt-10 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setStep(3)}
+                className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white"
+              >
+                SUIVANT →
+              </button>
+            </div>
           </div>
+        )}
+
+        {step === 3 && (
+          <TeamCompositionForm onPrev={() => setStep(2)} />
         )}
       </div>
     </div>

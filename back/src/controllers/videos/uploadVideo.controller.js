@@ -98,7 +98,26 @@ async function uploadVideoController(req, res) {
       address,
       director_country,
       discovery_source,
+
+      // ✅ AJOUT : ces champs arrivent depuis l’étape 3 (composition d’équipe)
+      contributors, // string JSON
+      ownership_certified, // "1" ou "0"
+      promo_consent, // "1" ou "0"
     } = req.body;
+
+    // ✅ AJOUT : on parse contributors (JSON string -> tableau)
+    // Important : si c’est invalide, on ne casse pas l’upload, on met []
+    let contributorsList = [];
+    try {
+      const parsed = JSON.parse(contributors || "[]");
+      contributorsList = Array.isArray(parsed) ? parsed : [];
+    } catch {
+      contributorsList = [];
+    }
+
+    // ✅ AJOUT : on normalise les booleans "1"/"0" en vrai bool
+    const ownershipCertifiedBool = ownership_certified === "1";
+    const promoConsentBool = promo_consent === "1";
 
     //  On liste les champs obligatoires
     // Comme ça, on peut facilement dire “il manque quoi”
@@ -201,7 +220,7 @@ async function uploadVideoController(req, res) {
       video_file_name: videoFile.filename,
       cover: coverFile.filename,
 
-      title: String(title).trim(), 
+      title: String(title).trim(),
       title_en: String(title_en).trim(),
 
       synopsis: String(synopsis).trim(),
@@ -217,11 +236,11 @@ async function uploadVideoController(req, res) {
       email: String(email).trim(),
       director_name: String(director_name).trim(),
       director_lastname: String(director_lastname).trim(),
-      director_gender: directorGenderDb, 
+      director_gender: directorGenderDb,
       birthday: String(birthday).trim(),
 
-      mobile_number: toNullIfEmpty(mobile_number), 
-      home_number: toNullIfEmpty(home_number),     
+      mobile_number: toNullIfEmpty(mobile_number),
+      home_number: toNullIfEmpty(home_number),
 
       address: String(address).trim(),
       director_country: String(director_country).trim(),
@@ -237,6 +256,68 @@ async function uploadVideoController(req, res) {
 
     // 1) On crée la vidéo principale et on récupère son id
     const videoId = await videosModel.createVideo(payload, conn);
+
+    // ✅ AJOUT : on sauvegarde le certificat de propriété dans la table videos
+    // - ownership_certified / promo_consent sont des bools côté front, envoyés en "1"/"0"
+    // - on stocke aussi une date (pratique si un jour tu veux auditer)
+    await conn.query(
+      `
+      UPDATE videos
+      SET
+        ownership_certified = ?,
+        ownership_certified_at = ?,
+        promo_consent = ?,
+        promo_consent_at = ?
+      WHERE id = ?
+      `,
+      [
+        ownershipCertifiedBool ? 1 : 0,
+        ownershipCertifiedBool ? new Date() : null,
+        promoConsentBool ? 1 : 0,
+        promoConsentBool ? new Date() : null,
+        videoId,
+      ],
+    );
+
+       // ✅ AJOUT : on insère les contributors liés à cette vidéo
+    // Important :
+    // - contributorsList vient du front (étape 3)
+    // - on accepte qu’il soit vide (pas bloquant)
+    // - on split full_name -> name / last_name
+    for (const c of contributorsList) {
+      const fullNameRaw = String(c?.full_name || "").trim();
+      const profession = String(c?.profession || "").trim();
+      const cEmail = String(c?.email || "").trim();
+      const cGender = c?.gender === "Mrs" ? "Mrs" : "Mr"; // valeur safe
+
+      //  Si un contributor est incomplet, on le skip (sans planter l’upload)
+      if (!fullNameRaw || !profession || !cEmail) continue;
+
+      // ✅ AJOUT : split prénom / nom
+      // Règle simple :
+      // - premier mot -> prénom
+      // - le reste -> nom
+      const parts = fullNameRaw.split(/\s+/);
+      const firstName = parts.shift(); // premier mot
+      const lastName = parts.join(" ") || null; // reste (ou null)
+
+      await conn.query(
+        `
+        INSERT INTO contributor
+          (video_id, name, last_name, gender, email, profession)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        [
+          videoId,
+          firstName,
+          lastName,
+          cGender,
+          cEmail,
+          profession,
+        ],
+      );
+    }
+
 
     // 2) On ajoute les stills liés à ce videoId
     await stillsModel.insertStills(videoId, stillFiles, conn);
