@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import closeMenuIcon from "../../assets/imgs/icones/mobile-nav.svg";
+import closeMenuIcon from "../../assets/imgs/icones/x.svg";
 import { useTranslation } from "react-i18next";
 
 import englishFlag from "../../assets/imgs/icones/englishFlag.png";

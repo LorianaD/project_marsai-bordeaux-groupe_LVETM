@@ -1,15 +1,11 @@
-// On récupère l’URL du backend depuis le .env
-// Si elle n’existe pas, on utilise localhost:3000 par défaut
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 // Fonction async qui va aller chercher la liste des vidéos
 export async function fetchVideos() {
 
   // On appelle l’API du backend pour récupérer les vidéos
-  // fetch = requête HTTP
   const res = await fetch(`${API_URL}/api/videos`, {
 
-    // On précise que c’est une requête GET (lecture de données)
     method: "GET",
 
     // On dit au serveur :

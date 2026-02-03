@@ -37,5 +37,114 @@
       "error":"Impossible de charger les vidéos:",
       "notFound":"Pas encore de vidéos.",
       "ariaViewFilm": "Voir le film : {{title}}"
+   },
+   "goal":{
+      "title": "Objectifs du",
+      "title2": "festival",
+      "cards" : {
+         "card1":{
+            "title":"L'humain au centre",
+            "description":"Mettre l'humain au coeur de la création pour ne pas perdre l'émotion."
+         },
+         "card2":{
+            "title":"Challenge créatif",
+            "description":"Challenger la créativité grâce à un format ultra court de 60s."
+         },
+         "card3":{
+            "title":"Futurs souhaitables",
+            "description":"Explorer les futurs désirables via les technologies émergentes."
+         }
+      }
+   },
+   "events":{
+      "title1":"Deux journées de",
+      "title2":"Conférences gratuites",
+      "list":{
+         "item1":"Débats engagés sur l’éthique et le futur",
+         "item2":"Confrontations d'idées entre artistes et tech",
+         "item3":"Interrogations stimulantes sur la création"
+      },
+      "ctaAgenda":"Agenda Complet",
+      "cards":{
+         "card1":{
+            "title":"Projections",
+            "description":"Diffusion sur écran géant en présence des réalisateurs."
+         },
+         "card2":{
+            "title":"Workshops",
+            "description":"Sessions pratiques pour maîtriser les outils IA."
+         },
+         "card3":{
+            "title":"Awards",
+            "description":"Cérémonie de clôture récompensant l'audace."
+         }
+      }
+   },
+   "closingEvent":{
+      "eyebrow":"Soirée de Clôture",
+      "title":"MARS.A.I",
+      "title2":"NIGHT",
+      "description":{
+         "ligne1":"Fête Électro mêlant IA et futurs souhaitables.",
+         "ligne2":"Une expérience immersive sonore et visuelle."
+      },
+      "card":{
+         "date":"13 JUIN",
+         "hour":"DÈS 19H00",
+         "localisation":"MARSEILLE",
+         "ctaBooking":"Réserver"
+      }
+   },
+   "localisationEvent":{
+      "eyebrow":"Le lieu",
+      "venue": {
+         "namePart1": "La",
+         "namePart2": "Plateforme",
+         "cityTagline": "Marseille, Hub Créatif"
+      },
+      "address": {
+         "street": "12 Rue d'Uzes",
+         "postalCode": "13002",
+         "city": "Marseille"
+      },
+      "access": {
+         "tram": "Accès Tram T2/T3 – Arrêt Arenc Le Silo"
+      },
+      "spaces": [
+         {
+            "name": "Salle des Sucres",
+            "description": "Futur sanctuaire des conférences et de la remise des prix de Mars.A.I. Un espace majestueux alliant patrimoine et technologie.",
+            "color":"#51A2FF"
+         },
+         {
+            "name": "Salle PLAZA",
+            "description": "L'épicentre du festival : accueil, animations, workshops et restauration. Le point de rencontre de tous les participants.",
+            "color": "#C27AFF"
+         }
+      ]
+   },
+   "projectedStats": {
+      "heading": {
+         "titleLine1": "Chiffres",
+         "titleLine2": "Projetés",
+         "tagline": "Échelle mondiale, impact local."
+      },
+      "stats": [
+         {
+            "value": "+120",
+            "label": "Pays représentés",
+            "color": "#AD46FF"
+         },
+         {
+            "value": "+600",
+            "label": "Films soumis",
+            "color": "#F6339A"
+         }
+      ]
+   },
+   "partnersSection": {
+      "eyebrow": "Nos Soutiens",
+      "titleLine1": "Ils soutiennent ",
+      "titleLine2": "le futur"
    }
 }
