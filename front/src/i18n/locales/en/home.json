@@ -122,5 +122,24 @@
             "color": "#C27AFF"
          }
       ]
+   },
+   "projectedStats": {
+      "heading": {
+         "titleLine1": "Projected",
+         "titleLine2": "Figures",
+         "tagline": "Global scale, local impact."
+      },
+      "stats": [
+         {
+            "value": "+120",
+            "label": "Countries represented",
+            "color": "#AD46FF"
+         },
+         {
+            "value": "+600",
+            "label": "Submitted films",
+            "color": "#F6339A"
+         }
+      ]
    }
 }

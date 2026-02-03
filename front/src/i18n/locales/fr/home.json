@@ -122,5 +122,24 @@
             "color": "#C27AFF"
          }
       ]
+   },
+   "projectedStats": {
+      "heading": {
+         "titleLine1": "Chiffres",
+         "titleLine2": "Projetés",
+         "tagline": "Échelle mondiale, impact local."
+      },
+      "stats": [
+         {
+            "value": "+120",
+            "label": "Pays représentés",
+            "color": "#AD46FF"
+         },
+         {
+            "value": "+600",
+            "label": "Films soumis",
+            "color": "#F6339A"
+         }
+      ]
    }
 }

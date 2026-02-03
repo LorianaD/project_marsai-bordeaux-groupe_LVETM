@@ -11,16 +11,18 @@ function SectionLocalisation() {
     });
 
     return(
-        <section className="flex flex-col items-start gap-[30px] p-[20px] md:py-[100px] md:px-[75px] self-stretch text-[#000000] dark:text-[#FFFFFF]">
+        <section className="flex flex-col items-center gap-[30px] p-[20px] md:py-[100px] md:px-[75px] self-stretch text-[#000000] dark:text-[#FFFFFF] ">
             
-            {/* eyebrow */}
-            <div className="max-w-[200px] h-[42px] flex items-center justify-center gap-[9px] px-[25px] py-[9px] rounded-full border border-[rgba(138,138,138,0.10)] bg-[rgba(0,0,0,0.05)]">
-                <div className="w-[16px] h-[16px]">
-                    <img src={iconLocalisation} alt="" />
+            <div className="flex items-start w-full">
+                {/* eyebrow */}
+                <div className="max-w-[200px] h-[42px] flex items-center justify-center gap-[9px] px-[25px] py-[9px] rounded-full border border-[rgba(138,138,138,0.10)] bg-[rgba(0,0,0,0.05)]">
+                    <div className="w-[16px] h-[16px]">
+                        <img src={iconLocalisation} alt="" />
+                    </div>
+                    <p className="text-center text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase">
+                        {t("localisationEvent.eyebrow")}
+                    </p>
                 </div>
-                <p className="text-center text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase">
-                    {t("localisationEvent.eyebrow")}
-                </p>
             </div>
 
             {/*  */}
