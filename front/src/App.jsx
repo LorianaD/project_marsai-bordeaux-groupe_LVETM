@@ -15,11 +15,14 @@ import Contact from "./pages/Contact.jsx";
 import Terms from "./pages/Terms.jsx";
 
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
+import Partner from "./components/Form/CMS/Home/Partner.jsx";
 
 export default function App() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
+
+        {/* Pages Public */}
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/gallery/:id" element={<VideoDetails />} />
@@ -33,11 +36,15 @@ export default function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
 
+        {/* Pages Admin */}
         <Route path="/admin/videos" element={<AdminVideos />} />
       </Route>
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
+
+      {/* Route en attendant la connexion admin */}
+      <Route path="/partnerForm" element={< Partner /> } />
     </Routes>
   );
 }
