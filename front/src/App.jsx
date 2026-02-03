@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
+import AdminLayout from "./components/Layout/AdminLayout.jsx";
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
@@ -12,6 +13,8 @@ import Privacy from "./pages/Privacy.jsx";
 import EventDetails from "./pages/EventDetails.jsx";
 import Contact from "./pages/Contact.jsx";
 import Terms from "./pages/Terms.jsx";
+import AdminEvents from "./pages/Admin/AdminEvents.jsx";
+
 
 export default function App() {
   return (
@@ -31,7 +34,14 @@ export default function App() {
         <Route path="Term" element={< Terms />} />
       </Route>
 
+      {/* ADMIN */}
+      <Route element={<AdminLayout />}>
+        <Route path="/admin/events" element={<AdminEvents />} />
+      </Route>
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+
+    
   );
 }
