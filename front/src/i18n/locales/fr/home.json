@@ -37,5 +37,23 @@
       "error":"Impossible de charger les vidéos:",
       "notFound":"Pas encore de vidéos.",
       "ariaViewFilm": "Voir le film : {{title}}"
-   }
+   },
+   "goal":{
+      "title": "Objectifs du",
+      "title2": "festival",
+      "cards" : {
+         "card1":{
+            "title":"L'humain au centre",
+            "description":"Mettre l'humain au coeur de la création pour ne pas perdre l'émotion."
+         },
+         "card2":{
+            "title":"Challenge créatif",
+            "description":"Challenger la créativité grâce à un format ultra court de 60s."
+         },
+         "card3":{
+            "title":"Futurs souhaitables",
+            "description":"Explorer les futurs désirables via les technologies émergentes."
+         }
+      }
+   }   
 }

@@ -13,7 +13,7 @@ function SectionEvent() {
                 </h2>
                 <div className="text-[#000000] dark:text-[#FFFFFF] text-[20px] leading-[32.5px] text-left">
                     <ol className="list-decimal pl-[20px]">
-                        <li>Débats engagés sur l’éthique et le future</li>
+                        <li>Débats engagés sur l’éthique et le futur</li>
                         <li>Confrontations d'idées entre artistes et tech</li>
                         <li>Interrogations stimulantes sur la création</li>
                     </ol>
