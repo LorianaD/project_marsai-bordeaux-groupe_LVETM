@@ -9,6 +9,17 @@
 //varchar manquant en bdd sur description dans table event
 //Faire length et date dans Event
 
+/*Avec multer, req.file contient généralement :
+
+originalname
+
+mimetype
+
+size
+
+path (ou buffer)
+
+filename*/
 
 /********************************************* 
  * Validation des données de la vidéo
@@ -20,10 +31,11 @@ import { z } from "zod";
  *********************************************/
 //contrainte de format et taille pour les vidéos et photos
 const videoFormats = [".mp4", ".mov"];
-const pictureFormats = [".jpg", ".mpeg"]
 const videoMimeTypes = ["video/mp4", "video/quicktime"];
-const MAX_VIDEO_FILE_SIZE = 300 * 1024 * 1024; // 300 Mo (en octets)
-const MAX_VIDEO_FILE_SIZE_IN_MO = 300;
+const 
+const pictureFormats = [".jpg", ".mpeg"]
+const MAX_VIDEO_FILE_SIZE = 350 * 1024 * 1024; // 350 Mo (en octets)
+const MAX_VIDEO_FILE_SIZE_IN_MO = 350;
 const MIN_VIDEO_FILE_SIZE = 200 * 1024 * 1024; // 200 Mo (en octets)
 const MIN_VIDEO_FILE_SIZE_IN_MO = 200;
 const MAX_VIDEO_DURATION_IN_SECOND = 60;
@@ -128,13 +140,6 @@ export const createFilmSchema = z.object({
         .trim()
         .min(1, "Creative resume is required.")
         .max(500, "Creative resume must not exceed 500 characters."),
-        
-    email: z
-        .string({message:"Email must be a string."})
-        .trim()
-        .min(1,"Email is required.")
-        .max(255, "Email must not exceed 255 characters.")
-        .email({ message: "Email format is invalid." }),
 
     director_firstname: z
         .string({message:"Director firstname must be a string."})
@@ -225,20 +230,28 @@ export const createFilmSchema = z.object({
 
     upload_status: z
         .enum(["Pending", "Uploading", "Processing", "Published", "Failed"]),
-})
+});
 
 /********************************************* 
- * Schéma pour le fichier vidéo
+ * Schéma pour le fichier vidéo (req.file)
  *********************************************/
 export const createFilmFileSchema = z.object({
 
     size: z
         .number({ message: "File size is required"})
         .positive({message: "File size must be positive"})
+        .min(MIN_VIDEO_FILE_SIZE, {
+            message:`File size must exceed ${MIN_VIDEO_FILE_SIZE_IN_MO} MB`
+        })
         .max(MAX_VIDEO_FILE_SIZE, {
-            message: `File size must not exceed ${MAX_FILE_SIZE_IN_MO} MB`
+            message: `File size must not exceed ${MAX_VIDEO_FILE_SIZE_IN_MO} MB`
         }),
-})
+
+    mimetype: z
+        .enum(videoMimeTypes, {
+            errorMap: () => ({ message: "Invalid video format. Only MP4 and MOV are allowed" })
+        })
+});
 
 
 /********************************************* 
