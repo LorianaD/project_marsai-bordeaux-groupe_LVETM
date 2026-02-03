@@ -147,15 +147,6 @@ export default function DirectorForm({ onNext }) {
             />
           </Field>
 
-          <Field label="Rôle / fonction" required>
-            <TextInput
-              name="production_role"
-              value={form.production_role}
-              onChange={update}
-              placeholder="Réalisateur"
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
-            />
-          </Field>
 
           <Field label="Date de naissance" required>
             <TextInput
