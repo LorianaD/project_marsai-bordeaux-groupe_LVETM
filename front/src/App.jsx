@@ -1,6 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
+<<<<<<< HEAD
 import AdminLayout from "./components/Layout/AdminLayout.jsx";
+=======
+
+>>>>>>> 08779c7bf542bbd557d2ef4e9e564507633957c2
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
@@ -16,30 +20,45 @@ import Terms from "./pages/Terms.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 
 
+import AdminVideos from "./pages/Admin/AdminVideos.jsx";
+import Partner from "./components/Form/CMS/Home/Partner.jsx";
+
 export default function App() {
   return (
     <Routes>
-      <Route element={< MainLayout />}>
-        <Route path="/" element={< Home />} />
-        <Route path="/gallery" element={< Gallery />} />
-        <Route path="/gallery/:id" element={< VideoDetails />} />
-        <Route path="/participation" element={< ParticipationUploadPage />} />
-        <Route path="/events" element={< Events />} />
-        <Route path="/events/:id" element={< EventDetails />}/>
-        <Route path="/jury" element={< JuryList />} />        
-        <Route path="/faq" element={< Faq />}/>
-        <Route path="/contact" element={< Contact />} />
-        <Route path="/legal" element={< Legal />}/>
-        <Route path="/privacy" element={< Privacy />} />
-        <Route path="Term" element={< Terms />} />
+      <Route element={<MainLayout />}>
+
+        {/* Pages Public */}
+        <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gallery/:id" element={<VideoDetails />} />
+        <Route path="/participation" element={<ParticipationUploadPage />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<EventDetails />} />
+        <Route path="/jury" element={<JuryList />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/legal" element={<Legal />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+
+        {/* Pages Admin */}
+        <Route path="/admin/videos" element={<AdminVideos />} />
       </Route>
 
+<<<<<<< HEAD
       {/* ADMIN */}
       <Route element={<AdminLayout />}>
         <Route path="/admin/events" element={<AdminEvents />} />
       </Route>
 
+=======
+      {/* Fallback */}
+>>>>>>> 08779c7bf542bbd557d2ef4e9e564507633957c2
       <Route path="*" element={<Navigate to="/" replace />} />
+
+      {/* Route en attendant la connexion admin */}
+      <Route path="/partnerForm" element={< Partner /> } />
     </Routes>
 
     

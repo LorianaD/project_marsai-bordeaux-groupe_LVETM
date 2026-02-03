@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"; // ✅ AJOUT: useEffect pour charger les pays au chargement
+import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, Select } from "./Field";
 
 export default function DirectorForm({ onNext }) {
@@ -16,28 +16,21 @@ export default function DirectorForm({ onNext }) {
     home_number: "",
   });
 
-  // ✅ AJOUT: on stocke la liste des pays récupérée depuis une API
   const [countries, setCountries] = useState([]);
-  // ✅ AJOUT: petit état pour dire "ça charge" et gérer l’erreur
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
 
-  // ✅ AJOUT: au chargement du composant, je vais chercher la liste des pays sur internet
   useEffect(() => {
-    let alive = true; // ✅ AJOUT: petit “truc de sécurité” si on quitte la page pendant le fetch
+    let alive = true;
 
     async function loadCountries() {
       try {
         setCountriesLoading(true);
         setCountriesErr("");
 
-        // ✅ AJOUT: appel API publique qui renvoie tous les pays
-        const res = await fetch(
-          "https://restcountries.com/v3.1/all?fields=name",
-        );
+        const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
         const data = await res.json();
 
-        // ✅ AJOUT: je transforme la réponse en simple liste de noms triés
         const list = Array.isArray(data)
           ? data
               .map((c) => c?.name?.common)
@@ -75,7 +68,7 @@ export default function DirectorForm({ onNext }) {
       form.director_country.trim() &&
       form.address.trim() &&
       form.discovery_source.trim() &&
-      form.mobile_number.trim() // ✅ AJOUT: maintenant le mobile est obligatoire pour passer à l’étape 2
+      form.mobile_number.trim()
     );
   }, [form]);
 
@@ -117,6 +110,7 @@ export default function DirectorForm({ onNext }) {
               value={form.name}
               onChange={update}
               placeholder="PRÉNOM"
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
@@ -126,11 +120,17 @@ export default function DirectorForm({ onNext }) {
               value={form.last_name}
               onChange={update}
               placeholder="NOM"
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
           <Field label="Civilité" required>
-            <Select name="gender" value={form.gender} onChange={update}>
+            <Select
+              name="gender"
+              value={form.gender}
+              onChange={update}
+              className="bg-neutral-100 text-neutral-800"
+            >
               <option value="Mr">Mr</option>
               <option value="Mrs">Mrs</option>
             </Select>
@@ -143,17 +143,10 @@ export default function DirectorForm({ onNext }) {
               onChange={update}
               placeholder="EMAIL@EXEMPLE.COM"
               type="email"
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
-          <Field label="Rôle / fonction" required>
-            <TextInput
-              name="production_role"
-              value={form.production_role}
-              onChange={update}
-              placeholder="Réalisateur"
-            />
-          </Field>
 
           <Field label="Date de naissance" required>
             <TextInput
@@ -161,19 +154,19 @@ export default function DirectorForm({ onNext }) {
               type="date"
               value={form.birthday}
               onChange={update}
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
-          {/* ✅ AJOUT: ici je remplace le champ texte par une liste déroulante alimentée par l’API */}
           <Field label="Pays réalisateur" required>
             <Select
               name="director_country"
               value={form.director_country}
               onChange={update}
-              disabled={countriesLoading || !!countriesErr} // ✅ AJOUT: si ça charge/bug, on bloque le select
+              disabled={countriesLoading || !!countriesErr}
+              className="bg-neutral-100 text-neutral-800"
             >
               <option value="">
-                {/* ✅ AJOUT: petit texte selon l’état */}
                 {countriesLoading
                   ? "Chargement des pays…"
                   : countriesErr
@@ -188,7 +181,6 @@ export default function DirectorForm({ onNext }) {
               ))}
             </Select>
 
-            {/* ✅ AJOUT: si l’API a planté, j’affiche un mini message */}
             {countriesErr ? (
               <div className="mt-2 text-xs text-red-500">{countriesErr}</div>
             ) : null}
@@ -200,6 +192,7 @@ export default function DirectorForm({ onNext }) {
               value={form.discovery_source}
               onChange={update}
               placeholder="Instagram / Ami / Google..."
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
@@ -209,6 +202,7 @@ export default function DirectorForm({ onNext }) {
               value={form.address}
               onChange={update}
               placeholder="Adresse complète"
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
@@ -218,8 +212,9 @@ export default function DirectorForm({ onNext }) {
               value={form.mobile_number}
               onChange={update}
               placeholder="06..."
-              type="tel" 
-              required 
+              type="tel"
+              required
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
 
@@ -229,6 +224,7 @@ export default function DirectorForm({ onNext }) {
               value={form.home_number}
               onChange={update}
               placeholder="01..."
+              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
         </div>

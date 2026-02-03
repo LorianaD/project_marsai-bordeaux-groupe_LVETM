@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, TextArea, Select } from "./Field";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function VideoUploadForm() {
@@ -38,6 +39,7 @@ export default function VideoUploadForm() {
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
 
+  // ✅ Chargement pays
   useEffect(() => {
     let alive = true;
 
@@ -72,6 +74,7 @@ export default function VideoUploadForm() {
     };
   }, []);
 
+  // ✅ Pré-remplir avec le profil réalisateur stocké en localStorage
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
@@ -149,7 +152,7 @@ export default function VideoUploadForm() {
       form.mobile_number.trim() &&
       files.video &&
       files.cover &&
-      files.stills[0] && // ✅ MODIF: on exige seulement Still 1 (minimum 1 image)
+      files.stills[0] && // ✅ au moins Still 1
       files.subtitles.length > 0
     );
   }, [form, files]);
@@ -161,19 +164,50 @@ export default function VideoUploadForm() {
     try {
       const fd = new FormData();
 
+      // ✅ On envoie tous les champs texte
       Object.entries(form).forEach(([k, v]) => {
         if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
       });
 
+      // ✅ AJOUT : contributors + ownership_certified + promo_consent (depuis localStorage)
+      let contributors = [];
+      let ownership = {};
+
+      try {
+        contributors = JSON.parse(localStorage.getItem("contributors") || "[]");
+      } catch {
+        contributors = [];
+      }
+
+      try {
+        ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
+      } catch {
+        ownership = {};
+      }
+
+      // contributors = tableau → on l’envoie en JSON string
+      fd.append(
+        "contributors",
+        JSON.stringify(Array.isArray(contributors) ? contributors : []),
+      );
+
+      // booléens → on envoie "1" / "0" (simple côté backend)
+      fd.append(
+        "ownership_certified",
+        ownership?.ownershipCertified ? "1" : "0",
+      );
+      fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
+
+      // ✅ Fichiers
       fd.append("video", files.video);
       fd.append("cover", files.cover);
 
-      // ✅ IMPORTANT: on n’envoie que les stills qui existent vraiment
-      // comme ça Still 2 / Still 3 peuvent rester vides sans casser l’upload
+      // ✅ On n’envoie que les stills qui existent
       files.stills.forEach((f) => {
         if (f) fd.append("stills", f);
       });
 
+      // ✅ Sous-titres
       files.subtitles.forEach((f) => fd.append("subtitles", f));
 
       const res = await fetch(`${API_URL}/api/videos`, {
@@ -202,23 +236,24 @@ export default function VideoUploadForm() {
   }
 
   return (
-    <form onSubmit={submit} className="w-full text-white">
-      <div className="space-y-12">
+    <form onSubmit={submit} className="w-full">
+      {/* ✅ Texte adaptatif light/dark :
+          - light: text-neutral-900
+          - dark: text-white */}
+      <div className="space-y-12 text-neutral-900 dark:text-white">
         <h2 className="text-center text-2xl font-semibold">MA VIDÉO</h2>
 
+        {/* =====================================================
+            01. IDENTITÉ DU FILM
+           ===================================================== */}
         <section className="space-y-6">
-          <h3 className="text-purple-400 font-semibold">
+          <h3 className="font-semibold text-purple-500">
             01. IDENTITÉ DU FILM
           </h3>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field label="Titre du court métrage" required>
-              <TextInput
-                name="title"
-                value={form.title}
-                onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
-              />
+              <TextInput name="title" value={form.title} onChange={update} />
             </Field>
 
             <Field label="Traduction anglaise" required>
@@ -226,17 +261,11 @@ export default function VideoUploadForm() {
                 name="title_en"
                 value={form.title_en}
                 onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
 
             <Field label="Langue" required>
-              <Select
-                name="language"
-                value={form.language}
-                onChange={update}
-                className="bg-neutral-800 text-white"
-              >
+              <Select name="language" value={form.language} onChange={update}>
                 <option value="">Choisir une langue</option>
                 <option value="fr">Français</option>
                 <option value="en">Anglais</option>
@@ -259,7 +288,6 @@ export default function VideoUploadForm() {
                 value={form.country}
                 onChange={update}
                 disabled={countriesLoading || !!countriesErr}
-                className="bg-neutral-800 text-white"
               >
                 <option value="">
                   {countriesLoading
@@ -277,7 +305,9 @@ export default function VideoUploadForm() {
               </Select>
 
               {countriesErr ? (
-                <div className="mt-2 text-xs text-red-200">{countriesErr}</div>
+                <div className="mt-2 text-xs text-red-500 dark:text-red-200">
+                  {countriesErr}
+                </div>
               ) : null}
             </Field>
 
@@ -287,7 +317,6 @@ export default function VideoUploadForm() {
                 value={form.duration}
                 onChange={update}
                 placeholder="60"
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
 
@@ -296,7 +325,6 @@ export default function VideoUploadForm() {
                 name="youtube_video_id"
                 value={form.youtube_video_id}
                 onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
           </div>
@@ -307,7 +335,6 @@ export default function VideoUploadForm() {
                 name="synopsis"
                 value={form.synopsis}
                 onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
 
@@ -316,14 +343,16 @@ export default function VideoUploadForm() {
                 name="synopsis_en"
                 value={form.synopsis_en}
                 onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
           </div>
         </section>
 
+        {/* =====================================================
+            02. DÉCLARATION USAGE IA
+           ===================================================== */}
         <section className="space-y-6">
-          <h3 className="text-purple-400 font-semibold">
+          <h3 className="font-semibold text-purple-500">
             02. DÉCLARATION USAGE IA
           </h3>
 
@@ -333,7 +362,6 @@ export default function VideoUploadForm() {
                 name="tech_resume"
                 value={form.tech_resume}
                 onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
 
@@ -342,52 +370,20 @@ export default function VideoUploadForm() {
                 name="creative_resume"
                 value={form.creative_resume}
                 onChange={update}
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
               />
             </Field>
           </div>
 
           <Field label="Outils IA utilisés" required>
-            <TextInput
-              name="ai_tech"
-              value={form.ai_tech}
-              onChange={update}
-              className="bg-neutral-800 text-white placeholder:text-neutral-500"
-            />
+            <TextInput name="ai_tech" value={form.ai_tech} onChange={update} />
           </Field>
         </section>
 
+        {/* =====================================================
+            04. FICHIERS
+           ===================================================== */}
         <section className="space-y-6">
-          <h3 className="text-purple-400 font-semibold">03. CONTACT</h3>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field label="Mobile" required>
-              <TextInput
-                name="mobile_number"
-                value={form.mobile_number}
-                onChange={update}
-                type="tel"
-                placeholder="06..."
-                required
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
-              />
-            </Field>
-
-            <Field label="Fixe (optionnel)">
-              <TextInput
-                name="home_number"
-                value={form.home_number}
-                onChange={update}
-                type="tel"
-                placeholder="01..."
-                className="bg-neutral-800 text-white placeholder:text-neutral-500"
-              />
-            </Field>
-          </div>
-        </section>
-
-        <section className="space-y-6">
-          <h3 className="text-purple-400 font-semibold">04. FICHIERS</h3>
+          <h3 className="font-semibold text-purple-500">04. FICHIERS</h3>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field label="Vidéo" required>
@@ -396,7 +392,11 @@ export default function VideoUploadForm() {
                 name="video"
                 accept="video/*"
                 onChange={updateFile}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+                className={[
+                  "w-full rounded-2xl p-4 text-sm outline-none transition",
+                  "bg-[#E9E9EA] text-neutral-700",
+                  "dark:bg-neutral-800 dark:text-white",
+                ].join(" ")}
               />
             </Field>
 
@@ -406,37 +406,50 @@ export default function VideoUploadForm() {
                 name="cover"
                 accept="image/*"
                 onChange={updateFile}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+                className={[
+                  "w-full rounded-2xl p-4 text-sm outline-none transition",
+                  "bg-[#E9E9EA] text-neutral-700",
+                  "dark:bg-neutral-800 dark:text-white",
+                ].join(" ")}
               />
             </Field>
 
-            {/* ✅ MODIF: Still 1 = obligatoire (minimum 1 image) */}
             <Field label="Still 1" required>
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => updateStill(0, e.target.files?.[0])}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+                className={[
+                  "w-full rounded-2xl p-4 text-sm outline-none transition",
+                  "bg-[#E9E9EA] text-neutral-700",
+                  "dark:bg-neutral-800 dark:text-white",
+                ].join(" ")}
               />
             </Field>
 
-            {/* ✅ MODIF: Still 2 = optionnel (donc PAS required) */}
             <Field label="Still 2 (optionnel)">
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => updateStill(1, e.target.files?.[0])}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+                className={[
+                  "w-full rounded-2xl p-4 text-sm outline-none transition",
+                  "bg-[#E9E9EA] text-neutral-700",
+                  "dark:bg-neutral-800 dark:text-white",
+                ].join(" ")}
               />
             </Field>
 
-            {/* ✅ MODIF: Still 3 = optionnel (donc PAS required) */}
             <Field label="Still 3 (optionnel)">
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => updateStill(2, e.target.files?.[0])}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+                className={[
+                  "w-full rounded-2xl p-4 text-sm outline-none transition",
+                  "bg-[#E9E9EA] text-neutral-700",
+                  "dark:bg-neutral-800 dark:text-white",
+                ].join(" ")}
               />
             </Field>
 
@@ -447,7 +460,11 @@ export default function VideoUploadForm() {
                 accept=".srt"
                 multiple
                 onChange={updateFile}
-                className="w-full rounded-xl bg-neutral-800 p-3 text-sm"
+                className={[
+                  "w-full rounded-2xl p-4 text-sm outline-none transition",
+                  "bg-[#E9E9EA] text-neutral-700",
+                  "dark:bg-neutral-800 dark:text-white",
+                ].join(" ")}
               />
             </Field>
           </div>
