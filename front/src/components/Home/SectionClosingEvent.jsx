@@ -1,4 +1,9 @@
+import { useTranslation } from "react-i18next";
+
 function SectionClosingEvent() {
+
+    const { t } = useTranslation("home");
+
     return(
         <section className="flex items-center justify-center px-[150px] self-stretch text-black dark:text-white">
             <div className="flex flex-col items-start justify-center gap-8 flex-1 pt-[2.5px] pr-[124px]">

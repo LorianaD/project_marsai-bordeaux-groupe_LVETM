@@ -55,5 +55,29 @@
             "description":"Explorer les futurs désirables via les technologies émergentes."
          }
       }
-   }   
+   },
+   "events":{
+      "title1":"Deux journées de",
+      "title2":"Conférences gratuites",
+      "list":{
+         "item1":"Débats engagés sur l’éthique et le futur",
+         "item2":"Confrontations d'idées entre artistes et tech",
+         "item3":"Interrogations stimulantes sur la création"
+      },
+      "ctaAgenda":"Agenda Complet",
+      "cards":{
+         "card1":{
+            "title":"Projections",
+            "description":"Diffusion sur écran géant en présence des réalisateurs."
+         },
+         "card2":{
+            "title":"Workshops",
+            "description":"Sessions pratiques pour maîtriser les outils IA."
+         },
+         "card3":{
+            "title":"Awards",
+            "description":"Cérémonie de clôture récompensant l'audace."
+         }
+      }
+   }
 }

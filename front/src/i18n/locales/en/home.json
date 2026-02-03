@@ -55,5 +55,29 @@
             "description":"Exploring desirable futures through emerging technologies."
          }
       }
+   },
+   "events":{
+      "title1":"Two days of",
+      "title2":"Free conferences",
+      "list":{
+         "item1":"Engaging debates on ethics and the future",
+         "item2":"Exchange of ideas between artists and tech",
+         "item3":"Stimulating questions on creation"
+      },
+      "ctaAgenda":"Full Agenda",
+      "cards":{
+         "card1":{
+            "title":"Screenings",
+            "description":"Screening on giant screen in the presence of the directors."
+         },
+         "card2":{
+            "title":"Workshops",
+            "description":"Hands-on sessions to master AI tools."
+         },
+         "card3":{
+            "title":"Awards",
+            "description":"Closing ceremony rewarding boldness."
+         }
+      }
    }
 }
