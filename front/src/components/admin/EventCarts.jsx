@@ -81,7 +81,7 @@ export default function EventCard({
           </div>
         </div>
 
-        {/* Actions */}
+       
         <div className="flex flex-col gap-2 md:min-w-[220px] md:items-stretch">
           <button
             type="button"
