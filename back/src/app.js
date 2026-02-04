@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import path from "path";
-import { fileURLToPath } from "url"; // ✅ AJOUT: pour reconstruire __dirname en ES Modules
+import { fileURLToPath } from "url"; // AJOUT: pour reconstruire __dirname en ES Modules
 import router from "./routes/index.js";
 import notFound from "./middlewares/notFound.js";
 
