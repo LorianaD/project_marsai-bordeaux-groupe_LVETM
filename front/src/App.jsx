@@ -20,7 +20,7 @@ import Partner from "./components/Form/CMS/Home/Partner.jsx";
 export default function App() {
   return (
     <Routes>
-      {/* PUBLIC */}
+      {/*  PUBLIC – avec Header + Footer */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
@@ -36,17 +36,21 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
       </Route>
 
-      {/* ADMIN */}
-      <Route element={<AdminLayout />}>
-        <Route path="/admin/events" element={<AdminEvents />} />
-        <Route path="/admin/videos" element={<AdminVideos />} />
-      </Route>
-
-      {/* FALLBACK */}
-      <Route path="*" element={<Navigate to="/" replace />} />
       
-      {/* Route en attendant la connexion admin */}
-      <Route path="/partnerForm" element={< Partner /> } />
+    {/* ADMIN  */}
+<Route element={<MainLayout />}>
+  <Route element={<AdminLayout />}>
+    <Route path="/admin/events" element={<AdminEvents />} />
+    <Route path="/admin/videos" element={<AdminVideos />} />
+  </Route>
+</Route>
+
+
+      {/* 🧪 Route temporaire */}
+      <Route path="/partnerForm" element={<Partner />} />
+
+      {/*  Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
