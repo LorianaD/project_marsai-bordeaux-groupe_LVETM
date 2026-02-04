@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DirectorForm,
   VideoUploadForm,
@@ -12,8 +12,9 @@ export default function ParticipationUploadPage() {
   // 3 = équipe + certificat
   const [step, setStep] = useState(1);
 
-  //  Au chargement de la page :
-  // on regarde si le profil réalisateur a déjà été rempli (et COMPLET)
+  // ✅ ref vers le <form> du VideoUploadForm
+  const videoFormRef = useRef(null);
+
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
@@ -33,9 +34,20 @@ export default function ParticipationUploadPage() {
 
       if (isComplete) setStep(2);
     } catch {
-      // JSON cassé → on ignore et on reste à l’étape 1
+      // JSON cassé → on ignore
     }
   }, []);
+
+  // ✅ submit final déclenché depuis l’étape 3
+  function submitVideoFromStep3() {
+    if (videoFormRef.current?.requestSubmit) {
+      videoFormRef.current.requestSubmit();
+      return;
+    }
+    if (videoFormRef.current?.submit) {
+      videoFormRef.current.submit();
+    }
+  }
 
   return (
     <div className="min-h-screen px-4 py-10">
@@ -60,34 +72,50 @@ export default function ParticipationUploadPage() {
 
         {step === 1 && <DirectorForm onNext={() => setStep(2)} />}
 
-        {step === 2 && (
-          <div className="rounded-2xl bg-white p-6 md:p-10 text-neutral-900 dark:bg-black dark:text-white">
-            <div className="mb-6">
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="text-sm text-neutral-500 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white"
-              >
-                ← Retour profil réalisateur
-              </button>
-            </div>
+        {/* ✅ IMPORTANT : on garde VideoUploadForm monté en step 2 ET step 3
+            pour ne PAS perdre les fichiers sélectionnés */}
+        {(step === 2 || step === 3) && (
+          <div className={step === 3 ? "hidden" : ""}>
+            <div className="rounded-2xl bg-white p-6 md:p-10 text-neutral-900 dark:bg-black dark:text-white">
+              <div className="mb-6">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="text-sm text-neutral-500 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white"
+                >
+                  ← Retour profil réalisateur
+                </button>
+              </div>
 
-            <VideoUploadForm />
-
-            <div className="mt-10 flex justify-center">
-              <button
-                type="button"
-                onClick={() => setStep(3)}
-                className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white"
-              >
-                SUIVANT →
-              </button>
+              {/* ✅ VideoUploadForm reste le même composant -> les fichiers restent */}
+              <VideoUploadForm formRef={videoFormRef} />
+              <div className="mt-10 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setStep(3)}
+                  className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white"
+                >
+                  SUIVANT →
+                </button>
+              </div>
             </div>
           </div>
         )}
 
         {step === 3 && (
-          <TeamCompositionForm onPrev={() => setStep(2)} />
+          <div className="space-y-6">
+            <TeamCompositionForm onPrev={() => setStep(2)} />
+
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={submitVideoFromStep3}
+                className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white"
+              >
+                ENVOYER
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>
