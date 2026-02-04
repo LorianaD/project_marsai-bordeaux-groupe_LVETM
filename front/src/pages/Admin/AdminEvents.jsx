@@ -1,30 +1,39 @@
 import { useEffect, useMemo, useState } from "react";
-import {formatTimeFR, clamp, NAV, DAY_TABS} from "./AdminEvents.utils.js";
+import { clamp, NAV, DAY_TABS } from "./AdminEvents.utils.js";
 import {
-    getAdminEvents,
-    createEvent,
-    updateEvent,
-    deleteEvent,
-    togglePublish,
-  } from "../../services/Events/AdminEventApi.js";
-  import EventCard from "../../components/admin/EventCard.jsx"; 
-  
+  getAdminEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  togglePublish,
+} from "../../services/Events/AdminEventApi.js";
 
- 
-  
+import EventCard from "../../components/admin/EventCard.jsx";
 
+// Page Admin : gestion des événements
 export default function AdminEvents() {
+  // onglet actif dans la sidebar (pure UI)
   const [activeNav, setActiveNav] = useState("Événements");
+
+  // journée sélectionnée pour filtrer / afficher la liste
   const [day, setDay] = useState("vendredi");
+
+  // recherche texte
   const [query, setQuery] = useState("");
+
+  // liste des events (donnée venant du back)
   const [events, setEvents] = useState([]);
+
+  // loader
   const [loading, setLoading] = useState(true);
 
-  // Modal create/edit
+  // modal ouvert/fermé
   const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState(null); // event obj or null
 
-  // Form state
+  // si on édite un event, on stock l’objet ici
+  const [editing, setEditing] = useState(null);
+
+  // formulaire (sert pour créer OU modifier)
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -32,9 +41,10 @@ export default function AdminEvents() {
     location: "",
     capacity: 30,
     type: "atelier",
-    day: "vendredi",
+    day: "vendredi", // journée choisie POUR l’event (pas le filtre)
   });
 
+  // 1) Au chargement de la page : on récupère les events
   useEffect(() => {
     (async () => {
       try {
@@ -50,10 +60,12 @@ export default function AdminEvents() {
     })();
   }, []);
 
+  // 2) Liste filtrée + triée (jour + recherche + tri par date)
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+
     return events
-      .filter((e) => e.day === day)
+      .filter((e) => e.day === day) // filtre sur la journée sélectionnée
       .filter((e) => {
         if (!q) return true;
         return (
@@ -65,10 +77,13 @@ export default function AdminEvents() {
       .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
   }, [events, day, query]);
 
+  // 3) Stats calculées pour la journée affichée
   const stats = useMemo(() => {
     const dayEvents = events.filter((e) => e.day === day);
+
     const totalReservations = dayEvents.reduce((acc, e) => acc + (e.registered || 0), 0);
     const totalCapacity = dayEvents.reduce((acc, e) => acc + (e.capacity || 0), 0);
+
     const fillRate = totalCapacity ? Math.round((totalReservations / totalCapacity) * 100) : 0;
     const publishedCount = dayEvents.filter((e) => e.published).length;
 
@@ -80,8 +95,11 @@ export default function AdminEvents() {
     };
   }, [events, day]);
 
+  // Ouvre le modal en mode "création"
   function openCreate() {
     setEditing(null);
+
+    // on pré-remplit la journée du formulaire avec le filtre actuel
     setForm({
       title: "",
       description: "",
@@ -89,25 +107,30 @@ export default function AdminEvents() {
       location: "",
       capacity: 30,
       type: "atelier",
-      day,
+      day, // IMPORTANT : ici c’est form.day
     });
+
     setModalOpen(true);
   }
 
+  // Ouvre le modal en mode "édition"
   function openEdit(ev) {
     setEditing(ev);
+
     setForm({
       title: ev.title || "",
       description: ev.description || "",
-      startAt: ev.startAt ? ev.startAt.slice(0, 16) : "", // for datetime-local
+      startAt: ev.startAt ? ev.startAt.slice(0, 16) : "", // datetime-local
       location: ev.location || "",
       capacity: ev.capacity ?? 30,
       type: ev.type || "atelier",
-      day: ev.day || day,
+      day: ev.day || day, // journée de l’event
     });
+
     setModalOpen(true);
   }
 
+  // Créer ou modifier un event
   async function onSave(e) {
     e.preventDefault();
 
@@ -119,12 +142,15 @@ export default function AdminEvents() {
 
     try {
       if (editing) {
+        // update
         const updated = await updateEvent(editing.id, { ...editing, ...payload });
         setEvents((prev) => prev.map((x) => (x.id === editing.id ? updated : x)));
       } else {
+        // create
         const created = await createEvent(payload);
         setEvents((prev) => [created, ...prev]);
       }
+
       setModalOpen(false);
     } catch (err) {
       console.error("Erreur save event:", err);
@@ -132,9 +158,11 @@ export default function AdminEvents() {
     }
   }
 
+  // Supprimer un event
   async function onDelete(ev) {
     const ok = confirm(`Supprimer "${ev.title}" ?`);
     if (!ok) return;
+
     try {
       await deleteEvent(ev.id);
       setEvents((prev) => prev.filter((x) => x.id !== ev.id));
@@ -144,9 +172,11 @@ export default function AdminEvents() {
     }
   }
 
+  // Publier / Dépublier
   async function onTogglePublish(ev) {
     try {
       const res = await togglePublish(ev.id, !ev.published);
+
       setEvents((prev) =>
         prev.map((x) => (x.id === ev.id ? { ...x, published: res.published } : x))
       );
@@ -157,21 +187,20 @@ export default function AdminEvents() {
   }
 
   return (
-    
     <div className="min-h-screen bg-black text-white">
       <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
         {/* SIDEBAR */}
         <aside className="hidden w-[270px] flex-col rounded-3xl border border-white/10 bg-white/5 p-4 md:flex">
-          {/* Profile */}
+          {/* Profil */}
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-3">
             <div className="h-10 w-10 rounded-full bg-white/10" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Name </p>
+              <p className="truncate text-sm font-semibold">Name</p>
               <p className="truncate text-xs text-white/60">RÉALISATEUR STUDIO</p>
             </div>
           </div>
 
-          {/* Nav */}
+          {/* Menu */}
           <nav className="mt-4 space-y-1">
             {NAV.map((item) => {
               const active = item === activeNav;
@@ -193,10 +222,8 @@ export default function AdminEvents() {
             })}
           </nav>
 
-          {/* Spacer */}
           <div className="mt-4 flex-1 rounded-2xl border border-dashed border-white/10 bg-black/20" />
 
-          {/* Bottom */}
           <div className="mt-4 rounded-2xl border border-white/10 bg-black/30 p-3">
             <div className="flex items-center justify-between">
               <div>
@@ -205,6 +232,7 @@ export default function AdminEvents() {
               </div>
               <span className="rounded-full bg-white/10 px-3 py-1 text-xs">Admin</span>
             </div>
+
             <button
               type="button"
               className="mt-3 w-full rounded-xl bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15"
@@ -227,18 +255,15 @@ export default function AdminEvents() {
                 <p className="text-sm font-semibold">
                   Administration — <span className="text-white/70">Événements</span>
                 </p>
-                <p className="text-xs text-white/60">
-                  Gérer planning, workshops et inscriptions.
-                </p>
+                <p className="text-xs text-white/60">Gérer planning, workshops et inscriptions.</p>
               </div>
             </div>
-            
           </div>
 
           {/* Hero */}
           <section className="mt-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            {/* Banner */}
             <div className="relative">
-              {/* background "banner" */}
               <div className="h-[140px] bg-[radial-gradient(circle_at_20%_20%,rgba(246,51,154,0.35),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(56,189,248,0.25),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(0,0,0,0.35))]" />
               <div className="absolute inset-0 p-6">
                 <div className="flex items-start justify-between gap-4">
@@ -277,6 +302,7 @@ export default function AdminEvents() {
                   <p className="mt-1 text-2xl font-semibold">{stats.totalReservations}</p>
                   <p className="mt-1 text-xs text-white/50">sur la journée sélectionnée</p>
                 </div>
+
                 <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
                   <p className="text-xs text-white/60">Taux de remplissage</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.fillRate}%</p>
@@ -287,36 +313,19 @@ export default function AdminEvents() {
                     />
                   </div>
                 </div>
+
                 <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
                   <p className="text-xs text-white/60">Événements publiés</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.publishedCount}</p>
-                  <p className="mt-1 text-xs text-white/50">
-                    sur {stats.eventsCount} événement(s)
-                  </p>
+                  <p className="mt-1 text-xs text-white/50">sur {stats.eventsCount} événement(s)</p>
                 </div>
               </div>
 
               {/* Controls */}
               <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                {/* Boutons jour (filtre) */}
                 <div className="flex flex-wrap gap-2">
-                <div>
-                <label className="text-xs text-white/60">Journée</label>
-                <select
-                  value={form.day}
-                  onChange={(e) => setForm((s) => ({ ...s, day: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
-                >
-                  <option value="vendredi">Vendredi</option>
-                  <option value="samedi">Samedi</option>
-                  <option value="dimanche">Dimanche</option>
-                </select>
-              </div>
-
-                  {[
-                    { key: "vendredi", label: "Vendredi 13" },
-                    { key: "samedi", label: "Samedi 14" },
-                    { key: "dimanche", label: "Dimanche 15" },
-                  ].map((t) => {
+                  {DAY_TABS.map((t) => {
                     const active = t.key === day;
                     return (
                       <button
@@ -336,6 +345,7 @@ export default function AdminEvents() {
                   })}
                 </div>
 
+                {/* Recherche + bouton ajouter */}
                 <div className="flex gap-2">
                   <div className="flex-1 md:w-[320px]">
                     <input
@@ -345,6 +355,7 @@ export default function AdminEvents() {
                       className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-white/20"
                     />
                   </div>
+
                   <button
                     type="button"
                     onClick={openCreate}
@@ -367,6 +378,7 @@ export default function AdminEvents() {
                     <p className="mt-1 text-sm text-white/60">
                       Ajoute un workshop ou une conférence pour cette journée.
                     </p>
+
                     <button
                       type="button"
                       onClick={openCreate}
@@ -393,7 +405,7 @@ export default function AdminEvents() {
         </main>
       </div>
 
-      {/* MODAL */}
+      {/* MODAL (création / édition) */}
       {modalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4">
           <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-[#0b0b0b] p-6">
@@ -506,6 +518,7 @@ export default function AdminEvents() {
                 >
                   Annuler
                 </button>
+
                 <button
                   type="submit"
                   className="rounded-2xl bg-gradient-to-r from-sky-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold"
