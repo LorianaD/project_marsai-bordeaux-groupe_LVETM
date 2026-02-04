@@ -23,6 +23,38 @@ function isSrtFile(file) {
   return ext === ".srt";
 }
 
+// ✅ AJOUT TAGS : normalise (trim/lowercase) + retire doublons/vides
+function normalizeTags(tags = []) {
+  return [
+    ...new Set(
+      tags
+        .map((t) => String(t || "").trim().toLowerCase())
+        .filter((t) => t.length > 0),
+    ),
+  ];
+}
+
+// ✅ AJOUT TAGS : crée les tags manquants et renvoie toutes les lignes (id + name)
+async function upsertTags(cleanTags, conn) {
+  if (!cleanTags.length) return [];
+
+  // on fabrique "(?), (?), (?)" selon le nombre de tags
+  const values = cleanTags.map(() => "(?)").join(", ");
+
+  // Créer les tags manquants
+  // IMPORTANT : ça marche bien si tags.name est UNIQUE
+  await conn.query(`INSERT IGNORE INTO tags (name) VALUES ${values}`, cleanTags);
+
+  // Récupérer les id de tous les tags concernés
+  const placeholders = cleanTags.map(() => "?").join(", ");
+  const [rows] = await conn.query(
+    `SELECT id, name FROM tags WHERE name IN (${placeholders})`,
+    cleanTags,
+  );
+
+  return rows; // [{ id, name }, ...]
+}
+
 async function uploadVideoController(req, res) {
   //  DEBUG : ça permet de voir ce que le front envoie vraiment
   // (souvent utile quand on a un bug de FormData / multer)
@@ -103,6 +135,10 @@ async function uploadVideoController(req, res) {
       contributors, // string JSON
       ownership_certified, // "1" ou "0"
       promo_consent, // "1" ou "0"
+
+      // ✅ AJOUT TAGS : tags envoyés par le front (souvent JSON string)
+      // ex: '["action","sci-fi"]'
+      tags,
     } = req.body;
 
     // ✅ AJOUT : on parse contributors (JSON string -> tableau)
@@ -118,6 +154,16 @@ async function uploadVideoController(req, res) {
     // ✅ AJOUT : on normalise les booleans "1"/"0" en vrai bool
     const ownershipCertifiedBool = ownership_certified === "1";
     const promoConsentBool = promo_consent === "1";
+
+    // ✅ AJOUT TAGS : on parse tags (JSON string -> tableau)
+    // Important : si c’est invalide, on ne casse pas l’upload, on met []
+    let tagsList = [];
+    try {
+      const parsedTags = JSON.parse(tags || "[]");
+      tagsList = Array.isArray(parsedTags) ? parsedTags : [];
+    } catch {
+      tagsList = [];
+    }
 
     //  On liste les champs obligatoires
     // Comme ça, on peut facilement dire “il manque quoi”
@@ -168,9 +214,7 @@ async function uploadVideoController(req, res) {
     //  Normalisation de la civilité
     // Ici tu acceptes plein de façons d’écrire “Mr/Mrs”,
     // et tu transformes tout en valeur propre pour la DB
-    const genderRaw = String(director_gender || "")
-      .trim()
-      .toLowerCase();
+    const genderRaw = String(director_gender || "").trim().toLowerCase();
 
     let directorGenderDb = null;
 
@@ -180,9 +224,7 @@ async function uploadVideoController(req, res) {
     }
 
     //  si l’utilisateur a écrit une version “femme”
-    if (
-      ["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)
-    ) {
+    if (["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)) {
       directorGenderDb = "Mrs";
     }
 
@@ -279,7 +321,7 @@ async function uploadVideoController(req, res) {
       ],
     );
 
-       // ✅ AJOUT : on insère les contributors liés à cette vidéo
+    // ✅ AJOUT : on insère les contributors liés à cette vidéo
     // Important :
     // - contributorsList vient du front (étape 3)
     // - on accepte qu’il soit vide (pas bloquant)
@@ -307,17 +349,33 @@ async function uploadVideoController(req, res) {
           (video_id, name, last_name, gender, email, profession)
         VALUES (?, ?, ?, ?, ?, ?)
         `,
-        [
-          videoId,
-          firstName,
-          lastName,
-          cGender,
-          cEmail,
-          profession,
-        ],
+        [videoId, firstName, lastName, cGender, cEmail, profession],
       );
     }
 
+    // ✅✅✅ AJOUT TAGS : créer / récupérer les tags + lier à la vidéo
+    // - tagsList vient du front
+    // - on nettoie (trim/lowercase/doublons)
+    // - on upsert dans tags
+    // - on lie dans la table pivot
+    const cleanTags = normalizeTags(tagsList);
+
+    if (cleanTags.length > 0) {
+      const tagRows = await upsertTags(cleanTags, conn);
+
+      // Associer les tags à la vidéo via table pivot
+      // ⚠️ Si ta table pivot n’est pas "video_tag", change ici
+      if (tagRows.length > 0) {
+        const values = tagRows.map(() => "(?, ?)").join(", ");
+        const params = tagRows.flatMap((t) => [videoId, t.id]);
+
+        await conn.query(
+          `INSERT IGNORE INTO video_tag (video_id, tag_id) VALUES ${values}`,
+          params,
+        );
+      }
+    }
+    // ✅✅✅ FIN AJOUT TAGS
 
     // 2) On ajoute les stills liés à ce videoId
     await stillsModel.insertStills(videoId, stillFiles, conn);
@@ -336,9 +394,11 @@ async function uploadVideoController(req, res) {
     await conn.commit();
 
     //  Réponse succès : 201 (créé) + id de la vidéo créée
+    // ✅ AJOUT TAGS : on renvoie aussi les tags normalisés (pratique côté front/admin)
     return res.status(201).json({
       message: "Upload OK",
       videoId,
+      tags: cleanTags,
     });
   } catch (e) {
     //  Si un problème arrive :
