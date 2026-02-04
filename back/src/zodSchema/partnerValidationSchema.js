@@ -5,7 +5,7 @@
  *********************************************/
 import { z } from "zod";
 
-export const createPartenerSchema = z.object({
+export const createPartnerSchema = z.object({
     name: z
         .string({message:"Name must be a string."})
         .trim()
