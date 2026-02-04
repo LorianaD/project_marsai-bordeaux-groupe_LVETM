@@ -4,7 +4,6 @@ import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
 import contactRouter from "./contact.js"; 
 import partner from "./partner.js";
-import contactRouter from "./contact.js"; 
 
 const router = Router();
 
