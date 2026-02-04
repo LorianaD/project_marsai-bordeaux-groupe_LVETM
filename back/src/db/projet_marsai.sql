@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mar. 03 fév. 2026 à 15:42
+-- Généré le : mer. 04 fév. 2026 à 12:45
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -88,6 +88,30 @@ CREATE TABLE `cms` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT (now())
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `last_name`, `subject`, `email`, `message`, `created_at`) VALUES
+(1, 'Ocean', 'Breeze', 'Test formulaire', 'ocean@test.com', 'Ceci est un message de test', '2026-02-04 11:27:48'),
+(2, 'Biamonti', 'Vanessa', 'why oh why?', 'vanessa.biamonti@gmail.com', 'Hello ya! How are ya ?', '2026-02-04 13:15:19');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `contributor`
 --
 
@@ -102,6 +126,13 @@ CREATE TABLE `contributor` (
   `created_at` datetime NOT NULL DEFAULT (now()),
   `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `contributor`
+--
+
+INSERT INTO `contributor` (`id`, `video_id`, `name`, `last_name`, `gender`, `email`, `profession`, `created_at`, `updated_at`) VALUES
+(1, 7, 'CACA', 'Pipi', 'Mr', 'test123@mail.com', 'Pipo', '2026-02-04 13:12:34', '2026-02-04 13:12:34');
 
 -- --------------------------------------------------------
 
@@ -261,7 +292,8 @@ INSERT INTO `still` (`id`, `file_name`, `video_id`) VALUES
 (3, '1770025470482-577707-ethopstudio_black_and_white_blurred_photograph_of_people_dancin_2df345e4-8c33-4c1d-8515-972758658476.png', 5),
 (4, '1770037126201-841805-Sans_titre__Pr__sentation___5_.jpg', 6),
 (5, '1770037126205-322060-Capture_d___cran_2026-02-02_094320.png', 6),
-(6, '1770037126205-760925-MarsAI_Film_Festival-2026_ABOUT__1_.jpg', 6);
+(6, '1770037126205-760925-MarsAI_Film_Festival-2026_ABOUT__1_.jpg', 6),
+(7, '1770207153926-434493-korog.art_An_hells_gate_--v_7_f639f163-0927-4d0d-8dbe-ac00144c3afb.png', 7);
 
 -- --------------------------------------------------------
 
@@ -340,7 +372,8 @@ CREATE TABLE `videos` (
 INSERT INTO `videos` (`id`, `youtube_video_id`, `video_file_name`, `title`, `title_en`, `synopsis`, `synopsis_en`, `cover`, `language`, `country`, `duration`, `tech_resume`, `ai_tech`, `creative_resume`, `email`, `director_name`, `director_lastname`, `director_gender`, `birthday`, `mobile_number`, `home_number`, `address`, `director_country`, `discovery_source`, `upload_status`, `created_at`, `featured`, `ownership_certified`, `ownership_certified_at`, `promo_consent`, `promo_consent_at`) VALUES
 (4, NULL, '1770022546953-878781-MarseillefutureGoodone3.mp4', 'Vue sur Marseille', 'View on Marseille', 'Magnifique vue sur Marseille', 'Beautiful view on Marseille', '1770022546993-180497-Sans_titre__Pr__sentation___2_.jpg', 'fr', 'FR', 120, 'sdkcjdkfjzekflnezfklnef', 'Midjourney', 'scklskclmqssqmds', 'vanessa.biamonti@laplate.com', 'Vanessa', 'Callea', 'Mrs', '1995-12-11', '+33650925487', '0556789876', '13 rue Exemple, Paris', 'FR', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL),
 (5, NULL, '1770025470430-682094-MarseillefutureGoodone2.mp4', 'Les beaux jours', 'Beautiful days', 'sdfjkzejfsdkslfsjdjfklsdfkl', 'qdflvdf;v,dslv,df;v', '1770025470480-428870-Sans_titre__Pr__sentation___3_.jpg', 'fr', 'France', 120, 'ksdcsdlcksdfl', 'Midjourney', 'wx wx;,', 'vanessa.biamonti@gmail.com', 'Julie', 'Callea', 'Mrs', '1977-07-21', NULL, NULL, '15 rue Exemple, Paris', 'France', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL),
-(6, NULL, '1770037126155-987006-MarseillefutureGoodone3.mp4', 'Video bebe', 'Video Baby', 'sd;v;dsvsd;:v', 'qslcqslmclmqsclmqs', '1770037126194-723445-Sans_titre__Pr__sentation___7_.jpg', 'fr', 'France', 60, 'djfsdjkfjsdfjkd', 'Midjourney', 'sd,c,sdqcf,sd,;sd,;', 'test2@mail.com', 'Biamonti', 'Callea', 'Mr', '2008-06-14', '0650925488', NULL, '16 rue Exemple, Paris', 'Australia', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL);
+(6, NULL, '1770037126155-987006-MarseillefutureGoodone3.mp4', 'Video bebe', 'Video Baby', 'sd;v;dsvsd;:v', 'qslcqslmclmqsclmqs', '1770037126194-723445-Sans_titre__Pr__sentation___7_.jpg', 'fr', 'France', 60, 'djfsdjkfjsdfjkd', 'Midjourney', 'sd,c,sdqcf,sd,;sd,;', 'test2@mail.com', 'Biamonti', 'Callea', 'Mr', '2008-06-14', '0650925488', NULL, '16 rue Exemple, Paris', 'Australia', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL),
+(7, NULL, '1770207153587-937416-vanessdev_Marseille_in_a_desirable_future_black_and_white_cin_fc2947f3-1740-42ee-bfc4-aedeef052256_2.mp4', 'dsdsvds', 'ddcdssdvsd', 'qssqqs', 'sqqsqs', '1770207153812-118295-sankaku_john_baldessari_art_--v_7_7d750db0-c595-4d24-8364-1efbdeeeced4.png', 'nl', 'Anguilla', 60, 'xdsdsqsqqs', 'Midjourney', 'sddssd', 'vanessa.biamonti@laplate.com', 'Juliette', 'Ravioli', 'Mr', '1986-11-20', '0650925487', NULL, '14 rue Exemple, Paris', 'Antigua and Barbuda', 'Facebook', 'Pending', '2026-02-04 13:12:33', 0, 1, '2026-02-04 13:12:34', 1, '2026-02-04 13:12:34');
 
 -- --------------------------------------------------------
 
@@ -363,7 +396,8 @@ CREATE TABLE `video_subtitles` (
 INSERT INTO `video_subtitles` (`id`, `video_id`, `file_name`, `language`, `created_at`) VALUES
 (2, 4, '1770022547060-458523-soustitre.srt', NULL, '2026-02-02 09:55:47'),
 (3, 5, '1770025470507-840368-soustitre.srt', NULL, '2026-02-02 10:44:30'),
-(4, 6, '1770037126209-761699-soustitre.srt', NULL, '2026-02-02 13:58:46');
+(4, 6, '1770037126209-761699-soustitre.srt', NULL, '2026-02-02 13:58:46'),
+(5, 7, '1770207153954-129470-soustitre.srt', NULL, '2026-02-04 13:12:34');
 
 --
 -- Index pour les tables déchargées
@@ -398,6 +432,12 @@ ALTER TABLE `awards_video`
 -- Index pour la table `cms`
 --
 ALTER TABLE `cms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `contact_messages`
+--
+ALTER TABLE `contact_messages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -523,10 +563,16 @@ ALTER TABLE `cms`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT pour la table `contributor`
 --
 ALTER TABLE `contributor`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `events`
@@ -580,7 +626,7 @@ ALTER TABLE `social_media`
 -- AUTO_INCREMENT pour la table `still`
 --
 ALTER TABLE `still`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `tag`
@@ -598,13 +644,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `video_subtitles`
 --
 ALTER TABLE `video_subtitles`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Contraintes pour les tables déchargées

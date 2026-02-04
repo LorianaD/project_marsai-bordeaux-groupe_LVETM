@@ -1,5 +1,6 @@
+// routes/contact.routes.js
 import { Router } from "express";
-import { pool } from "../db/index.js";
+import { createContactMessage } from "../models/contact.model.js";
 
 const router = Router();
 
@@ -11,20 +12,15 @@ router.post("/contact", async (req, res, next) => {
       return res.status(400).json({ error: "Champs manquants" });
     }
 
-    const sql = `
-      INSERT INTO contact_messages (name, last_name, subject, email, message)
-      VALUES (?, ?, ?, ?, ?)
-    `;
-
-    const [result] = await pool.execute(sql, [
+    const id = await createContactMessage({
       name,
       last_name,
       subject,
       email,
       message,
-    ]);
+    });
 
-    res.status(201).json({ ok: true, id: result.insertId });
+    res.status(201).json({ ok: true, id });
   } catch (err) {
     next(err);
   }
