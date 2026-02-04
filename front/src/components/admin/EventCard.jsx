@@ -1,4 +1,5 @@
-import { clamp, formatTimeFR } from "../../pages/Admin/AdminEvents.util.js";
+import { clamp, formatTimeFR } from "../../pages/Admin/AdminEvents.utils.js";
+
 
 /**
  * Carte 1 événement dans l'admin
