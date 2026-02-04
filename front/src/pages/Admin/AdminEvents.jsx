@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import {formatTimeFR, clamp, NAV, DAY_TABS} from "./AdminEvents.utils.js";
 import {
     getAdminEvents,
     createEvent,
@@ -8,32 +9,8 @@ import {
   } from "../../services/Events/AdminEventApi.js";
   
 
-
-
-
-// ---------------------
-// Helpers
-// ---------------------
-function formatTimeFR(iso) {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-}
-function clamp(n, min, max) {
-  return Math.max(min, Math.min(max, n));
-}
-
-const NAV = [
-  "Overview",
-  "Gestion films",
-  "Distribution & Jury",
-  "Résultats & classement",
-  "Leaderboard officiel",
-  "Événements",
-  "Messages",
-  "Festival Box",
-  "Configuration Festival",
-];
+ 
+  
 
 export default function AdminEvents() {
   const [activeNav, setActiveNav] = useState("Événements");
@@ -179,6 +156,7 @@ export default function AdminEvents() {
   }
 
   return (
+    
     <div className="min-h-screen bg-black text-white">
       <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
         {/* SIDEBAR */}
@@ -320,6 +298,19 @@ export default function AdminEvents() {
               {/* Controls */}
               <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-wrap gap-2">
+                <div>
+                <label className="text-xs text-white/60">Journée</label>
+                <select
+                  value={form.day}
+                  onChange={(e) => setForm((s) => ({ ...s, day: e.target.value }))}
+                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                >
+                  <option value="vendredi">Vendredi</option>
+                  <option value="samedi">Samedi</option>
+                  <option value="dimanche">Dimanche</option>
+                </select>
+              </div>
+              
                   {[
                     { key: "vendredi", label: "Vendredi 13" },
                     { key: "samedi", label: "Samedi 14" },
@@ -543,6 +534,7 @@ function EventCard({ ev, onEdit, onDelete, onTogglePublish, onParticipants }) {
       : { label: "Atelier", cls: "bg-emerald-500/15 text-emerald-200 border-emerald-400/20" };
 
   return (
+    
     <article className="rounded-3xl border border-white/10 bg-black/35 p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
