@@ -1,24 +1,26 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
+import AdminLayout from "./components/Layout/AdminLayout.jsx";
 
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
 import ParticipationUploadPage from "./pages/ParticipationUploadPage.jsx";
 import Events from "./pages/Events.jsx";
-import Faq from "./pages/Faq.jsx";
+import EventDetails from "./pages/EventDetails.jsx";
 import JuryList from "./pages/JuryList.jsx";
+import Faq from "./pages/Faq.jsx";
+import Contact from "./pages/Contact.jsx";
 import Legal from "./pages/Legal.jsx";
 import Privacy from "./pages/Privacy.jsx";
-import EventDetails from "./pages/EventDetails.jsx";
-import Contact from "./pages/Contact.jsx";
 import Terms from "./pages/Terms.jsx";
 
-import AdminVideos from "./pages/Admin/AdminVideos.jsx";
+import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 
 export default function App() {
   return (
     <Routes>
+      {/* PUBLIC */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
@@ -32,11 +34,14 @@ export default function App() {
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
-
-        <Route path="/admin/videos" element={<AdminVideos />} />
       </Route>
 
-      {/* Fallback */}
+      {/* ADMIN */}
+      <Route element={<AdminLayout />}>
+        <Route path="/admin/events" element={<AdminEvents />} />
+      </Route>
+
+      {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
