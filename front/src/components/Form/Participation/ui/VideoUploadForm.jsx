@@ -471,13 +471,7 @@ export default function VideoUploadForm() {
         </section>
 
         <div className="flex justify-center pt-2">
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            ENVOYER
-          </button>
+       
         </div>
       </div>
     </form>
