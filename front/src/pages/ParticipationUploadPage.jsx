@@ -15,6 +15,10 @@ export default function ParticipationUploadPage() {
   // ✅ ref vers le <form> du VideoUploadForm
   const videoFormRef = useRef(null);
 
+  // ✅ AJOUT : état pour activer/désactiver le bouton ENVOYER
+  // On doit empêcher l’envoi si ownershipCertified n’est pas coché
+  const [ownershipCertified, setOwnershipCertified] = useState(false);
+
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
@@ -38,8 +42,44 @@ export default function ParticipationUploadPage() {
     }
   }, []);
 
+  // ✅ AJOUT : on lit ownershipCertified depuis localStorage
+  // Et on le met à jour en direct quand TeamCompositionForm coche/décoche
+  useEffect(() => {
+    function syncOwnershipCertified() {
+      try {
+        const ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
+        setOwnershipCertified(!!ownership?.ownershipCertified);
+      } catch {
+        setOwnershipCertified(false);
+      }
+    }
+
+    // ✅ Lecture initiale
+    syncOwnershipCertified();
+
+    // ✅ ASTUCE : comme "storage" ne se déclenche pas toujours dans le même onglet,
+    // on écoute aussi un petit "poll" léger seulement quand on est en step 3
+    // (c’est super fiable et ça coûte presque rien)
+    let intervalId = null;
+
+    if (step === 3) {
+      intervalId = setInterval(syncOwnershipCertified, 250);
+    }
+
+    // ✅ On garde aussi storage (utile si changement dans un autre onglet)
+    window.addEventListener("storage", syncOwnershipCertified);
+
+    return () => {
+      window.removeEventListener("storage", syncOwnershipCertified);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [step]);
+
   // ✅ submit final déclenché depuis l’étape 3
   function submitVideoFromStep3() {
+    // ✅ AJOUT : sécurité UX → si pas certifié, on ne fait rien
+    if (!ownershipCertified) return;
+
     if (videoFormRef.current?.requestSubmit) {
       videoFormRef.current.requestSubmit();
       return;
@@ -89,6 +129,7 @@ export default function ParticipationUploadPage() {
 
               {/* ✅ VideoUploadForm reste le même composant -> les fichiers restent */}
               <VideoUploadForm formRef={videoFormRef} />
+
               <div className="mt-10 flex justify-center">
                 <button
                   type="button"
@@ -110,11 +151,29 @@ export default function ParticipationUploadPage() {
               <button
                 type="button"
                 onClick={submitVideoFromStep3}
-                className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white"
+                disabled={!ownershipCertified}
+                className={[
+                  "rounded-xl px-12 py-3 font-semibold text-white transition",
+                  ownershipCertified
+                    ? "bg-purple-600 hover:bg-purple-700"
+                    : "cursor-not-allowed bg-purple-300 opacity-60",
+                ].join(" ")}
+                title={
+                  ownershipCertified
+                    ? "Envoyer la participation"
+                    : "Veuillez certifier la propriété pour envoyer"
+                }
               >
                 ENVOYER
               </button>
             </div>
+
+            {/* ✅ AJOUT : petit message d’aide (optionnel mais utile) */}
+            {!ownershipCertified ? (
+              <div className="text-center text-sm text-neutral-500 dark:text-neutral-300">
+                Coche “Je certifie être l’auteur…” pour activer le bouton ENVOYER.
+              </div>
+            ) : null}
           </div>
         )}
       </div>
