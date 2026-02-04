@@ -4,12 +4,12 @@ import { Router } from "express";
 import uploadPartner from "../middlewares/partnerMiddleware.js";
 
 import AddPartner from "../controllers/partner/AddPartner.controller.js";
-// import { GetPartnerController } from "../controllers/";
+import GetAllPartnerController from "../controllers/partner/GetAllPartner.controller.js";
 
 const router = Router();
 
 // routes en get
-// router.get("/", partnerController);
+router.get("/", GetAllPartnerController);
 
 // route en post
 router.post("/", uploadPartner.single("img"), AddPartner);
