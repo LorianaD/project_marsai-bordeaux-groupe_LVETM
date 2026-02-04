@@ -1,6 +1,6 @@
 import { pool } from "../../db/index.js";
 
-async function insertPartner({ name, img, url }) {
+async function insertPartner({ name, img, url = null }) {
     console.log("model inserPartner OK");
     
     const query = `
