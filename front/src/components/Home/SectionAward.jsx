@@ -17,11 +17,11 @@ function SectionAward() {
     let isMounted = true;
 
     async function load() {
-      console.log("function");
+      // console.log("function");
       
       try {
 
-        console.log("try dans HomevideoList useEffect ok");
+        // console.log("try dans HomevideoList useEffect ok");
 
         setLoading(true);
         setErrorMsg("");

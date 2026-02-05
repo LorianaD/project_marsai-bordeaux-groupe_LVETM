@@ -6,7 +6,8 @@ import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
 import contactRouter from "./contact.js";
 import partnerRouter from "./partner.js";
-import newsletterRoutes from "./newsletter.routes.js";
+import cmsRouter from "./cms.js";
+import newsletterRouter from "./newsletter.routes.js"
 
 const router = Router();
 
@@ -17,6 +18,7 @@ router.use("/videos", videosRouter);
 router.use("/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);
-router.use("/", newsletterRoutes);
+router.use("/cms", cmsRouter);
+router.use("/newsletter", newsletterRouter);
 
 export default router;

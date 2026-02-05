@@ -33,10 +33,10 @@ function UpdatePartner() {
             setLoadingPartner(true);
 
             const res = await GetOnePartnerApi(id);
-            console.log(res);
+            // console.log(res);
             
             const p = res?.data;
-            console.log(p);
+            // console.log(p);
             
             setPartner(p);
 
@@ -66,12 +66,12 @@ function UpdatePartner() {
     //---- Je récupére les données depuis le formulaire et je l'envoi à la BDD (avec l'API qui envoi au BACK, ect.) ----//
 
     async function handleUpdate(event) {
-        console.log("Fonction handleUpdate OK", values);
+        // console.log("Fonction handleUpdate OK", values);
 
         event.preventDefault();
 
         try {
-            console.log("try dans la fonction handleUpdate OK");
+            // console.log("try dans la fonction handleUpdate OK");
             
             setLoading(true);
             setMessage("");
@@ -83,7 +83,7 @@ function UpdatePartner() {
             };
 
             const res = await updatePartnerApi(id, payload);
-            console.log(res);
+            // console.log(res);
 
             await loadPartner();
 
