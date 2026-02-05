@@ -1,4 +1,13 @@
 import { Router } from "express";
+import { testController } from "../controllers/test.controller.js";
+
+import usersRouter from "./users.js";
+
+const router = Router();
+
+router.get("/test", testController);
+router.use("/users", usersRouter);
+
 // import { testController } from "../controllers/test.controller.js";
 import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
@@ -11,6 +20,6 @@ const router = Router();
 router.use("/videos", videosRouter);
 router.use("/events", eventsRouter);
 router.use("/partner", partner)
-router.use("/", contactRouter);
+router.use("/contact", contactRouter);
 
 export default router;
