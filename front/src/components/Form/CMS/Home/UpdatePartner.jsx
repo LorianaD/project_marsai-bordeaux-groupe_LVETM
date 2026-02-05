@@ -6,8 +6,9 @@ import { useForm } from "../../../../hooks/useForm.js";
 import { useEffect, useState } from "react";
 import updatePartnerApi from "../../../../services/Partner/UpdatePartnerApi.js";
 import { useParams } from "react-router";
+import GetOnePartnerApi from "../../../../services/Partner/GetOnePartnerApi.js";
 
-function UpdatePartner({ partner }) {
+function UpdatePartner() {
 
     const { id } = useParams();
 
@@ -22,6 +23,8 @@ function UpdatePartner({ partner }) {
     const [loading, setLoading] = useState(false);
     const [loadingPartner, setLoadingPartner] = useState(true);
 
+    //---- Je recupére les informations du partenaire depuis la BDD ----//
+
     async function loadPartner() {
         console.log("function loadPartner in the UpdatePartner OK");
 
@@ -29,7 +32,7 @@ function UpdatePartner({ partner }) {
 
             setLoadingPartner(true);
 
-            const res = await getOnePartnerApi(id);
+            const res = await GetOnePartnerApi(id);
             console.log(res);
             
             const p = res?.data;
@@ -60,6 +63,8 @@ function UpdatePartner({ partner }) {
 
     }, [id, setValues]);
 
+    //---- Je récupére les données depuis le formulaire et je l'envoi à la BDD (avec l'API qui envoi au BACK, ect.) ----//
+
     async function handleUpdate(event) {
         console.log("Fonction handleUpdate OK", values);
 
@@ -74,11 +79,13 @@ function UpdatePartner({ partner }) {
             const payload = {
                 name: values.name,
                 url: values.url,
-                img: partner.img
+                file: values.file,
             };
 
             const res = await updatePartnerApi(id, payload);
             console.log(res);
+
+            await loadPartner();
 
             setMessage("Mis à jour !")
             
@@ -94,6 +101,14 @@ function UpdatePartner({ partner }) {
 
         }
 
+    }
+
+    if (loadingPartner) {
+        return <p className="p-6">Chargement</p>;
+    }
+
+    if (!partner) {
+        return <p>Partenaire introuvable</p>;
     }
 
     return(
@@ -116,7 +131,7 @@ function UpdatePartner({ partner }) {
                     <label htmlFor="name" className="text-[14px] font-semibold tracking-[2.24px]">
                         Titre principal
                     </label>
-                    <input type="text" name="name" value={values.name} onChange={handleChange} placeholder="le projet marsai" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                    <input type="text" name="name" value={values.name} onChange={handleChange} placeholder="" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                 </div>
 
                 <div className="flex items-center justify-center gap-[10px] p-[10px] self-stretch">
@@ -133,6 +148,12 @@ function UpdatePartner({ partner }) {
                             Ajouter un logo
                         </label>
                     </div>
+                </div>
+                <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
+                    <label htmlFor="url" className="text-[14px] font-semibold tracking-[2.24px]">
+                        Ajouter le lien du partenaire
+                    </label>
+                    <input type="text" id="url" name="url" value={values.url} onChange={handleChange} placeholder="https://example.com" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]" />
                 </div>
                 <div className="w-full flex justify-center">
                     <button type="submit" disabled={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">

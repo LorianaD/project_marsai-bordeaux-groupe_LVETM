@@ -1,14 +1,19 @@
 const API_URL = import.meta.env.VITE_API_URL
 
-async function updatePartnerApi(id, payload) {
+async function updatePartnerApi(id, { name, url, file }) {
 
     console.log("API updatePartner OK");
     
+    const formData = new FormData();
+
+    formData.append("name", name ?? "");
+    formData.append("url", url ?? "");
+
+    if (file) formData.append("file", file);
 
     const res = await fetch(`${API_URL}/api/partner/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formData
     });
     console.log(res);
     

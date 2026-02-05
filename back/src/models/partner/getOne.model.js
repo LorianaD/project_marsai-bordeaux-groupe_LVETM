@@ -13,7 +13,7 @@ async function getOnePartner(id) {
     const [rows] = await pool.execute(query, [id]);
     // console.log(rows);
     
-    return rows;
+    return rows[0] ?? null;
 
 }
 

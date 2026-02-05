@@ -18,6 +18,6 @@ router.get("/:id", GetOnePartnerController);
 router.post("/", uploadPartner.single("img"), AddPartnerController);
 
 // route put pour l'update
-router.put("/:id", UpdatePartnerController);
+router.put("/:id", uploadPartner.single("file"), UpdatePartnerController);
 
 export default router;

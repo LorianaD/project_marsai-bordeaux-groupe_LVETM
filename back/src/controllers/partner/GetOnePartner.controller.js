@@ -1,6 +1,6 @@
 import getOnePartner from "../../models/partner/getOne.model.js";
 
-async function GetOnePartner(req, res) {
+async function GetOnePartner(req, res, next) {
     console.log("Controller GetOnePartner OK");
 
     try {

@@ -1,7 +1,7 @@
 import { pool } from "../../db/index.js";
 
 async function updatePartner(id, { name, img, url }) {
-    console.log("model inserPartner OK");
+    console.log("model updatePartner OK");
     
     const query = `
         UPDATE partner
