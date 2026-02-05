@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { createPartenerSchema } from "../../zodSchema/partenerValidationSchema.js";
+import { createPartnerSchema } from "../../zodSchema/partnerValidationSchema.js";
 
 /********************************************* 
  * Middleware de validation des données du partenaire commercial
@@ -9,7 +9,7 @@ export function validateCreatePartener() {
     return(req, res, next) => {
         try{
             //validation des données
-            const validateData = createPartenerSchema.parse(req.body);
+            const validateData = createPartnerSchema.parse(req.body);
             //injecte les données validées dans req.body
             req.body = validateData;
             //passer au prochain middleware
