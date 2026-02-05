@@ -1,7 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
-import AdminLayout from "./components/Layout/AdminLayout.jsx";
-
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
@@ -14,13 +12,15 @@ import Contact from "./pages/Contact.jsx";
 import Legal from "./pages/Legal.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
-
+import AdminLayout from "./components/Layout/AdminLayout.jsx";
+import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
+import Partner from "./components/Form/CMS/Home/Partner.jsx";
 
 export default function App() {
   return (
     <Routes>
-      {/* PUBLIC */}
+      {/*  PUBLIC – avec Header + Footer */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
@@ -36,12 +36,20 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
       </Route>
 
-      {/* ADMIN */}
-      <Route element={<AdminLayout />}>
-        <Route path="/admin/events" element={<AdminEvents />} />
-      </Route>
+      
+    {/* ADMIN  */}
+<Route element={<MainLayout />}>
+  <Route element={<AdminLayout />}>
+    <Route path="/admin/events" element={<AdminEvents />} />
+    <Route path="/admin/videos" element={<AdminVideos />} />
+  </Route>
+</Route>
 
-      {/* FALLBACK */}
+
+      {/* 🧪 Route temporaire */}
+      <Route path="/partnerForm" element={<Partner />} />
+
+      {/*  Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

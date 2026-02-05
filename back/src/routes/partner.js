@@ -1,4 +1,8 @@
 import { Router } from "express";
+// import { validateCreatePartener } from "../middlewares/zod/validateCreatePartener.js";
+
+import uploadPartner from "../middlewares/partnerMiddleware.js";
+
 import AddPartner from "../controllers/partner/AddPartner.controller.js";
 // import { GetPartnerController } from "../controllers/";
 
@@ -8,6 +12,6 @@ const router = Router();
 // router.get("/", partnerController);
 
 // route en post
-router.post("/", AddPartner);
+router.post("/", uploadPartner.single("img"), AddPartner);
 
 export default router;

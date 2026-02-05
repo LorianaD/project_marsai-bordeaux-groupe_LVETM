@@ -62,11 +62,6 @@ function Footer() {
               </Link>
             </li>
             <li>
-              <Link className="" to="/gallery">
-                Top 50
-              </Link>
-            </li>
-            <li>
               <Link className="" to="/events">
                 Billetterie
               </Link>

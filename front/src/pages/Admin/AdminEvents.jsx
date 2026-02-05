@@ -506,7 +506,6 @@ export default function AdminEvents() {
                 >
                   <option value="vendredi">Vendredi</option>
                   <option value="samedi">Samedi</option>
-                  <option value="dimanche">Dimanche</option>
                 </select>
               </div>
 

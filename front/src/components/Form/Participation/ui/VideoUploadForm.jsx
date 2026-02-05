@@ -3,7 +3,9 @@ import { Field, TextInput, TextArea, Select } from "./Field";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-export default function VideoUploadForm() {
+// ✅ AJOUT : forceSubmit permet de déclencher l’upload même si canSubmit est false
+// (utile quand on déclenche le submit depuis l’étape 3)
+export default function VideoUploadForm({ formRef, forceSubmit = false }) {
   const [files, setFiles] = useState({
     video: null,
     cover: null,
@@ -39,7 +41,9 @@ export default function VideoUploadForm() {
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
 
-  // ✅ Chargement pays
+  // =====================================================
+  // Chargement de la liste des pays
+  // =====================================================
   useEffect(() => {
     let alive = true;
 
@@ -74,7 +78,9 @@ export default function VideoUploadForm() {
     };
   }, []);
 
-  // ✅ Pré-remplir avec le profil réalisateur stocké en localStorage
+  // =====================================================
+  // Pré-remplissage depuis le profil réalisateur
+  // =====================================================
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
@@ -96,7 +102,7 @@ export default function VideoUploadForm() {
         home_number: p.home_number || f.home_number,
       }));
     } catch {
-      // profil corrompu → on ne fait rien
+      // profil corrompu → on ignore
     }
   }, []);
 
@@ -109,9 +115,7 @@ export default function VideoUploadForm() {
     const { name, files: inputFiles } = e.target;
     if (!inputFiles) return;
 
-    if (name === "stills") {
-      setFiles((f) => ({ ...f, stills: Array.from(inputFiles).slice(0, 3) }));
-    } else if (name === "subtitles") {
+    if (name === "subtitles") {
       setFiles((f) => ({ ...f, subtitles: Array.from(inputFiles) }));
     } else {
       setFiles((f) => ({ ...f, [name]: inputFiles[0] }));
@@ -126,6 +130,9 @@ export default function VideoUploadForm() {
     });
   }
 
+  // =====================================================
+  // Validation globale avant submit
+  // =====================================================
   const canSubmit = useMemo(() => {
     const durationNum = Number(form.duration);
 
@@ -152,62 +159,52 @@ export default function VideoUploadForm() {
       form.mobile_number.trim() &&
       files.video &&
       files.cover &&
-      files.stills[0] && // ✅ au moins Still 1
+      files.stills[0] &&
       files.subtitles.length > 0
     );
   }, [form, files]);
 
+  // =====================================================
+  // SUBMIT FINAL (appelé depuis l’étape 3)
+  // =====================================================
   async function submit(e) {
     e.preventDefault();
-    if (!canSubmit) return;
+
+    // ✅ MODIF : si on n’est pas en "forceSubmit", on garde la règle normale
+    // (en étape 2 tu ne veux pas soumettre un formulaire incomplet)
+    if (!forceSubmit && !canSubmit) return;
 
     try {
       const fd = new FormData();
 
-      // ✅ On envoie tous les champs texte
       Object.entries(form).forEach(([k, v]) => {
         if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
       });
 
-      // ✅ AJOUT : contributors + ownership_certified + promo_consent (depuis localStorage)
+      // contributors + certificat
       let contributors = [];
       let ownership = {};
 
       try {
         contributors = JSON.parse(localStorage.getItem("contributors") || "[]");
-      } catch {
-        contributors = [];
-      }
+      } catch {}
 
       try {
         ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
-      } catch {
-        ownership = {};
-      }
+      } catch {}
 
-      // contributors = tableau → on l’envoie en JSON string
-      fd.append(
-        "contributors",
-        JSON.stringify(Array.isArray(contributors) ? contributors : []),
-      );
-
-      // booléens → on envoie "1" / "0" (simple côté backend)
+      fd.append("contributors", JSON.stringify(contributors));
       fd.append(
         "ownership_certified",
         ownership?.ownershipCertified ? "1" : "0",
       );
       fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
 
-      // ✅ Fichiers
+      // fichiers
       fd.append("video", files.video);
       fd.append("cover", files.cover);
 
-      // ✅ On n’envoie que les stills qui existent
-      files.stills.forEach((f) => {
-        if (f) fd.append("stills", f);
-      });
-
-      // ✅ Sous-titres
+      files.stills.forEach((f) => f && fd.append("stills", f));
       files.subtitles.forEach((f) => fd.append("subtitles", f));
 
       const res = await fetch(`${API_URL}/api/videos`, {
@@ -215,31 +212,28 @@ export default function VideoUploadForm() {
         body: fd,
       });
 
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        data = null;
-      }
+      const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        const msg =
-          data?.details || data?.error || `Erreur upload (HTTP ${res.status})`;
-        throw new Error(msg);
+        throw new Error(
+          data?.details || data?.error || `Erreur upload (${res.status})`,
+        );
       }
 
       alert(`Upload OK ✅ (videoId: ${data.videoId})`);
     } catch (err) {
-      console.error("Upload error:", err);
+      console.error(err);
       alert(err.message || "Erreur upload");
     }
   }
 
+  // ✅ styles inputs (light par défaut, dark si dark mode)
+  const inputClass =
+    "bg-[#E9E9EA] text-neutral-800 placeholder:text-neutral-500 " +
+    "dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400";
+
   return (
-    <form onSubmit={submit} className="w-full">
-      {/* ✅ Texte adaptatif light/dark :
-          - light: text-neutral-900
-          - dark: text-white */}
+    <form ref={formRef} onSubmit={submit} className="w-full">
       <div className="space-y-12 text-neutral-900 dark:text-white">
         <h2 className="text-center text-2xl font-semibold">MA VIDÉO</h2>
 
@@ -253,7 +247,12 @@ export default function VideoUploadForm() {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field label="Titre du court métrage" required>
-              <TextInput name="title" value={form.title} onChange={update} />
+              <TextInput
+                name="title"
+                value={form.title}
+                onChange={update}
+                className={inputClass}
+              />
             </Field>
 
             <Field label="Traduction anglaise" required>
@@ -261,11 +260,17 @@ export default function VideoUploadForm() {
                 name="title_en"
                 value={form.title_en}
                 onChange={update}
+                className={inputClass}
               />
             </Field>
 
             <Field label="Langue" required>
-              <Select name="language" value={form.language} onChange={update}>
+              <Select
+                name="language"
+                value={form.language}
+                onChange={update}
+                className={inputClass}
+              >
                 <option value="">Choisir une langue</option>
                 <option value="fr">Français</option>
                 <option value="en">Anglais</option>
@@ -288,6 +293,7 @@ export default function VideoUploadForm() {
                 value={form.country}
                 onChange={update}
                 disabled={countriesLoading || !!countriesErr}
+                className={inputClass}
               >
                 <option value="">
                   {countriesLoading
@@ -317,6 +323,7 @@ export default function VideoUploadForm() {
                 value={form.duration}
                 onChange={update}
                 placeholder="60"
+                className={inputClass}
               />
             </Field>
 
@@ -325,6 +332,7 @@ export default function VideoUploadForm() {
                 name="youtube_video_id"
                 value={form.youtube_video_id}
                 onChange={update}
+                className={inputClass}
               />
             </Field>
           </div>
@@ -335,6 +343,7 @@ export default function VideoUploadForm() {
                 name="synopsis"
                 value={form.synopsis}
                 onChange={update}
+                className={inputClass}
               />
             </Field>
 
@@ -343,6 +352,7 @@ export default function VideoUploadForm() {
                 name="synopsis_en"
                 value={form.synopsis_en}
                 onChange={update}
+                className={inputClass}
               />
             </Field>
           </div>
@@ -362,6 +372,7 @@ export default function VideoUploadForm() {
                 name="tech_resume"
                 value={form.tech_resume}
                 onChange={update}
+                className={inputClass}
               />
             </Field>
 
@@ -370,12 +381,18 @@ export default function VideoUploadForm() {
                 name="creative_resume"
                 value={form.creative_resume}
                 onChange={update}
+                className={inputClass}
               />
             </Field>
           </div>
 
           <Field label="Outils IA utilisés" required>
-            <TextInput name="ai_tech" value={form.ai_tech} onChange={update} />
+            <TextInput
+              name="ai_tech"
+              value={form.ai_tech}
+              onChange={update}
+              className={inputClass}
+            />
           </Field>
         </section>
 
@@ -470,12 +487,11 @@ export default function VideoUploadForm() {
           </div>
         </section>
 
+        {/* =====================================================
+            BOUTON SUBMIT (caché)
+           ===================================================== */}
         <div className="flex justify-center pt-2">
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
-          >
+          <button type="submit" className="hidden">
             ENVOYER
           </button>
         </div>

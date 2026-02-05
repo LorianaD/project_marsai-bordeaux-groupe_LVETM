@@ -191,13 +191,7 @@ export default function TeamCompositionForm({ onPrev }) {
 
           {/* ⚠️ Le vrai ENVOYER FINAL est dans VideoUploadForm pour l’instant.
               Ici on garde un bouton "OK" pour valider l’étape 3. */}
-          <button
-            type="button"
-            disabled={!canFinish}
-            className="rounded-xl bg-purple-600 px-10 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            OK
-          </button>
+        
         </div>
       </div>
     </div>

@@ -25,6 +25,5 @@ export function formatTimeFR(iso) {
   export const DAY_TABS = [
     { key: "vendredi", label: "Vendredi 13" },
     { key: "samedi", label: "Samedi 14" },
-    { key: "dimanche", label: "Dimanche 15" },
   ];
   
