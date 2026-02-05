@@ -1,6 +1,6 @@
-// models/contact.model.js
 import { pool } from "../db/index.js";
 
+// Insère un message de contact en base
 export async function createContactMessage({
   name,
   last_name,

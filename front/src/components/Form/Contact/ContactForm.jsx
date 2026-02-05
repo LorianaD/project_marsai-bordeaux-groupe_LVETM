@@ -3,6 +3,7 @@ import { useState } from "react";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function ContactForm() {
+  // Etat du formulaire
   const [form, setForm] = useState({
     name: "",
     surname: "",
@@ -11,6 +12,7 @@ export default function ContactForm() {
     message: "",
   });
 
+  // Etats de feedback utilisateur
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -18,6 +20,7 @@ export default function ContactForm() {
   const setField = (key) => (e) =>
     setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
+  // Envoie les données du formulaire à l'API
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,7 +39,10 @@ export default function ContactForm() {
 
       const r = await fetch(`${API_BASE}/api/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
@@ -52,7 +58,7 @@ export default function ContactForm() {
     }
   };
 
-  // ✅ classes réutilisées pour éviter de répéter
+  // Classes CSS réutilisées pour les inputs
   const inputCls =
     "w-full rounded-md px-4 py-2.5 text-sm outline-none transition " +
     "border border-black/10 bg-[#F1EEF7] text-black/85 placeholder:text-black/35 " +
@@ -62,10 +68,8 @@ export default function ContactForm() {
   const labelCls = "block text-[13px] text-black/80 dark:text-white/80";
 
   return (
-    // ✅ petit “card” dark mode comme la maquette (optionnel)
     <div className="w-full max-w-[460px] rounded-2xl bg-transparent p-0 dark:rounded-2xl dark:bg-black/0">
       <form onSubmit={handleSubmit} className="w-full max-w-[420px]">
-        {/* Name */}
         <div className="space-y-2">
           <label className={labelCls}>Name</label>
           <input
@@ -76,7 +80,6 @@ export default function ContactForm() {
           />
         </div>
 
-        {/* Surname */}
         <div className="mt-5 space-y-2">
           <label className={labelCls}>Surname</label>
           <input
@@ -87,7 +90,6 @@ export default function ContactForm() {
           />
         </div>
 
-        {/* Subject */}
         <div className="mt-5 space-y-2">
           <label className={labelCls}>Subject</label>
           <input
@@ -98,7 +100,6 @@ export default function ContactForm() {
           />
         </div>
 
-        {/* Email */}
         <div className="mt-5 space-y-2">
           <label className={labelCls}>Email</label>
           <input
@@ -110,7 +111,6 @@ export default function ContactForm() {
           />
         </div>
 
-        {/* Message */}
         <div className="mt-5 space-y-2">
           <label className={labelCls}>Message</label>
           <textarea
@@ -118,13 +118,11 @@ export default function ContactForm() {
             onChange={setField("message")}
             placeholder="Value"
             rows={4}
-            className={
-              inputCls + " resize-none py-3"
-            }
+            className={inputCls + " resize-none py-3"}
           />
         </div>
 
-        {/* Feedback */}
+        {/* Affiche les messages de succès ou d'erreur */}
         {error && (
           <div className="mt-4 text-center text-xs text-red-600 dark:text-red-400">
             {error}
@@ -132,11 +130,10 @@ export default function ContactForm() {
         )}
         {success && (
           <div className="mt-4 text-center text-xs text-green-600 dark:text-green-400">
-            Message envoyé ✅
+            Message envoyé
           </div>
         )}
 
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}

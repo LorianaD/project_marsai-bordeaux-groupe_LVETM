@@ -1,6 +1,54 @@
+import { useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 function Newsletter() {
+  // Etat du formulaire newsletter
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState("");
+
+  // Envoie l'email au backend
+  async function submit(e) {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    try {
+      setLoading(true);
+      setMsg("");
+      setError("");
+
+      const res = await fetch(`${API_BASE}/api/newsletter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Erreur inscription");
+      }
+
+      // Message succès + reset champ
+      setMsg(data?.message || "Inscription réussie");
+      setEmail("");
+    } catch (err) {
+      setError(err.message || "Erreur");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <form className="flex flex-1 flex-col items-center justify-center gap-[25px] p-[41px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)]">
+    <form
+      onSubmit={submit}
+      className="flex flex-1 flex-col items-center justify-center gap-[25px] p-[41px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)]"
+    >
       <h2 className="text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full">
         <span>RESTEZ</span>
         <span className="block">CONNECTÉ</span>
@@ -9,17 +57,34 @@ function Newsletter() {
       <div className="flex items-start gap-[10px] self-stretch">
         <input
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="Email Signal"
           className="flex h-[54px] flex-1 items-center px-[24px] py-[16px] rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[14px] placeholder:font-normal"
         />
 
         <button
           type="submit"
-          className="flex w-[68.406px] h-[54px] items-center justify-center rounded-[16px] bg-[linear-gradient(270deg,#3B82F6_-0.39%,#C27AFF_100.48%)] text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase text-white"
+          disabled={loading}
+          className="flex w-[68.406px] h-[54px] items-center justify-center rounded-[16px] bg-[linear-gradient(270deg,#3B82F6_-0.39%,#C27AFF_100.48%)] text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase text-white disabled:opacity-60"
         >
-          OK
+          {loading ? "..." : "OK"}
         </button>
       </div>
+
+      {/* Affiche message succès */}
+      {msg ? (
+        <p className="w-full text-left text-xs text-green-700 dark:text-green-400">
+          {msg}
+        </p>
+      ) : null}
+
+      {/* Affiche message erreur */}
+      {error ? (
+        <p className="w-full text-left text-xs text-red-700 dark:text-red-400">
+          {error}
+        </p>
+      ) : null}
     </form>
   );
 }

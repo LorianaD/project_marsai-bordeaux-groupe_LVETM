@@ -70,6 +70,17 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (22, 'home', 'hero', 'title_accent', 'en', 'text', 'AI', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23');
 
 --
+-- Déchargement des données de la table `video_tag`
+--
+
+INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
+(8, 1),
+(9, 1),
+(10, 1),
+(9, 2),
+(10, 2);
+
+--
 -- Index pour les tables déchargées
 --
 

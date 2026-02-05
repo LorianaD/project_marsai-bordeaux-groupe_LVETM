@@ -1,5 +1,6 @@
 import React from "react";
 
+// Wrapper label + champ
 export function Field({ label, required, children }) {
   return (
     <div className="w-full">
@@ -15,18 +16,15 @@ export function Field({ label, required, children }) {
   );
 }
 
-// ✅ Input : light par défaut, dark si mode dark
+// Input avec styles light et dark
 export function TextInput({ className = "", ...props }) {
   return (
     <input
       {...props}
       className={[
         "w-full rounded-2xl px-6 py-4 text-sm outline-none transition",
-        // ✅ LIGHT
         "bg-[#E9E9EA] text-neutral-800 placeholder:text-neutral-400",
-        // ✅ DARK
         "dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500",
-        // focus
         "focus:ring-2 focus:ring-purple-500/40",
         className,
       ].join(" ")}
@@ -34,6 +32,7 @@ export function TextInput({ className = "", ...props }) {
   );
 }
 
+// Textarea avec styles light et dark
 export function TextArea({ className = "", rows = 4, ...props }) {
   return (
     <textarea
@@ -50,6 +49,7 @@ export function TextArea({ className = "", rows = 4, ...props }) {
   );
 }
 
+// Select avec styles light et dark
 export function Select({ children, className = "", ...props }) {
   return (
     <select
