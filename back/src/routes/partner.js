@@ -3,19 +3,21 @@ import { Router } from "express";
 
 import uploadPartner from "../middlewares/partnerMiddleware.js";
 
-import AddPartner from "../controllers/partner/AddPartner.controller.js";
+import AddPartnerController from "../controllers/partner/AddPartner.controller.js";
 import GetAllPartnerController from "../controllers/partner/GetAllPartner.controller.js";
-import UpdatePartner from "../controllers/partner/UpdatePartner.controller.js";
+import UpdatePartnerController from "../controllers/partner/UpdatePartner.controller.js";
+import GetOnePartnerController from "../controllers/partner/GetOnePartner.controller.js";
 
 const router = Router();
 
 // routes en get
 router.get("/", GetAllPartnerController);
+router.get("/:id", GetOnePartnerController);
 
 // route en post
-router.post("/", uploadPartner.single("img"), AddPartner);
+router.post("/", uploadPartner.single("img"), AddPartnerController);
 
 // route put pour l'update
-router.put("/:id", UpdatePartner);
+router.put("/:id", UpdatePartnerController);
 
 export default router;

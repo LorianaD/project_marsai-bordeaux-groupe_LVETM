@@ -3,14 +3,14 @@ import { Router } from "express";
 import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
 import contactRouter from "./contact.js"; 
-import partner from "./partner.js";
+import partnerRouter from "./partner.js";
 
 const router = Router();
 
 // router.get("/test", testController);
 router.use("/videos", videosRouter);
 router.use("/events", eventsRouter);
-router.use("/partner", partner)
-router.use("/", contactRouter);
+router.use("/partner", partnerRouter)
+router.use("/contact", contactRouter);
 
 export default router;
