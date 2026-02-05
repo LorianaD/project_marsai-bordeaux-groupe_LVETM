@@ -3,92 +3,65 @@ import stillsModel from "../../models/stills.model.js";
 import videosModel from "../../models/videos.model.js";
 import subtitlesModel from "../../models/subtitles.model.js";
 import { pool } from "../../db/index.js";
-
-// ✅ AJOUT YOUTUBE : service qui uploade sur YouTube via l’API Google
-// (le service doit gérer les chemins réels vers les fichiers sur le disque)
 import { uploadToYouTube } from "../../services/youtube.service.js";
 
-//  Petit helper : essayer de deviner la langue d’un sous-titre à partir de son nom
-// Exemple: "movie.fr.srt" -> "fr", "sub_en.srt" -> "en"
+// Déduit un code langue depuis le nom du fichier
 function normalizeLangFromFilename(filename) {
   const lower = String(filename || "").toLowerCase();
-
-  //  On cherche un code langue “entouré” par des séparateurs (., _, -, etc.)
-  // ex: ".fr." "_en_" "-es-" etc.
   const m = lower.match(/[\W_.-](fr|en|es|it|de|pt|ar|nl|ru|zh|ja|ko)[\W_.-]/);
-
-  //  si on trouve, on renvoie "fr"/"en"/etc., sinon null
   return m ? m[1] : null;
 }
 
-//  Vérifie si un fichier est bien un .srt
+// Vérifie si le fichier est un .srt
 function isSrtFile(file) {
   const ext = path.extname(file?.originalname || "").toLowerCase();
   return ext === ".srt";
 }
 
-// ✅ AJOUT TAGS : normalise (trim/lowercase) + retire doublons/vides
+// Normalise les tags et retire doublons
 function normalizeTags(tags = []) {
   return [
     ...new Set(
       tags
-        .map((t) => String(t || "").trim().toLowerCase())
+        .map((t) =>
+          String(t || "")
+            .trim()
+            .toLowerCase(),
+        )
         .filter((t) => t.length > 0),
     ),
   ];
 }
 
-// ✅ AJOUT TAGS : crée les tags manquants et renvoie toutes les lignes (id + name)
+// Crée les tags manquants et retourne leurs ids
 async function upsertTags(cleanTags, conn) {
   if (!cleanTags.length) return [];
 
-  // on fabrique "(?), (?), (?)" selon le nombre de tags
   const values = cleanTags.map(() => "(?)").join(", ");
+  await conn.query(
+    `INSERT IGNORE INTO tags (name) VALUES ${values}`,
+    cleanTags,
+  );
 
-  // Créer les tags manquants
-  // IMPORTANT : ça marche bien si tags.name est UNIQUE
-  await conn.query(`INSERT IGNORE INTO tags (name) VALUES ${values}`, cleanTags);
-
-  // Récupérer les id de tous les tags concernés
   const placeholders = cleanTags.map(() => "?").join(", ");
   const [rows] = await conn.query(
     `SELECT id, name FROM tags WHERE name IN (${placeholders})`,
     cleanTags,
   );
 
-  return rows; // [{ id, name }, ...]
+  return rows;
 }
 
+// Upload complet et écriture DB dans une transaction
 async function uploadVideoController(req, res) {
-  // ✅ DEBUG : ça permet de voir ce que le front envoie vraiment
-  console.log("REQ.BODY raw:", req.body);
-  console.log(
-    "BODY KEYS:",
-    Object.keys(req.body || {}).map((k) => JSON.stringify(k)),
-  );
-  console.log(
-    "FILES KEYS:",
-    Object.keys(req.files || {}).map((k) => JSON.stringify(k)),
-  );
-
-  // ✅ DEBUG ENV : vérifier que les vars YouTube sont bien là côté runtime
-  console.log("HAS YT CLIENT ID?", !!process.env.YOUTUBE_CLIENT_ID);
-  console.log("HAS YT CLIENT SECRET?", !!process.env.YOUTUBE_CLIENT_SECRET);
-  console.log("HAS YT REFRESH TOKEN?", !!process.env.YOUTUBE_REFRESH_TOKEN);
-  // (optionnel) si tu utilises un redirect custom
-  console.log("YT REDIRECT URI:", process.env.YOUTUBE_REDIRECT_URI);
-
-  //  On ouvre une connexion à la DB
   const conn = await pool.getConnection();
 
   try {
-    //  Ici on récupère les fichiers envoyés par multer
     const videoFile = req.files?.video?.[0];
     const coverFile = req.files?.cover?.[0];
     const stillFiles = req.files?.stills || [];
     const subtitleFiles = req.files?.subtitles || [];
 
-    //  Vérifications “fichiers obligatoires”
     if (!videoFile)
       return res.status(400).json({ error: "Fichier vidéo manquant (video)." });
     if (!coverFile)
@@ -102,27 +75,6 @@ async function uploadVideoController(req, res) {
         .status(400)
         .json({ error: "Au moins 1 sous-titre requis (subtitles)." });
 
-    // ✅ DEBUG PATHS : vérifier ce que multer a réellement écrit
-    console.log("UPLOAD FILES (multer):", {
-      video: {
-        originalname: videoFile.originalname,
-        filename: videoFile.filename,
-        path: videoFile.path,
-        size: videoFile.size,
-        mimetype: videoFile.mimetype,
-      },
-      cover: {
-        originalname: coverFile.originalname,
-        filename: coverFile.filename,
-        path: coverFile.path,
-        size: coverFile.size,
-        mimetype: coverFile.mimetype,
-      },
-      stillsCount: stillFiles.length,
-      subtitlesCount: subtitleFiles.length,
-    });
-
-    //  Sous-titres : uniquement .srt
     const nonSrt = subtitleFiles.find((f) => !isSrtFile(f));
     if (nonSrt) {
       return res.status(400).json({
@@ -132,7 +84,6 @@ async function uploadVideoController(req, res) {
       });
     }
 
-    // ✅ On prépare les sous-titres tout de suite
     const subtitlesPayload = subtitleFiles.map((f) => ({
       file_name: f.filename,
       language: normalizeLangFromFilename(f.originalname) || null,
@@ -166,7 +117,6 @@ async function uploadVideoController(req, res) {
       tags,
     } = req.body;
 
-    // ✅ Parse contributors
     let contributorsList = [];
     try {
       const parsed = JSON.parse(contributors || "[]");
@@ -175,11 +125,9 @@ async function uploadVideoController(req, res) {
       contributorsList = [];
     }
 
-    // ✅ Booleans
     const ownershipCertifiedBool = ownership_certified === "1";
     const promoConsentBool = promo_consent === "1";
 
-    // ✅ Parse tags
     let tagsList = [];
     try {
       const parsedTags = JSON.parse(tags || "[]");
@@ -228,13 +176,17 @@ async function uploadVideoController(req, res) {
       });
     }
 
-    const genderRaw = String(director_gender || "").trim().toLowerCase();
+    const genderRaw = String(director_gender || "")
+      .trim()
+      .toLowerCase();
     let directorGenderDb = null;
 
     if (["m", "mr", "male", "homme", "man", "monsieur"].includes(genderRaw)) {
       directorGenderDb = "Mr";
     }
-    if (["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)) {
+    if (
+      ["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)
+    ) {
       directorGenderDb = "Mrs";
     }
     if (director_gender === "Mr" || director_gender === "Mrs") {
@@ -293,22 +245,9 @@ async function uploadVideoController(req, res) {
 
     await conn.beginTransaction();
 
-    // 1) On crée la vidéo principale
     const videoId = await videosModel.createVideo(payload, conn);
 
-    // ✅✅✅ AJOUT YOUTUBE : upload sur YouTube (non bloquant)
     let youtubeVideoId = null;
-
-    // ✅ DEBUG YOUTUBE PAYLOAD
-    console.log("YT UPLOAD PAYLOAD (controller):", {
-      videoFile: payload.video_file_name,
-      title: payload.title,
-      coverFile: payload.cover,
-      subtitlesFile: subtitlesPayload[0]?.file_name || null,
-      // description peut être longue : on loggue juste la taille
-      descriptionLength: String(payload.synopsis || "").length,
-    });
-
     try {
       youtubeVideoId = await uploadToYouTube({
         videoFile: payload.video_file_name,
@@ -322,23 +261,8 @@ async function uploadVideoController(req, res) {
         youtubeVideoId,
         videoId,
       ]);
+    } catch (err) {}
 
-      console.log("✅ YT UPLOAD OK - youtubeVideoId:", youtubeVideoId);
-    } catch (err) {
-      // ✅ Logs + précis pour diagnostiquer
-      console.warn("⚠️ Upload YouTube échoué :", err?.message);
-      console.warn("YouTube error status:", err?.code);
-      console.warn("YouTube error data:", err?.response?.data);
-
-      // (optionnel) stocker l'erreur si tu as une colonne
-      // await conn.query("UPDATE videos SET youtube_upload_error = ? WHERE id = ?", [
-      //   JSON.stringify(err?.response?.data || err?.message || "Unknown error"),
-      //   videoId,
-      // ]);
-    }
-    // ✅✅✅ FIN AJOUT YOUTUBE
-
-    // ✅ Ownership / promo
     await conn.query(
       `
       UPDATE videos
@@ -358,7 +282,6 @@ async function uploadVideoController(req, res) {
       ],
     );
 
-    // ✅ Contributors
     for (const c of contributorsList) {
       const fullNameRaw = String(c?.full_name || "").trim();
       const profession = String(c?.profession || "").trim();
@@ -381,7 +304,6 @@ async function uploadVideoController(req, res) {
       );
     }
 
-    // ✅ Tags
     const cleanTags = normalizeTags(tagsList);
 
     if (cleanTags.length > 0) {
@@ -398,10 +320,8 @@ async function uploadVideoController(req, res) {
       }
     }
 
-    // 2) Stills
     await stillsModel.insertStills(videoId, stillFiles, conn);
 
-    // 4) Subtitles
     await subtitlesModel.insertSubtitles(videoId, subtitlesPayload, conn);
 
     await conn.commit();
@@ -417,7 +337,6 @@ async function uploadVideoController(req, res) {
       await conn.rollback();
     } catch {}
 
-    console.error("uploadVideoController error:", e);
     return res
       .status(500)
       .json({ error: "Erreur serveur", details: e.message });

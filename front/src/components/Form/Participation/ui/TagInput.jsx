@@ -1,39 +1,35 @@
 import { useState } from "react";
 
-/**
- * Composant Tags façon Instagram/TikTok
- * - Entrée ou virgule => ajoute le tag
- * - Backspace sur input vide => supprime le dernier tag
- */
+// Permet d'ajouter et supprimer des tags via un input
 export default function TagInput({ value = [], onChange, disabled = false }) {
   const [inputValue, setInputValue] = useState("");
 
+  // Ajoute un tag en évitant les doublons
   function addTag(raw) {
     const t = String(raw || "")
       .trim()
       .toLowerCase();
     if (!t) return;
 
-    // ✅ évite les doublons
     if (!value.includes(t)) {
       onChange?.([...value, t]);
     }
   }
 
+  // Gère les actions clavier (ajout ou suppression)
   function handleKeyDown(e) {
-    // Entrée ou virgule => ajouter
     if ((e.key === "Enter" || e.key === ",") && inputValue.trim()) {
       e.preventDefault();
       addTag(inputValue);
       setInputValue("");
     }
 
-    // Backspace avec input vide => supprimer dernier tag
     if (e.key === "Backspace" && inputValue === "" && value.length > 0) {
       onChange?.(value.slice(0, -1));
     }
   }
 
+  // Supprime un tag sélectionné
   function removeTag(tag) {
     onChange?.(value.filter((t) => t !== tag));
   }

@@ -5,6 +5,7 @@ import TagInput from "./TagInput";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function VideoUploadForm({ formRef }) {
+  // Etat des fichiers uploadés
   const [files, setFiles] = useState({
     video: null,
     cover: null,
@@ -12,6 +13,7 @@ export default function VideoUploadForm({ formRef }) {
     subtitles: [],
   });
 
+  // Etat des champs texte du formulaire
   const [form, setForm] = useState({
     youtube_video_id: "",
     title: "",
@@ -36,7 +38,7 @@ export default function VideoUploadForm({ formRef }) {
     discovery_source: "",
   });
 
-  // ✅ AJOUT : tags (tableau de strings)
+  // Tags sauvegardés localement
   const [tags, setTags] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("video_tags") || "[]");
@@ -46,13 +48,12 @@ export default function VideoUploadForm({ formRef }) {
     }
   });
 
+  // Chargement des pays pour les selects
   const [countries, setCountries] = useState([]);
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
 
-  // =====================================================
-  // Chargement de la liste des pays
-  // =====================================================
+  // Récupère la liste des pays
   useEffect(() => {
     let alive = true;
 
@@ -85,9 +86,7 @@ export default function VideoUploadForm({ formRef }) {
     };
   }, []);
 
-  // =====================================================
-  // Pré-remplissage depuis le profil réalisateur
-  // =====================================================
+  // Pré-remplit le formulaire avec le profil réalisateur
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
@@ -108,9 +107,7 @@ export default function VideoUploadForm({ formRef }) {
         mobile_number: p.mobile_number || f.mobile_number,
         home_number: p.home_number || f.home_number,
       }));
-    } catch {
-      // profil corrompu → on ignore
-    }
+    } catch {}
   }, []);
 
   function update(e) {
@@ -118,6 +115,7 @@ export default function VideoUploadForm({ formRef }) {
     setForm((f) => ({ ...f, [name]: value }));
   }
 
+  // Met à jour les fichiers envoyés
   function updateFile(e) {
     const { name, files: inputFiles } = e.target;
     if (!inputFiles) return;
@@ -137,9 +135,7 @@ export default function VideoUploadForm({ formRef }) {
     });
   }
 
-  // =====================================================
-  // Validation globale avant submit
-  // =====================================================
+  // Vérifie que tout est rempli avant l'envoi
   const canSubmit = useMemo(() => {
     const durationNum = Number(form.duration);
 
@@ -171,86 +167,67 @@ export default function VideoUploadForm({ formRef }) {
     );
   }, [form, files]);
 
-  // =====================================================
-  // SUBMIT FINAL (appelé depuis l’étape 3)
-  // =====================================================
+  // Envoie les données au backend
   async function submit(e) {
-  e.preventDefault();
-  if (!canSubmit) return;
-
-  try {
-    const fd = new FormData();
-
-    // ✅ 1) Champs texte (form)
-    Object.entries(form).forEach(([k, v]) => {
-      if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
-    });
-
-    // ✅ 2) TAGS
-    // - on stocke aussi côté front (pratique si on revient en arrière)
-    // - on envoie au backend sous forme JSON string (req.body.tags)
-    const safeTags = Array.isArray(tags) ? tags : [];
-    localStorage.setItem("video_tags", JSON.stringify(safeTags));
-    fd.append("tags", JSON.stringify(safeTags));
-
-    // ✅ 3) Contributors + certificat (depuis localStorage)
-    let contributors = [];
-    let ownership = {};
+    e.preventDefault();
+    if (!canSubmit) return;
 
     try {
-      const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
-      contributors = Array.isArray(saved) ? saved : [];
-    } catch {
-      contributors = [];
+      const fd = new FormData();
+
+      Object.entries(form).forEach(([k, v]) => {
+        if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
+      });
+
+      const safeTags = Array.isArray(tags) ? tags : [];
+      localStorage.setItem("video_tags", JSON.stringify(safeTags));
+      fd.append("tags", JSON.stringify(safeTags));
+
+      let contributors = [];
+      let ownership = {};
+
+      try {
+        const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
+        contributors = Array.isArray(saved) ? saved : [];
+      } catch {}
+
+      try {
+        ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
+      } catch {}
+
+      fd.append("contributors", JSON.stringify(contributors));
+      fd.append("ownership_certified", ownership?.ownershipCertified ? "1" : "0");
+      fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
+
+      fd.append("video", files.video);
+      fd.append("cover", files.cover);
+
+      files.stills.forEach((f) => {
+        if (f) fd.append("stills", f);
+      });
+
+      files.subtitles.forEach((f) => fd.append("subtitles", f));
+
+      const res = await fetch(`${API_URL}/api/videos`, {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(
+          data?.details || data?.error || `Erreur upload (${res.status})`,
+        );
+      }
+
+      alert(`Upload OK (videoId: ${data.videoId})`);
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Erreur upload");
     }
-
-    try {
-      ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
-    } catch {
-      ownership = {};
-    }
-
-    fd.append("contributors", JSON.stringify(contributors));
-    fd.append("ownership_certified", ownership?.ownershipCertified ? "1" : "0");
-    fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
-
-    // ✅ 4) Fichiers
-    fd.append("video", files.video);
-    fd.append("cover", files.cover);
-
-    // ✅ On n’envoie que les stills qui existent
-    files.stills.forEach((f) => {
-      if (f) fd.append("stills", f);
-    });
-
-    // ✅ Sous-titres
-    files.subtitles.forEach((f) => fd.append("subtitles", f));
-
-    // ✅ DEBUG (facultatif) : voir ce qu’on envoie
-    // for (const [k, v] of fd.entries()) console.log("FD:", k, v);
-
-    const res = await fetch(`${API_URL}/api/videos`, {
-      method: "POST",
-      body: fd,
-    });
-
-    const data = await res.json().catch(() => null);
-
-    if (!res.ok) {
-      throw new Error(
-        data?.details || data?.error || `Erreur upload (${res.status})`,
-      );
-    }
-
-    alert(`Upload OK ✅ (videoId: ${data.videoId})`);
-  } catch (err) {
-    console.error(err);
-    alert(err.message || "Erreur upload");
   }
-}
 
-
-  // ✅ styles inputs (light par défaut, dark si dark mode)
   const inputClass =
     "bg-[#E9E9EA] text-neutral-800 placeholder:text-neutral-500 " +
     "dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400";
@@ -260,9 +237,6 @@ export default function VideoUploadForm({ formRef }) {
       <div className="space-y-12 text-neutral-900 dark:text-white">
         <h2 className="text-center text-2xl font-semibold">MA VIDÉO</h2>
 
-        {/* =====================================================
-            01. IDENTITÉ DU FILM
-           ===================================================== */}
         <section className="space-y-6">
           <h3 className="font-semibold text-purple-500">
             01. IDENTITÉ DU FILM
@@ -322,8 +296,8 @@ export default function VideoUploadForm({ formRef }) {
                   {countriesLoading
                     ? "Chargement des pays…"
                     : countriesErr
-                      ? "Erreur de chargement"
-                      : "Choisir un pays"}
+                    ? "Erreur de chargement"
+                    : "Choisir un pays"}
                 </option>
 
                 {countries.map((c) => (
@@ -360,7 +334,6 @@ export default function VideoUploadForm({ formRef }) {
             </Field>
           </div>
 
-          {/* ✅ AJOUT : TAGS */}
           <Field label="Tags (optionnel)">
             <TagInput value={tags} onChange={setTags} />
           </Field>
@@ -386,9 +359,6 @@ export default function VideoUploadForm({ formRef }) {
           </div>
         </section>
 
-        {/* =====================================================
-            02. DÉCLARATION USAGE IA
-           ===================================================== */}
         <section className="space-y-6">
           <h3 className="font-semibold text-purple-500">
             02. DÉCLARATION USAGE IA
@@ -424,9 +394,6 @@ export default function VideoUploadForm({ formRef }) {
           </Field>
         </section>
 
-        {/* =====================================================
-            04. FICHIERS
-           ===================================================== */}
         <section className="space-y-6">
           <h3 className="font-semibold text-purple-500">04. FICHIERS</h3>
 
@@ -515,9 +482,6 @@ export default function VideoUploadForm({ formRef }) {
           </div>
         </section>
 
-        {/* =====================================================
-            BOUTON SUBMIT (caché)
-           ===================================================== */}
         <div className="flex justify-center pt-2">
           <button type="submit" className="hidden">
             ENVOYER

@@ -1,5 +1,6 @@
 import { pool } from "../db/index.js";
 
+// Insère les sous-titres liés à une vidéo
 async function insertSubtitles(videoId, files, connection = pool) {
   if (!files.length) return;
 
@@ -7,7 +8,7 @@ async function insertSubtitles(videoId, files, connection = pool) {
 
   const values = files.map((f) => [
     videoId,
-    f.filename ?? f.file_name,      // multer ou payload
+    f.filename ?? f.file_name,
     f.language ?? null,
   ]);
 
