@@ -16,6 +16,7 @@ import AdminLayout from "./components/Layout/AdminLayout.jsx";
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
+import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
 
 export default function App() {
   return (
@@ -46,13 +47,12 @@ export default function App() {
 </Route>
 
 
-      {/* 🧪 Route temporaire */}
-      <Route path="/partnerForm" element={<Partner />} />
+      {/* Route temporaire */}
+      <Route path="/partnerform" element={< Partner />} />
+      <Route path="/partner/:id" element={< UpdatePartner />}/>
 
       {/*  Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
-
-

@@ -189,8 +189,6 @@ export default function TeamCompositionForm({ onPrev }) {
             PRÉCÉDENT
           </button>
 
-          {/* ⚠️ Le vrai ENVOYER FINAL est dans VideoUploadForm pour l’instant.
-              Ici on garde un bouton "OK" pour valider l’étape 3. */}
         
         </div>
       </div>

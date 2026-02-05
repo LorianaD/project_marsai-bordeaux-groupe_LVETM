@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mer. 04 fév. 2026 à 12:45
+-- Généré le : mer. 04 fév. 2026 à 14:47
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -311,6 +311,18 @@ CREATE TABLE `tag` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `tags`
+--
+
+CREATE TABLE `tags` (
+  `id` int NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -398,6 +410,17 @@ INSERT INTO `video_subtitles` (`id`, `video_id`, `file_name`, `language`, `creat
 (3, 5, '1770025470507-840368-soustitre.srt', NULL, '2026-02-02 10:44:30'),
 (4, 6, '1770037126209-761699-soustitre.srt', NULL, '2026-02-02 13:58:46'),
 (5, 7, '1770207153954-129470-soustitre.srt', NULL, '2026-02-04 13:12:34');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `video_tag`
+--
+
+CREATE TABLE `video_tag` (
+  `video_id` int NOT NULL,
+  `tag_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Index pour les tables déchargées
@@ -516,6 +539,13 @@ ALTER TABLE `tag`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
@@ -533,6 +563,13 @@ ALTER TABLE `videos`
 ALTER TABLE `video_subtitles`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_video_subtitles_video_id` (`video_id`);
+
+--
+-- Index pour la table `video_tag`
+--
+ALTER TABLE `video_tag`
+  ADD PRIMARY KEY (`video_id`,`tag_id`),
+  ADD KEY `fk_video_tag_tag` (`tag_id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -635,6 +672,12 @@ ALTER TABLE `tag`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
@@ -718,6 +761,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `video_subtitles`
   ADD CONSTRAINT `fk_video_subtitles_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `video_tag`
+--
+ALTER TABLE `video_tag`
+  ADD CONSTRAINT `fk_video_tag_tag` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_video_tag_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
