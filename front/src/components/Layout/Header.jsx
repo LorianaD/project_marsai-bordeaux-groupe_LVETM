@@ -10,7 +10,7 @@ import NavMobile from "./NavMobile";
 import { useState } from "react";
 
 function Header() {
-    console.log("function header ok");
+    // console.log("function header ok");
     
     const { t, i18n } = useTranslation("header");
 
