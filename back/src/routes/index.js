@@ -5,6 +5,7 @@ import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
 import contactRouter from "./contact.js"; 
 import partnerRouter from "./partner.js";
+import cmsRouter from "./cms.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/videos", videosRouter);
 router.use("/events", eventsRouter);
 router.use("/partner", partnerRouter)
 router.use("/contact", contactRouter);
+router.use("/cms", cmsRouter);
 
 export default router;
