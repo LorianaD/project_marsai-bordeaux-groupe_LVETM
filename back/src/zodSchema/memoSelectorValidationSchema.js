@@ -14,4 +14,10 @@ export const createMemoSelectorSchema = z.object({
         .or(z.literal(""))
         .optional(),
 
+    rating: z
+        .number({ message: "Rating must be a number." })
+        .int({ message: "Rating must be an integer." })
+        .min(1, { message: "Rating must be at least 1." })
+        .max(10, { message: "Rating must be at most 10." })
+
 })
