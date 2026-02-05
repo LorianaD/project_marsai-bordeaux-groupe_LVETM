@@ -1,9 +1,9 @@
-// routes/contact.routes.js
 import { Router } from "express";
 import { createContactMessage } from "../models/contact.model.js";
 
 const router = Router();
 
+// Enregistre un message envoyé via le formulaire contact
 router.post("/contact", async (req, res, next) => {
   try {
     const { name, last_name, subject, email, message } = req.body || {};

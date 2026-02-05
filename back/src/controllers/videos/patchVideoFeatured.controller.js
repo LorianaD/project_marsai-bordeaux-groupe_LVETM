@@ -1,11 +1,11 @@
 import videosModel from "../../models/videos.model.js";
 
+// Met à jour le statut featured d'une vidéo
 async function patchVideoFeaturedController(req, res) {
   try {
     const { id } = req.params;
     const { featured } = req.body;
 
-    // on accepte true/false, 1/0, "true"/"false"
     const normalized =
       featured === true ||
       featured === 1 ||
@@ -22,6 +22,7 @@ async function patchVideoFeaturedController(req, res) {
       .status(200)
       .json({ message: "Featured mis à jour", id, featured: normalized });
   } catch (error) {
+    // Gestion erreur serveur
     console.error("patchVideoFeaturedController error:", error);
     return res
       .status(500)

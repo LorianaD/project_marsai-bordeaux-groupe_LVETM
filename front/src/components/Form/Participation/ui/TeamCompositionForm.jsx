@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Field, TextInput, Select } from "./Field";
 
 export default function TeamCompositionForm({ onPrev }) {
+  // Etat du collaborateur en cours de saisie
   const [current, setCurrent] = useState({
     gender: "Mr",
     full_name: "",
@@ -9,6 +10,7 @@ export default function TeamCompositionForm({ onPrev }) {
     email: "",
   });
 
+  // Liste des contributeurs sauvegardée en localStorage
   const [contributors, setContributors] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
@@ -18,6 +20,7 @@ export default function TeamCompositionForm({ onPrev }) {
     }
   });
 
+  // Etat des certificats
   const [ownership, setOwnership] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("ownership") || "{}");
@@ -31,6 +34,7 @@ export default function TeamCompositionForm({ onPrev }) {
     setCurrent((c) => ({ ...c, [name]: value }));
   }
 
+  // Ajoute un contributeur dans la liste
   function addContributor() {
     const ok =
       current.full_name.trim() &&
@@ -45,18 +49,21 @@ export default function TeamCompositionForm({ onPrev }) {
     setCurrent({ gender: "Mr", full_name: "", profession: "", email: "" });
   }
 
+  // Supprime un contributeur
   function removeContributor(i) {
     const next = contributors.filter((_, idx) => idx !== i);
     setContributors(next);
     localStorage.setItem("contributors", JSON.stringify(next));
   }
 
+  // Active ou désactive les certificats
   function toggleOwnership(key) {
     const next = { ...ownership, [key]: !ownership?.[key] };
     setOwnership(next);
     localStorage.setItem("ownership", JSON.stringify(next));
   }
 
+  // Vérifie si la validation finale est possible
   const canFinish = useMemo(() => {
     return !!ownership?.ownershipCertified;
   }, [ownership]);
@@ -154,9 +161,9 @@ export default function TeamCompositionForm({ onPrev }) {
           <div className="mb-3 font-semibold">CERTIFICAT DE PROPRIÉTÉ</div>
           <p className="text-xs leading-relaxed">
             En soumettant ce dossier, vous certifiez sur l'honneur être l'auteur
-            original de l'œuvre et détenir l'intégralité des droits de diffusion.
-            Vous acceptez que MARS.AI utilise ces éléments pour la promotion du
-            festival.
+            original de l'œuvre et détenir l'intégralité des droits de
+            diffusion. Vous acceptez que MARS.AI utilise ces éléments pour la
+            promotion du festival.
           </p>
 
           <div className="mt-4 space-y-2 text-sm">
@@ -188,8 +195,6 @@ export default function TeamCompositionForm({ onPrev }) {
           >
             PRÉCÉDENT
           </button>
-
-        
         </div>
       </div>
     </div>

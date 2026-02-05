@@ -5,6 +5,7 @@ import { getOAuth2Client } from "../config/youtube.js";
 
 const UPLOAD_DIR = path.resolve("uploads");
 
+// Upload une vidéo sur YouTube avec thumbnail et sous-titres
 export async function uploadToYouTube({
   videoFile,
   title,
@@ -12,49 +13,29 @@ export async function uploadToYouTube({
   coverFile,
   subtitlesFile,
 }) {
-
-  console.log("🚀 uploadToYouTube START");
-
   const videoPath = path.join(UPLOAD_DIR, "videos", videoFile);
-
-  console.log("📂 VIDEO PATH:", videoPath);
 
   if (!fs.existsSync(videoPath)) {
     throw new Error("Fichier vidéo introuvable");
   }
 
   const auth = getOAuth2Client();
-
-  console.log("🔐 OAuth client chargé");
-
   const youtube = google.youtube({ version: "v3", auth });
 
-  // ✅ TEST AUTH YOUTUBE
+  // Vérifie l'authentification YouTube
   try {
-    const me = await youtube.channels.list({
+    await youtube.channels.list({
       part: "id,snippet",
       mine: true,
     });
-
-    console.log(
-      "✅ MY CHANNELS:",
-      me.data.items?.map((c) => c.id)
-    );
-
   } catch (err) {
-    console.error("❌ AUTH YOUTUBE FAILED");
-    console.error("Status:", err?.code);
-    console.error("Data:", err?.response?.data);
     throw err;
   }
 
-  // ✅ UPLOAD VIDEO
+  // Upload de la vidéo
   let youtubeVideoId;
 
   try {
-
-    console.log("📤 Upload vidéo vers YouTube...");
-
     const res = await youtube.videos.insert({
       part: "snippet,status",
       requestBody: {
@@ -72,24 +53,13 @@ export async function uploadToYouTube({
     });
 
     youtubeVideoId = res.data.id;
-
-    console.log("✅ VIDEO UPLOADED:", youtubeVideoId);
-
   } catch (err) {
-
-    console.error("❌ VIDEO INSERT FAILED");
-    console.error("Status:", err?.code);
-    console.error("Data:", err?.response?.data);
-
     throw err;
   }
 
-  // ✅ THUMBNAIL
+  // Upload du thumbnail si présent
   if (coverFile) {
-
     const coverPath = path.join(UPLOAD_DIR, "images", coverFile);
-
-    console.log("🖼 Thumbnail path:", coverPath);
 
     if (fs.existsSync(coverPath)) {
       try {
@@ -99,27 +69,13 @@ export async function uploadToYouTube({
             body: fs.createReadStream(coverPath),
           },
         });
-
-        console.log("✅ THUMBNAIL UPLOADED");
-
-      } catch (err) {
-        console.warn("⚠️ Thumbnail upload failed");
-        console.warn("Status:", err?.code);
-        console.warn("Data:", err?.response?.data);
-      }
+      } catch (err) {}
     }
   }
 
-  // ✅ SUBTITLES
+  // Upload des sous-titres si présents
   if (subtitlesFile) {
-
-    const subtitlesPath = path.join(
-      UPLOAD_DIR,
-      "subtitles",
-      subtitlesFile
-    );
-
-    console.log("📝 Subtitles path:", subtitlesPath);
+    const subtitlesPath = path.join(UPLOAD_DIR, "subtitles", subtitlesFile);
 
     if (fs.existsSync(subtitlesPath)) {
       try {
@@ -137,18 +93,9 @@ export async function uploadToYouTube({
             body: fs.createReadStream(subtitlesPath),
           },
         });
-
-        console.log("✅ SUBTITLES UPLOADED");
-
-      } catch (err) {
-        console.warn("⚠️ Subtitles upload failed");
-        console.warn("Status:", err?.code);
-        console.warn("Data:", err?.response?.data);
-      }
+      } catch (err) {}
     }
   }
-
-  console.log("🏁 uploadToYouTube DONE");
 
   return youtubeVideoId;
 }

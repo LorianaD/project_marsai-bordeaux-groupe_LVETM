@@ -15,34 +15,25 @@ import upload from "../middlewares/uploadVideoMiddleware.js";
 
 const router = express.Router();
 
-// ======================================================
-// TEST
-// ======================================================
+// Route de test
 router.get("/test", testController);
 
-// ======================================================
-// ADMIN (toutes les routes admin sont sous /admin)
-// Important : toujours placer ces routes AVANT "/:id"
-// ======================================================
+// Routes admin pour gestion complète des vidéos
 router.get("/admin", adminVideosListController);
 router.get("/admin/:id", adminOneVideoController);
 router.patch("/admin/:id/status", patchVideoStatusController);
 router.patch("/admin/:id/featured", patchVideoFeaturedController);
 
-// ======================================================
-// PUBLIC
-// ======================================================
-
-// READ : liste publique des vidéos (Published uniquement)
+// Liste publique des vidéos publiées
 router.get("/", videosListController);
 
-// READ : détail public d'une vidéo (Published uniquement)
+// Détail public d'une vidéo publiée
 router.get("/:id", oneVideoController);
 
-// STREAM : lecture vidéo (range)
+// Streaming vidéo
 router.get("/:id/stream", streamVideoController);
 
-// CREATE : upload complet
+// Upload complet d'une vidéo
 router.post(
   "/",
   upload.fields([
