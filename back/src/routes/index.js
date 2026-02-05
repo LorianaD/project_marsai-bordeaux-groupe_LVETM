@@ -17,6 +17,6 @@ router.use("/videos", videosRouter);
 router.use("/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);
-router.use("/", newsletterRoutes);
+router.use("/newsletter", newsletterRoutes);
 
 export default router;
