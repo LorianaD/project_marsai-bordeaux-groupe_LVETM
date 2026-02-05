@@ -9,7 +9,6 @@ import partnerRouter from "./partner.js";
 const router = Router();
 
 // router.get("/test", testController);
-router.get("/test", testController);
 router.use("/users", usersRouter);
 router.use("/videos", videosRouter);
 router.use("/events", eventsRouter);
