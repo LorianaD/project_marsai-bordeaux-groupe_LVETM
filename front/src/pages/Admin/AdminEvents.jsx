@@ -12,28 +12,16 @@ import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
 export default function AdminEvents() {
-  // onglet actif dans la sidebar (pure UI)
+ 
   const [activeNav, setActiveNav] = useState("Événements");
-
-  // journée sélectionnée pour filtrer / afficher la liste
   const [day, setDay] = useState("vendredi");
-
-  // recherche texte
   const [query, setQuery] = useState("");
-
-  // liste des events (donnée venant du back)
   const [events, setEvents] = useState([]);
-
-  // loader
   const [loading, setLoading] = useState(true);
-
-  // modal ouvert/fermé
   const [modalOpen, setModalOpen] = useState(false);
-
-  // si on édite un event, on stock l’objet ici
   const [editing, setEditing] = useState(null);
-
-  // formulaire (sert pour créer OU modifier)
+ 
+  // formulaire
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -44,7 +32,7 @@ export default function AdminEvents() {
     day: "vendredi", // journée choisie POUR l’event (pas le filtre)
   });
 
-  // 1) Au chargement de la page : on récupère les events
+//récupère les events
   useEffect(() => {
     (async () => {
       try {
@@ -65,7 +53,7 @@ export default function AdminEvents() {
     const q = query.trim().toLowerCase();
 
     return events
-      .filter((e) => e.day === day) // filtre sur la journée sélectionnée
+      .filter((e) => e.day === day) 
       .filter((e) => {
         if (!q) return true;
         return (
@@ -99,7 +87,7 @@ export default function AdminEvents() {
   function openCreate() {
     setEditing(null);
 
-    // on pré-remplit la journée du formulaire avec le filtre actuel
+    
     setForm({
       title: "",
       description: "",
@@ -130,7 +118,7 @@ export default function AdminEvents() {
     setModalOpen(true);
   }
 
-  // Créer ou modifier un event
+  // Créer ou modifier  event
   async function onSave(e) {
     e.preventDefault();
 
@@ -142,11 +130,11 @@ export default function AdminEvents() {
 
     try {
       if (editing) {
-        // update
+     
         const updated = await updateEvent(editing.id, { ...editing, ...payload });
         setEvents((prev) => prev.map((x) => (x.id === editing.id ? updated : x)));
       } else {
-        // create
+   
         const created = await createEvent(payload);
         setEvents((prev) => [created, ...prev]);
       }
