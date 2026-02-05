@@ -32,7 +32,7 @@ import { z } from "zod";
 //contrainte de format et taille pour les vidéos et photos
 const videoFormats = [".mp4", ".mov"];
 const videoMimeTypes = ["video/mp4", "video/quicktime"];
-const 
+const videoMimeTypesText = ".mp4 and .mov"
 const pictureFormats = [".jpg", ".mpeg"]
 const MAX_VIDEO_FILE_SIZE = 350 * 1024 * 1024; // 350 Mo (en octets)
 const MAX_VIDEO_FILE_SIZE_IN_MO = 350;
@@ -249,121 +249,9 @@ export const createFilmFileSchema = z.object({
 
     mimetype: z
         .enum(videoMimeTypes, {
-            errorMap: () => ({ message: "Invalid video format. Only MP4 and MOV are allowed" })
-        })
+            errorMap: () => ({ message: `Invalid video format. Only ${videoMimeTypesText} are allowed` })
+        }),
 });
-
-
-/********************************************* 
- * Schéma pour l'ajout d'un user
- *********************************************/
-export const createUserSchema = z.object({
-
-    email: z
-        .string({message:"Email must be a string."})
-        .trim()
-        .min(1,"Email is required.")
-        .max(255, "Email must not exceed 255 characters.")
-        .email({ message: "Email format is invalid." }),
-
-    password: z //Obligatoire: une majuscule, une minuscule, un chiffre, un caractère spéciale.
-        .string({message:"Password must be a string."})
-        .min(8, "Password must be at least 8 characters long.")
-        .max(128, "Password must not exceed 128 characters.")
-        .refine(
-            value => /[A-Z]/.test(value),
-            { message: "Password must contain at least one uppercase letter." }    
-        )
-        .refine(
-            value => /[a-z]/.test(value),
-            { message: "Password must contain at least one lowercase letter." }   
-        )
-        .refine(
-            value => /\d/.test(value),
-            { message: "Password must contain at least one number." }
-        )
-        .refine(
-            value => /[!@#$%^&*(),.?":{}|<>]/.test(value),
-            { message: "Password must contain at least one special character." }
-        ),
-
-    role: z
-        .enum(["Admin", "Super_admin", "Selector"]),
-
-    firstname: z
-        .string({message:"Firstname must be a string."})
-        .trim()
-        .min(1, "Firstname is required.")
-        .max(100, "Firstname must not exceed 100 characters.")
-        .regex(
-        /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Firstname can only contain letters, spaces, apostrophes or hyphens."
-        ),
-
-    lastname: z
-        .string({message:"Lastname must be a string."})
-        .trim()
-        .min(1, "Lastname is required.")
-        .max(100, "Lastname must not exceed 100 characters.")
-        .regex(
-        /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Lastname can only contain letters, spaces, apostrophes or hyphens."
-        ), 
-})
-
-/********************************************* 
- * Schéma pour l'ajout d'un Juré
- *********************************************/
-export const createJurySchema = z.object({
-
-    firstname: z
-        .string({message:"Firstname must be a string."})
-        .trim()
-        .min(1, "Firstname is required.")
-        .max(100, "Firstname must not exceed 100 characters.")
-        .regex(
-        /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Firstname can only contain letters, spaces, apostrophes or hyphens."
-        ),
-
-    lastname: z
-        .string({message:"Lastname must be a string."})
-        .trim()
-        .min(1, "Lastname is required.")
-        .max(100, "Lastname must not exceed 100 characters.")
-        .regex(
-        /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Lastname can only contain letters, spaces, apostrophes or hyphens."
-        ),
-
-    img: z
-        .string({message:"Img must be a string."})
-        .trim()
-        .min(1, "Img is required.")
-        .max(250, "Img must not exceed 250 characters.")
-        .refine(
-            (value) => {
-                // Récuperation et vérification de la validité de l'extension.
-                const extension = value.substring(value.lastIndexOf(".")).toLowerCase();
-                return pictureFormats.includes(extension);
-            },
-            `Unsupported img format. Accepted formats: ${pictureFormats.join(", ")}`
-        ),
-    
-    bio: z
-        .string({message:"Bio resume must be a string."})
-        .trim()
-        .max(500, "Bio resume must not exceed 500 characters.")
-        .or(z.literal(""))
-        .optional(),
-
-    profession: z
-        .string({message:"Profession resume must be a string."})
-        .trim()
-        .max(100, "Profession resume must not exceed 100 characters.")
-        .or(z.literal(""))
-        .optional(),
-})
 
 /********************************************* 
  * Schéma pour l'ajout d'un Tag
@@ -418,25 +306,10 @@ export const createContributorSchema = z.object({
     
 })
 
-
-
-
-
 /********************************************* 
  * Schéma pour l'ajout dans still
  *********************************************/
-
-
-//Helper pour fisrtname et last name
 /*
-const zName = (fieldName: string, max = 100) =>
-  z.string({ message: `${fieldName} must be a string.` })
-   .trim()
-   .min(1, `${fieldName} is required.`)
-   .max(max, `${fieldName} must not exceed ${max} characters.`)
-   .regex(/^[\p{L}\s'-]+$/u, `${fieldName} can only contain letters, spaces, apostrophes or hyphens.`)
-
-
 firstname: zName("Firstname"),
 lastname: zName("Lastname"),
 */

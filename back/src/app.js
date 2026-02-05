@@ -34,7 +34,6 @@ app.use("/uploads", express.static(uploadsDir));
 // Routes API principales
 app.use("/api", router);
 
-// Middleware 404
 app.use(notFound);
 
 // Gestion globale des erreurs serveur
