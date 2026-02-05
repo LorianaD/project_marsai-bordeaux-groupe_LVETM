@@ -4,6 +4,10 @@ import videosModel from "../../models/videos.model.js";
 import subtitlesModel from "../../models/subtitles.model.js";
 import { pool } from "../../db/index.js";
 
+// ✅ AJOUT YOUTUBE : service qui uploade sur YouTube via l’API Google
+// (le service doit gérer les chemins réels vers les fichiers sur le disque)
+import { uploadToYouTube } from "../../services/youtube.service.js";
+
 //  Petit helper : essayer de deviner la langue d’un sous-titre à partir de son nom
 // Exemple: "movie.fr.srt" -> "fr", "sub_en.srt" -> "en"
 function normalizeLangFromFilename(filename) {
@@ -23,9 +27,40 @@ function isSrtFile(file) {
   return ext === ".srt";
 }
 
+// ✅ AJOUT TAGS : normalise (trim/lowercase) + retire doublons/vides
+function normalizeTags(tags = []) {
+  return [
+    ...new Set(
+      tags
+        .map((t) => String(t || "").trim().toLowerCase())
+        .filter((t) => t.length > 0),
+    ),
+  ];
+}
+
+// ✅ AJOUT TAGS : crée les tags manquants et renvoie toutes les lignes (id + name)
+async function upsertTags(cleanTags, conn) {
+  if (!cleanTags.length) return [];
+
+  // on fabrique "(?), (?), (?)" selon le nombre de tags
+  const values = cleanTags.map(() => "(?)").join(", ");
+
+  // Créer les tags manquants
+  // IMPORTANT : ça marche bien si tags.name est UNIQUE
+  await conn.query(`INSERT IGNORE INTO tags (name) VALUES ${values}`, cleanTags);
+
+  // Récupérer les id de tous les tags concernés
+  const placeholders = cleanTags.map(() => "?").join(", ");
+  const [rows] = await conn.query(
+    `SELECT id, name FROM tags WHERE name IN (${placeholders})`,
+    cleanTags,
+  );
+
+  return rows; // [{ id, name }, ...]
+}
+
 async function uploadVideoController(req, res) {
-  //  DEBUG : ça permet de voir ce que le front envoie vraiment
-  // (souvent utile quand on a un bug de FormData / multer)
+  // ✅ DEBUG : ça permet de voir ce que le front envoie vraiment
   console.log("REQ.BODY raw:", req.body);
   console.log(
     "BODY KEYS:",
@@ -36,20 +71,24 @@ async function uploadVideoController(req, res) {
     Object.keys(req.files || {}).map((k) => JSON.stringify(k)),
   );
 
+  // ✅ DEBUG ENV : vérifier que les vars YouTube sont bien là côté runtime
+  console.log("HAS YT CLIENT ID?", !!process.env.YOUTUBE_CLIENT_ID);
+  console.log("HAS YT CLIENT SECRET?", !!process.env.YOUTUBE_CLIENT_SECRET);
+  console.log("HAS YT REFRESH TOKEN?", !!process.env.YOUTUBE_REFRESH_TOKEN);
+  // (optionnel) si tu utilises un redirect custom
+  console.log("YT REDIRECT URI:", process.env.YOUTUBE_REDIRECT_URI);
+
   //  On ouvre une connexion à la DB
-  // (et on la garde jusqu’à la fin, surtout pour faire une transaction)
   const conn = await pool.getConnection();
 
   try {
     //  Ici on récupère les fichiers envoyés par multer
-    // req.files contient des tableaux, car multer gère les champs “multi-fichiers”
     const videoFile = req.files?.video?.[0];
     const coverFile = req.files?.cover?.[0];
     const stillFiles = req.files?.stills || [];
     const subtitleFiles = req.files?.subtitles || [];
 
     //  Vérifications “fichiers obligatoires”
-    // Si un truc manque, on répond 400 (c’est une erreur côté client)
     if (!videoFile)
       return res.status(400).json({ error: "Fichier vidéo manquant (video)." });
     if (!coverFile)
@@ -63,8 +102,27 @@ async function uploadVideoController(req, res) {
         .status(400)
         .json({ error: "Au moins 1 sous-titre requis (subtitles)." });
 
+    // ✅ DEBUG PATHS : vérifier ce que multer a réellement écrit
+    console.log("UPLOAD FILES (multer):", {
+      video: {
+        originalname: videoFile.originalname,
+        filename: videoFile.filename,
+        path: videoFile.path,
+        size: videoFile.size,
+        mimetype: videoFile.mimetype,
+      },
+      cover: {
+        originalname: coverFile.originalname,
+        filename: coverFile.filename,
+        path: coverFile.path,
+        size: coverFile.size,
+        mimetype: coverFile.mimetype,
+      },
+      stillsCount: stillFiles.length,
+      subtitlesCount: subtitleFiles.length,
+    });
+
     //  Sous-titres : uniquement .srt
-    // Si l’utilisateur envoie autre chose -> on refuse
     const nonSrt = subtitleFiles.find((f) => !isSrtFile(f));
     if (nonSrt) {
       return res.status(400).json({
@@ -74,11 +132,15 @@ async function uploadVideoController(req, res) {
       });
     }
 
-    //  Ici on récupère tous les champs texte envoyés dans req.body
-    // (ce sont les champs de ton formulaire React)
+    // ✅ On prépare les sous-titres tout de suite
+    const subtitlesPayload = subtitleFiles.map((f) => ({
+      file_name: f.filename,
+      language: normalizeLangFromFilename(f.originalname) || null,
+    }));
+
     const {
       youtube_video_id,
-      title, // ✅ AJOUT : le titre FR manquait
+      title,
       title_en,
       synopsis,
       synopsis_en,
@@ -98,15 +160,13 @@ async function uploadVideoController(req, res) {
       address,
       director_country,
       discovery_source,
-
-      // ✅ AJOUT : ces champs arrivent depuis l’étape 3 (composition d’équipe)
-      contributors, // string JSON
-      ownership_certified, // "1" ou "0"
-      promo_consent, // "1" ou "0"
+      contributors,
+      ownership_certified,
+      promo_consent,
+      tags,
     } = req.body;
 
-    // ✅ AJOUT : on parse contributors (JSON string -> tableau)
-    // Important : si c’est invalide, on ne casse pas l’upload, on met []
+    // ✅ Parse contributors
     let contributorsList = [];
     try {
       const parsed = JSON.parse(contributors || "[]");
@@ -115,14 +175,21 @@ async function uploadVideoController(req, res) {
       contributorsList = [];
     }
 
-    // ✅ AJOUT : on normalise les booleans "1"/"0" en vrai bool
+    // ✅ Booleans
     const ownershipCertifiedBool = ownership_certified === "1";
     const promoConsentBool = promo_consent === "1";
 
-    //  On liste les champs obligatoires
-    // Comme ça, on peut facilement dire “il manque quoi”
+    // ✅ Parse tags
+    let tagsList = [];
+    try {
+      const parsedTags = JSON.parse(tags || "[]");
+      tagsList = Array.isArray(parsedTags) ? parsedTags : [];
+    } catch {
+      tagsList = [];
+    }
+
     const required = {
-      title, // ✅ AJOUT
+      title,
       title_en,
       synopsis,
       synopsis_en,
@@ -142,20 +209,16 @@ async function uploadVideoController(req, res) {
       discovery_source,
     };
 
-    //  On fabrique la liste des champs manquants (ou vides)
     const missing = Object.entries(required)
       .filter(
         ([, v]) => v === undefined || v === null || String(v).trim() === "",
       )
       .map(([k]) => k);
 
-    //  S’il manque des champs : 400 + la liste
     if (missing.length) {
       return res.status(400).json({ error: "Champs manquants", missing });
     }
 
-    //  duration doit être un nombre > 0
-    // (car depuis le front, c’est souvent une string)
     const durationNum = Number(duration);
     if (!Number.isFinite(durationNum) || durationNum <= 0) {
       return res.status(400).json({
@@ -165,33 +228,19 @@ async function uploadVideoController(req, res) {
       });
     }
 
-    //  Normalisation de la civilité
-    // Ici tu acceptes plein de façons d’écrire “Mr/Mrs”,
-    // et tu transformes tout en valeur propre pour la DB
-    const genderRaw = String(director_gender || "")
-      .trim()
-      .toLowerCase();
-
+    const genderRaw = String(director_gender || "").trim().toLowerCase();
     let directorGenderDb = null;
 
-    //  si l’utilisateur a écrit une version “homme”
     if (["m", "mr", "male", "homme", "man", "monsieur"].includes(genderRaw)) {
       directorGenderDb = "Mr";
     }
-
-    //  si l’utilisateur a écrit une version “femme”
-    if (
-      ["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)
-    ) {
+    if (["f", "mrs", "female", "femme", "woman", "madame"].includes(genderRaw)) {
       directorGenderDb = "Mrs";
     }
-
-    //  si c’est déjà exactement "Mr" ou "Mrs"
     if (director_gender === "Mr" || director_gender === "Mrs") {
       directorGenderDb = director_gender;
     }
 
-    //  si aucune correspondance : on refuse
     if (!directorGenderDb) {
       return res.status(400).json({
         error: "director_gender invalide",
@@ -201,19 +250,12 @@ async function uploadVideoController(req, res) {
       });
     }
 
-    // Petit helper : transformer les champs optionnels vides en null
-    // (pour éviter "" en base et surtout éviter undefined)
     const toNullIfEmpty = (v) => {
       if (v === undefined || v === null) return null;
       const s = String(v).trim();
       return s === "" ? null : s;
     };
 
-    //   Payload final : c’est ce qu’on va enregistrer dans la table video
-    // - on met les fichiers (noms générés par multer)
-    // - on “trim” les strings
-    // - on met null pour ce qui est optionnel
-    // - et on met upload_status = Pending (en attente)
     const payload = {
       youtube_video_id: toNullIfEmpty(youtube_video_id),
 
@@ -249,17 +291,54 @@ async function uploadVideoController(req, res) {
       upload_status: "Pending",
     };
 
-    //  Transaction DB :
-    // L’idée : soit TOUT est enregistré, soit RIEN.
-    // (sinon tu pourrais avoir une vidéo sans stills, ou des sous-titres sans vidéo)
     await conn.beginTransaction();
 
-    // 1) On crée la vidéo principale et on récupère son id
+    // 1) On crée la vidéo principale
     const videoId = await videosModel.createVideo(payload, conn);
 
-    // ✅ AJOUT : on sauvegarde le certificat de propriété dans la table videos
-    // - ownership_certified / promo_consent sont des bools côté front, envoyés en "1"/"0"
-    // - on stocke aussi une date (pratique si un jour tu veux auditer)
+    // ✅✅✅ AJOUT YOUTUBE : upload sur YouTube (non bloquant)
+    let youtubeVideoId = null;
+
+    // ✅ DEBUG YOUTUBE PAYLOAD
+    console.log("YT UPLOAD PAYLOAD (controller):", {
+      videoFile: payload.video_file_name,
+      title: payload.title,
+      coverFile: payload.cover,
+      subtitlesFile: subtitlesPayload[0]?.file_name || null,
+      // description peut être longue : on loggue juste la taille
+      descriptionLength: String(payload.synopsis || "").length,
+    });
+
+    try {
+      youtubeVideoId = await uploadToYouTube({
+        videoFile: payload.video_file_name,
+        title: payload.title,
+        description: payload.synopsis,
+        coverFile: payload.cover,
+        subtitlesFile: subtitlesPayload[0]?.file_name || null,
+      });
+
+      await conn.query("UPDATE videos SET youtube_video_id = ? WHERE id = ?", [
+        youtubeVideoId,
+        videoId,
+      ]);
+
+      console.log("✅ YT UPLOAD OK - youtubeVideoId:", youtubeVideoId);
+    } catch (err) {
+      // ✅ Logs + précis pour diagnostiquer
+      console.warn("⚠️ Upload YouTube échoué :", err?.message);
+      console.warn("YouTube error status:", err?.code);
+      console.warn("YouTube error data:", err?.response?.data);
+
+      // (optionnel) stocker l'erreur si tu as une colonne
+      // await conn.query("UPDATE videos SET youtube_upload_error = ? WHERE id = ?", [
+      //   JSON.stringify(err?.response?.data || err?.message || "Unknown error"),
+      //   videoId,
+      // ]);
+    }
+    // ✅✅✅ FIN AJOUT YOUTUBE
+
+    // ✅ Ownership / promo
     await conn.query(
       `
       UPDATE videos
@@ -279,27 +358,18 @@ async function uploadVideoController(req, res) {
       ],
     );
 
-       // ✅ AJOUT : on insère les contributors liés à cette vidéo
-    // Important :
-    // - contributorsList vient du front (étape 3)
-    // - on accepte qu’il soit vide (pas bloquant)
-    // - on split full_name -> name / last_name
+    // ✅ Contributors
     for (const c of contributorsList) {
       const fullNameRaw = String(c?.full_name || "").trim();
       const profession = String(c?.profession || "").trim();
       const cEmail = String(c?.email || "").trim();
-      const cGender = c?.gender === "Mrs" ? "Mrs" : "Mr"; // valeur safe
+      const cGender = c?.gender === "Mrs" ? "Mrs" : "Mr";
 
-      //  Si un contributor est incomplet, on le skip (sans planter l’upload)
       if (!fullNameRaw || !profession || !cEmail) continue;
 
-      // ✅ AJOUT : split prénom / nom
-      // Règle simple :
-      // - premier mot -> prénom
-      // - le reste -> nom
       const parts = fullNameRaw.split(/\s+/);
-      const firstName = parts.shift(); // premier mot
-      const lastName = parts.join(" ") || null; // reste (ou null)
+      const firstName = parts.shift();
+      const lastName = parts.join(" ") || null;
 
       await conn.query(
         `
@@ -307,42 +377,42 @@ async function uploadVideoController(req, res) {
           (video_id, name, last_name, gender, email, profession)
         VALUES (?, ?, ?, ?, ?, ?)
         `,
-        [
-          videoId,
-          firstName,
-          lastName,
-          cGender,
-          cEmail,
-          profession,
-        ],
+        [videoId, firstName, lastName, cGender, cEmail, profession],
       );
     }
 
+    // ✅ Tags
+    const cleanTags = normalizeTags(tagsList);
 
-    // 2) On ajoute les stills liés à ce videoId
+    if (cleanTags.length > 0) {
+      const tagRows = await upsertTags(cleanTags, conn);
+
+      if (tagRows.length > 0) {
+        const values = tagRows.map(() => "(?, ?)").join(", ");
+        const params = tagRows.flatMap((t) => [videoId, t.id]);
+
+        await conn.query(
+          `INSERT IGNORE INTO video_tag (video_id, tag_id) VALUES ${values}`,
+          params,
+        );
+      }
+    }
+
+    // 2) Stills
     await stillsModel.insertStills(videoId, stillFiles, conn);
 
-    // 3) On prépare les sous-titres :
-    // on stocke le nom du fichier + une langue si on arrive à la deviner
-    const subtitlesPayload = subtitleFiles.map((f) => ({
-      file_name: f.filename,
-      language: normalizeLangFromFilename(f.originalname) || null,
-    }));
-
-    // 4) On insère les sous-titres en DB
+    // 4) Subtitles
     await subtitlesModel.insertSubtitles(videoId, subtitlesPayload, conn);
 
-    //  Si tout s’est bien passé : on valide la transaction
     await conn.commit();
 
-    //  Réponse succès : 201 (créé) + id de la vidéo créée
     return res.status(201).json({
       message: "Upload OK",
       videoId,
+      youtube_video_id: youtubeVideoId,
+      tags: cleanTags,
     });
   } catch (e) {
-    //  Si un problème arrive :
-    // on annule tout ce qu’on avait commencé à écrire en DB
     try {
       await conn.rollback();
     } catch {}
@@ -352,7 +422,6 @@ async function uploadVideoController(req, res) {
       .status(500)
       .json({ error: "Erreur serveur", details: e.message });
   } finally {
-    //  Important : on rend la connexion à la pool, sinon fuite
     conn.release();
   }
 }

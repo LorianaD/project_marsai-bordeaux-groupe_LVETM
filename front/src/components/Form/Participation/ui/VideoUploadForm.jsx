@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, TextArea, Select } from "./Field";
+import TagInput from "./TagInput";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-// ✅ AJOUT : forceSubmit permet de déclencher l’upload même si canSubmit est false
-// (utile quand on déclenche le submit depuis l’étape 3)
-export default function VideoUploadForm({ formRef, forceSubmit = false }) {
+export default function VideoUploadForm({ formRef }) {
   const [files, setFiles] = useState({
     video: null,
     cover: null,
@@ -37,6 +36,16 @@ export default function VideoUploadForm({ formRef, forceSubmit = false }) {
     discovery_source: "",
   });
 
+  // ✅ AJOUT : tags (tableau de strings)
+  const [tags, setTags] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("video_tags") || "[]");
+      return Array.isArray(saved) ? saved : [];
+    } catch {
+      return [];
+    }
+  });
+
   const [countries, setCountries] = useState([]);
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
@@ -52,9 +61,7 @@ export default function VideoUploadForm({ formRef, forceSubmit = false }) {
         setCountriesLoading(true);
         setCountriesErr("");
 
-        const res = await fetch(
-          "https://restcountries.com/v3.1/all?fields=name",
-        );
+        const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
         const data = await res.json();
 
         const list = Array.isArray(data)
@@ -168,64 +175,80 @@ export default function VideoUploadForm({ formRef, forceSubmit = false }) {
   // SUBMIT FINAL (appelé depuis l’étape 3)
   // =====================================================
   async function submit(e) {
-    e.preventDefault();
+  e.preventDefault();
+  if (!canSubmit) return;
 
-    // ✅ MODIF : si on n’est pas en "forceSubmit", on garde la règle normale
-    // (en étape 2 tu ne veux pas soumettre un formulaire incomplet)
-    if (!forceSubmit && !canSubmit) return;
+  try {
+    const fd = new FormData();
+
+    // ✅ 1) Champs texte (form)
+    Object.entries(form).forEach(([k, v]) => {
+      if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
+    });
+
+    // ✅ 2) TAGS
+    // - on stocke aussi côté front (pratique si on revient en arrière)
+    // - on envoie au backend sous forme JSON string (req.body.tags)
+    const safeTags = Array.isArray(tags) ? tags : [];
+    localStorage.setItem("video_tags", JSON.stringify(safeTags));
+    fd.append("tags", JSON.stringify(safeTags));
+
+    // ✅ 3) Contributors + certificat (depuis localStorage)
+    let contributors = [];
+    let ownership = {};
 
     try {
-      const fd = new FormData();
-
-      Object.entries(form).forEach(([k, v]) => {
-        if (v !== "" && v !== null && v !== undefined) fd.append(k, v);
-      });
-
-      // contributors + certificat
-      let contributors = [];
-      let ownership = {};
-
-      try {
-        contributors = JSON.parse(localStorage.getItem("contributors") || "[]");
-      } catch {}
-
-      try {
-        ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
-      } catch {}
-
-      fd.append("contributors", JSON.stringify(contributors));
-      fd.append(
-        "ownership_certified",
-        ownership?.ownershipCertified ? "1" : "0",
-      );
-      fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
-
-      // fichiers
-      fd.append("video", files.video);
-      fd.append("cover", files.cover);
-
-      files.stills.forEach((f) => f && fd.append("stills", f));
-      files.subtitles.forEach((f) => fd.append("subtitles", f));
-
-      const res = await fetch(`${API_URL}/api/videos`, {
-        method: "POST",
-        body: fd,
-      });
-
-      const data = await res.json().catch(() => null);
-
-      if (!res.ok) {
-        throw new Error(
-          data?.details || data?.error || `Erreur upload (${res.status})`,
-        );
-      }
-
-      alert(`Upload OK ✅ (videoId: ${data.videoId})`);
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Erreur upload");
+      const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
+      contributors = Array.isArray(saved) ? saved : [];
+    } catch {
+      contributors = [];
     }
+
+    try {
+      ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
+    } catch {
+      ownership = {};
+    }
+
+    fd.append("contributors", JSON.stringify(contributors));
+    fd.append("ownership_certified", ownership?.ownershipCertified ? "1" : "0");
+    fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
+
+    // ✅ 4) Fichiers
+    fd.append("video", files.video);
+    fd.append("cover", files.cover);
+
+    // ✅ On n’envoie que les stills qui existent
+    files.stills.forEach((f) => {
+      if (f) fd.append("stills", f);
+    });
+
+    // ✅ Sous-titres
+    files.subtitles.forEach((f) => fd.append("subtitles", f));
+
+    // ✅ DEBUG (facultatif) : voir ce qu’on envoie
+    // for (const [k, v] of fd.entries()) console.log("FD:", k, v);
+
+    const res = await fetch(`${API_URL}/api/videos`, {
+      method: "POST",
+      body: fd,
+    });
+
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok) {
+      throw new Error(
+        data?.details || data?.error || `Erreur upload (${res.status})`,
+      );
+    }
+
+    alert(`Upload OK ✅ (videoId: ${data.videoId})`);
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Erreur upload");
   }
+}
+
 
   // ✅ styles inputs (light par défaut, dark si dark mode)
   const inputClass =
@@ -336,6 +359,11 @@ export default function VideoUploadForm({ formRef, forceSubmit = false }) {
               />
             </Field>
           </div>
+
+          {/* ✅ AJOUT : TAGS */}
+          <Field label="Tags (optionnel)">
+            <TagInput value={tags} onChange={setTags} />
+          </Field>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Field label="Synopsis (original)" required>

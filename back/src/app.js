@@ -23,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
+
 // route test
 app.get("/", (req, res) => {
   res.json({
@@ -35,6 +36,7 @@ app.use("/uploads", express.static(uploadsDir));
 
 // routes API
 app.use("/api", router);
+
 
 // 404
 app.use(notFound);
