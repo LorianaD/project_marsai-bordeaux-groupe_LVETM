@@ -16,7 +16,7 @@ function RegisterForm() {
   /* =================================================
   fonction pour verifier le formulaire a sa soumission
   ==================================================*/
-  const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     /* =================================
     empeche le rechargement de la page
     ================================== */
@@ -38,7 +38,7 @@ function RegisterForm() {
       }
     
     /*===============================================================================
-    condition et contrainte pour lastname et firstname minimum 3 et max 30 caractères
+    conditions pour lastname et firstname minimum 3 et max 30 caractères
     ===============================================================================*/
 
     if (lastName.length < 3) {

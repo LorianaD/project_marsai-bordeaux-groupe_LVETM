@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
 import Home from "./pages/Home.jsx";
 import AdminRegister from "./pages/Admin/AdminRegister.jsx";
