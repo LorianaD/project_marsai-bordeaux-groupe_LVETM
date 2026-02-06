@@ -18,6 +18,7 @@ import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
+import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
 
 export default function App() {
   return (
@@ -52,6 +53,7 @@ export default function App() {
       {/* Route temporaire */}
       <Route path="/partnerform" element={< Partner />} />
       <Route path="/partner/:id" element={< UpdatePartner />}/>
+      <Route path="/cms/sectionhero" element={< SectionHeroForm />}/>
 
       {/*  Fallback */}
       <Route path="*" element={< Navigate to="/" replace />} />
