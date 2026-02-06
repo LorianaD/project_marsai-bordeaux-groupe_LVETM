@@ -1,6 +1,5 @@
 import { Router } from "express";
 // import { testController } from "../controllers/test.controller.js";
-
 import usersRouter from "./users.js";
 import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
@@ -9,7 +8,6 @@ import partnerRouter from "./partner.js";
 import cmsRouter from "./cms.js";
 import newsletterRouter from "./newsletter.routes.js"
 
-const router = Router();
 
 // router.get("/test", testController);
 
