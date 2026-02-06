@@ -6,8 +6,9 @@ import videosRouter from "./videos.js";
 import contactRouter from "./contact.js";
 import partnerRouter from "./partner.js";
 import cmsRouter from "./cms.js";
-import newsletterRouter from "./newsletter.routes.js"
+import newsletterRouter from "./newsletter.routes.js";
 
+const router = Router(); 
 
 // router.get("/test", testController);
 
