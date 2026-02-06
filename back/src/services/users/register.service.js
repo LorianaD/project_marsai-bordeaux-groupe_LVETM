@@ -11,10 +11,9 @@ export async function register(data, role) {
       "email, password, firstname and lastname are required.",
     );
     error.status = 400;
-    console.log(data);
     throw error;
   }
-git 
+
   console.log("tout est passé", email, password, firstname, lastname);
 
   // Hash du mot de passe
