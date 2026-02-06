@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 06 fév. 2026 à 11:28
+-- Généré le : ven. 06 fév. 2026 à 15:13
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -205,8 +205,20 @@ CREATE TABLE `jury` (
   `bio` varchar(500) DEFAULT NULL,
   `profession` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `role_label` varchar(80) DEFAULT NULL,
+  `is_president` tinyint(1) NOT NULL DEFAULT '0',
+  `filmography_url` varchar(500) DEFAULT NULL,
+  `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `jury`
+--
+
+INSERT INTO `jury` (`id`, `name`, `first_name`, `img`, `bio`, `profession`, `created_at`, `updated_at`, `role_label`, `is_president`, `filmography_url`, `sort_order`) VALUES
+(1, 'VALROS', 'JULIEN', 'julien.png', '...', 'Réalisateur', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRÉSIDENT DU JURY', 1, 'https://exemple.com', 1),
+(2, 'MASSON', 'JULIE', 'julie.png', '...', 'Productrice', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRODUCTRICE', 0, 'https://exemple.com', 2);
 
 -- --------------------------------------------------------
 
@@ -543,7 +555,8 @@ ALTER TABLE `film_tag`
 -- Index pour la table `jury`
 --
 ALTER TABLE `jury`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_jury_sort` (`is_president`,`sort_order`,`id`);
 
 --
 -- Index pour la table `memo_selector`
@@ -678,7 +691,7 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT pour la table `jury`
 --
 ALTER TABLE `jury`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `memo_selector`
