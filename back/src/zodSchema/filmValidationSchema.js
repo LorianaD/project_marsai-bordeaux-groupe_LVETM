@@ -1,26 +1,3 @@
-//Voir si toute les images en bdd doivent avoir les memes contrainte que le poster dilm en poids et formatmime
-//manque la validation des entrée CMS
-//AJOUTER VERIFICATION 16/9 et taille des fichiers
-//Ajout de la vérif de la durée et de la taille du fichier vidéo
-// voir si rating dans memo_selector va etre utilisé    rating: z
-//        .number({ message: "Video duration is required." })
-//        .positive({ message: "Video duration must be positive." })
-//verifier si role a ete passé en admin
-//varchar manquant en bdd sur description dans table event
-//Faire length et date dans Event
-
-/*Avec multer, req.file contient généralement :
-
-originalname
-
-mimetype
-
-size
-
-path (ou buffer)
-
-filename*/
-
 /********************************************* 
  * Validation des données de la vidéo
  *********************************************/
@@ -32,21 +9,23 @@ import { z } from "zod";
 //contrainte de format et taille pour les vidéos et photos
 const videoFormats = [".mp4", ".mov"];
 const videoMimeTypes = ["video/mp4", "video/quicktime"];
-const videoMimeTypesText = ".mp4 and .mov"
-const pictureFormats = [".jpg", ".mpeg"]
+const pictureFormats = [".jpg", ".jpeg", ".webp", ".png"];
+const pictureMimeTypes = ["image/jpeg", "image/jpeg", "image/webp", "image/png"];
 const MAX_VIDEO_FILE_SIZE = 350 * 1024 * 1024; // 350 Mo (en octets)
 const MAX_VIDEO_FILE_SIZE_IN_MO = 350;
 const MIN_VIDEO_FILE_SIZE = 200 * 1024 * 1024; // 200 Mo (en octets)
 const MIN_VIDEO_FILE_SIZE_IN_MO = 200;
 const MAX_VIDEO_DURATION_IN_SECOND = 60;
-const MAX_PICTURE_FILE_SIZE = 15 * 1024 * 1024; // 15 Mo en octets
-const MAX_PICTURE_FILE_SIZE_IN_MO = 15;
+const MIN_PICTURE_FILE_SIZE = 100 * 1024; // 100 ko
+const MIN_PICTURE_FILE_SIZE_IN_MO= "0.1 Mb (100 Kb)";
+const MAX_PICTURE_FILE_SIZE = 15 * 1024 * 1024; // 15 Mo (en octets)
+const MAX_PICTURE_FILE_SIZE_IN_MO = "15 Mb";
 /**********************************************************************
  a ajouter plus tardconst ASPECT_RATIO = video 16/9
  *********************************************************************/
 
 /********************************************* 
- * Schéma pour la création d'une vidéo
+ * Schéma pour la création d'une vidéo (formulaire)
  *********************************************/
 export const createFilmSchema = z.object({
 
@@ -102,6 +81,20 @@ export const createFilmSchema = z.object({
             },
             `Unsupported cover format. Accepted formats: ${pictureFormats.join(", ")}`
         ),
+
+    still: z
+        .string({message:"still must be a string."})
+        .trim()
+        .min(1, "still is required.")
+        .max(250, "still must not exceed 250 characters.")
+        .refine(
+            (value) => {
+                // Récuperation et vérification de la validité de l'extension.
+                const extension = value.substring(value.lastIndexOf(".")).toLowerCase();
+                return pictureFormats.includes(extension);
+            },
+            `Unsupported still format. Accepted formats: ${pictureFormats.join(", ")}`
+        ),        
 
     language: z
         .string({message:"Language must be a string."})
@@ -203,7 +196,7 @@ export const createFilmSchema = z.object({
         .or(z.literal(""))
         .optional(),
 
-    adress: z
+    address: z
         .string({ message: "Address must be a string" })
         .trim()
         .min(1, "Address is required")
@@ -249,19 +242,53 @@ export const createFilmFileSchema = z.object({
 
     mimetype: z
         .enum(videoMimeTypes, {
-            errorMap: () => ({ message: `Invalid video format. Only ${videoMimeTypesText} are allowed` })
+            errorMap: () => ({ message: `Invalid video format. Only ${videoMimeTypes.join(" and ")} are allowed` })
         }),
 });
 
 /********************************************* 
- * Schéma pour l'ajout d'un Tag
+ * Schéma pour la cover (req.file)
  *********************************************/
-export const createTagSchema = z.object({
+export const createCoverFileSchema = z.object({
 
-    name: z
-        .string({message:"Name must be a string."})
-        .max(55, "Name  must not exceed 55 characters."),
-})
+    size: z
+        .number({ message: "File size is required"})
+        .positive({message: "File size must be positive"})
+        .min(MIN_PICTURE_FILE_SIZE, {
+            message:`File size must exceed ${MIN_PICTURE_FILE_SIZE_IN_MO}`
+        })
+        .max(MAX_PICTURE_FILE_SIZE, {
+            message: `File size must not exceed ${MAX_PICTURE_FILE_SIZE_IN_MO} `
+        }),
+
+    mimetype: z
+        .enum(pictureMimeTypes, {
+            errorMap: () => ({ message: `Invalid image format. Only ${pictureFormats.join(", ")} are allowed` })
+        }),
+});
+
+/********************************************* 
+ * Schéma pour l'ajout dans still (req.file)
+ *********************************************/
+export const createStillFileSchema = z.object ({
+
+    size: z
+        .number({ message: "File size is required" })
+        .positive({ message: "File size must be positive" })
+        .min(MIN_PICTURE_FILE_SIZE, {
+        message: `File size must exceed ${MIN_PICTURE_FILE_SIZE_IN_MO}`,
+        })
+        .max(MAX_PICTURE_FILE_SIZE, {
+        message: `File size must not exceed ${MAX_PICTURE_FILE_SIZE_IN_MO}`,
+        }),
+  
+    mimetype: z
+        .enum(pictureMimeTypes, {
+            errorMap: () => ({
+                message: `Invalid image format. Only ${pictureFormats.join(", ")} are allowed`,
+            }),
+        })
+});
 
 /********************************************* 
  * Schéma pour l'ajout dans contributor
@@ -307,14 +334,11 @@ export const createContributorSchema = z.object({
 })
 
 /********************************************* 
- * Schéma pour l'ajout dans still
+ * Schéma pour l'ajout d'un Tag
  *********************************************/
-/*
-firstname: zName("Firstname"),
-lastname: zName("Lastname"),
-*/
+export const createTagSchema = z.object({
 
-
-//Champ url
-//a la place de .url pour la vérif :
-//.refine(value => value === "" || isValidUrl(value), { message: "Url must be valid" })
+    name: z
+        .string({message:"Name must be a string."})
+        .max(55, "Name  must not exceed 55 characters."),
+})

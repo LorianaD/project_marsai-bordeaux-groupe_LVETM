@@ -2,6 +2,8 @@ import app from "./app.js"
 import "dotenv/config";
 import { testConnection } from "./db/index.js";
 
+console.log("HAS REFRESH TOKEN?", !!process.env.YOUTUBE_REFRESH_TOKEN);
+
 const PORT = process.env.PORT;
 
 if (!PORT) {

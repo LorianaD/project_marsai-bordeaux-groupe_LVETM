@@ -1,7 +1,7 @@
 import { pool } from "../../db/index.js";
 
 async function getAllPartner() {
-    console.log("model inserPartner OK");
+    console.log("model getAllPartner OK");
     
     const query = `
         SELECT id, name, img, url

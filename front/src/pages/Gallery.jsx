@@ -5,12 +5,14 @@ const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const PAGE_SIZE = 20;
 
 export default function Gallery() {
+  // Etats principaux de la galerie
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
+  // Charge la liste des vidéos depuis l'API
   useEffect(() => {
     let alive = true;
 
@@ -39,6 +41,7 @@ export default function Gallery() {
     };
   }, []);
 
+  // Filtre les vidéos selon la recherche
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return items;
@@ -47,7 +50,9 @@ export default function Gallery() {
       const title = String(v.title || v.title_en || "").toLowerCase();
       const director =
         `${v.director_name || ""} ${v.director_lastname || ""}`.toLowerCase();
-      const country = String(v.country || v.director_country || "").toLowerCase();
+      const country = String(
+        v.country || v.director_country || "",
+      ).toLowerCase();
 
       return title.includes(q) || director.includes(q) || country.includes(q);
     });
@@ -56,10 +61,12 @@ export default function Gallery() {
   const total = filtered.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
+  // Réinitialise la page si elle dépasse le total
   useEffect(() => {
     if (page > totalPages) setPage(1);
   }, [page, totalPages]);
 
+  // Sélectionne les vidéos de la page actuelle
   const pageItems = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     return filtered.slice(start, start + PAGE_SIZE);
@@ -108,21 +115,21 @@ export default function Gallery() {
           </div>
         </div>
 
-        {/* Chargement */}
+        {/* Etat chargement */}
         {loading && (
           <div className="py-16 text-center text-neutral-500 dark:text-white/60">
             Chargement…
           </div>
         )}
 
-        {/* Erreur */}
+        {/* Etat erreur */}
         {!loading && err && (
           <div className="py-16 text-center text-red-600 dark:text-red-400">
             {err}
           </div>
         )}
 
-        {/* Contenu */}
+        {/* Affichage vidéos */}
         {!loading && !err && (
           <>
             <div className="grid grid-cols-1 justify-items-center gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
