@@ -3,44 +3,94 @@ import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
+import updateContentApi from "../../../../services/CMS/UpdateContentApi";
 
 function SectionHeroForm() {
 
-    const { t } = useTranslation("home");
+    const { t, i18n } = useTranslation("home");
+    const locale = i18n.language.startsWith("fr") ? "fr" : "en";
 
     const { values, handleChange } = useForm({
         protocol:"",
         title_main:"",
         title_accent:"",
-        
+        tagline_before:"",
+        tagline_highlight:"",
+        tagline_after:"",
+        desc1:"",
+        desc2:"",
+        ctaParticipate:"",
+        ctaParticipate_signe:"",
+        ctaLearnMore:"",
+        ctaLearnMore_signe:""   
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        // console.log("Fonction handleSubmit OK");
+        console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
-            // console.log("try dans la fonction handleSubmit OK");
-            
-            const formData = new FormData();
 
-            formData.append("name", values.name);
-            formData.append("img", values.file);
-            formData.append("url", values.url);
+            console.log("try dans handleSubmit OK");
+            
+            // Page et section
+            const page = "home";
+            const section = "hero";
 
-            const result = await InsertPartnerApi(formData)
-            // console.log(result);
+            console.log(page, section);
             
-            setMessage("SectionHero modifié")
-            
+            // champs des differents éléments dans la section
+            const fields = [
+                "protocol",
+                "title_main",
+                "title_accent",
+                "tagline_before",
+                "tagline_highlight",
+                "tagline_after",
+                "desc1",
+                "desc2",
+                "ctaParticipate",
+                "ctaParticipate_signe",
+                "ctaLearnMore",
+                "ctaLearnMore_signe"
+            ];
+
+            console.log(fields);
+
+            for (let i = 0; i < fields.length; i++) {
+                const key = fields[i];
+                const val = values[key];
+
+                console.log("loop:", i, key, val);
+
+                if (val === undefined || val === null || String(val).trim() === "") {
+                    console.log("skip:", key);
+                    continue;
+                }
+
+                console.log("send:", key, val);
+
+                await updateContentApi({
+                    page,
+                    section,
+                    locale,
+                    content_key: key,
+                    value: val,
+                    order_index: i,
+                });
+
+            }
+
+            setMessage("Section Hero mise à jour");
+
         } catch (error) {
 
             console.error("erreur:", error);
-            setMessage("Erreur lors de l'envoi");
+            setMessage("Erreur lors de la mise à jour");
 
         } finally {
             setLoading(false);
@@ -75,7 +125,7 @@ function SectionHeroForm() {
                                 <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                             </div>
                         </div>
-                        <input type="text" name="protocol" value={values.name} onChange={handleChange} placeholder={t("hero.protocol")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                        <input type="text" name="protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                     </div>
 
                     {/* Gestion des Titres */}
@@ -91,7 +141,7 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>
                             </div> 
-                            <input type="text" name="title_main" value={values.name} onChange={handleChange} placeholder={t("hero.title_main")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <input type="text" name="title_main" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>
 
                         
@@ -106,7 +156,7 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>
                             </div>
-                            <input type="text" name="title_accent" value={values.name} onChange={handleChange} placeholder={t("hero.title_accent")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <input type="text" name="title_accent" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>
                     </div>
 
@@ -123,7 +173,7 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>
                             </div>
-                            <input type="text" name="tagline_before" value={values.name} onChange={handleChange} placeholder={t("hero.tagline_before")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <input type="text" name="tagline_before" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] uppercase placeholder:uppercase">
                             <div className="flex justify-between flex-col md:flex-row">
@@ -135,11 +185,11 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>                            
                             </div>
-                            <input type="text" name="tagline_highlight" value={values.name} onChange={handleChange} placeholder={t("hero.tagline_highlight")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <input type="text" name="tagline_highlight" value={values.tagline_highlight} onChange={handleChange} placeholder={t("hero.tagline_highlight")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] uppercase placeholder:uppercase">
                             <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="tagline_tagline_after" className="text-[14px] font-semibold tracking-[2.24px]">
+                                <label htmlFor="tagline_after" className="text-[14px] font-semibold tracking-[2.24px]">
                                     Slogan (aprés le point culminant en dégradé)
                                 </label>
                                 <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
@@ -147,7 +197,7 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>
                             </div>
-                            <input type="text" name="tagline_tagline_after" value={values.name} onChange={handleChange} placeholder={t("hero.tagline_after")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <input type="text" name="tagline_after" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>                    
                         
                     </div>
@@ -165,7 +215,7 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>
                             </div>
-                            <textarea type="text" name="desc1" value={values.name} onChange={handleChange} placeholder={t("hero.desc1")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <textarea type="text" name="desc1" value={values.desc1} onChange={handleChange} placeholder={t("hero.desc1")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>
                     
 
@@ -180,7 +230,7 @@ function SectionHeroForm() {
                                     <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                 </div>
                             </div>
-                            <textarea type="text" name="desc2" value={values.name} onChange={handleChange} placeholder={t("hero.desc2")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                            <textarea type="text" name="desc2" value={values.desc2} onChange={handleChange} placeholder={t("hero.desc2")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                         </div>
                     </div>
 
@@ -198,7 +248,7 @@ function SectionHeroForm() {
                                         <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                     </div>
                                 </div>
-                                <input type="text" name="ctaParticipate" value={values.name} onChange={handleChange} placeholder={t("hero.ctaParticipate")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                                <input type="text" name="ctaParticipate" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                             </div>
                             <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
                                 <div className="flex justify-between flex-col md:flex-row">
@@ -210,7 +260,7 @@ function SectionHeroForm() {
                                         <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                     </div>                            
                                 </div>
-                                <input type="text" name="ctaParticipate_signe" value={values.name} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                                <input type="text" name="ctaParticipate_signe" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                             </div>
                         </div>
 
@@ -226,7 +276,7 @@ function SectionHeroForm() {
                                         <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                     </div>
                                 </div>
-                                <input type="text" name="ctaLearnMore" value={values.name} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                                <input type="text" name="ctaLearnMore" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                             </div>
 
                             <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
@@ -239,7 +289,7 @@ function SectionHeroForm() {
                                         <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
                                     </div>                            
                                 </div>
-                                <input type="text" name="ctaLearnMore_signe" value={values.name} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                                <input type="text" name="ctaLearnMore_signe" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                             </div>
                         </div>
                     </div>
