@@ -12,8 +12,6 @@ import juryRouter from "./jury.js";
 const router = Router();
 
 
-const router = Router(); 
-
 // router.get("/test", testController);
 
 router.use("/users", usersRouter);
