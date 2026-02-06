@@ -7,6 +7,7 @@ import videosRouter from "./videos.js";
 import contactRouter from "./contact.js";
 import partnerRouter from "./partner.js";
 import newsletterRoutes from "./newsletter.routes.js";
+import faq from "./faq.js"; //Ajout par ED
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);
 router.use("/", newsletterRoutes);
+router.use("/faq", faq);//Ajout pas ED
 
 export default router;

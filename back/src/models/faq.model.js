@@ -1,0 +1,9 @@
+import { pool } from "../db/index.js";
+
+//recuperer toutes les faqs
+export const findAllFaq = async ()=> {
+    const [ rows ] = await pool.execute(
+        "SELECT question, answer, `rank` FROM faq ORDER BY `rank` ASC"
+    );
+    return rows;
+};
