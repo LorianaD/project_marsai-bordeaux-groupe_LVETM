@@ -18,6 +18,7 @@ import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
+import Overview from "./pages/Overview.jsx";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/privacy" element={< Privacy />} />
         <Route path="/terms" element={< Terms />} />
         <Route path="/partner" element={< PartnersPage />} />
+        <Route path="/admin" element={<Overview />} />
       </Route>
 
       
