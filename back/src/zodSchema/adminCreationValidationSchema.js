@@ -34,7 +34,7 @@ export const createAdminSchema = z.object({
     role: z
         .enum(["Admin", "Super_admin", "Selector"]),
 
-    firstname: z
+    first_name: z
         .string({message:"Firstname must be a string."})
         .trim()
         .min(1, "Firstname is required.")
@@ -44,7 +44,7 @@ export const createAdminSchema = z.object({
         "Firstname can only contain letters, spaces, apostrophes or hyphens."
         ),
 
-    lastname: z
+    last_name: z
         .string({message:"Lastname must be a string."})
         .trim()
         .min(1, "Lastname is required.")

@@ -10,6 +10,7 @@ import adminVideosListController from "../controllers/videos/adminVideosList.con
 import adminOneVideoController from "../controllers/videos/adminOneVideo.controller.js";
 import patchVideoStatusController from "../controllers/videos/patchVideoStatus.controller.js";
 import patchVideoFeaturedController from "../controllers/videos/patchVideoFeatured.controller.js";
+import adminLeaderboardController from "../controllers/videos/adminLeaderboard.controller.js";
 
 import upload from "../middlewares/uploadVideoMiddleware.js";
 
@@ -20,6 +21,7 @@ router.get("/test", testController);
 
 // Routes admin pour gestion complète des vidéos
 router.get("/admin", adminVideosListController);
+router.get("/admin/leaderboard", adminLeaderboardController);
 router.get("/admin/:id", adminOneVideoController);
 router.patch("/admin/:id/status", patchVideoStatusController);
 router.patch("/admin/:id/featured", patchVideoFeaturedController);
