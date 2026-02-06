@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, Select } from "./Field";
 
 export default function DirectorForm({ onNext }) {
+  // Etat du formulaire réalisateur
   const [form, setForm] = useState({
     name: "",
     last_name: "",
@@ -16,6 +17,7 @@ export default function DirectorForm({ onNext }) {
     home_number: "",
   });
 
+  // Chargement de la liste des pays
   const [countries, setCountries] = useState([]);
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
@@ -28,7 +30,9 @@ export default function DirectorForm({ onNext }) {
         setCountriesLoading(true);
         setCountriesErr("");
 
-        const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
+        const res = await fetch(
+          "https://restcountries.com/v3.1/all?fields=name",
+        );
         const data = await res.json();
 
         const list = Array.isArray(data)
@@ -57,6 +61,7 @@ export default function DirectorForm({ onNext }) {
     setForm((f) => ({ ...f, [name]: value }));
   }
 
+  // Vérifie si les champs requis sont remplis
   const canSubmit = useMemo(() => {
     return (
       form.name.trim() &&
@@ -72,6 +77,7 @@ export default function DirectorForm({ onNext }) {
     );
   }, [form]);
 
+  // Sauvegarde du profil en localStorage puis passage à l'étape suivante
   function submit(e) {
     e.preventDefault();
     if (!canSubmit) return;
@@ -146,7 +152,6 @@ export default function DirectorForm({ onNext }) {
               className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
             />
           </Field>
-
 
           <Field label="Date de naissance" required>
             <TextInput

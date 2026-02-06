@@ -1,5 +1,6 @@
 import videosModel from "../../models/videos.model.js";
 
+// Liste des statuts valides
 const ALLOWED = [
   "Pending",
   "Uploading",
@@ -9,6 +10,7 @@ const ALLOWED = [
   "Failed",
 ];
 
+// Met à jour le statut d'une vidéo
 async function patchVideoStatusController(req, res) {
   try {
     const { id } = req.params;
@@ -32,6 +34,7 @@ async function patchVideoStatusController(req, res) {
       .status(200)
       .json({ message: "Status mis à jour", id, upload_status });
   } catch (error) {
+    // Gestion erreur serveur
     console.error("patchVideoStatusController error:", error);
     return res
       .status(500)

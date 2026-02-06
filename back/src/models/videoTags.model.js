@@ -5,7 +5,7 @@ export async function insertVideoTags(videoId, tagRows, conn) {
   const values = tagRows.map(() => "(?, ?)").join(", ");
   const params = tagRows.flatMap((t) => [videoId, t.id]);
 
-  //  INSERT IGNORE => si un lien existe déjà, pas d'erreur
+  //  insert ingnore: si un lien existe déjà, pas d'erreur
   await conn.execute(
     `INSERT IGNORE INTO video_tag (video_id, tag_id) VALUES ${values}`,
     params,

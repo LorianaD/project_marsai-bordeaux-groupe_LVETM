@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 
+// Carte affichant les informations principales d'une vidéo
 export default function VideoCard({ video, apiBase }) {
   const title = video.title || video.title_en || "NEURAL ODYSSEY";
+
   const director =
     `${video.director_name || ""} ${video.director_lastname || ""}`.trim() ||
     "Nom du réalisateur";
+
   const country = video.country || video.director_country || "Pays";
 
+  // Construit l'URL de la cover
   const coverUrl = video.cover
     ? `${apiBase}/uploads/covers/${video.cover}`
     : "https://via.placeholder.com/800x450?text=Cover";
@@ -14,7 +18,6 @@ export default function VideoCard({ video, apiBase }) {
   return (
     <article className="w-full">
       <div className="relative overflow-hidden rounded-2xl">
-        {/* COVER CLIQUABLE VERS PAGE DÉTAIL */}
         <Link
           to={`/gallery/${video.id}`}
           className="relative z-10 block"
