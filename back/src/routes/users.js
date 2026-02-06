@@ -1,5 +1,5 @@
 import { Router } from "express";
-import registerController from '../controllers/users/register.controller.js'
+import createRegisterController from '../controllers/users/register.controller.js'
 
 const router = Router();
 
@@ -8,8 +8,13 @@ const router = Router();
 
 
 // route en post
-router.post("/admin/register", registerController);
+router.post('/superAdmin/register', createRegisterController({ fixedRole:'superadmin'}))
+router.post('/admin/register', createRegisterController({ fixedRole:'admin'}));
+router.post('/selector/register', createRegisterController({ fixedRole:'selector'}));
+
+// router.post("/admin/register", registerController);
+// router.post('/selector/register', registerController);
 // router.post("/login", loginController);
 
 
-export default router;
+export default router
