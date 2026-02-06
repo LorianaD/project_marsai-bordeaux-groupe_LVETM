@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 06 fév. 2026 à 08:38
+-- Généré le : ven. 06 fév. 2026 à 11:28
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -32,8 +32,18 @@ CREATE TABLE `admin_video` (
   `status` enum('Video Accepted','Video Rejected','Video Banned','Featured') DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `video_id` int NOT NULL,
+  `score` decimal(4,2) DEFAULT NULL,
+  `admin_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `admin_video`
+--
+
+INSERT INTO `admin_video` (`id`, `status`, `comment`, `created_at`, `updated_at`, `video_id`, `score`, `admin_user_id`) VALUES
+(1, 'Video Accepted', NULL, '2026-02-06 11:21:54', '2026-02-06 11:21:54', 4, 9.40, NULL);
 
 -- --------------------------------------------------------
 
@@ -468,7 +478,9 @@ INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
 -- Index pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_admin_video_video` (`video_id`),
+  ADD KEY `fk_admin_video_user` (`admin_user_id`);
 
 --
 -- Index pour la table `assignment`
@@ -618,7 +630,7 @@ ALTER TABLE `video_tag`
 -- AUTO_INCREMENT pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `assignment`
@@ -742,7 +754,8 @@ ALTER TABLE `video_subtitles`
 -- Contraintes pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD CONSTRAINT `admin_video_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_admin_video_user` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_admin_video_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `assignment`
@@ -762,12 +775,6 @@ ALTER TABLE `awards_video`
 --
 ALTER TABLE `contributor`
   ADD CONSTRAINT `fk_contributor_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `events`
---
-ALTER TABLE `events`
-  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
 
 --
 -- Contraintes pour la table `film_tag`
