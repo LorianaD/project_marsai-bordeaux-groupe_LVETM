@@ -8,6 +8,7 @@ import partnerRouter from "./partner.js";
 import cmsRouter from "./cms.js";
 import newsletterRouter from "./newsletter.routes.js"
 
+const router = Router();
 
 // router.get("/test", testController);
 
