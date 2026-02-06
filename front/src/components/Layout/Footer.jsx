@@ -75,7 +75,7 @@ function Footer() {
           </h3>
           <ul className="mt-6 space-y-4 text-sm">
             <li>
-              <Link className="" to="#">
+              <Link className="" to="/partner">
                 Partenaires
               </Link>
             </li>

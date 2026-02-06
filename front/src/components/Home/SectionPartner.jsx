@@ -12,16 +12,16 @@ function SectionPartner() {
     const [Message, setMessage] = useState("");
 
     async function GetAllPartner() {
-        console.log("Fonction GetAllPartner OK");
+        // console.log("Fonction GetAllPartner OK");
         
         try {
-            console.log("try in the function GetAllPartner OK");
+            // console.log("try in the function GetAllPartner OK");
             
             setLoading(true);
             setMessage("");
 
             const res = await GetPartnerApi();
-            console.log("API response: ", res);
+            // console.log("API response: ", res);
             
             setPartners(Array.isArray(res.data) ? res.data : []);
 

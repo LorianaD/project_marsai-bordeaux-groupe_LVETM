@@ -1,4 +1,4 @@
-import { findAllEvents } from "../../models/event.js";
+import { findAllEvents,findEventById } from "../../models/event.js";
 
 
 export const getEvents = async (req, res) => {

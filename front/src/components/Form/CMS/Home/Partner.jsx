@@ -17,13 +17,13 @@ function Partner() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        console.log("Fonction handleSubmit OK");
+        // console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
-            console.log("try dans la fonction handleSubmit OK");
+            // console.log("try dans la fonction handleSubmit OK");
             
             const formData = new FormData();
 
@@ -32,7 +32,7 @@ function Partner() {
             formData.append("url", values.url);
 
             const result = await InsertPartnerApi(formData)
-            console.log(result);
+            // console.log(result);
             
             setMessage("Partener ajouté")
             
