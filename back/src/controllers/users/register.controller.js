@@ -7,13 +7,13 @@ async function adminRegister(req, res, next) {
         const data = req.body;
         const role = 'admin';
         
-        const test = register(data, role);
-       
-        const users = await (req.body);
+        const createUser = await register(data, role);
+        
+        
         res.status(201).json({
             success: true,
             message: "user create",
-            data: users
+            data: createUser
         });
 
     } catch (error) {
