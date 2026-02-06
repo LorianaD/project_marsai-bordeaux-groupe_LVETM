@@ -4,9 +4,10 @@ import {register} from "../../services/users/register.service.js";
 async function adminRegister(req, res, next) {
     try {
             
-        const data = req.body
+        const data = req.body;
+        const role = 'admin';
         
-        const test = register(data);
+        const test = register(data, role);
        
         //const users = await (req.body);
         // res.status(201).json({
