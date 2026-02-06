@@ -17,6 +17,7 @@ import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
+import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
 import Overview from "./pages/Overview.jsx";
 import Jury from "./pages/Jury.jsx";
 
@@ -50,8 +51,9 @@ export default function App() {
       </Route>
 
       {/* Route temporaire */}
-      <Route path="/partnerform" element={<Partner />} />
-      <Route path="/partner/:id" element={<UpdatePartner />} />
+      <Route path="/partnerform" element={< Partner />} />
+      <Route path="/partner/:id" element={< UpdatePartner />}/>
+      <Route path="/cms/sectionhero" element={< SectionHeroForm />}/>
 
       {/*  Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
