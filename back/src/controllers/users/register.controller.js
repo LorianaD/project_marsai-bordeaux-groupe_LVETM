@@ -5,9 +5,9 @@ async function adminRegister(req, res, next) {
     try {
             
         const data = req.body;
-        const role = 'admin';
+        const allowedRoles = ['admin', 'superAdmin', 'selector'];
         
-        const createUser = await register(data, role);
+        const createUser = await register(data, allowedRoles);
         
         
         res.status(201).json({
