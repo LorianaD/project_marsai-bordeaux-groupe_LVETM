@@ -1,11 +1,5 @@
 import { clamp, formatTimeFR } from "../../pages/Admin/AdminEvents.utils.js";
 
-
-/**
- * Carte 1 événement dans l'admin
- * - affiche infos + jauge de remplissage
- * - boutons actions: participants / modifier / publier / supprimer
- */
 export default function EventCard({
   ev,
   onEdit,
@@ -13,23 +7,39 @@ export default function EventCard({
   onTogglePublish,
   onParticipants,
 }) {
+  // Calcul du pourcentage de remplissage
   const fill =
     ev.capacity && ev.capacity > 0
       ? Math.round(((ev.registered || 0) / ev.capacity) * 100)
       : 0;
 
+  // Badge selon le type d’événement
   const badge =
     ev.type === "masterclass"
-      ? { label: "Masterclass", cls: "bg-sky-500/15 text-sky-200 border-sky-400/20" }
+      ? {
+          label: "Masterclass",
+          cls: "bg-sky-500/15 text-sky-200 border-sky-400/20",
+        }
       : ev.type === "conference"
-      ? { label: "Conférence", cls: "bg-fuchsia-500/15 text-fuchsia-200 border-fuchsia-400/20" }
-      : ev.type === "projection"
-      ? { label: "Projection", cls: "bg-amber-500/15 text-amber-200 border-amber-400/20" }
-      : { label: "Atelier", cls: "bg-emerald-500/15 text-emerald-200 border-emerald-400/20" };
+        ? {
+            label: "Conférence",
+            cls: "bg-fuchsia-500/15 text-fuchsia-200 border-fuchsia-400/20",
+          }
+        : ev.type === "projection"
+          ? {
+              label: "Projection",
+              cls: "bg-amber-500/15 text-amber-200 border-amber-400/20",
+            }
+          : {
+              label: "Atelier",
+              cls: "bg-emerald-500/15 text-emerald-200 border-emerald-400/20",
+            };
 
   return (
+    // Carte événement
     <article className="rounded-3xl border border-white/10 bg-black/35 p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        {/* Contenu principal */}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span
@@ -60,17 +70,20 @@ export default function EventCard({
           </h3>
 
           {ev.description && (
-            <p className="mt-2 max-w-3xl text-sm text-white/60">{ev.description}</p>
+            <p className="mt-2 max-w-3xl text-sm text-white/60">
+              {ev.description}
+            </p>
           )}
 
           <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/70">
             <span className="rounded-full bg-white/10 px-3 py-1">
-              Inscrits: <span className="text-white">{ev.registered ?? 0}</span> /{" "}
-              <span className="text-white">{ev.capacity ?? 0}</span>
+              Inscrits: <span className="text-white">{ev.registered ?? 0}</span>{" "}
+              / <span className="text-white">{ev.capacity ?? 0}</span>
             </span>
 
             <span className="rounded-full bg-white/10 px-3 py-1">
-              Remplissage: <span className="text-white">{clamp(fill, 0, 100)}%</span>
+              Remplissage:{" "}
+              <span className="text-white">{clamp(fill, 0, 100)}%</span>
             </span>
           </div>
 
@@ -82,7 +95,7 @@ export default function EventCard({
           </div>
         </div>
 
-       
+        {/* Actions */}
         <div className="flex flex-col gap-2 md:min-w-[220px] md:items-stretch">
           <button
             type="button"

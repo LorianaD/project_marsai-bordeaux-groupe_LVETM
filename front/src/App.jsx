@@ -1,5 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import MainLayout from "./components/Layout/MainLayout.jsx";
+import AdminLayout from "./components/Layout/AdminLayout.jsx";
+
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
@@ -12,19 +15,22 @@ import Legal from "./pages/Legal.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import PartnersPage from "./pages/Partner.jsx";
-import AdminLayout from "./components/Layout/AdminLayout.jsx";
+import Jury from "./pages/Jury.jsx";
+
+import Overview from "./pages/Overview.jsx";
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
+import DistributionJury from "./pages/Admin/DistributionJury.jsx";
+
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
-import Overview from "./pages/Overview.jsx";
-import Jury from "./pages/Jury.jsx";
 
 export default function App() {
   return (
     <Routes>
-      {/*  PUBLIC – avec Header + Footer */}
+   
       <Route element={<MainLayout />}>
+        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/gallery/:id" element={<VideoDetails />} />
@@ -37,23 +43,22 @@ export default function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
-        <Route path="/admin" element={<Overview />} />
         <Route path="/jury" element={<Jury />} />
-      </Route>
 
-      {/* ADMIN  */}
-      <Route element={<MainLayout />}>
+       
         <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<Overview />} />
           <Route path="/admin/events" element={<AdminEvents />} />
           <Route path="/admin/videos" element={<AdminVideos />} />
+          <Route path="/admin/distribution-jury" element={<DistributionJury />} />
         </Route>
       </Route>
 
-      {/* Route temporaire */}
+      {/* Routes temporaires (hors layout si tu veux) */}
       <Route path="/partnerform" element={<Partner />} />
       <Route path="/partner/:id" element={<UpdatePartner />} />
 
-      {/*  Fallback */}
+      {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
