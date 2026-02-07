@@ -18,6 +18,7 @@ import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
+import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
   <Route element={< AdminLayout />}>
     <Route path="/admin/events" element={< AdminEvents />} />
     <Route path="/admin/videos" element={< AdminVideos />} />
+    <Route path="/admin/register" element={<AdminRegister />} />
   </Route>
 </Route>
 

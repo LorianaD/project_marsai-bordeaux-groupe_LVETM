@@ -11,7 +11,7 @@ function RegisterForm() {
   const [verifyPassword, setVerifyPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [role, setRole] = useState("Admin");
+  // const [role, setRole] = useState("Admin");
 
   /* =================================================
   fonction pour verifier le formulaire a sa soumission
@@ -138,14 +138,14 @@ function RegisterForm() {
         />
       </div>
 
-      <div>
+      {/* <div>
         <label>Role*</label>
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="Admin"></option>
           <option value="Super_admin"></option>
           <option value="Selector"></option>
         </select>
-      </div>
+      </div> */}
 
       {error && <p>{error}</p>}
       {success && <p>{success}</p>}
