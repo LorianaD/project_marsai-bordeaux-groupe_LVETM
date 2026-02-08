@@ -7,7 +7,10 @@ async function UpdateCms(req, res, next) {
         console.log("try in the controller UpdateCms OK");
         
         const { page, section, locale, content_key } = req.params;
+        console.log("params:", req.params);
+        
         const { value, order_index, is_active } = req.body;
+        console.log("body:", req.body);
 
         const result = await updateCms({
             page,
