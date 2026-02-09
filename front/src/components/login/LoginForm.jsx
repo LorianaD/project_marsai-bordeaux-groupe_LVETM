@@ -23,7 +23,7 @@ function LoginForm() {
       const result = await loginUser(email, password);
       localStorage.setItem("token", result.token);
       setSuccess('Connection successful !');
-      navigate('./')
+      navigate('./admin/dashboard')
 
     } catch (err) {
       setError(err.message);
