@@ -9,3 +9,21 @@ export async function getEvents() {
   if (!res.ok) throw new Error("Erreur lors du chargement des événements");
   return res.json();
 }
+/**
+ * Envoie une réservation pour un événement.
+ * @param {number} eventId - ID de l'événement
+ * @param {{ first_name: string, last_name: string, email: string }} data
+ * @returns {Promise<Object>} - la réservation créée
+ */
+export async function createBooking(eventId, data) {
+  const res = await fetch(`${API_BASE}/events/${eventId}/bookings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json.message || "Erreur lors de la réservation");
+  }
+  return json;
+}

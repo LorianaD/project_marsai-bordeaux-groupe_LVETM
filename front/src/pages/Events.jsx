@@ -8,9 +8,12 @@ import carsIcon from "../assets/imgs/icones/cars.png";
 import peopleIcon from "../assets/imgs/icones/people.png";
 import starIcon from "../assets/imgs/icones/star.png";
 import { getEvents } from "../services/Events/EventsApi.js";
+import BookingModal from "../components/BookingModal.jsx";
+
 
 function Events() {
   const [workshops, setWorkshops] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     getEvents()
@@ -244,7 +247,11 @@ function Events() {
                           ? `${w.stock} place${w.stock > 1 ? "s" : ""} restante${w.stock > 1 ? "s" : ""}`
                           : "—"}
                       </p>
-                      <button className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedEvent(w)}
+                        className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase"
+                      >
                         RÉSERVER SA PLACE
                       </button>
                     </li>
@@ -298,8 +305,19 @@ function Events() {
                   ))}
             </ul>
           </article>
-        </section> 
+        </section>
       </div>
+
+      {selectedEvent && (
+        <BookingModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          onSuccess={() => {
+            setSelectedEvent(null);
+            getEvents().then(setWorkshops).catch(console.error);
+          }}
+        />
+      )}
     </main>
   );
 }
