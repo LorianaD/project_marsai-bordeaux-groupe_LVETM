@@ -6,6 +6,7 @@ import { useForm } from "../../../../hooks/useForm";
 import updateContentApi from "../../../../services/CMS/UpdateContentApi";
 import CmsInput from "./Fields/CmsInput";
 import CmsHideToggle from "./Fields/CmsHideToggle";
+import CmsInputImage from "./Fields/CmsInputImage";
 
 function SectionHeroForm() {
 
@@ -204,7 +205,7 @@ function SectionHeroForm() {
                                 <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} onChange={handleChange} />}
                             />
 
-                            <CmsInput name="ctaParticipate_signe" label="Signe du Premiér bouton" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
+                            <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" valueUrl={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
                                 <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} onChange={handleChange} />}
                             />
 
@@ -226,7 +227,7 @@ function SectionHeroForm() {
 
                     <div className="w-full flex justify-center">
                         <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
-                            Ajouter
+                            Mettre à jour
                         </button>
                     </div>
                 </div>

@@ -12,14 +12,22 @@ async function UpdateCms(req, res, next) {
         const { value, order_index, is_active } = req.body;
         console.log("body:", req.body);
 
+        const file = req.file;
+
+        let finalValue = value ?? null;
+
+        if (file) {
+            finalValue = "/uploads/icons/" + file.filename;
+        }
+
         const result = await updateCms({
             page,
             section,
             locale,
             content_key,
-            value,
-            order_index,
-            is_active,
+            value: finalValue,
+            order_index: order_index ?? 0,
+            is_active: is_active ?? 1,
         });
 
         return res.status(200).json({

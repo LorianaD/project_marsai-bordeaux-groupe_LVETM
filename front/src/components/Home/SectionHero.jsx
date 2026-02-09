@@ -92,7 +92,7 @@ function SectionHero() {
                             {content?.hero?.ctaParticipate ?? t("hero.ctaParticipate")}
                         </span>
                         <div className="w-[20px] h-[20px]">
-                            <img src="../src/assets/imgs/icones/arrowRight.svg" alt=""/>
+                            <img src={content?.hero?.ctaParticipate_signe ?? t("hero.ctaParticipate_signe")} alt=""/>
                         </div>
                     </Link>
                     <Link className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
@@ -112,3 +112,4 @@ function SectionHero() {
 }
 
 export default SectionHero
+// content?.hero?.ctaParticipate_signe ?? 
