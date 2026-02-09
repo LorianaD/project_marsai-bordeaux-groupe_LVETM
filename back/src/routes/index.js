@@ -1,5 +1,7 @@
 import { Router } from "express";
+
 // import { testController } from "../controllers/test.controller.js";
+import eventsPublicRouter from "./eventsPublic.js";
 import usersRouter from "./users.js";
 import eventsRouter from "./eventsAdmin.js";
 import videosRouter from "./videos.js";
@@ -16,7 +18,7 @@ const router = Router();
 
 router.use("/users", usersRouter);
 router.use("/videos", videosRouter);
-router.use("/events", eventsRouter);
+router.use("/events", eventsPublicRouter);
 router.use("/admin/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);

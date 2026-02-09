@@ -72,3 +72,23 @@ export const updateEventPublished = async (id, published) => {
   const updated = await findEventById(id);
   return updated || { id: Number(id), published };
 };
+
+// Liste page publique : uniquement les événements publiés
+export const findAllPublishedEvents = async () => {
+  const [rows] = await pool.execute(
+    "SELECT id, title, description, date, length, stock, illustration, location FROM events WHERE published = 1 ORDER BY date ASC"
+  );
+  return rows;
+};
+
+// liste admin tous les events avec nmbr de réserve
+export const findAllEventsForAdmin = async () => {
+  const [rows] = await pool.execute(
+    `SELECT e.id, e.title, e.description, e.date, e.length, e.stock, e.illustration, e.location, e.published,
+      (SELECT COUNT(*) FROM bookings b WHERE b.event_id = e.id) AS registered
+     FROM events e
+     ORDER BY e.date ASC`
+  );
+  return rows;
+};
+

@@ -1,4 +1,12 @@
-import { findAllEvents, findEventById, insertEvent, updateEvent as updateEventModel,deleteEventById, updateEventPublished } from "../../models/event.js";
+import {
+  findEventById,
+  insertEvent,
+  updateEvent as updateEventModel,
+  deleteEventById,
+  updateEventPublished,
+  findAllPublishedEvents,
+  findAllEventsForAdmin,
+} from "../../models/event.js";
 import { insertBooking, countBookingsByEventId} from "../../models/booking.js";
 
 function toMySQLDateTime(dateStr) {
@@ -78,7 +86,7 @@ export const deleteEvent = async (req, res) => {
 
 export const getEvents = async (req, res) => {
   try {
-    const events = await findAllEvents();
+    const events = await findAllPublishedEvents();
     res.json(events);
   } catch (err) {
    console.error("Error retrieving events", err);
@@ -103,6 +111,16 @@ export const GetEventyByID =async (req ,res) => {
         return res.status(500).json("Error retrieving the event");
     }
 }
+
+export const getEventsForAdmin = async (req, res) => {
+  try {
+    const events = await findAllEventsForAdmin();
+    res.json(events);
+  } catch (err) {
+    console.error("Error retrieving events", err);
+    return res.status(500).json("Error retrieving events");
+  }
+};
 
 export const patchPublish = async (req, res) => {
   try {
