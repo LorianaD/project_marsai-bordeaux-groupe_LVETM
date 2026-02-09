@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { registerUser } from "../../services/Auth/RegisterApi.js";
+
 
 function RegisterForm() {
   /* ======================================================================
@@ -81,13 +83,18 @@ function RegisterForm() {
       return;
     }
 
-    console.log("Sending data:", {
-      email: email.trim(),
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      password,
-      role,
-    });
+    try {
+      await registerUser({
+          email: email.trim(),
+          firstname: firstName.trim(),
+          lastname: lastName.trim(),
+          password,
+      }, 'admin');
+
+      setSuccess('User created successfully !')
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
