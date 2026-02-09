@@ -57,6 +57,8 @@ function CopyIcon() {
 
 /** Item “réseau social” (icône + libellé) */
 function SocialItem({ label, icon, href }) {
+  if (!href) return null;
+
   return (
     <div className="flex w-[74px] flex-col items-center gap-2">
       <a
@@ -75,7 +77,6 @@ function SocialItem({ label, icon, href }) {
   );
 }
 
-
 export default function VideoDetails() {
   const { t } = useTranslation("detailvideo");
   const tl = (key) => t(key, { keyPrefix: "labels" });
@@ -90,7 +91,6 @@ export default function VideoDetails() {
   const [err, setErr] = useState("");
   const [copied, setCopied] = useState(false);
 
-  // Charge la vidéo depuis l’API à chaque changement d’ID dans l’URL
   useEffect(() => {
     let alive = true;
 
@@ -103,7 +103,6 @@ export default function VideoDetails() {
         const data = await res.json();
 
         if (!res.ok) throw new Error(data?.error || "Erreur chargement vidéo");
-
         if (alive) setVideo(data.video);
       } catch (e) {
         if (alive) setErr(e?.message || "Erreur");
@@ -116,13 +115,11 @@ export default function VideoDetails() {
     return () => (alive = false);
   }, [id]);
 
-  // Langue d’affichage (fallback sur fr)
   const viewLang = useMemo(
     () => (video?.language || "fr").toLowerCase(),
     [video],
   );
 
-  // Sélectionne le bon champ selon la langue (titre / synopsis)
   const title = useMemo(() => {
     if (!video) return "";
     return viewLang === "en"
@@ -142,9 +139,8 @@ export default function VideoDetails() {
     return `${video.director_name || ""} ${video.director_lastname || ""}`.trim();
   }, [video]);
 
-  const country = video?.director_country || video?.country || "";
+  const country = video?.director_country || video?.country || "—";
 
-  // Image de couverture (fallback si absente)
   const coverUrl =
     video?.cover && String(video.cover).trim()
       ? `${API_BASE}/uploads/covers/${video.cover}`
@@ -153,7 +149,6 @@ export default function VideoDetails() {
   const streamUrl = `${API_BASE}/api/videos/${id}/stream`;
   const directLink = streamUrl;
 
-  // Transforme la chaîne “ai_tech” en liste de tags
   const aiTags = useMemo(() => {
     const raw = (video?.ai_tech || "").trim();
     if (!raw) return [];
@@ -163,14 +158,13 @@ export default function VideoDetails() {
       .filter(Boolean);
   }, [video]);
 
-  // Copie le lien direct du stream dans le presse-papier
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(directLink);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     } catch {
-      // ignore (clipboard non supporté / refus utilisateur)
+      // ignore
     }
   }
 
@@ -223,8 +217,10 @@ export default function VideoDetails() {
           {title}
         </h1>
 
-        <div className="mt-6 flex flex-wrap items-center gap-10">
-          <div className="flex items-center gap-4">
+        {/* ✅ BLOCS “RÉALISATEUR / ORIGINE” NICKEL */}
+        <div className="mt-6 flex flex-wrap items-start gap-10">
+          {/* Réalisateur */}
+          <div className="flex items-start gap-4">
             <PillIcon>
               <IconImg
                 src={icons.user}
@@ -233,17 +229,19 @@ export default function VideoDetails() {
                 scale={2.35}
               />
             </PillIcon>
-            <div>
+
+            <div className="flex flex-col gap-1 leading-none">
               <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                 {tl("director")}
               </div>
-              <div className="mt-1 text-sm font-semibold text-neutral-900">
+              <div className="text-sm font-semibold text-neutral-900">
                 {director || "—"}
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Origine (compact comme la maquette) */}
+          <div className="flex items-start gap-4">
             <PillIcon>
               <IconImg
                 src={icons.globe}
@@ -252,12 +250,24 @@ export default function VideoDetails() {
                 scale={2.35}
               />
             </PillIcon>
-            <div>
+
+            {/* Label + ligne globe/pays collés */}
+            <div className="flex flex-col gap-1 leading-none">
               <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                 {tl("origin")}
               </div>
-              <div className="mt-1 text-sm font-semibold text-neutral-900">
-                {country || "—"}
+
+              <div className="flex items-center gap-2">
+                {/* important: block => pas d’espace fantôme sous l’icône */}
+                <IconImg
+                  src={icons.globe}
+                  alt=""
+                  className="block !h-6 !w-6"
+                  scale={1}
+                />
+                <div className="text-sm font-semibold text-neutral-900">
+                  {country}
+                </div>
               </div>
             </div>
           </div>
@@ -265,22 +275,30 @@ export default function VideoDetails() {
 
         <div className="mt-10 flex flex-wrap items-end gap-8">
           <div className="flex flex-wrap gap-5">
-            <SocialItem label={social?.x?.label} icon={social?.x?.icon} />
+            <SocialItem
+              label={social?.x?.label}
+              icon={social?.x?.icon}
+              href="https://x.com"
+            />
             <SocialItem
               label={social?.linkedin?.label}
               icon={social?.linkedin?.icon}
+              href="https://www.linkedin.com"
             />
             <SocialItem
               label={social?.instagram?.label}
               icon={social?.instagram?.icon}
+              href="https://www.instagram.com"
             />
             <SocialItem
               label={social?.youtube?.label}
               icon={social?.youtube?.icon}
+              href="https://www.youtube.com"
             />
             <SocialItem
               label={social?.facebook?.label}
               icon={social?.facebook?.icon}
+              href="https://www.facebook.com"
             />
           </div>
 
