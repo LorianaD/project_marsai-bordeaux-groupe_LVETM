@@ -1,52 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
+import { clamp, NAV, DAY_TABS } from "./AdminEvents.utils.js";
 import {
-    getAdminEvents,
-    createEvent,
-    updateEvent,
-    deleteEvent,
-    togglePublish,
-  } from "../../services/Events/AdminEventApi.js";
-  
+  getAdminEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  togglePublish,
+} from "../../services/Events/AdminEventApi.js";
 
+import EventCard from "../../components/admin/EventCard.jsx";
 
-
-
-// ---------------------
-// Helpers
-// ---------------------
-function formatTimeFR(iso) {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-}
-function clamp(n, min, max) {
-  return Math.max(min, Math.min(max, n));
-}
-
-const NAV = [
-  "Overview",
-  "Gestion films",
-  "Distribution & Jury",
-  "Résultats & classement",
-  "Leaderboard officiel",
-  "Événements",
-  "Messages",
-  "Festival Box",
-  "Configuration Festival",
-];
-
+// Page Admin : gestion des événements
 export default function AdminEvents() {
+ 
   const [activeNav, setActiveNav] = useState("Événements");
   const [day, setDay] = useState("vendredi");
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Modal create/edit
   const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState(null); // event obj or null
-
-  // Form state
+  const [editing, setEditing] = useState(null);
+ 
+  // formulaire
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -54,28 +29,56 @@ export default function AdminEvents() {
     location: "",
     capacity: 30,
     type: "atelier",
-    day: "vendredi",
+    day: "vendredi", // journée choisie POUR l’event (pas le filtre)
   });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const data = await getAdminEvents();
-        setEvents(Array.isArray(data) ? data : []);
-      } catch (e) {
-        console.error("Erreur chargement admin events:", e);
-        setEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+//récupère les events
+//récupère les events
+//récupère les events
+useEffect(() => {
+  (async () => {
+    try {
+      setLoading(true);
+      const data = await getAdminEvents();
 
+      const normalized = Array.isArray(data)
+        ? data.map((ev) => {
+            let dayKey = "vendredi";
+            if (ev.date) {
+              const d = new Date(ev.date);
+              const dayNum = d.getDate();
+              const month = d.getMonth();
+              if (month === 5 && dayNum === 14) dayKey = "samedi";
+              if (month === 5 && dayNum === 13) dayKey = "vendredi";
+            }
+            return {
+              ...ev,
+              day: ev.day ?? dayKey,
+              startAt: ev.startAt ?? ev.date,
+              capacity: ev.capacity ?? ev.stock ?? 0,
+              type: ev.type ?? "atelier",
+              published: ev.published ?? false,
+              registered: ev.registered ?? 0,
+            };
+          })
+        : [];
+
+      setEvents(normalized);
+    } catch (e) {
+      console.error("Erreur chargement admin events:", e);
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  })();
+}, []);
+
+  // 2) Liste filtrée + triée (jour + recherche + tri par date)
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+
     return events
-      .filter((e) => e.day === day)
+      .filter((e) => e.day === day) 
       .filter((e) => {
         if (!q) return true;
         return (
@@ -87,10 +90,13 @@ export default function AdminEvents() {
       .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
   }, [events, day, query]);
 
+  // 3) Stats calculées pour la journée affichée
   const stats = useMemo(() => {
     const dayEvents = events.filter((e) => e.day === day);
+
     const totalReservations = dayEvents.reduce((acc, e) => acc + (e.registered || 0), 0);
     const totalCapacity = dayEvents.reduce((acc, e) => acc + (e.capacity || 0), 0);
+
     const fillRate = totalCapacity ? Math.round((totalReservations / totalCapacity) * 100) : 0;
     const publishedCount = dayEvents.filter((e) => e.published).length;
 
@@ -102,8 +108,11 @@ export default function AdminEvents() {
     };
   }, [events, day]);
 
+  // Ouvre le modal en mode "création"
   function openCreate() {
     setEditing(null);
+
+    
     setForm({
       title: "",
       description: "",
@@ -111,52 +120,82 @@ export default function AdminEvents() {
       location: "",
       capacity: 30,
       type: "atelier",
-      day,
+      day, // IMPORTANT : ici c’est form.day
     });
+
     setModalOpen(true);
   }
 
+  // Ouvre le modal en mode "édition"
   function openEdit(ev) {
     setEditing(ev);
+
     setForm({
       title: ev.title || "",
       description: ev.description || "",
-      startAt: ev.startAt ? ev.startAt.slice(0, 16) : "", // for datetime-local
+      startAt: ev.startAt ? ev.startAt.slice(0, 16) : "", // datetime-local
       location: ev.location || "",
       capacity: ev.capacity ?? 30,
       type: ev.type || "atelier",
-      day: ev.day || day,
+      day: ev.day || day, // journée de l’event
     });
+
     setModalOpen(true);
   }
 
-  async function onSave(e) {
+  // Créer ou modifier  event
+   // Créer ou modifier  event
+   async function onSave(e) {
     e.preventDefault();
 
-    const payload = {
-      ...form,
-      capacity: Number(form.capacity) || 0,
-      startAt: form.startAt ? new Date(form.startAt).toISOString() : null,
+    const startAtRaw = form.startAt && String(form.startAt).trim() ? form.startAt.trim() : null;
+    const capacity = Number(form.capacity) || 0;
+    const dateForApi = startAtRaw
+      ? new Date(startAtRaw).toISOString().slice(0, 19).replace("T", " ")
+      : new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    const apiPayload = {
+      title: form.title,
+      description: form.description || null,
+      date: dateForApi,
+      length: 90,
+      stock: capacity,
+      illustration: "",
+      location: form.location || null,
     };
 
     try {
       if (editing) {
-        const updated = await updateEvent(editing.id, { ...editing, ...payload });
-        setEvents((prev) => prev.map((x) => (x.id === editing.id ? updated : x)));
+        const updatePayload = {
+          ...apiPayload,
+          date: editing.date || dateForApi,
+          length: editing.length ?? 90,
+          stock: editing.stock ?? capacity,
+        };
+        const updated = await updateEvent(editing.id, updatePayload);
+        setEvents((prev) =>
+          prev.map((x) => (x.id === editing.id ? { ...x, ...updated, capacity, startAt: updated.date } : x))
+        );
       } else {
-        const created = await createEvent(payload);
-        setEvents((prev) => [created, ...prev]);
+        const created = await createEvent(apiPayload);
+        setEvents((prev) => [
+          { ...created, day: form.day, type: form.type, capacity, startAt: created.date, published: false },
+          ...prev,
+        ]);
       }
+
       setModalOpen(false);
     } catch (err) {
       console.error("Erreur save event:", err);
-      alert("Impossible d’enregistrer l’événement.");
+      alert("Impossible d'enregistrer l'événement.");
     }
   }
 
+  // Supprimer un event
   async function onDelete(ev) {
     const ok = confirm(`Supprimer "${ev.title}" ?`);
     if (!ok) return;
+
     try {
       await deleteEvent(ev.id);
       setEvents((prev) => prev.filter((x) => x.id !== ev.id));
@@ -166,9 +205,11 @@ export default function AdminEvents() {
     }
   }
 
+  // Publier / Dépublier
   async function onTogglePublish(ev) {
     try {
       const res = await togglePublish(ev.id, !ev.published);
+
       setEvents((prev) =>
         prev.map((x) => (x.id === ev.id ? { ...x, published: res.published } : x))
       );
@@ -183,16 +224,16 @@ export default function AdminEvents() {
       <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
         {/* SIDEBAR */}
         <aside className="hidden w-[270px] flex-col rounded-3xl border border-white/10 bg-white/5 p-4 md:flex">
-          {/* Profile */}
+          {/* Profil */}
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-3">
             <div className="h-10 w-10 rounded-full bg-white/10" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Name </p>
+              <p className="truncate text-sm font-semibold">Name</p>
               <p className="truncate text-xs text-white/60">RÉALISATEUR STUDIO</p>
             </div>
           </div>
 
-          {/* Nav */}
+          {/* Menu */}
           <nav className="mt-4 space-y-1">
             {NAV.map((item) => {
               const active = item === activeNav;
@@ -214,10 +255,8 @@ export default function AdminEvents() {
             })}
           </nav>
 
-          {/* Spacer */}
           <div className="mt-4 flex-1 rounded-2xl border border-dashed border-white/10 bg-black/20" />
 
-          {/* Bottom */}
           <div className="mt-4 rounded-2xl border border-white/10 bg-black/30 p-3">
             <div className="flex items-center justify-between">
               <div>
@@ -226,6 +265,7 @@ export default function AdminEvents() {
               </div>
               <span className="rounded-full bg-white/10 px-3 py-1 text-xs">Admin</span>
             </div>
+
             <button
               type="button"
               className="mt-3 w-full rounded-xl bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15"
@@ -248,18 +288,15 @@ export default function AdminEvents() {
                 <p className="text-sm font-semibold">
                   Administration — <span className="text-white/70">Événements</span>
                 </p>
-                <p className="text-xs text-white/60">
-                  Gérer planning, workshops et inscriptions.
-                </p>
+                <p className="text-xs text-white/60">Gérer planning, workshops et inscriptions.</p>
               </div>
             </div>
-            
           </div>
 
           {/* Hero */}
           <section className="mt-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            {/* Banner */}
             <div className="relative">
-              {/* background "banner" */}
               <div className="h-[140px] bg-[radial-gradient(circle_at_20%_20%,rgba(246,51,154,0.35),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(56,189,248,0.25),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(0,0,0,0.35))]" />
               <div className="absolute inset-0 p-6">
                 <div className="flex items-start justify-between gap-4">
@@ -298,6 +335,7 @@ export default function AdminEvents() {
                   <p className="mt-1 text-2xl font-semibold">{stats.totalReservations}</p>
                   <p className="mt-1 text-xs text-white/50">sur la journée sélectionnée</p>
                 </div>
+
                 <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
                   <p className="text-xs text-white/60">Taux de remplissage</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.fillRate}%</p>
@@ -308,23 +346,19 @@ export default function AdminEvents() {
                     />
                   </div>
                 </div>
+
                 <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
                   <p className="text-xs text-white/60">Événements publiés</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.publishedCount}</p>
-                  <p className="mt-1 text-xs text-white/50">
-                    sur {stats.eventsCount} événement(s)
-                  </p>
+                  <p className="mt-1 text-xs text-white/50">sur {stats.eventsCount} événement(s)</p>
                 </div>
               </div>
 
               {/* Controls */}
               <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                {/* Boutons jour (filtre) */}
                 <div className="flex flex-wrap gap-2">
-                  {[
-                    { key: "vendredi", label: "Vendredi 13" },
-                    { key: "samedi", label: "Samedi 14" },
-                    { key: "dimanche", label: "Dimanche 15" },
-                  ].map((t) => {
+                  {DAY_TABS.map((t) => {
                     const active = t.key === day;
                     return (
                       <button
@@ -344,6 +378,7 @@ export default function AdminEvents() {
                   })}
                 </div>
 
+                {/* Recherche + bouton ajouter */}
                 <div className="flex gap-2">
                   <div className="flex-1 md:w-[320px]">
                     <input
@@ -353,6 +388,7 @@ export default function AdminEvents() {
                       className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-white/20"
                     />
                   </div>
+
                   <button
                     type="button"
                     onClick={openCreate}
@@ -375,6 +411,7 @@ export default function AdminEvents() {
                     <p className="mt-1 text-sm text-white/60">
                       Ajoute un workshop ou une conférence pour cette journée.
                     </p>
+
                     <button
                       type="button"
                       onClick={openCreate}
@@ -401,7 +438,7 @@ export default function AdminEvents() {
         </main>
       </div>
 
-      {/* MODAL */}
+      {/* MODAL (création / édition) */}
       {modalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4">
           <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-[#0b0b0b] p-6">
@@ -502,7 +539,6 @@ export default function AdminEvents() {
                 >
                   <option value="vendredi">Vendredi</option>
                   <option value="samedi">Samedi</option>
-                  <option value="dimanche">Dimanche</option>
                 </select>
               </div>
 
@@ -514,11 +550,16 @@ export default function AdminEvents() {
                 >
                   Annuler
                 </button>
+
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSave(e);
+                  }}
                   className="rounded-2xl bg-gradient-to-r from-sky-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold"
                 >
-                  {editing ? "Enregistrer" : "Créer l’événement"}
+                  {editing ? "Enregistrer" : "Créer l'événement"}
                 </button>
               </div>
             </form>
@@ -526,112 +567,5 @@ export default function AdminEvents() {
         </div>
       )}
     </div>
-  );
-}
-
-function EventCard({ ev, onEdit, onDelete, onTogglePublish, onParticipants }) {
-  const fill =
-    ev.capacity && ev.capacity > 0 ? Math.round(((ev.registered || 0) / ev.capacity) * 100) : 0;
-
-  const badge =
-    ev.type === "masterclass"
-      ? { label: "Masterclass", cls: "bg-sky-500/15 text-sky-200 border-sky-400/20" }
-      : ev.type === "conference"
-      ? { label: "Conférence", cls: "bg-fuchsia-500/15 text-fuchsia-200 border-fuchsia-400/20" }
-      : ev.type === "projection"
-      ? { label: "Projection", cls: "bg-amber-500/15 text-amber-200 border-amber-400/20" }
-      : { label: "Atelier", cls: "bg-emerald-500/15 text-emerald-200 border-emerald-400/20" };
-
-  return (
-    <article className="rounded-3xl border border-white/10 bg-black/35 p-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs ${badge.cls}`}>
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/70" />
-              {badge.label}
-            </span>
-            <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/70">
-              {formatTimeFR(ev.startAt)} • {ev.location || "Lieu à préciser"}
-            </span>
-            <span
-              className={[
-                "rounded-full px-3 py-1 text-xs font-semibold",
-                ev.published ? "bg-emerald-500/15 text-emerald-200" : "bg-white/10 text-white/60",
-              ].join(" ")}
-            >
-              {ev.published ? "Publié" : "Brouillon"}
-            </span>
-          </div>
-
-          <h3 className="mt-3 text-base font-semibold tracking-tight md:text-lg">
-            {ev.title}
-          </h3>
-
-          {ev.description && (
-            <p className="mt-2 max-w-3xl text-sm text-white/60">
-              {ev.description}
-            </p>
-          )}
-
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/70">
-            <span className="rounded-full bg-white/10 px-3 py-1">
-              Inscrits: <span className="text-white">{ev.registered ?? 0}</span> /{" "}
-              <span className="text-white">{ev.capacity ?? 0}</span>
-            </span>
-            <span className="rounded-full bg-white/10 px-3 py-1">
-              Remplissage: <span className="text-white">{clamp(fill, 0, 100)}%</span>
-            </span>
-          </div>
-
-          <div className="mt-3 h-2 w-full max-w-xl rounded-full bg-white/10">
-            <div
-              className="h-2 rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500"
-              style={{ width: `${clamp(fill, 0, 100)}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-col gap-2 md:min-w-[220px] md:items-stretch">
-          <button
-            type="button"
-            onClick={onParticipants}
-            className="rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/15"
-          >
-            Liste participants
-          </button>
-
-          <button
-            type="button"
-            onClick={onEdit}
-            className="rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/15"
-          >
-            Modifier
-          </button>
-
-          <button
-            type="button"
-            onClick={onTogglePublish}
-            className={[
-              "rounded-2xl px-4 py-3 text-sm font-semibold",
-              ev.published
-                ? "bg-emerald-500/15 text-emerald-200 hover:bg-emerald-500/20"
-                : "bg-gradient-to-r from-sky-500 to-fuchsia-500 text-white",
-            ].join(" ")}
-          >
-            {ev.published ? "Dépublier" : "Publier"}
-          </button>
-
-          <button
-            type="button"
-            onClick={onDelete}
-            className="rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-200 hover:bg-red-500/15"
-          >
-            Supprimer
-          </button>
-        </div>
-      </div>
-    </article>
   );
 }

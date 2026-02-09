@@ -1,28 +1,28 @@
 import { useState } from "react";
 
 function RegisterForm() {
-
   /* ======================================================================
   state pour stocker et changer les valeur grace au champ vide usestate("")
   ====================================================================== */
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-  const [verifyPassword, setVerifyPassword] = useState(""); 
-  const [success, setSuccess] = useState("")
+  const [verifyPassword, setVerifyPassword] = useState("");
+  const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [role, setRole] = useState("Admin");
 
   /* =================================================
   fonction pour verifier le formulaire a sa soumission
   ==================================================*/
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     /* =================================
     empeche le rechargement de la page
     ================================== */
     e.preventDefault();
 
-  /*=============================
+    /*=============================
   reset du state error et success
   =============================*/
     setError("");
@@ -31,59 +31,66 @@ function RegisterForm() {
     /* ================================================================================== 
     Vérifie si les datas sont bien saisie dans les input sinon renvoi un message d'erreur 
     =================================================================================== */
-    if (!email.trim() || !firstName.trim() || !lastName.trim() || !password.trim() || !verifyPassword.trim()) 
-      {
-        setError("Please fill in all fields");
-        return;
-      }
-    
+    if (
+      !email.trim() ||
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !password.trim() ||
+      !verifyPassword.trim()
+    ) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     /*===============================================================================
     conditions pour lastname et firstname minimum 3 et max 30 caractères
     ===============================================================================*/
 
-    if (lastName.length < 3) {
-      setError("Lastname must be at least 3 character");
+    if (lastName.length < 1) {
+      setError("Lastname must be at least 1 character");
       return;
-    } else if (lastName.length > 30) {
-      setError("Lastname must be no more than 30 characters");
+    } else if (lastName.length > 100) {
+      setError("Lastname must be no more than 100 characters");
       return;
     }
 
-    if (firstName.length < 3) {
-      setError("Firstname must be at least 3 character");
+    if (firstName.length < 1) {
+      setError("Firstname must be at least 1 character");
       return;
-    } else if (firstName.length > 30) {
-      setError("Firstname must be no more than 30 characters");
+    } else if (firstName.length > 100) {
+      setError("Firstname must be no more than 100 characters");
       return;
     }
 
     /*==================================
       Validation de la regex pour le mdp
     ==================================*/
-    if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!?#$^&*@]).{12,}$/.test(password)) {
-        setError("Password must be at least 12 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (!?#$^&*@)");
-        return
-      }
-    
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,128}$/.test(
+        password,
+      )
+    ) {
+      setError(
+        "Password must be at least 12 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (!?#$^&*@)",
+      );
+      return;
+    }
+
     if (password != verifyPassword) {
-        setError("Password and confirmation password do not match.");
-        return
+      setError("Password and confirmation password do not match.");
+      return;
     }
 
     console.log("Sending data:", {
-      email,
-      firstName,
-      lastName,
+      email: email.trim(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
       password,
-      verifyPassword,
+      role,
     });
-
-    
-
   };
 
   return (
-
     /* ====================================
     formulaire d'energistrement utilisateur
     =====================================*/
@@ -99,19 +106,19 @@ function RegisterForm() {
 
       <div>
         <label>Firstname*:</label>
-        <input 
-        type="text" 
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
         />
       </div>
 
       <label>Lastname*:</label>
-      <input 
+      <input
         type="text"
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
-       />
+      />
 
       <div>
         <label>New-password*:</label>
@@ -129,6 +136,15 @@ function RegisterForm() {
           value={verifyPassword}
           onChange={(e) => setVerifyPassword(e.target.value)}
         />
+      </div>
+
+      <div>
+        <label>Role*</label>
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="Admin"></option>
+          <option value="Super_admin"></option>
+          <option value="Selector"></option>
+        </select>
       </div>
 
       {error && <p>{error}</p>}

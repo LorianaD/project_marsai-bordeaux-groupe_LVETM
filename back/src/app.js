@@ -11,6 +11,9 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Expose /uploads/publiquement
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // Définit le dossier contenant les fichiers uploadés
 const uploadsDir = path.join(__dirname, "..", "uploads");
 

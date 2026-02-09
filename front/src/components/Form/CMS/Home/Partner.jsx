@@ -17,13 +17,13 @@ function Partner() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        console.log("Fonction handleSubmit OK");
+        // console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
-            console.log("try dans la fonction handleSubmit OK");
+            // console.log("try dans la fonction handleSubmit OK");
             
             const formData = new FormData();
 
@@ -32,7 +32,7 @@ function Partner() {
             formData.append("url", values.url);
 
             const result = await InsertPartnerApi(formData)
-            console.log(result);
+            // console.log(result);
             
             setMessage("Partener ajouté")
             
@@ -58,9 +58,9 @@ function Partner() {
                 <div className="flex p-[10px] items-start gap-[10px] self-stretch">
                     <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
                     <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                    <h2 className="text-[20px] font-bold tracking-[3.2px] uppercase">
+                    <h3 className="text-[20px] font-bold tracking-[3.2px] uppercase">
                         Section "Partenaires"
-                    </h2>
+                    </h3>
                 </div>
 
                 <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">

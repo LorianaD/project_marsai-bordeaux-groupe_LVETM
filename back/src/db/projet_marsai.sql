@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : jeu. 05 fév. 2026 à 14:40
+-- Généré le : ven. 06 fév. 2026 à 15:13
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -32,8 +32,18 @@ CREATE TABLE `admin_video` (
   `status` enum('Video Accepted','Video Rejected','Video Banned','Featured') DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `video_id` int NOT NULL,
+  `score` decimal(4,2) DEFAULT NULL,
+  `admin_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `admin_video`
+--
+
+INSERT INTO `admin_video` (`id`, `status`, `comment`, `created_at`, `updated_at`, `video_id`, `score`, `admin_user_id`) VALUES
+(1, 'Video Accepted', NULL, '2026-02-06 11:21:54', '2026-02-06 11:21:54', 4, 9.40, NULL);
 
 -- --------------------------------------------------------
 
@@ -195,8 +205,20 @@ CREATE TABLE `jury` (
   `bio` varchar(500) DEFAULT NULL,
   `profession` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `role_label` varchar(80) DEFAULT NULL,
+  `is_president` tinyint(1) NOT NULL DEFAULT '0',
+  `filmography_url` varchar(500) DEFAULT NULL,
+  `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `jury`
+--
+
+INSERT INTO `jury` (`id`, `name`, `first_name`, `img`, `bio`, `profession`, `created_at`, `updated_at`, `role_label`, `is_president`, `filmography_url`, `sort_order`) VALUES
+(1, 'VALROS', 'JULIEN', 'julien.png', '...', 'Réalisateur', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRÉSIDENT DU JURY', 1, 'https://exemple.com', 1),
+(2, 'MASSON', 'JULIE', 'julie.png', '...', 'Productrice', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRODUCTRICE', 0, 'https://exemple.com', 2);
 
 -- --------------------------------------------------------
 
@@ -468,7 +490,9 @@ INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
 -- Index pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_admin_video_video` (`video_id`),
+  ADD KEY `fk_admin_video_user` (`admin_user_id`);
 
 --
 -- Index pour la table `assignment`
@@ -531,7 +555,8 @@ ALTER TABLE `film_tag`
 -- Index pour la table `jury`
 --
 ALTER TABLE `jury`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_jury_sort` (`is_president`,`sort_order`,`id`);
 
 --
 -- Index pour la table `memo_selector`
@@ -618,7 +643,7 @@ ALTER TABLE `video_tag`
 -- AUTO_INCREMENT pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `assignment`
@@ -666,7 +691,7 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT pour la table `jury`
 --
 ALTER TABLE `jury`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `memo_selector`
@@ -742,7 +767,8 @@ ALTER TABLE `video_subtitles`
 -- Contraintes pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD CONSTRAINT `admin_video_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_admin_video_user` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_admin_video_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `assignment`
@@ -762,12 +788,6 @@ ALTER TABLE `awards_video`
 --
 ALTER TABLE `contributor`
   ADD CONSTRAINT `fk_contributor_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `events`
---
-ALTER TABLE `events`
-  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
 
 --
 -- Contraintes pour la table `film_tag`
@@ -812,6 +832,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-ALTER TABLE partner
-  MODIFY url VARCHAR(255) NULL;
