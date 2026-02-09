@@ -3,7 +3,7 @@ import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
-import updateContentApi from "../../../../services/CMS/UpdateContentApi";
+import { updateContentApi, updateImageApi, updateActiveApi } from "../../../../services/CMS/UpdateContentApi.js";
 import CmsInput from "./Fields/CmsInput";
 import CmsHideToggle from "./Fields/CmsHideToggle";
 import CmsInputImage from "./Fields/CmsInputImage";
@@ -13,7 +13,12 @@ function SectionHeroForm() {
     const { t, i18n } = useTranslation("home");
     const locale = i18n.language.startsWith("fr") ? "fr" : "en";
 
-    const { values, handleChange } = useForm({
+    // Page et section
+    const page = "home";
+    const section = "hero";
+    console.log("Page:", page, "Section:", section);
+
+    const { values, handleChange, setValues } = useForm({
         protocol:"",
         protocol_is_active: 1,
 
@@ -63,12 +68,6 @@ function SectionHeroForm() {
 
             console.log("try dans handleSubmit OK");
             
-            // Page et section
-            const page = "home";
-            const section = "hero";
-
-            console.log(page, section);
-            
             // champs des differents éléments dans la section
             const fields = [
                 "protocol",
@@ -92,16 +91,39 @@ function SectionHeroForm() {
                 const val = values[key];
                 const is_active = values[`${key}_is_active`];
 
-                const empty = val === undefined || val === null || String(val).trim() === "";
-                console.log("loop:", i, key, { val, is_active, empty });
-
-                if (empty && is_active === 1) {
-                    console.log("skip:", key);
+                // IMAGE
+                if (val instanceof File) {
+                    await updateImageApi({
+                        page,
+                        section,
+                        locale,
+                        content_key: key,
+                        value: val,
+                        order_index: i,
+                        is_active,
+                    });
                     continue;
                 }
 
-                console.log("send:", key, val);
+                // TEXTE VIDE
+                const empty = val === undefined || val === null || String(val).trim() === "";
 
+                if (empty) {
+
+                    await updateActiveApi({
+                        page,
+                        section,
+                        locale,
+                        content_key: key,
+                        order_index: i,
+                        is_active,
+                    });
+
+                    continue;
+
+                }
+
+                // TEXTE NON VIDE
                 await updateContentApi({
                     page,
                     section,
@@ -109,8 +131,9 @@ function SectionHeroForm() {
                     content_key: key,
                     value: val,
                     order_index: i,
-                    is_active
-                });
+                    is_active,    
+                })
+                
 
             }
 
@@ -145,20 +168,20 @@ function SectionHeroForm() {
                 <div className="flex flex-col intem-start justify-center gap-[50px] self-stretch font-[Outfit]">
                     {/* Gestion du protocol */}
                     < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
-                        <CmsHideToggle name="protocol" value={values.protocol_is_active} onChange={handleChange} />}
+                        <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale}/>}
                     />
 
                     {/* Gestion des Titres */}
                     <div  className="flex flex-col md:flex-row justify-around pb-[10px] gap-[50px]">
                         {/* Gestion du titre principal en blanc */}
                         < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
-                            <CmsHideToggle name="title_main" value={values.title_main_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
                         
                         {/* Gestion du titre accent ou sécondaire en dégradé */}
                         < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
-                            <CmsHideToggle name="title_accent" value={values.title_accent_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
                     </div>
 
@@ -166,15 +189,15 @@ function SectionHeroForm() {
                     <div className="flex flex-col md:flex-row md:intem-center p-[10px] gap-[30px] md:justify-around uppercase placeholder:uppercase">
 
                         < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
-                            <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
                         < CmsInput name="tagline_highlight" label="Slogan (point culminant en dégradé)" value={values.tagline_highlight} onChange={handleChange} placeholder={t("hero.tagline_highlight")} rightSlot={
-                            <CmsHideToggle name="tagline_highlight" value={values.tagline_highlight_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="tagline_highlight" value={values.tagline_highlight_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
                         < CmsInput name="tagline_after" label="Slogan (aprés le point culminant en dégradé)" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} rightSlot={
-                            <CmsHideToggle name="tagline_after" value={values.tagline_after_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="tagline_after" value={values.tagline_after_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
                         
                     </div>
@@ -185,13 +208,13 @@ function SectionHeroForm() {
                         {/* Gestion de la déscription ligne 1 */}
 
                         < CmsInput name="desc1" label="Description (ligne 1)" value={values.desc1} onChange={handleChange} placeholder={t("hero.desc1")} rightSlot={
-                            <CmsHideToggle name="desc1" value={values.desc1_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="desc1" value={values.desc1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />                 
 
                         {/* Gestion de la déscription ligne 2 */}
 
                         <CmsInput name="desc2" label="Description (ligne 2)" value={values.desc2} onChange={handleChange} placeholder={t("hero.desc2")} rightSlot={
-                            <CmsHideToggle name="desc2" value={values.desc2_is_active} onChange={handleChange} />}
+                            <CmsHideToggle name="desc2" value={values.desc2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
                     </div>
@@ -202,11 +225,11 @@ function SectionHeroForm() {
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
 
                             <CmsInput name="ctaParticipate" label="Premier bouton" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")} rightSlot={
-                                <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} onChange={handleChange} />}
+                                <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
-                            <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" valueUrl={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
-                                <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} onChange={handleChange} />}
+                            <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
+                                <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
                         </div>
@@ -215,11 +238,11 @@ function SectionHeroForm() {
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
 
                             <CmsInput name="ctaLearnMore" label="Deuxiéme bouton" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} rightSlot={
-                                <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} onChange={handleChange} />}
+                                <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
                             <CmsInput name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
-                                <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} onChange={handleChange} />}
+                                <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
                         </div>

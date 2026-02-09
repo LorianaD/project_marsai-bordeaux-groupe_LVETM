@@ -14,21 +14,22 @@ async function UpdateCms(req, res, next) {
 
         const file = req.file;
 
-        let finalValue = value ?? null;
-
-        if (file) {
-            finalValue = "/uploads/icons/" + file.filename;
-        }
-
-        const result = await updateCms({
+        const payload = {
             page,
             section,
             locale,
             content_key,
-            value: finalValue,
-            order_index: order_index ?? 0,
-            is_active: is_active ?? 1,
-        });
+            order_index,
+            is_active,
+        };
+
+        if (file) {
+            payload.value = "/uploads/icons/" + file.filename;
+        } else if (value !== undefined) {
+            payload.value = value;
+        }
+
+        const result = await updateCms({ payload });
 
         return res.status(200).json({
             success: true,
@@ -37,8 +38,10 @@ async function UpdateCms(req, res, next) {
         });        
 
     } catch (error) {
+
         console.error(error);
         next(error);
+
     }
 }
 
