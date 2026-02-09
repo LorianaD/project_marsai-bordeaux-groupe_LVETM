@@ -56,18 +56,25 @@ function CopyIcon() {
 }
 
 /** Item “réseau social” (icône + libellé) */
-function SocialItem({ label, icon }) {
+function SocialItem({ label, icon, href }) {
   return (
     <div className="flex w-[74px] flex-col items-center gap-2">
-      <div className="grid !h-14 !w-14 place-items-center rounded-2xl bg-neutral-900 shadow-sm ring-1 ring-black/5">
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className="grid !h-14 !w-14 place-items-center rounded-2xl bg-neutral-900 shadow-sm ring-1 ring-black/5 cursor-pointer"
+      >
         <IconImg src={icon} alt={label} className="!h-10 !w-10" scale={2.35} />
-      </div>
+      </a>
+
       <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
         {label}
       </div>
     </div>
   );
 }
+
 
 export default function VideoDetails() {
   const { t } = useTranslation("detailvideo");
