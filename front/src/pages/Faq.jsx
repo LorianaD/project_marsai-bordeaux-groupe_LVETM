@@ -24,7 +24,7 @@ function Faq() {
 
     return(
         <main>
-			<div>
+			<div className="px-4 md:px-0">
 				<h1 className="font-bold m-10 text-[34px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">FAQ</h1>
 
 				{error && (
@@ -38,7 +38,7 @@ function Faq() {
 						<p>No FAQ available</p>
 					) : (
 						faqs.map((faq) => (
-							<article key={faq.id} className="m-5 w-[900px] rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] md:p-[40px]">
+							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
 								<button onClick={() => toggleFaq(faq.id)}   className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">
                                     <span>Question: {faq.question}</span>
                                     {/* Flèche SVG */}

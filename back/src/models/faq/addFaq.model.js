@@ -1,13 +1,19 @@
 import { pool } from "../../db/index.js";
 
-//creer une faq
+ /*************************************************
+ ******** Creer une faq **************************
+*************************************************/
+
 export const addFaq = async ({question, answer})=> {
     const query = "INSERT INTO faq (question, answer) VALUES (?, ?)";
-    const [result] = await pool.execute(query, [question, answer]);
+    //valeur à ajouter.
+    const values = [question, answer];
+
+    const [result] = await pool.execute(query, values);
 
     return {
         id: result.insertId,
         question,
         answer
     }
-}
+};
