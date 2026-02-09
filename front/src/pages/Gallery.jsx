@@ -77,12 +77,13 @@ export default function Gallery() {
       <div className="mx-auto w-full max-w-6xl px-6 py-10">
         {/* Titre */}
         <div className="mb-8">
-          <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-neutral-900 dark:text-white">
-            <span className="block text-blue-600 dark:text-white">
-              LA GALERIE
-            </span>
-            <span className="block bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
-              DES FILMS
+          <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
+            <span className="block text-blue-600">LA GALERIE DES</span>
+
+            <span className="block">
+              <span className="bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+                FILMS
+              </span>
             </span>
           </h1>
         </div>

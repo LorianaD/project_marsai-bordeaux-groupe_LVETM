@@ -33,20 +33,45 @@ export default function AdminEvents() {
   });
 
 //récupère les events
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const data = await getAdminEvents();
-        setEvents(Array.isArray(data) ? data : []);
-      } catch (e) {
-        console.error("Erreur chargement admin events:", e);
-        setEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+//récupère les events
+//récupère les events
+useEffect(() => {
+  (async () => {
+    try {
+      setLoading(true);
+      const data = await getAdminEvents();
+
+      const normalized = Array.isArray(data)
+        ? data.map((ev) => {
+            let dayKey = "vendredi";
+            if (ev.date) {
+              const d = new Date(ev.date);
+              const dayNum = d.getDate();
+              const month = d.getMonth();
+              if (month === 5 && dayNum === 14) dayKey = "samedi";
+              if (month === 5 && dayNum === 13) dayKey = "vendredi";
+            }
+            return {
+              ...ev,
+              day: ev.day ?? dayKey,
+              startAt: ev.startAt ?? ev.date,
+              capacity: ev.capacity ?? ev.stock ?? 0,
+              type: ev.type ?? "atelier",
+              published: ev.published ?? false,
+              registered: ev.registered ?? 0,
+            };
+          })
+        : [];
+
+      setEvents(normalized);
+    } catch (e) {
+      console.error("Erreur chargement admin events:", e);
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  })();
+}, []);
 
   // 2) Liste filtrée + triée (jour + recherche + tri par date)
   const filtered = useMemo(() => {
@@ -119,30 +144,50 @@ export default function AdminEvents() {
   }
 
   // Créer ou modifier  event
-  async function onSave(e) {
+   // Créer ou modifier  event
+   async function onSave(e) {
     e.preventDefault();
 
-    const payload = {
-      ...form,
-      capacity: Number(form.capacity) || 0,
-      startAt: form.startAt ? new Date(form.startAt).toISOString() : null,
+    const startAtRaw = form.startAt && String(form.startAt).trim() ? form.startAt.trim() : null;
+    const capacity = Number(form.capacity) || 0;
+    const dateForApi = startAtRaw
+      ? new Date(startAtRaw).toISOString().slice(0, 19).replace("T", " ")
+      : new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    const apiPayload = {
+      title: form.title,
+      description: form.description || null,
+      date: dateForApi,
+      length: 90,
+      stock: capacity,
+      illustration: "",
+      location: form.location || null,
     };
 
     try {
       if (editing) {
-     
-        const updated = await updateEvent(editing.id, { ...editing, ...payload });
-        setEvents((prev) => prev.map((x) => (x.id === editing.id ? updated : x)));
+        const updatePayload = {
+          ...apiPayload,
+          date: editing.date || dateForApi,
+          length: editing.length ?? 90,
+          stock: editing.stock ?? capacity,
+        };
+        const updated = await updateEvent(editing.id, updatePayload);
+        setEvents((prev) =>
+          prev.map((x) => (x.id === editing.id ? { ...x, ...updated, capacity, startAt: updated.date } : x))
+        );
       } else {
-   
-        const created = await createEvent(payload);
-        setEvents((prev) => [created, ...prev]);
+        const created = await createEvent(apiPayload);
+        setEvents((prev) => [
+          { ...created, day: form.day, type: form.type, capacity, startAt: created.date, published: false },
+          ...prev,
+        ]);
       }
 
       setModalOpen(false);
     } catch (err) {
       console.error("Erreur save event:", err);
-      alert("Impossible d’enregistrer l’événement.");
+      alert("Impossible d'enregistrer l'événement.");
     }
   }
 
@@ -507,10 +552,14 @@ export default function AdminEvents() {
                 </button>
 
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSave(e);
+                  }}
                   className="rounded-2xl bg-gradient-to-r from-sky-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold"
                 >
-                  {editing ? "Enregistrer" : "Créer l’événement"}
+                  {editing ? "Enregistrer" : "Créer l'événement"}
                 </button>
               </div>
             </form>

@@ -16,20 +16,21 @@ import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import PartnersPage from "./pages/Partner.jsx";
 import Overview from "./pages/Overview.jsx";
+import Jury from "./pages/Jury.jsx";
+
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import DistributionJury from "./pages/Admin/DistributionJury.jsx";
+
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
 import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
-import Jury from "./pages/Jury.jsx";
 
 export default function App() {
   return (
     <Routes>
-   
       <Route element={<MainLayout />}>
-        {/* PUBLIC */}
+        {/* ROUTES PUBLIQUES */}
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/gallery/:id" element={<VideoDetails />} />
@@ -44,21 +45,24 @@ export default function App() {
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/jury" element={<Jury />} />
 
-       {/* ADMIN  */}
+        {/* ROUTES ADMIN */}
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Overview />} />
           <Route path="/admin/events" element={<AdminEvents />} />
           <Route path="/admin/videos" element={<AdminVideos />} />
-          <Route path="/admin/distribution-jury" element={<DistributionJury />} />
+          <Route
+            path="/admin/distribution-jury"
+            element={<DistributionJury />}
+          />
         </Route>
       </Route>
 
-      {/* Route temporaire */}
+      {/* ROUTES TEMPORAIRES / CMS */}
       <Route path="/partnerform" element={<Partner />} />
-      <Route path="/partner/:id" element={<UpdatePartner />}/>
-      <Route path="/cms/sectionhero" element={<SectionHeroForm />}/>
+      <Route path="/partner/:id" element={<UpdatePartner />} />
+      <Route path="/cms/sectionhero" element={<SectionHeroForm />} />
 
-      {/* Fallback */}
+      {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
