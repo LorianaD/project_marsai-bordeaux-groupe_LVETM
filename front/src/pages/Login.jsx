@@ -1,5 +1,10 @@
-export default function login(params) {
+import LoginForm from "../components/login/LoginForm";
+
+export default function Login() {
     return (
-        <div></div>
-    )
+        <div>
+            <h1>Login</h1>
+            <LoginForm />
+        </div>
+    );
 }

@@ -19,6 +19,7 @@ import AdminEvents from "./pages/Admin/AdminEvents.jsx";
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
 import AdminRegister from "./pages/Admin/AdminRegister.jsx";
+import AdminLogin from "./components/login/LoginForm.jsx";
 
 
 export default function App() {
