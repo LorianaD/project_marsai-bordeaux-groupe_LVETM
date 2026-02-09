@@ -6,7 +6,7 @@ const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
  */
 export async function getEvents() {
   const res = await fetch(`${API_BASE}/events`);
-  if (!res.ok) throw new Error("Erreur lors du chargement des événements");
+  if (!res.ok) throw new Error("Failed to load events");
   return res.json();
 }
 /**
@@ -23,7 +23,7 @@ export async function createBooking(eventId, data) {
   });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(json.message || "Erreur lors de la réservation");
+    throw new Error(json.message || "Error while booking");
   }
   return json;
 }

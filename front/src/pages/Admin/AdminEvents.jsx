@@ -226,9 +226,9 @@ useEffect(() => {
         <aside className="hidden w-[270px] flex-col rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-4 md:flex">
           {/* Profil */}
           <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
-            <div className="h-10 w-10 rounded-full bg-black/10 dark:bg-white/10" />
+            <img src="/imgs/admin-avatar.png" alt="Oceane Brise" className="h-10 w-10 shrink-0 rounded-full object-cover" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Name</p>
+              <p className="truncate text-sm font-semibold">Oceane Brise</p>
               <p className="truncate text-xs text-black/60 dark:text-white/60">RÉALISATEUR STUDIO</p>
             </div>
           </div>
@@ -308,7 +308,7 @@ useEffect(() => {
                   <div>
                     <p className="text-sm text-white/80">Heureux de vous revoir,</p>
                     <h1 className="mt-1 text-2xl font-semibold">
-                      Name <span className="text-white/60">(Admin)</span>
+                      Oceane Brise <span className="text-white/60">(Admin)</span>
                     </h1>
                     <p className="mt-2 max-w-xl text-xs text-white/60">
                       Gérez l’agenda du festival à Marseille et le flux des participants.
