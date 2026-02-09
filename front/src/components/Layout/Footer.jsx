@@ -30,7 +30,7 @@ function Footer() {
           <div>
             <Link to="/">
               <h2 className="text-3xl font-semibold tracking-tight">
-                MARS<span className="text-fuchsia-500">AI</span>
+                MARS<span className="text-violet-600">AI</span>
               </h2>
             </Link>
 
@@ -75,7 +75,7 @@ function Footer() {
 
             {/* NAVIGATION */}
             <div>
-              <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400 uppercase">
+              <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
                 {t("navigation")}
               </h3>
 
@@ -88,7 +88,7 @@ function Footer() {
 
             {/* LEGAL */}
             <div>
-              <h3 className="text-xs font-semibold tracking-[0.25em] text-fuchsia-400 uppercase">
+              <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
                 {t("legal")}
               </h3>
 

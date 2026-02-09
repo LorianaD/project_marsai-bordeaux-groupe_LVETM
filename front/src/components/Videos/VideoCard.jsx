@@ -47,8 +47,17 @@ export default function VideoCard({ video, apiBase }) {
 
           <div className="ml-auto text-right">
             <div className="font-semibold">ORIGINE</div>
-            <div className="mt-1 text-[11px] font-semibold normal-case text-neutral-800">
-              {country}
+
+            <div className="mt-1 flex items-center justify-end gap-1">
+              <img
+                src="/icons/videoDetails/globe.png"
+                alt=""
+                aria-hidden="true"
+                className="h-20 w-14"
+              />
+              <div className="text-[11px] font-semibold normal-case text-neutral-800">
+                {country}
+              </div>
             </div>
           </div>
         </div>
