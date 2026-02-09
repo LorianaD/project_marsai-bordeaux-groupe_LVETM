@@ -1,20 +1,19 @@
 export default function AdminHero({ name = "Ocean" }) {
   return (
-    // Conteneur principal du hero
-    <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-white/10">
-      
+    <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-white/10 min-h-[240px]">
       {/* Image de fond */}
       <img
         src="/imgs/admin-hero.jpg.png"
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-center"
         draggable={false}
       />
 
-      {/* Contenu affiché au-dessus de l’image */}
-      <div className="relative flex items-center justify-between gap-8 px-10 py-10 md:px-14 md:py-12">
-        
-        {/* Bloc texte */}
+      {/* Overlay léger pour éviter les zones noires et améliorer lisibilité */}
+      <div className="absolute inset-0 bg-black/40" />
+
+      {/* Contenu */}
+      <div className="relative flex h-full items-center justify-between gap-8 px-10 py-10 md:px-14 md:py-12">
         <div>
           <h1 className="text-[36px] font-extrabold leading-tight tracking-tight text-white md:text-[42px]">
             Heureux de vous revoir,{" "}
@@ -22,15 +21,13 @@ export default function AdminHero({ name = "Ocean" }) {
           </h1>
 
           <p className="mt-3 max-w-[720px] text-sm text-white/90">
-            Le festival approche. N&apos;oubliez pas de finaliser vos soumissions
-            avant le <span className="font-medium text-white">15 Mai</span>.
+            Le festival approche. N&apos;oubliez pas de finaliser vos
+            soumissions avant le{" "}
+            <span className="font-medium text-white">15 Mai</span>.
           </p>
         </div>
 
-        {/* Bouton d’action */}
         <button className="group relative flex items-center gap-3 rounded-full bg-[#22C55E]/90 px-7 py-3 text-sm font-semibold text-black ring-1 ring-white/30 transition hover:bg-[#22C55E]">
-          
-          {/* Icône du bouton */}
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
             <svg
               width="14"
@@ -51,7 +48,6 @@ export default function AdminHero({ name = "Ocean" }) {
               />
             </svg>
           </span>
-
           ADMIN MANAGEMENT
         </button>
       </div>
