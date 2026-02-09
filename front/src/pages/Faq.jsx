@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import getAllFaq from "../services/Faq/faqApi"
+import deleteFaq from "../services/Faq/deleteFaqApi";
 
 function Faq() {
     const [faqs, setFaqs] = useState([]);
@@ -25,6 +26,12 @@ function Faq() {
     const toggleFaq = (id) => {
         setOpenFaq(openFaq === id ? null : id); // si c'est ouvert, ferme, sinon ouvre
     };
+
+    const handleDelete = async (id) => {
+        await deleteFaq(id);
+        setFaqs(prevFaqs => prevFaqs.filter(faq => faq.id !== id));
+    }
+
 
     return(
         <main>
@@ -53,6 +60,9 @@ function Faq() {
                                 {openFaq === faq.id && (
 								    <p className="text-left">Réponse: {isFrench ? faq.answer_fr : faq.answer_en}</p>
                                 )}
+                                <button onClick={() => handleDelete(faq.id)} className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">
+                                    Supprimer
+                                </button>
 							</article>
 						))
 					)}
