@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { loginUser } from "../../services/Auth/LoginApi";
+import { useNavigate } from "react-router";
 
 // formulaire de connexion utilisateurs
 function LoginForm() {
@@ -7,6 +8,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,6 +23,8 @@ function LoginForm() {
       const result = await loginUser(email, password);
       localStorage.setItem("token", result.token);
       setSuccess('Connection successful !');
+      navigate('./')
+
     } catch (err) {
       setError(err.message);
     }
