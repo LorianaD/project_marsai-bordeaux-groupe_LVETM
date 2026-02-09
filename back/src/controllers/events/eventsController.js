@@ -1,4 +1,4 @@
-import { findAllEvents, findEventById, insertEvent, updateEvent as updateEventModel,deleteEventById } from "../../models/event.js";
+import { findAllEvents, findEventById, insertEvent, updateEvent as updateEventModel,deleteEventById, updateEventPublished } from "../../models/event.js";
 
 function toMySQLDateTime(dateStr) {
   if (!dateStr) return null;
@@ -102,5 +102,23 @@ export const GetEventyByID =async (req ,res) => {
         return res.status(500).json("Error retrieving the event");
     }
 }
+
+export const patchPublish = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { published } = req.body;
+
+     const event = await findEventById(id);
+     if (!envent) {
+      return res.status(404).json('Error: Event Not Found')
+     }
+     await updateEventPublished(id, published);
+     const updated = await findEventById(id);
+     return res.status(200).json(updated);
+  } catch (err) {
+    console.error("Error publishing event", err);
+    return res.status(500).json({message :"Error publishing event"});
+  }
+};
   
 

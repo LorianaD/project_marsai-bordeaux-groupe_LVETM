@@ -1,5 +1,7 @@
 {
    "hero": {
+      "title_main": "MARS",
+      "title_accent":"AI",
       "protocol": "the 2026 temporal protocol",
       "tagline_before": "Imagine",
       "tagline_highlight": "Futures",
@@ -7,7 +9,8 @@
       "desc1": "the 60-second short film festival",
       "desc2": "2 days of immersion in the heart of Marseille.",
       "ctaParticipate": "participate",
-      "ctaLearnMore": "Learn more"
+      "ctaLearnMore": "Learn more",
+      "ctaLearnMore_signe":"+"
    },
    "concept":{
       "OneMinute":{

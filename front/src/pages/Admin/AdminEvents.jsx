@@ -296,8 +296,13 @@ useEffect(() => {
           {/* Hero */}
           <section className="mt-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
             {/* Banner */}
-            <div className="relative">
-              <div className="h-[140px] bg-[radial-gradient(circle_at_20%_20%,rgba(246,51,154,0.35),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(56,189,248,0.25),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(0,0,0,0.35))]" />
+            <div className="relative h-[140px] overflow-hidden">
+              <img
+                src="/imgs/backgroundSections/DashboardSectionHero.png"
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
               <div className="absolute inset-0 p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>

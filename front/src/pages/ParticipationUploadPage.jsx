@@ -6,14 +6,16 @@ import {
 } from "../components/Form/Participation/ui";
 
 export default function ParticipationUploadPage() {
+  // Step courant du parcours (1: réalisateur, 2: upload, 3: équipe + certificat)
   const [step, setStep] = useState(1);
 
-  // ref vers le <form> du VideoUploadForm
+  // Référence vers le form vidéo pour pouvoir déclencher l’envoi depuis le step 3
   const videoFormRef = useRef(null);
 
-  // active/désactive ENVOYER en step 3
+  // État du certificat (active/désactive le bouton ENVOYER)
   const [ownershipCertified, setOwnershipCertified] = useState(false);
 
+  // Au montage: si le profil réalisateur est déjà complet en localStorage, on saute au step 2
   useEffect(() => {
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
@@ -33,10 +35,11 @@ export default function ParticipationUploadPage() {
 
       if (isComplete) setStep(2);
     } catch {
-      // JSON cassé → on ignore
+      // Données invalides: on ignore
     }
   }, []);
 
+  // Synchronise ownershipCertified depuis localStorage (et écoute les changements)
   useEffect(() => {
     function syncOwnershipCertified() {
       try {
@@ -47,21 +50,26 @@ export default function ParticipationUploadPage() {
       }
     }
 
+    // Sync immédiate à l’entrée dans la page / changement de step
     syncOwnershipCertified();
 
+    // En step 3, on poll pour capter les changements même si le composant enfant n’émet rien
     let intervalId = null;
     if (step === 3) {
       intervalId = setInterval(syncOwnershipCertified, 250);
     }
 
+    // Couvre les changements venant d’un autre onglet/fenêtre
     window.addEventListener("storage", syncOwnershipCertified);
 
+    // Nettoyage: stop interval + remove listener
     return () => {
       window.removeEventListener("storage", syncOwnershipCertified);
       if (intervalId) clearInterval(intervalId);
     };
   }, [step]);
 
+  // Déclenche l’envoi du formulaire vidéo depuis le step 3 (si certificat validé)
   function submitVideoFromStep3() {
     if (!ownershipCertified) return;
 
@@ -81,7 +89,7 @@ export default function ParticipationUploadPage() {
           FORMULAIRE DE PARTICIPATION
         </h1>
 
-        {/* Indicateur de step (optionnel, tu peux le garder) */}
+        {/* Indicateur visuel du step courant */}
         <div className="mb-8 flex items-center justify-center gap-3 text-sm">
           <span className={step === 1 ? "font-semibold" : "text-neutral-400"}>
             1. Réalisateur
@@ -96,16 +104,18 @@ export default function ParticipationUploadPage() {
           </span>
         </div>
 
-        {/* ✅ Un SEUL "emplacement" visuel : on remplace le contenu selon step */}
+        {/* Un seul bloc: le contenu change selon step */}
         <div>
+          {/* Step 1: formulaire réalisateur */}
           {step === 1 && <DirectorForm onNext={() => setStep(2)} />}
 
-          {/* ✅ VideoUploadForm doit rester monté en step 2 + 3 (pour garder les fichiers) */}
+          {/* Step 2/3: le formulaire vidéo reste monté pour conserver les fichiers sélectionnés */}
           {(step === 2 || step === 3) && (
             <div className={step === 3 ? "hidden" : ""}>
               <div className="rounded-2xl bg-white p-6 md:p-10 text-neutral-900 dark:bg-black dark:text-white">
                 <VideoUploadForm formRef={videoFormRef} />
 
+                {/* Navigation step 2 */}
                 <div className="mt-10 flex items-center justify-center gap-4">
                   <button
                     type="button"
@@ -127,6 +137,7 @@ export default function ParticipationUploadPage() {
             </div>
           )}
 
+          {/* Step 3: composition équipe + bouton d’envoi qui soumet le form vidéo */}
           {step === 3 && (
             <div className="space-y-6">
               <TeamCompositionForm onPrev={() => setStep(2)} />
@@ -152,9 +163,11 @@ export default function ParticipationUploadPage() {
                 </button>
               </div>
 
+              {/* Message d’aide si le certificat n’est pas validé */}
               {!ownershipCertified ? (
                 <div className="text-center text-sm text-neutral-500 dark:text-neutral-300">
-                  Coche “Je certifie être l’auteur…” pour activer le bouton ENVOYER.
+                  Coche “Je certifie être l’auteur…” pour activer le bouton
+                  ENVOYER.
                 </div>
               ) : null}
             </div>

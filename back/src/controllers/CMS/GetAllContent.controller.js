@@ -15,7 +15,7 @@ async function GetAllContent(req, res, next) {
         });
         
     } catch (error) {
-        console.error('An error occurred while fetching partners', error);
+        console.error('An error occurred while fetching cantents', error);
         next(error);
     }
 

@@ -7,17 +7,18 @@ async function adminRegister(req, res, next) {
         const data = req.body;
         const role = 'admin';
         
-        const test = register(data, role);
-       
-        //const users = await (req.body);
-        // res.status(201).json({
-        //     success: true,
-        //     message: "user create",
-        //     data: users
-        // })
+        const createUser = await register(data, role);
+        
+        
+        res.status(201).json({
+            success: true,
+            message: "user create",
+            data: createUser
+        });
+
     } catch (error) {
-        // console.error("error during account creation", error);
-        // next(error);
+        console.error("error during account creation", error);
+        next(error);
         
     }
     

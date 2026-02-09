@@ -64,3 +64,11 @@ export const deleteEventById = async (id) => {
   const [result] = await pool.execute("DELETE FROM events WHERE id = ?", [id]);
   return result.affectedRows > 0;
 };
+
+//mettre le statut publichs 
+export const updateEventPublished = async (id, published) => {
+  const value = published ? 1 : 0;
+  await pool.execute( "UPDATE events SET published = ? WHERE id = ?", [value, id]);
+  const updated = await findEventById(id);
+  return updated || { id: Number(id), published };
+};
