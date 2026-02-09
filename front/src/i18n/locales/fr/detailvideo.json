@@ -1,0 +1,28 @@
+{
+  "backToGallery": "Retour galerie",
+
+  "labels": {
+    "director": "Réalisateur",
+    "origin": "Origine",
+    "directLink": "Lien direct",
+    "copy": "Copier",
+    "copied": "Copié",
+    "synopsis": "Synopsis",
+    "techStackAi": "Tech stack & IA"
+  },
+
+  "icons": {
+    "user": "/icons/videoDetails/user.png",
+    "globe": "/icons/videoDetails/globe.png",
+    "book": "/icons/videoDetails/book.png",
+    "chip": "/icons/videoDetails/chip.png"
+  },
+
+  "social": {
+    "x": { "label": "X/Twitter", "icon": "/icons/videoDetails/x.png" },
+    "linkedin": { "label": "LinkedIn", "icon": "/icons/videoDetails/linkedin.png" },
+    "instagram": { "label": "Instagram", "icon": "/icons/videoDetails/instagram.png" },
+    "youtube": { "label": "YouTube", "icon": "/icons/videoDetails/youtube.png" },
+    "facebook": { "label": "Facebook", "icon": "/icons/videoDetails/facebook.png" }
+  }
+}
