@@ -4,17 +4,19 @@ import { pool } from "../../db/index.js";
  ******** Update une faq *************************
 *************************************************/
 
-export const updateFaq = async (id, {question, answer, rank})=> {
-    const query = "UPDATE faq SET question = ?, answer = ?, rank = ? WHERE id = ?";
+export const updateFaq = async (id, {question_fr, question_en, answer_fr, answer_en, rank})=> {
+    const query = "UPDATE faq SET question_fr = ?, question_en = ?, answer_fr = ?, answer_en = ?, `rank` = ? WHERE id = ?";
     //Valeur à ajouter.
-    const values = [question, answer, rank, id];
+    const values = [question_fr, question_en, answer_fr, answer_en, rank, id];
 
     const [result] = await pool.execute(query, values);
 
     return {
         id,
-        question,
-        answer,
+        question_fr,
+        question_en,
+        answer_fr,
+        answer_en,
         rank,
         affectedRows: result.affectedRows
     }

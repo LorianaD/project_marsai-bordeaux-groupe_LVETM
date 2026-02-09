@@ -6,19 +6,23 @@ function Faq() {
     const [error, setError] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
 
-        useEffect(() => {
-            const fetchFaqs = async () => {
-                try {
-                    const res = await getAllFaq();
-                    setFaqs(res.data);           
-                } catch (error) {
-                    setError(error.message);
-                };
-            };
-            fetchFaqs();
-        },[]);
+    const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = userLang.startsWith("fr");
 
-        const toggleFaq = (id) => {
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            try {
+                const res = await getAllFaq();
+                setFaqs(res.data);           
+            } catch (error) {
+                setError(error.message);
+            };
+        };
+        fetchFaqs();
+    },[]);
+
+
+    const toggleFaq = (id) => {
         setOpenFaq(openFaq === id ? null : id); // si c'est ouvert, ferme, sinon ouvre
     };
 
@@ -40,14 +44,14 @@ function Faq() {
 						faqs.map((faq) => (
 							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
 								<button onClick={() => toggleFaq(faq.id)}   className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">
-                                    <span>Question: {faq.question}</span>
+                                    <span>Question: {isFrench ? faq.question_fr : faq.question_en}</span>
                                     {/* Flèche SVG */}
                                     <span className={`font-bold transition-transform duration-300 ${openFaq === faq.id ? "rotate-90" : "rotate-0"}`}>
                                         &gt;
                                     </span>
                                 </button>
                                 {openFaq === faq.id && (
-								    <p className="text-left">Réponse: {faq.answer}</p>
+								    <p className="text-left">Réponse: {isFrench ? faq.answer_fr : faq.answer_en}</p>
                                 )}
 							</article>
 						))
