@@ -1,7 +1,7 @@
 import { pool } from "../../db/index.js";
 
 async function updatePartner(id, { name, img, url }) {
-    console.log("model updatePartner OK");
+    // console.log("model updatePartner OK");
     
     const query = `
         UPDATE partner
@@ -11,11 +11,11 @@ async function updatePartner(id, { name, img, url }) {
     console.log(query);
 
     const values = [name, img, url, id];
-    console.log(values);
+    // console.log(values);
     
     
     const [result] = await pool.execute(query, values);
-    console.log(result);
+    // console.log(result);
     
     return result.affectedRows;
 

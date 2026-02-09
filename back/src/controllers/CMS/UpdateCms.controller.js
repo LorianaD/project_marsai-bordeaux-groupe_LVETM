@@ -7,17 +7,29 @@ async function UpdateCms(req, res, next) {
         console.log("try in the controller UpdateCms OK");
         
         const { page, section, locale, content_key } = req.params;
+        console.log("params:", req.params);
+        
         const { value, order_index, is_active } = req.body;
+        console.log("body:", req.body);
 
-        const result = await updateCms({
+        const file = req.file;
+
+        const payload = {
             page,
             section,
             locale,
             content_key,
-            value,
             order_index,
             is_active,
-        });
+        };
+
+        if (file) {
+            payload.value = "/uploads/icons/" + file.filename;
+        } else if (value !== undefined) {
+            payload.value = value;
+        }
+
+        const result = await updateCms({ payload });
 
         return res.status(200).json({
             success: true,
@@ -26,8 +38,10 @@ async function UpdateCms(req, res, next) {
         });        
 
     } catch (error) {
+
         console.error(error);
         next(error);
+
     }
 }
 

@@ -3,26 +3,57 @@ import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
-import updateContentApi from "../../../../services/CMS/UpdateContentApi";
+import { updateContentApi, updateImageApi, updateActiveApi } from "../../../../services/CMS/UpdateContentApi.js";
+import CmsInput from "./Fields/CmsInput";
+import CmsHideToggle from "./Fields/CmsHideToggle";
+import CmsInputImage from "./Fields/CmsInputImage";
 
 function SectionHeroForm() {
 
     const { t, i18n } = useTranslation("home");
     const locale = i18n.language.startsWith("fr") ? "fr" : "en";
 
-    const { values, handleChange } = useForm({
+    // Page et section
+    const page = "home";
+    const section = "hero";
+    console.log("Page:", page, "Section:", section);
+
+    const { values, handleChange, setValues } = useForm({
         protocol:"",
+        protocol_is_active: 1,
+
         title_main:"",
+        title_main_is_active: 1,
+
         title_accent:"",
+        title_accent_is_active: 1,
+
         tagline_before:"",
+        tagline_before_is_active: 1,
+
         tagline_highlight:"",
+        tagline_highlight_is_active: 1,
+
         tagline_after:"",
+        tagline_after_is_active: 1,
+
         desc1:"",
+        desc1_is_active: 1,
+
         desc2:"",
+        desc2_is_active: 1,
+
         ctaParticipate:"",
+        ctaParticipate_is_active: 1,
+
         ctaParticipate_signe:"",
+        ctaParticipate_signe_is_active: 1,
+
         ctaLearnMore:"",
-        ctaLearnMore_signe:""   
+        ctaLearnMore_is_active: 1,
+
+        ctaLearnMore_signe:"",
+        ctaLearnMore_signe_is_active: 1
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -36,12 +67,6 @@ function SectionHeroForm() {
         try {
 
             console.log("try dans handleSubmit OK");
-            
-            // Page et section
-            const page = "home";
-            const section = "hero";
-
-            console.log(page, section);
             
             // champs des differents éléments dans la section
             const fields = [
@@ -64,16 +89,41 @@ function SectionHeroForm() {
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
                 const val = values[key];
+                const is_active = values[`${key}_is_active`];
 
-                console.log("loop:", i, key, val);
-
-                if (val === undefined || val === null || String(val).trim() === "") {
-                    console.log("skip:", key);
+                // IMAGE
+                if (val instanceof File) {
+                    await updateImageApi({
+                        page,
+                        section,
+                        locale,
+                        content_key: key,
+                        value: val,
+                        order_index: i,
+                        is_active,
+                    });
                     continue;
                 }
 
-                console.log("send:", key, val);
+                // TEXTE VIDE
+                const empty = val === undefined || val === null || String(val).trim() === "";
 
+                if (empty) {
+
+                    await updateActiveApi({
+                        page,
+                        section,
+                        locale,
+                        content_key: key,
+                        order_index: i,
+                        is_active,
+                    });
+
+                    continue;
+
+                }
+
+                // TEXTE NON VIDE
                 await updateContentApi({
                     page,
                     section,
@@ -81,7 +131,9 @@ function SectionHeroForm() {
                     content_key: key,
                     value: val,
                     order_index: i,
-                });
+                    is_active,    
+                })
+                
 
             }
 
@@ -115,188 +167,90 @@ function SectionHeroForm() {
 
                 <div className="flex flex-col intem-start justify-center gap-[50px] self-stretch font-[Outfit]">
                     {/* Gestion du protocol */}
-                    <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                        <div className="flex justify-between">
-                            <label htmlFor="protocol" className="text-[14px] font-semibold tracking-[2.24px]">
-                                Protocol
-                            </label>
-                            <div className="text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                <label htmlFor="hidden">Caché</label>
-                                <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                            </div>
-                        </div>
-                        <input type="text" name="protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                    </div>
+                    < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
+                        <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale}/>}
+                    />
 
                     {/* Gestion des Titres */}
                     <div  className="flex flex-col md:flex-row justify-around pb-[10px] gap-[50px]">
                         {/* Gestion du titre principal en blanc */}
-                        <div className="flex flex-col pb-[10px] w-full justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="title_main" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Titre principal en Blanc
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>
-                            </div> 
-                            <input type="text" name="title_main" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>
+                        < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
+                            <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
 
                         
                         {/* Gestion du titre accent ou sécondaire en dégradé */}
-                        <div className="flex flex-col pb-[10px] w-full justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="title_accent" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Titre accent en dégradé
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>
-                            </div>
-                            <input type="text" name="title_accent" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>
+                        < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
+                            <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
                     </div>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col md:flex-row pb-[10px] gap-[30px] uppercase placeholder:uppercase">
-                        
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="tagline_before" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Slogan (avant le point culminant en dégradé)
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>
-                            </div>
-                            <input type="text" name="tagline_before" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="tagline_highlight" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Slogan (point culminant en dégradé)
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>                            
-                            </div>
-                            <input type="text" name="tagline_highlight" value={values.tagline_highlight} onChange={handleChange} placeholder={t("hero.tagline_highlight")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="tagline_after" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Slogan (aprés le point culminant en dégradé)
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>
-                            </div>
-                            <input type="text" name="tagline_after" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>                    
+                    <div className="flex flex-col md:flex-row md:intem-center p-[10px] gap-[30px] md:justify-around uppercase placeholder:uppercase">
+
+                        < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
+                            <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
+
+                        < CmsInput name="tagline_highlight" label="Slogan (point culminant en dégradé)" value={values.tagline_highlight} onChange={handleChange} placeholder={t("hero.tagline_highlight")} rightSlot={
+                            <CmsHideToggle name="tagline_highlight" value={values.tagline_highlight_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
+
+                        < CmsInput name="tagline_after" label="Slogan (aprés le point culminant en dégradé)" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} rightSlot={
+                            <CmsHideToggle name="tagline_after" value={values.tagline_after_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
                         
                     </div>
 
                     {/* Gestion de la Déscription */}
                     <div className="flex flex-col gap-[50px]">
+
                         {/* Gestion de la déscription ligne 1 */}
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="desc1" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Description (ligne 1)
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>
-                            </div>
-                            <textarea type="text" name="desc1" value={values.desc1} onChange={handleChange} placeholder={t("hero.desc1")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>
-                    
+
+                        < CmsInput name="desc1" label="Description (ligne 1)" value={values.desc1} onChange={handleChange} placeholder={t("hero.desc1")} rightSlot={
+                            <CmsHideToggle name="desc1" value={values.desc1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />                 
 
                         {/* Gestion de la déscription ligne 2 */}
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                            <div className="flex justify-between flex-col md:flex-row">
-                                <label htmlFor="desc2" className="text-[14px] font-semibold tracking-[2.24px]">
-                                    Description (ligne 2)
-                                </label>
-                                <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                    <label htmlFor="hidden">Caché</label>
-                                    <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                </div>
-                            </div>
-                            <textarea type="text" name="desc2" value={values.desc2} onChange={handleChange} placeholder={t("hero.desc2")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                        </div>
+
+                        <CmsInput name="desc2" label="Description (ligne 2)" value={values.desc2} onChange={handleChange} placeholder={t("hero.desc2")} rightSlot={
+                            <CmsHideToggle name="desc2" value={values.desc2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
+
                     </div>
 
                     {/* Gestion des boutons */}
                     <div className="flex flex-col md:flex-row justify-around intem-center gap-[50px]">
                         {/* Gestion du premier bouton */}
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
-                            <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
-                                <div className="flex justify-between flex-col md:flex-row"> 
-                                    <label htmlFor="ctaParticipate" className="text-[14px] font-semibold tracking-[2.24px]">
-                                        Premier bouton
-                                    </label>
-                                    <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                        <label htmlFor="hidden">Caché</label>
-                                        <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                    </div>
-                                </div>
-                                <input type="text" name="ctaParticipate" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                            </div>
-                            <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                                <div className="flex justify-between flex-col md:flex-row">
-                                    <label htmlFor="ctaParticipate_signe" className="text-[14px] font-semibold tracking-[2.24px]">
-                                        Signe du Premiér bouton
-                                    </label>
-                                    <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                        <label htmlFor="hidden">Caché</label>
-                                        <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                    </div>                            
-                                </div>
-                                <input type="text" name="ctaParticipate_signe" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                            </div>
+
+                            <CmsInput name="ctaParticipate" label="Premier bouton" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")} rightSlot={
+                                <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+
+                            <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
+                                <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+
                         </div>
 
                         {/* Gestion du deuxiéme bouton */}
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
-                            <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                                <div className="flex justify-between flex-col md:flex-row">
-                                    <label htmlFor="ctaLearnMore" className="text-[14px] font-semibold tracking-[2.24px]">
-                                        Deuxiéme bouton
-                                    </label>
-                                    <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                        <label htmlFor="hidden">Caché</label>
-                                        <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                    </div>
-                                </div>
-                                <input type="text" name="ctaLearnMore" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                            </div>
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
-                                <div className="flex justify-between flex-col md:flex-row">
-                                    <label htmlFor="ctaLearnMore_signe" className="text-[14px] font-semibold tracking-[2.24px]">
-                                        Signe du deuxiéme bouton
-                                    </label>
-                                    <div className="flex justify-end intem-end text-[14px] font-semibold tracking-[2.24px] capitalize flex intem-center">
-                                        <label htmlFor="hidden">Caché</label>
-                                        <input type="range" name="hidden" min="0" max="1" className="w-[30px]"/>
-                                    </div>                            
-                                </div>
-                                <input type="text" name="ctaLearnMore_signe" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
-                            </div>
+                            <CmsInput name="ctaLearnMore" label="Deuxiéme bouton" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} rightSlot={
+                                <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+
+                            <CmsInput name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
+                                <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+
                         </div>
                     </div>
 
                     <div className="w-full flex justify-center">
                         <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
-                            Ajouter
+                            Mettre à jour
                         </button>
                     </div>
                 </div>

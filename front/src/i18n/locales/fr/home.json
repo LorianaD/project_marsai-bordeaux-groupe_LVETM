@@ -9,6 +9,7 @@
       "desc1": "Le festival de courts-métrages de 60 secondes réalisés par IA.",
       "desc2": "2 jours d'immersion au cœur de Marseille.",
       "ctaParticipate": "Participer",
+      "ctaParticipate_signe": "../src/assets/imgs/icones/arrowRight.svg",
       "ctaLearnMore": "En savoir plus",
       "ctaLearnMore_signe":"+"
    },
