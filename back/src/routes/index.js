@@ -8,6 +8,7 @@ import partnerRouter from "./partner.js";
 import cmsRouter from "./cms.js";
 import newsletterRouter from "./newsletter.routes.js";
 import juryRouter from "./jury.js";
+import faq from "./faq.js";
 
 const router = Router();
 
@@ -20,9 +21,10 @@ router.use("/events", eventsRouter);
 router.use("/admin/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);
+router.use("/newsletter", newsletterRoutes);
+router.use("/faq", faq);
 router.use("/cms", cmsRouter);
 router.use("/newsletter", newsletterRouter);
 router.use("/jury", juryRouter);
-
 
 export default router;
