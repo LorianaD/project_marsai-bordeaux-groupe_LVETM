@@ -1,0 +1,31 @@
+{
+  "brand": {
+    "quote": "“La plateforme mondiale de la narration générative, ancrée dans la lumière de Marseille.”"
+  },
+  "sections": {
+    "navigation": "NAVIGATION",
+    "legal": "LÉGAL"
+  },
+  "links": {
+    "gallery": "Galerie",
+    "program": "Programme",
+    "tickets": "Billetterie",
+    "partners": "Partenaires",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "legal": "LÉGAL"
+  },
+  "bottom": {
+    "copyright": "© 2026 MARS.AI PROTOCOL · MARSEILLE HUB",
+    "designSystem": "DESIGN SYSTEME CYBER-PREMIUM"
+  },
+  "social": {
+    "facebook": { "label": "Facebook", "icon": "/icons/social/facebook.png", "href": "https://facebook.com" },
+    "instagram": { "label": "Instagram", "icon": "/icons/social/instagram.png", "href": "https://instagram.com" },
+    "youtube": { "label": "YouTube", "icon": "/icons/social/youtube.png", "href": "https://youtube.com" },
+    "x": { "label": "X", "icon": "/icons/social/x.png", "href": "https://x.com" }
+  },
+  "aria": {
+    "openSocial": "Ouvrir {{name}}"
+  }
+}
