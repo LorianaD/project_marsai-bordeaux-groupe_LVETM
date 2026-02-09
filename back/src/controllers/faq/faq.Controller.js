@@ -1,4 +1,4 @@
-import { findAllFaq } from "../../models/faq.model.js";
+import { findAllFaq } from "../../models/faq/getAllFaq.model.js";
 
 export const getFaq = async (req, res) => {
     try {
