@@ -6,7 +6,7 @@ import { pool } from "../../db/index.js";
 
 export const updateFaq = async (id, {question, answer})=> {
     const query = "UPDATE faq SET question = ?, answer = ? WHERE id = ?";
-    //Valeur à ajouter
+    //Valeur à ajouter.
     const values = [question, answer, id];
 
     const [result] = await pool.execute(query, values);
