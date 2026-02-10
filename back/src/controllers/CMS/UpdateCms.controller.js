@@ -29,7 +29,7 @@ async function UpdateCms(req, res, next) {
             payload.value = value;
         }
 
-        const result = await updateCms({ payload });
+        const result = await updateCms( payload );
 
         return res.status(200).json({
             success: true,

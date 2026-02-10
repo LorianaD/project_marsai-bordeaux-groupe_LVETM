@@ -3,6 +3,7 @@
       "title_main": "MARS",
       "title_accent":"AI",
       "protocol": "le protocole temporel 2026",
+      "protocol_icon":"../src/assets/imgs/icones/iconStars.svg",
       "tagline_before": "Imaginez des",
       "tagline_highlight": "Futurs",
       "tagline_after": "souhaitables",

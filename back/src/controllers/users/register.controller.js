@@ -1,27 +1,22 @@
-import {register} from "../../services/users/register.service.js";
+import { register } from "../../services/users/register.service.js";
 
-//registration user
-async function adminRegister(req, res, next) {
+//registration user avec role fixed directement dans les routes
+function createRegisterController(config) {
+  return async function (req, res, next) {
     try {
-            
-        const data = req.body;
-        const role = 'admin';
-        
-        const createUser = await register(data, role);
-        
-        
-        res.status(201).json({
-            success: true,
-            message: "user create",
-            data: createUser
-        });
+      const data = req.body;
+      const role = config.fixedRole;
 
+      const createUser = await register(data, role);
+      res.status(201).json({
+        success: true,
+        message: "User created",
+        data: createUser,
+      });
     } catch (error) {
-        console.error("error during account creation", error);
-        next(error);
-        
+      next(error);
     }
-    
+  };
 }
 
-export default adminRegister
+export default createRegisterController;
