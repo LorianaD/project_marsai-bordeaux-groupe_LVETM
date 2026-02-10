@@ -14,8 +14,6 @@ import faq from "./faq.js";
 
 const router = Router();
 
-
-
 // router.get("/test", testController);
 
 router.use("/users", usersRouter);
@@ -24,7 +22,6 @@ router.use("/events", eventsPublicRouter);
 router.use("/admin/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);
-// router.use("/newsletter", newsletterRoutes);
 router.use("/faq", faq);
 router.use("/cms", cmsRouter);
 router.use("/newsletter", newsletterRouter);
