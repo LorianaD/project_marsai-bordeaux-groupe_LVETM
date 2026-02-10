@@ -63,27 +63,34 @@ function SectionHero() {
             <div className="flex py-[24px] flex-col justify-center items-center gap-[50px] self-stretch z-20">
 
                 <div className="flex flex-col justify-center items-center gap-[10px] self-stretch">
-                    {isVisible("hero", "protocol") && (
+                    
                         <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
-                            <div className="">
-                                <img src="/src/assets/imgs/icones/iconStars.svg" alt="" className="h-5 w-5 opacity-80" />
-                            </div>
-                            <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
-                                {content?.hero?.protocol?.value ?? t("hero.protocol")}
-                            </p>
+
+                            {isVisible("hero", "protocol_icon") && (
+                                <div className="">
+                                    <img src={content?.hero?.protocol_icon?.value ?? t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
+                                </div>
+                            )}
+
+                            {isVisible("hero", "protocol") && (
+                                <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                                    {content?.hero?.protocol?.value ?? t("hero.protocol")}
+                                </p>
+                            )}
+
                         </div>
-                    )}
+                    
                     
                     <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[192px] tacking-[-2.4px] md:tracking-[-9.6px] uppercase text-[48px] md:text-[192px] text-center">
                         {isVisible("hero", "title_main") && (
                             <span>
-                                {content?.hero?.title_main ?? t("hero.title_main")}
+                                {content?.hero?.title_main?.value ?? t("hero.title_main")}
                             </span>
                         )}
 
                         {isVisible("hero", "title_accent") && (
                             <span className="bg-gradient-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent">
-                                {content?.hero?.title_accent ?? t("hero.title_accent")}
+                                {content?.hero?.title_accent?.value ?? t("hero.title_accent")}
                             </span>
                         )}
                     </h1>
@@ -92,7 +99,7 @@ function SectionHero() {
 
                         {isVisible("hero", "tagline_before") && (
                             <span>
-                                {content?.hero?.tagline_before ?? t("hero.tagline_before")}
+                                {content?.hero?.tagline_before?.value ?? t("hero.tagline_before")}
                             </span>
                         )}
 
@@ -104,7 +111,7 @@ function SectionHero() {
 
                         {isVisible("hero", "tagline_after") && (
                             <span>
-                                {content?.hero?.tagline_after ?? t("hero.tagline_after")}
+                                {content?.hero?.tagline_after?.value ?? t("hero.tagline_after")}
                             </span>
                         )}
                     </p>
@@ -113,11 +120,11 @@ function SectionHero() {
                 <div className="flex flex-col items-center justify-center gap-[3px] md:gap-[6px] px-1 self-stretch text-white/40 text-center text-[18px] md:text-[24px] font-normal leading-[29px] md:leading-[39px]">
                     
                     {isVisible("hero", "desc1") && (
-                        <p>{content?.hero?.desc1 ?? t("hero.desc1")}</p>
+                        <p>{content?.hero?.desc1?.value ?? t("hero.desc1")}</p>
                     )}
                     
                     {isVisible("hero", "desc2") && (
-                        <p>{content?.hero?.desc2 ?? t("hero.desc2")}</p>
+                        <p>{content?.hero?.desc2?.value ?? t("hero.desc2")}</p>
                     )}
 
                 </div>
@@ -127,13 +134,13 @@ function SectionHero() {
 
                         {isVisible("hero", "ctaParticipate") && (
                             <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
-                                {content?.hero?.ctaParticipate ?? t("hero.ctaParticipate")}
+                                {content?.hero?.ctaParticipate?.value ?? t("hero.ctaParticipate")}
                             </span>
                         )}
 
                         {isVisible("hero", "ctaParticipate_signe") && (
                             <div className="w-[20px] h-[20px]">
-                                <img src={content?.hero?.ctaParticipate_signe ?? t("hero.ctaParticipate_signe")} alt=""/>
+                                <img src={content?.hero?.ctaParticipate_signe?.value ?? t("hero.ctaParticipate_signe")} alt=""/>
                             </div>
                         )}
 
@@ -143,13 +150,13 @@ function SectionHero() {
                         
                         {isVisible("hero", "ctaLearnMore") && (
                             <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
-                                {content?.hero?.ctaLearnMore ?? t("hero.ctaLearnMore")}
+                                {content?.hero?.ctaLearnMore?.value ?? t("hero.ctaLearnMore")}
                             </span>
                         )}
 
                         {isVisible("hero", "ctaLearnMore_signe") && (
                             <span className="flex flex-col justify-center text-[#AD46FF] text-center text-[24px] font-bold leading-[0] uppercase">
-                                {content?.hero?.ctaLearnMore_signe ?? t("hero.ctaLearnMore_signe")}
+                                {content?.hero?.ctaLearnMore_signe?.value ?? t("hero.ctaLearnMore_signe")}
                             </span>
                         )}
                     </Link>

@@ -21,6 +21,7 @@ function SectionHeroForm() {
     // champs des differents éléments dans la section
     const fields = [
         "protocol",
+        "protocol_icon",
         "title_main",
         "title_accent",
         "tagline_before",
@@ -40,6 +41,9 @@ function SectionHeroForm() {
     const { values, handleChange } = useForm({
         protocol:"",
         protocol_is_active: 1,
+
+        protocol_icon: "",
+        protocol_icon_is_active: 1,
 
         title_main:"",
         title_main_is_active: 1,
@@ -155,10 +159,19 @@ function SectionHeroForm() {
                 </div>
 
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+
                     {/* Gestion du protocol */}
-                    < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
-                        <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
-                    />
+                    <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+
+                        < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
+                            <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                        />
+
+                        <CmsInputImage name="protocol_icon" label="Icon du protocol" value={values.protocol_icon} onChange={handleChange} placeholder={t("hero.protocol_icon")} rightSlot={
+                            <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
+
+                    </div>
 
                     {/* Gestion des Titres */}
                     <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
@@ -167,7 +180,6 @@ function SectionHeroForm() {
                             <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
-                        
                         {/* Gestion du titre accent ou sécondaire en dégradé */}
                         < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
                             <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -175,7 +187,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col md:flex-row p-[10px] gap-[30px] md:justify-between md:items-center uppercase placeholder:uppercase">
+                    <div className="flex flex-col md:flex-row p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
 
                         < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
                             <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}

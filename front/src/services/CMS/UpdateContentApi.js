@@ -6,7 +6,7 @@ function buildUrl({ page, section, locale, content_key }) {
 
 // TEXTE
 async function updateContentApi({ page, section, locale, content_key, value, order_index, is_active }) {
-    console.log("API updateContentApi OK");
+    // console.log("API updateContentApi OK");
 
     const url = buildUrl({ page, section, locale, content_key });
 
@@ -15,7 +15,7 @@ async function updateContentApi({ page, section, locale, content_key, value, ord
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ value, order_index, is_active }),
     });
-    console.log(res);
+    // console.log(res);
     
     const data = await res.json();
 
@@ -30,12 +30,12 @@ async function updateContentApi({ page, section, locale, content_key, value, ord
 // IMAGE
 async function updateImageApi({ page, section, locale, content_key, value, order_index, is_active }) {
 
-    console.log("API updateImageApi OK");
+    // console.log("API updateImageApi OK");
 
     const url = buildUrl({ page, section, locale, content_key });
 
     const formData = new FormData();
-    console.log(formData);
+    // console.log(formData);
 
     formData.append("file", value);
     formData.append("order_index", String(order_index ?? 0));
@@ -45,10 +45,10 @@ async function updateImageApi({ page, section, locale, content_key, value, order
         method: "PUT",
         body: formData,
     });
-    console.log(res); 
+    // console.log(res);
 
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     
 
     if (!res.ok) {
@@ -61,7 +61,7 @@ async function updateImageApi({ page, section, locale, content_key, value, order
 
 // ACTIVE
 async function updateActiveApi({ page, section, locale, content_key, order_index, is_active }) {
-    console.log("API updateActiveApi OK");
+    // console.log("API updateActiveApi OK");
 
     const url = buildUrl({ page, section, locale, content_key });
 
