@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { clamp, NAV, DAY_TABS } from "./AdminEvents.utils.js";
+import { clamp, DAY_TABS } from "./AdminEvents.utils.js";
 import {
   getAdminEvents,
   createEvent,
@@ -7,19 +7,23 @@ import {
   deleteEvent,
   togglePublish,
 } from "../../services/Events/AdminEventApi.js";
+import { ADMIN_NAV } from "../../components/admin/adminNav.js";
+import { useNavigate } from "react-router-dom";
 
 import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
 export default function AdminEvents() {
  
-  const [activeNav, setActiveNav] = useState("Événements");
+  const [activeNav, setActiveNav] = useState("events");
   const [day, setDay] = useState("vendredi");
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
+
+  const navigate = useNavigate();
  
   // formulaire
   const [form, setForm] = useState({
@@ -33,8 +37,7 @@ export default function AdminEvents() {
   });
 
 //récupère les events
-//récupère les events
-//récupère les events
+
 useEffect(() => {
   (async () => {
     try {
@@ -144,7 +147,7 @@ useEffect(() => {
   }
 
   // Créer ou modifier  event
-   // Créer ou modifier  event
+   
    async function onSave(e) {
     e.preventDefault();
 
@@ -191,7 +194,7 @@ useEffect(() => {
     }
   }
 
-  // Supprimer un event
+  // Suppr un event
   async function onDelete(ev) {
     const ok = confirm(`Supprimer "${ev.title}" ?`);
     if (!ok) return;
@@ -228,28 +231,31 @@ useEffect(() => {
           <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
             <img src="/imgs/admin-avatar.png" alt="Oceane Brise" className="h-10 w-10 shrink-0 rounded-full object-cover" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Oceane Brise</p>
+              <p className="truncate text-sm font-semibold text-white">Oceane Brise</p>
               <p className="truncate text-xs text-black/60 dark:text-white/60">RÉALISATEUR STUDIO</p>
             </div>
           </div>
 
           {/* Menu */}
           <nav className="mt-4 space-y-1">
-            {NAV.map((item) => {
-              const active = item === activeNav;
+            {ADMIN_NAV.map((link) => {
+              const isActive = link.id === activeNav;
               return (
                 <button
-                  key={item}
+                  key={link.id}
                   type="button"
-                  onClick={() => setActiveNav(item)}
+                  onClick={() => {
+                    setActiveNav(link.id);
+                    if (link.path) navigate(link.path);
+                  }}
                   className={[
                     "w-full rounded-xl px-3 py-2 text-left text-sm transition",
-                    active
+                    isActive
                       ? "bg-black/10 text-black dark:bg-white/10 dark:text-white"
                       : "text-black/70 dark:text-white/70 hover:bg-black/5 hover:text-black dark:hover:bg-white/5 dark:hover:text-white",
                   ].join(" ")}
                 >
-                  {item}
+                  {link.label}
                 </button>
               );
             })}
@@ -307,8 +313,8 @@ useEffect(() => {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm text-white/80">Heureux de vous revoir,</p>
-                    <h1 className="mt-1 text-2xl font-semibold">
-                      Oceane Brise <span className="text-white/60">(Admin)</span>
+                    <h1 className="mt-1 text-2xl font-semibold text-white">
+                      Oceane Brise <span className="text-white/80">(Admin)</span>
                     </h1>
                     <p className="mt-2 max-w-xl text-xs text-white/60">
                       Gérez l’agenda du festival à Marseille et le flux des participants.
