@@ -24,11 +24,16 @@ import DistributionJury from "./pages/Admin/DistributionJury.jsx";
 
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
+import AdminRegister from "./pages/Admin/AdminRegister.jsx";
+import AdminLogin from "./components/login/LoginForm.jsx";
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
 
 export default function App() {
   return (
     <Routes>
+      {/*  PUBLIC – avec Header + Footer */}
+      <Route element={<MainLayout />}>
       <Route element={<MainLayout />}>
         {/* ROUTES PUBLIQUES */}
         <Route path="/" element={<Home />} />
@@ -37,25 +42,30 @@ export default function App() {
         <Route path="/participation" element={<ParticipationUploadPage />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetails />} />
+        <Route path="/jury" element={<JuryList />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
-        <Route path="/jury" element={<Jury />} />
+      </Route>
 
-        {/* ROUTES ADMIN */}
+      {/* ADMIN  */}
+      <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Overview />} />
           <Route path="/admin/events" element={<AdminEvents />} />
           <Route path="/admin/videos" element={<AdminVideos />} />
-          <Route
-            path="/admin/distribution-jury"
-            element={<DistributionJury />}
-          />
+          <Route path="/admin/register" element={<AdminRegister />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/distribution-jury" element={<DistributionJury /> />  
         </Route>
       </Route>
+
+      {/*  Fallback */}
+       <Route path="/jury" element={<Jury />} />
 
       {/* ROUTES TEMPORAIRES / CMS */}
       <Route path="/partnerform" element={<Partner />} />
