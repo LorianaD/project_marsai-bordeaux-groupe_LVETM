@@ -86,6 +86,19 @@ export default function AdminSidebar({ active = "overview" }) {
             />
             <Item id="events" label="Évènements" to="/admin/events" />
             <Item id="messages" label="Messages" to="/admin/messages" />
+
+            {/* ✅ Newsletter (2 entrées) */}
+            <Item
+              id="newsletter-subs"
+              label="Newsletter — Abonnés"
+              to="/admin/newsletter"
+            />
+            <Item
+              id="newsletters-builder"
+              label="Newsletters — Builder"
+              to="/admin/newsletters"
+            />
+
             <Item
               id="festival-box"
               label="Festival Box"

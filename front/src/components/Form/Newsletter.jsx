@@ -5,6 +5,8 @@ const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 function Newsletter() {
   // Etat du formulaire newsletter
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -12,7 +14,15 @@ function Newsletter() {
   // Envoie l'email au backend
   async function submit(e) {
     e.preventDefault();
-    if (!email.trim()) return;
+
+    const cleanEmail = String(email || "").trim();
+    if (!cleanEmail) return;
+
+    if (!consent) {
+      setMsg("");
+      setError("Vous devez accepter de recevoir la newsletter.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -25,7 +35,7 @@ function Newsletter() {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: cleanEmail, consent }),
       });
 
       const data = await res.json().catch(() => null);
@@ -37,8 +47,9 @@ function Newsletter() {
       // Message succès + reset champ
       setMsg(data?.message || "Inscription réussie");
       setEmail("");
+      setConsent(false);
     } catch (err) {
-      setError(err.message || "Erreur");
+      setError(err?.message || "Erreur");
     } finally {
       setLoading(false);
     }
@@ -71,6 +82,20 @@ function Newsletter() {
           {loading ? "..." : "OK"}
         </button>
       </div>
+
+      {/* ✅ Consentement obligatoire */}
+      <label className="w-full flex items-start gap-2 text-xs opacity-80">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-1"
+        />
+        <span>
+          J’accepte de recevoir la newsletter de MARS.AI et je peux me
+          désinscrire à tout moment.
+        </span>
+      </label>
 
       {/* Affiche message succès */}
       {msg ? (

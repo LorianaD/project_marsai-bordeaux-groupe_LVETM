@@ -1,6 +1,9 @@
 import app from "./app.js"
 import "dotenv/config";
 import { testConnection } from "./db/index.js";
+import { startNewsletterCron } from "./jobs/newsletterCron.job.js";
+
+startNewsletterCron();
 
 console.log("HAS REFRESH TOKEN?", !!process.env.YOUTUBE_REFRESH_TOKEN);
 
