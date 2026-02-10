@@ -1,15 +1,65 @@
-import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router"
+import GetAllContentApi from "../../services/CMS/GetAllContentApi";
+import { buildCmsMap } from "../../utils/cms";
 
 function SectionConcept() {
 
-    const { t } = useTranslation("home");
+    const { t, i18n } = useTranslation("home");
+
+    const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+    const [content, setContent] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [Message, setMessage] = useState("");
+
+    async function CMSConceptHome() {
+        // console.log("Fonction CMSHeroHome OK");
+
+        try {
+            // console.log("try in the function CMSHeroHome OK");
+
+            setLoading(true);
+            setMessage("");
+
+            const json = await GetAllContentApi();
+            // console.log(json);
+
+            const rows = json.data ?? [];
+            // console.log("rows:",rows);
+            // console.log("rows hero fr:", rows.filter(r => r.section === "hero" && r.locale === locale));
+
+            const cms = buildCmsMap(rows, locale);
+            // console.log("CMS finale", cms);
+            
+            setContent(cms);
+
+        } catch (error) {
+
+            console.error(error);
+            setMessage("Erreur lors du chargement du contenu CMS.");
+            
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
+    function isVisible(section, key) {
+        return Number(content?.[section]?.[`${key}_is_active`]) === 1;
+    }
+
+    useEffect(()=>{
+        CMSConceptHome();
+    },[locale]);
 
     return(
         <section className="flex justify-center items-center gap-[10px] md:px-[80px] py-[10px]">
             <div className="grid md:h-[218.75px] md:grid-cols-4 gap-6 self-stretch text-left">
                 <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
                     <h3 className="uppercase text-[#C27AFF] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
-                        {t("concept.OneMinute.title")}
+                        {content?.concept?.card1?.value ?? t("concept.OneMinute.title")}
                     </h3>
                     <p className="text-[#000000] text-[10px] font-bold leading-[16.25px] tracking-[1px] uppercase dark:text-white">
                         {t("concept.OneMinute.description")}

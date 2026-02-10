@@ -3,7 +3,7 @@ import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
-import { updateContentApi, updateImageApi, updateActiveApi } from "../../../../services/CMS/UpdateContentApi.js";
+import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
 import CmsInput from "./Fields/CmsInput";
 import CmsHideToggle from "./Fields/CmsHideToggle";
 import CmsInputImage from "./Fields/CmsInputImage";
