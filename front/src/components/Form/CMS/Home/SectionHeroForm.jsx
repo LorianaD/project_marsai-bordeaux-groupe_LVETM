@@ -16,7 +16,7 @@ function SectionHeroForm() {
     // Page et section
     const page = "home";
     const section = "hero";
-    console.log("Page:", page, "Section:", section);
+    // console.log("Page:", page, "Section:", section);
 
     // champs des differents éléments dans la section
     const fields = [
@@ -33,7 +33,7 @@ function SectionHeroForm() {
         "ctaLearnMore",
         "ctaLearnMore_signe"
     ];
-    console.log(fields);
+    // console.log(fields);
 
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
@@ -78,14 +78,14 @@ function SectionHeroForm() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        console.log("Fonction handleSubmit OK");
+        // console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
 
-            console.log("try dans handleSubmit OK");
+            // console.log("try dans handleSubmit OK");
 
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
@@ -175,7 +175,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col md:flex-row md:items-center p-[10px] gap-[30px] md:justify-around uppercase placeholder:uppercase">
+                    <div className="flex flex-col md:flex-row p-[10px] gap-[30px] md:justify-between md:items-center uppercase placeholder:uppercase">
 
                         < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
                             <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
