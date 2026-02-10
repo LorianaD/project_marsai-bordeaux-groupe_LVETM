@@ -34,7 +34,6 @@ export default function App() {
     <Routes>
       {/*  PUBLIC – avec Header + Footer */}
       <Route element={<MainLayout />}>
-      <Route element={<MainLayout />}>
         {/* ROUTES PUBLIQUES */}
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
@@ -60,7 +59,7 @@ export default function App() {
           <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/distribution-jury" element={<DistributionJury /> />  
+          <Route path="/admin/distribution-jury" element={<DistributionJury />} />  
         </Route>
       </Route>
 

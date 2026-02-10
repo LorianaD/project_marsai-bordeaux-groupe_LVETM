@@ -1,4 +1,4 @@
-// fonction pour s'inscrire et faire le lien entre le front et le back
+// URL de base de l’API (depuis les variables d’environnement)
 const API = import.meta.env.VITE_API_BASE_URL || "";
 
 // Fonction pour enregistrer un utilisateur
