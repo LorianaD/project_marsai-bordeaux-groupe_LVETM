@@ -220,16 +220,16 @@ useEffect(() => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
         {/* SIDEBAR */}
-        <aside className="hidden w-[270px] flex-col rounded-3xl border border-white/10 bg-white/5 p-4 md:flex">
+        <aside className="hidden w-[270px] flex-col rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-4 md:flex">
           {/* Profil */}
-          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-3">
-            <div className="h-10 w-10 rounded-full bg-white/10" />
+          <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
+            <img src="/imgs/admin-avatar.png" alt="Oceane Brise" className="h-10 w-10 shrink-0 rounded-full object-cover" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Name</p>
-              <p className="truncate text-xs text-white/60">RÉALISATEUR STUDIO</p>
+              <p className="truncate text-sm font-semibold">Oceane Brise</p>
+              <p className="truncate text-xs text-black/60 dark:text-white/60">RÉALISATEUR STUDIO</p>
             </div>
           </div>
 
@@ -245,8 +245,8 @@ useEffect(() => {
                   className={[
                     "w-full rounded-xl px-3 py-2 text-left text-sm transition",
                     active
-                      ? "bg-white/10 text-white"
-                      : "text-white/70 hover:bg-white/5 hover:text-white",
+                      ? "bg-black/10 text-black dark:bg-white/10 dark:text-white"
+                      : "text-black/70 dark:text-white/70 hover:bg-black/5 hover:text-black dark:hover:bg-white/5 dark:hover:text-white",
                   ].join(" ")}
                 >
                   {item}
@@ -255,20 +255,20 @@ useEffect(() => {
             })}
           </nav>
 
-          <div className="mt-4 flex-1 rounded-2xl border border-dashed border-white/10 bg-black/20" />
+          <div className="mt-4 flex-1 rounded-2xl border border-dashed border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/20" />
 
-          <div className="mt-4 rounded-2xl border border-white/10 bg-black/30 p-3">
+          <div className="mt-4 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold">Mars AI</p>
-                <p className="text-xs text-white/60">Collaborator</p>
+                <p className="text-xs text-black/60 dark:text-white/60">Collaborator</p>
               </div>
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs">Admin</span>
+              <span className="rounded-full bg-black/10 dark:bg-white/10 px-3 py-1 text-xs">Admin</span>
             </div>
 
             <button
               type="button"
-              className="mt-3 w-full rounded-xl bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15"
+              className="mt-3 w-full rounded-xl bg-black/10 dark:bg-white/10 px-3 py-2 text-sm text-black/80 dark:text-white/80 hover:bg-black/15 dark:hover:bg-white/15"
             >
               Log out
             </button>
@@ -278,32 +278,37 @@ useEffect(() => {
         {/* MAIN */}
         <main className="flex-1">
           {/* Top Bar */}
-          <div className="flex items-center justify-between gap-3 rounded-3xl border border-white/10 bg-white/5 px-5 py-3">
+          <div className="flex items-center justify-between gap-3 rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-3">
             <div className="flex items-center gap-3">
-              <span className="rounded-full bg-white/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase">
+              <span className="rounded-full bg-black/10 dark:bg-white/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase">
                 MARS <span className="text-[#F6339A]">AI</span>
               </span>
 
               <div className="hidden md:block">
                 <p className="text-sm font-semibold">
-                  Administration — <span className="text-white/70">Événements</span>
+                  Administration — <span className="text-black/70 dark:text-white/70">Événements</span>
                 </p>
-                <p className="text-xs text-white/60">Gérer planning, workshops et inscriptions.</p>
+                <p className="text-xs text-black/60 dark:text-white/60">Gérer planning, workshops et inscriptions.</p>
               </div>
             </div>
           </div>
 
           {/* Hero */}
-          <section className="mt-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+          <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5">
             {/* Banner */}
-            <div className="relative">
-              <div className="h-[140px] bg-[radial-gradient(circle_at_20%_20%,rgba(246,51,154,0.35),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(56,189,248,0.25),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(0,0,0,0.35))]" />
+            <div className="relative h-[140px] overflow-hidden">
+              <img
+                src="/imgs/backgroundSections/DashboardSectionHero.png"
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
               <div className="absolute inset-0 p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm text-white/80">Heureux de vous revoir,</p>
                     <h1 className="mt-1 text-2xl font-semibold">
-                      Name <span className="text-white/60">(Admin)</span>
+                      Oceane Brise <span className="text-white/60">(Admin)</span>
                     </h1>
                     <p className="mt-2 max-w-xl text-xs text-white/60">
                       Gérez l’agenda du festival à Marseille et le flux des participants.
@@ -312,7 +317,7 @@ useEffect(() => {
 
                   <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/15"
+                    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 dark:border-emerald-400/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-200 hover:bg-emerald-500/15"
                   >
                     <span className="inline-block h-2 w-2 rounded-full bg-emerald-300" />
                     Event management
@@ -324,22 +329,22 @@ useEffect(() => {
             {/* Content */}
             <div className="p-6">
               <h2 className="text-xl font-semibold tracking-tight">PLANNING & WORKSHOPS</h2>
-              <p className="mt-1 text-sm text-white/60">
+              <p className="mt-1 text-sm text-black/60 dark:text-white/60">
                 Créez, publiez, mettez à jour et suivez le remplissage en temps réel.
               </p>
 
               {/* Stats */}
               <div className="mt-5 grid gap-3 md:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
-                  <p className="text-xs text-white/60">Réservations totales</p>
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-4">
+                  <p className="text-xs text-black/60 dark:text-white/60">Réservations totales</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.totalReservations}</p>
-                  <p className="mt-1 text-xs text-white/50">sur la journée sélectionnée</p>
+                  <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur la journée sélectionnée</p>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
-                  <p className="text-xs text-white/60">Taux de remplissage</p>
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-4">
+                  <p className="text-xs text-black/60 dark:text-white/60">Taux de remplissage</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.fillRate}%</p>
-                  <div className="mt-3 h-2 w-full rounded-full bg-white/10">
+                  <div className="mt-3 h-2 w-full rounded-full bg-black/10 dark:bg-white/10">
                     <div
                       className="h-2 rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500"
                       style={{ width: `${stats.fillRate}%` }}
@@ -347,10 +352,10 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
-                  <p className="text-xs text-white/60">Événements publiés</p>
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-4">
+                  <p className="text-xs text-black/60 dark:text-white/60">Événements publiés</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.publishedCount}</p>
-                  <p className="mt-1 text-xs text-white/50">sur {stats.eventsCount} événement(s)</p>
+                  <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur {stats.eventsCount} événement(s)</p>
                 </div>
               </div>
 
@@ -368,8 +373,8 @@ useEffect(() => {
                         className={[
                           "rounded-full px-4 py-2 text-xs font-semibold",
                           active
-                            ? "bg-white/15 text-white"
-                            : "bg-black/35 text-white/70 hover:bg-white/10 hover:text-white",
+                            ? "bg-black/15 text-black dark:bg-white/15 dark:text-white"
+                            : "bg-black/10 text-black/70 dark:bg-black/35 dark:text-white/70 hover:bg-black/15 hover:text-black dark:hover:bg-white/10 dark:hover:text-white",
                         ].join(" ")}
                       >
                         {t.label}
@@ -385,7 +390,7 @@ useEffect(() => {
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Rechercher un event, lieu, mot-clé…"
-                      className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-white/20"
+                      className="w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-2 text-sm text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/40 outline-none focus:border-black/20 dark:focus:border-white/20"
                     />
                   </div>
 
@@ -402,20 +407,20 @@ useEffect(() => {
               {/* List */}
               <div className="mt-6 space-y-4">
                 {loading ? (
-                  <div className="rounded-3xl border border-white/10 bg-black/30 p-6 text-sm text-white/70">
+                  <div className="rounded-3xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-6 text-sm text-black/70 dark:text-white/70">
                     Chargement…
                   </div>
                 ) : filtered.length === 0 ? (
-                  <div className="rounded-3xl border border-dashed border-white/15 bg-black/25 p-8">
+                  <div className="rounded-3xl border border-dashed border-black/15 bg-black/5 dark:border-white/15 dark:bg-black/25 p-8">
                     <p className="text-sm font-semibold">Aucun événement</p>
-                    <p className="mt-1 text-sm text-white/60">
+                    <p className="mt-1 text-sm text-black/60 dark:text-white/60">
                       Ajoute un workshop ou une conférence pour cette journée.
                     </p>
 
                     <button
                       type="button"
                       onClick={openCreate}
-                      className="mt-4 inline-flex rounded-2xl bg-white/10 px-4 py-2 text-xs font-semibold hover:bg-white/15"
+                      className="mt-4 inline-flex rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-2 text-xs font-semibold hover:bg-black/15 dark:hover:bg-white/15"
                     >
                       Créer un événement
                     </button>
@@ -440,11 +445,11 @@ useEffect(() => {
 
       {/* MODAL (création / édition) */}
       {modalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-[#0b0b0b] p-6">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
+          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-white/10 dark:bg-[#0b0b0b] p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold tracking-[0.22em] uppercase text-white/60">
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase text-black/60 dark:text-white/60">
                   {editing ? "Modifier" : "Créer"} un événement
                 </p>
                 <h3 className="mt-1 text-lg font-semibold">
@@ -456,7 +461,7 @@ useEffect(() => {
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
-                className="rounded-2xl bg-white/10 px-3 py-2 text-sm hover:bg-white/15"
+                className="rounded-2xl bg-black/10 dark:bg-white/10 px-3 py-2 text-sm hover:bg-black/15 dark:hover:bg-white/15"
               >
                 ✕
               </button>
@@ -464,64 +469,64 @@ useEffect(() => {
 
             <form onSubmit={onSave} className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="md:col-span-2">
-                <label className="text-xs text-white/60">Titre</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Titre</label>
                 <input
                   value={form.title}
                   onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
                   required
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                   placeholder="Ex: Atelier — VFX assistés IA"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-xs text-white/60">Description</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Description</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
                   rows={3}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                   placeholder="Décris l’objectif, le contenu, la cible…"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Date & heure</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Date & heure</label>
                 <input
                   type="datetime-local"
                   value={form.startAt}
                   onChange={(e) => setForm((s) => ({ ...s, startAt: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Capacité</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Capacité</label>
                 <input
                   type="number"
                   min={0}
                   value={form.capacity}
                   onChange={(e) => setForm((s) => ({ ...s, capacity: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Lieu</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Lieu</label>
                 <input
                   value={form.location}
                   onChange={(e) => setForm((s) => ({ ...s, location: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                   placeholder="Ex: Auditorium Mucem"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Type</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Type</label>
                 <select
                   value={form.type}
                   onChange={(e) => setForm((s) => ({ ...s, type: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                 >
                   <option value="atelier">Atelier</option>
                   <option value="masterclass">Masterclass</option>
@@ -531,11 +536,11 @@ useEffect(() => {
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Journée</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Journée</label>
                 <select
                   value={form.day}
                   onChange={(e) => setForm((s) => ({ ...s, day: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
                 >
                   <option value="vendredi">Vendredi</option>
                   <option value="samedi">Samedi</option>
@@ -546,7 +551,7 @@ useEffect(() => {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/15"
+                  className="rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-black/15 dark:hover:bg-white/15"
                 >
                   Annuler
                 </button>
