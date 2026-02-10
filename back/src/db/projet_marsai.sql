@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mar. 10 fév. 2026 à 13:41
+-- Généré le : mar. 10 fév. 2026 à 14:05
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
 
@@ -106,9 +106,69 @@ CREATE TABLE `bookings` (
 
 CREATE TABLE `cms` (
   `id` int NOT NULL,
-  `position` int DEFAULT NULL,
-  `content` text
+  `page` varchar(50) NOT NULL DEFAULT 'home',
+  `section` varchar(50) NOT NULL DEFAULT 'global',
+  `content_key` varchar(100) NOT NULL,
+  `locale` varchar(5) NOT NULL DEFAULT 'fr',
+  `type` enum('text','richtext','image','url','number','json') NOT NULL DEFAULT 'text',
+  `value` longtext,
+  `order_index` int NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `cms`
+--
+
+INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `value`, `order_index`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'home', 'hero', 'title', 'fr', 'text', 'MARSAI', 0, 1, '2026-02-05 14:21:53', '2026-02-05 16:17:05'),
+(2, 'home', 'hero', 'title', 'en', 'text', 'MARSAI', 0, 1, '2026-02-05 14:21:53', '2026-02-05 16:17:13'),
+(3, 'home', 'hero', 'protocol', 'fr', 'text', 'le protocole temporel 2026', 0, 1, '2026-02-05 16:28:47', '2026-02-10 11:06:17'),
+(4, 'home', 'hero', 'tagline_before', 'fr', 'text', 'Imaginez des', 3, 1, '2026-02-05 16:28:47', '2026-02-09 15:36:36'),
+(5, 'home', 'hero', 'tagline_highlight', 'fr', 'text', 'Futurs', 4, 1, '2026-02-05 16:28:47', '2026-02-09 15:36:36'),
+(6, 'home', 'hero', 'tagline_after', 'fr', 'text', 'souhaitables', 5, 1, '2026-02-05 16:28:47', '2026-02-09 15:36:36'),
+(7, 'home', 'hero', 'desc1', 'fr', 'text', 'Le festival de courts-métrages de 60 secondes réalisés par IA.', 6, 1, '2026-02-05 16:28:47', '2026-02-09 15:36:36'),
+(8, 'home', 'hero', 'desc2', 'fr', 'text', '2 jours d\'immersion au cœur de Marseille.', 7, 1, '2026-02-05 16:28:47', '2026-02-09 15:36:36'),
+(9, 'home', 'hero', 'ctaParticipate', 'fr', 'text', 'Participer', 8, 1, '2026-02-05 16:28:47', '2026-02-09 15:36:36'),
+(10, 'home', 'hero', 'ctaLearnMore', 'fr', 'text', 'En savoir plus', 10, 1, '2026-02-05 16:28:47', '2026-02-10 11:25:02'),
+(11, 'home', 'hero', 'protocol', 'en', 'text', 'the 2026 temporal protocol', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(12, 'home', 'hero', 'tagline_before', 'en', 'text', 'Imagine', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(13, 'home', 'hero', 'tagline_highlight', 'en', 'text', 'Futures', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(14, 'home', 'hero', 'tagline_after', 'en', 'text', 'worth imagining', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(15, 'home', 'hero', 'desc1', 'en', 'text', 'the 60-second short film festival', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(16, 'home', 'hero', 'desc2', 'en', 'text', '2 days of immersion in the heart of Marseille.', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(17, 'home', 'hero', 'ctaParticipate', 'en', 'text', 'Participate', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(18, 'home', 'hero', 'ctaLearnMore', 'en', 'text', 'Learn more', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
+(19, 'home', 'hero', 'title_main', 'fr', 'text', 'mars', 0, 1, '2026-02-05 16:32:23', '2026-02-10 11:10:18'),
+(20, 'home', 'hero', 'title_accent', 'fr', 'text', 'ai', 2, 1, '2026-02-05 16:32:23', '2026-02-09 15:36:36'),
+(21, 'home', 'hero', 'title_main', 'en', 'text', 'MARS', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23'),
+(22, 'home', 'hero', 'title_accent', 'en', 'text', 'AI', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23'),
+(23, 'home', 'hero', 'ctaLearnMore_signe', 'fr', 'text', '+', 11, 1, '2026-02-06 09:54:31', '2026-02-10 11:25:02'),
+(24, 'home', 'hero', 'ctaLearnMore_signe', 'en', 'text', '+', 0, 1, '2026-02-06 09:54:31', '2026-02-06 09:54:31'),
+(25, 'home', 'hero', 'ctaParticipate_signe', 'fr', 'text', '/uploads/icons/1770724180233-arrowRight.svg', 9, 1, '2026-02-09 10:41:35', '2026-02-10 12:49:40'),
+(26, 'home', 'hero', 'ctaParticipate_signe', 'en', 'text', NULL, 0, 1, '2026-02-09 10:41:35', '2026-02-09 10:41:35'),
+(27, 'home', 'hero', 'protocol_icon', 'fr', 'image', '/uploads/icons/1770724905062-star.png', 1, 1, '2026-02-10 11:59:41', '2026-02-10 13:01:45'),
+(32, 'home', 'hero', 'protocol_icon', 'en', 'image', '../src/assets/imgs/icones/iconStars.svg', 0, 1, '2026-02-10 12:53:13', '2026-02-10 12:53:13'),
+(33, 'home', 'concept', 'title_main', 'fr', 'text', 'Concept du festival MARSAI', 0, 1, '2026-02-10 14:11:53', '2026-02-10 14:33:15'),
+(34, 'home', 'concept', 'card1_title', 'fr', 'text', '1 minute', 1, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(35, 'home', 'concept', 'card1_description', 'fr', 'text', 'Format ultra-court pour un impact maximum.', 2, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(36, 'home', 'concept', 'card2_title', 'fr', 'text', 'Gratuité', 3, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(37, 'home', 'concept', 'card2_description', 'fr', 'text', 'Conférences et workshops accessibles.', 4, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(38, 'home', 'concept', 'card3_title', 'fr', 'text', 'Pour tous', 5, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(39, 'home', 'concept', 'card3_description', 'fr', 'text', 'Professionnels, étudiants et curieux.', 6, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(40, 'home', 'concept', 'card4_title', 'fr', 'text', 'Expertise', 7, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(41, 'home', 'concept', 'card4_description', 'fr', 'text', 'Leaders mondiaux de l’IA générative.', 8, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(42, 'home', 'concept', 'title_main', 'en', 'text', 'MARSAI Festival Concept', 0, 0, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(43, 'home', 'concept', 'card1_title', 'en', 'text', '1 minute', 1, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(44, 'home', 'concept', 'card1_description', 'en', 'text', 'Ultra-short format for maximum impact.', 2, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(45, 'home', 'concept', 'card2_title', 'en', 'text', 'Free access', 3, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(46, 'home', 'concept', 'card2_description', 'en', 'text', 'Talks and workshops are accessible.', 4, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(47, 'home', 'concept', 'card3_title', 'en', 'text', 'For everyone', 5, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(48, 'home', 'concept', 'card3_description', 'en', 'text', 'Professionals, students, and curious minds.', 6, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(49, 'home', 'concept', 'card4_title', 'en', 'text', 'Expertise', 7, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(50, 'home', 'concept', 'card4_description', 'en', 'text', 'World leaders in generative AI.', 8, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48');
 
 -- --------------------------------------------------------
 
@@ -612,7 +672,11 @@ ALTER TABLE `bookings`
 -- Index pour la table `cms`
 --
 ALTER TABLE `cms`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uniq_block` (`page`,`section`,`content_key`,`locale`),
+  ADD KEY `idx_page_locale` (`page`,`locale`),
+  ADD KEY `idx_section` (`section`),
+  ADD KEY `idx_active_order` (`is_active`,`order_index`);
 
 --
 -- Index pour la table `contact_messages`
@@ -779,7 +843,7 @@ ALTER TABLE `bookings`
 -- AUTO_INCREMENT pour la table `cms`
 --
 ALTER TABLE `cms`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT pour la table `contact_messages`
@@ -954,7 +1018,6 @@ ALTER TABLE `still`
 -- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id`) REFERENCES `cms` (`id`),
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`id`) REFERENCES `faq` (`id`);
 
 --
