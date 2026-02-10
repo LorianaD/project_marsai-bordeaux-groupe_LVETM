@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-// Carte affichant les informations principales d'une vidéo
 export default function VideoCard({ video, apiBase }) {
   const title = video.title || video.title_en || "NEURAL ODYSSEY";
 
@@ -10,7 +9,6 @@ export default function VideoCard({ video, apiBase }) {
 
   const country = video.country || video.director_country || "Pays";
 
-  // Construit l'URL de la cover
   const coverUrl = video.cover
     ? `${apiBase}/uploads/covers/${video.cover}`
     : "https://via.placeholder.com/800x450?text=Cover";
@@ -37,18 +35,36 @@ export default function VideoCard({ video, apiBase }) {
           {title}
         </h3>
 
-        <div className="grid grid-cols-2 gap-10 text-[10px] uppercase tracking-wide text-neutral-500">
+        <div className="grid grid-cols-2 gap-x-10 text-[10px] uppercase tracking-wide text-neutral-500">
+          {/* RÉALISATEUR */}
           <div>
-            <div className="font-semibold">RÉALISATEUR</div>
-            <div className="mt-1 text-[11px] font-semibold normal-case text-neutral-800">
+            <div className="font-semibold leading-none">RÉALISATEUR</div>
+            <div className="mt-3 text-[11px] font-semibold normal-case text-neutral-800 leading-none">
               {director}
             </div>
           </div>
 
+          {/* ORIGINE */}
           <div className="ml-auto text-right">
-            <div className="font-semibold">ORIGINE</div>
-            <div className="mt-1 text-[11px] font-semibold normal-case text-neutral-800">
-              {country}
+            <div className="font-semibold leading-none">ORIGINE</div>
+
+            {/* ligne globe + pays */}
+            <div className="flex items-center justify-end ">
+              {/* conteneur globe */}
+              <span className="grid h-13 w-13 place-items-center">
+                <img
+                  src="/icons/videoDetails/globe.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-contain scale-110 -translate-y-[10px]"
+                  draggable="false"
+                />
+              </span>
+
+              {/* pays */}
+              <span className="text-[11px] font-semibold normal-case text-neutral-800 leading-none">
+                {country}
+              </span>
             </div>
           </div>
         </div>

@@ -1,18 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
-<<<<<<< HEAD:back/src/db/projet_marsai (9).sql
 -- Hôte : localhost:3306
--- Généré le : ven. 06 fév. 2026 à 08:38
+-- Généré le : ven. 06 fév. 2026 à 15:13
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.16
-=======
--- Hôte : localhost:8889
--- Généré le : jeu. 05 fév. 2026 à 15:36
--- Version du serveur : 8.0.40
--- Version de PHP : 8.3.14
->>>>>>> c2aca92806357b3dbbe900261e3a7b9c930d13fc:back/src/db/projet_marsai.sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,12 +24,73 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `admin_video`
+--
+
+CREATE TABLE `admin_video` (
+  `id` int NOT NULL,
+  `status` enum('Video Accepted','Video Rejected','Video Banned','Featured') DEFAULT NULL,
+  `comment` varchar(500) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT (now()),
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `video_id` int NOT NULL,
+  `score` decimal(4,2) DEFAULT NULL,
+  `admin_user_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `admin_video`
+--
+
+INSERT INTO `admin_video` (`id`, `status`, `comment`, `created_at`, `updated_at`, `video_id`, `score`, `admin_user_id`) VALUES
+(1, 'Video Accepted', NULL, '2026-02-06 11:21:54', '2026-02-06 11:21:54', 4, 9.40, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `assignment`
+--
+
+CREATE TABLE `assignment` (
+  `id` int NOT NULL,
+  `assignated_at` datetime NOT NULL DEFAULT (now()),
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `awards`
+--
+
+CREATE TABLE `awards` (
+  `id` int NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `img` varchar(250) NOT NULL,
+  `rank` int NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT (now()),
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `awards_video`
+--
+
+CREATE TABLE `awards_video` (
+  `award_id` int NOT NULL,
+  `video_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cms`
 --
 
 CREATE TABLE `cms` (
   `id` int NOT NULL,
-<<<<<<< HEAD:back/src/db/projet_marsai (9).sql
   `position` int DEFAULT NULL,
   `content` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -151,8 +205,20 @@ CREATE TABLE `jury` (
   `bio` varchar(500) DEFAULT NULL,
   `profession` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `role_label` varchar(80) DEFAULT NULL,
+  `is_president` tinyint(1) NOT NULL DEFAULT '0',
+  `filmography_url` varchar(500) DEFAULT NULL,
+  `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `jury`
+--
+
+INSERT INTO `jury` (`id`, `name`, `first_name`, `img`, `bio`, `profession`, `created_at`, `updated_at`, `role_label`, `is_president`, `filmography_url`, `sort_order`) VALUES
+(1, 'VALROS', 'JULIEN', 'julien.png', '...', 'Réalisateur', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRÉSIDENT DU JURY', 1, 'https://exemple.com', 1),
+(2, 'MASSON', 'JULIE', 'julie.png', '...', 'Productrice', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRODUCTRICE', 0, 'https://exemple.com', 2);
 
 -- --------------------------------------------------------
 
@@ -352,25 +418,12 @@ CREATE TABLE `videos` (
   `promo_consent` tinyint(1) NOT NULL DEFAULT '0',
   `promo_consent_at` datetime DEFAULT NULL,
   `youtube_upload_error` text
-=======
-  `page` varchar(50) NOT NULL DEFAULT 'home',
-  `section` varchar(50) NOT NULL DEFAULT 'global',
-  `content_key` varchar(100) NOT NULL,
-  `locale` varchar(5) NOT NULL DEFAULT 'fr',
-  `type` enum('text','richtext','image','url','number','json') NOT NULL DEFAULT 'text',
-  `value` longtext,
-  `order_index` int NOT NULL DEFAULT '0',
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
->>>>>>> c2aca92806357b3dbbe900261e3a7b9c930d13fc:back/src/db/projet_marsai.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `cms`
+-- Déchargement des données de la table `videos`
 --
 
-<<<<<<< HEAD:back/src/db/projet_marsai (9).sql
 INSERT INTO `videos` (`id`, `youtube_video_id`, `video_file_name`, `title`, `title_en`, `synopsis`, `synopsis_en`, `cover`, `language`, `country`, `duration`, `tech_resume`, `ai_tech`, `creative_resume`, `email`, `director_name`, `director_lastname`, `director_gender`, `birthday`, `mobile_number`, `home_number`, `address`, `director_country`, `discovery_source`, `upload_status`, `created_at`, `featured`, `ownership_certified`, `ownership_certified_at`, `promo_consent`, `promo_consent_at`, `youtube_upload_error`) VALUES
 (4, NULL, '1770022546953-878781-MarseillefutureGoodone3.mp4', 'Vue sur Marseille', 'View on Marseille', 'Magnifique vue sur Marseille', 'Beautiful view on Marseille', '1770022546993-180497-Sans_titre__Pr__sentation___2_.jpg', 'fr', 'FR', 120, 'sdkcjdkfjzekflnezfklnef', 'Midjourney', 'scklskclmqssqmds', 'vanessa.biamonti@laplate.com', 'Vanessa', 'Callea', 'Mrs', '1995-12-11', '+33650925487', '0556789876', '13 rue Exemple, Paris', 'FR', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL, NULL),
 (5, NULL, '1770025470430-682094-MarseillefutureGoodone2.mp4', 'Les beaux jours', 'Beautiful days', 'sdfjkzejfsdkslfsjdjfklsdfkl', 'qdflvdf;v,dslv,df;v', '1770025470480-428870-Sans_titre__Pr__sentation___3_.jpg', 'fr', 'France', 120, 'ksdcsdlcksdfl', 'Midjourney', 'wx wx;,', 'vanessa.biamonti@gmail.com', 'Julie', 'Callea', 'Mrs', '1977-07-21', NULL, NULL, '15 rue Exemple, Paris', 'France', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL, NULL),
@@ -381,37 +434,11 @@ INSERT INTO `videos` (`id`, `youtube_video_id`, `video_file_name`, `title`, `tit
 (10, 'wcy5srKTzbk', '1770290989616-973820-gersto_A_dramatic_black-and-white_film-noir-style_scene_of_a__eed6a183-af7c-4864-ae6c-f81f9949c760_0.mp4', 'C\'est la bonne cette fois', 'This time it works', 'xvvsdvsd', 'svsdvsdv', '1770290989671-508681-sankaku_john_baldessari_art_--v_7_7d750db0-c595-4d24-8364-1efbdeeeced4.png', 'es', 'Albania', 60, 'xvvsccv', 'Midjourney', 'cvcsvc', 'g.fion@gmail.com', 'Gwenaelle', 'FION', 'Mrs', '1990-09-20', '0650925487', NULL, '14 rue Exemple, Paris', 'Algeria', 'Facebook', 'Published', '2026-02-05 12:29:49', 0, 1, '2026-02-05 12:29:53', 1, '2026-02-05 12:29:53', NULL);
 
 -- --------------------------------------------------------
-=======
-INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `value`, `order_index`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'home', 'hero', 'title', 'fr', 'text', 'MARSAI', 0, 1, '2026-02-05 14:21:53', '2026-02-05 16:17:05'),
-(2, 'home', 'hero', 'title', 'en', 'text', 'MARSAI', 0, 1, '2026-02-05 14:21:53', '2026-02-05 16:17:13'),
-(3, 'home', 'hero', 'protocol', 'fr', 'text', 'le protocole temporel 2026', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(4, 'home', 'hero', 'tagline_before', 'fr', 'text', 'Imaginez des', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(5, 'home', 'hero', 'tagline_highlight', 'fr', 'text', 'Futurs', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(6, 'home', 'hero', 'tagline_after', 'fr', 'text', 'souhaitables', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(7, 'home', 'hero', 'desc1', 'fr', 'text', 'Le festival de courts-métrages de 60 secondes réalisés par IA.', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(8, 'home', 'hero', 'desc2', 'fr', 'text', '2 jours d\'immersion au cœur de Marseille.', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(9, 'home', 'hero', 'ctaParticipate', 'fr', 'text', 'Participer', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(10, 'home', 'hero', 'ctaLearnMore', 'fr', 'text', 'En savoir plus', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(11, 'home', 'hero', 'protocol', 'en', 'text', 'the 2026 temporal protocol', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(12, 'home', 'hero', 'tagline_before', 'en', 'text', 'Imagine', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(13, 'home', 'hero', 'tagline_highlight', 'en', 'text', 'Futures', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(14, 'home', 'hero', 'tagline_after', 'en', 'text', 'worth imagining', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(15, 'home', 'hero', 'desc1', 'en', 'text', 'the 60-second short film festival', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(16, 'home', 'hero', 'desc2', 'en', 'text', '2 days of immersion in the heart of Marseille.', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(17, 'home', 'hero', 'ctaParticipate', 'en', 'text', 'Participate', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(18, 'home', 'hero', 'ctaLearnMore', 'en', 'text', 'Learn more', 0, 1, '2026-02-05 16:28:47', '2026-02-05 16:28:47'),
-(19, 'home', 'hero', 'title_main', 'fr', 'text', 'MARS', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23'),
-(20, 'home', 'hero', 'title_accent', 'fr', 'text', 'AI', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23'),
-(21, 'home', 'hero', 'title_main', 'en', 'text', 'MARS', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23'),
-(22, 'home', 'hero', 'title_accent', 'en', 'text', 'AI', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23');
->>>>>>> c2aca92806357b3dbbe900261e3a7b9c930d13fc:back/src/db/projet_marsai.sql
 
 --
--- Déchargement des données de la table `video_tag`
+-- Structure de la table `video_subtitles`
 --
 
-<<<<<<< HEAD:back/src/db/projet_marsai (9).sql
 CREATE TABLE `video_subtitles` (
   `id` int NOT NULL,
   `video_id` int NOT NULL,
@@ -443,14 +470,6 @@ CREATE TABLE `video_tag` (
   `video_id` int NOT NULL,
   `tag_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-=======
-INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
-(8, 1),
-(9, 1),
-(10, 1),
-(9, 2),
-(10, 2);
->>>>>>> c2aca92806357b3dbbe900261e3a7b9c930d13fc:back/src/db/projet_marsai.sql
 
 --
 -- Déchargement des données de la table `video_tag`
@@ -468,11 +487,49 @@ INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
 --
 
 --
+-- Index pour la table `admin_video`
+--
+ALTER TABLE `admin_video`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_admin_video_video` (`video_id`),
+  ADD KEY `fk_admin_video_user` (`admin_user_id`);
+
+--
+-- Index pour la table `assignment`
+--
+ALTER TABLE `assignment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `awards`
+--
+ALTER TABLE `awards`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `awards_video`
+--
+ALTER TABLE `awards_video`
+  ADD PRIMARY KEY (`award_id`,`video_id`),
+  ADD KEY `video_id` (`video_id`);
+
+--
 -- Index pour la table `cms`
 --
 ALTER TABLE `cms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `contributor`
+--
+ALTER TABLE `contributor`
   ADD PRIMARY KEY (`id`),
-<<<<<<< HEAD:back/src/db/projet_marsai (9).sql
   ADD KEY `idx_contributor_video_id` (`video_id`);
 
 --
@@ -498,7 +555,8 @@ ALTER TABLE `film_tag`
 -- Index pour la table `jury`
 --
 ALTER TABLE `jury`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_jury_sort` (`is_president`,`sort_order`,`id`);
 
 --
 -- Index pour la table `memo_selector`
@@ -576,22 +634,33 @@ ALTER TABLE `video_subtitles`
 ALTER TABLE `video_tag`
   ADD PRIMARY KEY (`video_id`,`tag_id`),
   ADD KEY `fk_video_tag_tag` (`tag_id`);
-=======
-  ADD UNIQUE KEY `uniq_block` (`page`,`section`,`content_key`,`locale`),
-  ADD KEY `idx_page_locale` (`page`,`locale`),
-  ADD KEY `idx_section` (`section`),
-  ADD KEY `idx_active_order` (`is_active`,`order_index`);
->>>>>>> c2aca92806357b3dbbe900261e3a7b9c930d13fc:back/src/db/projet_marsai.sql
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
+-- AUTO_INCREMENT pour la table `admin_video`
+--
+ALTER TABLE `admin_video`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `assignment`
+--
+ALTER TABLE `assignment`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `awards`
+--
+ALTER TABLE `awards`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `cms`
 --
 ALTER TABLE `cms`
-<<<<<<< HEAD:back/src/db/projet_marsai (9).sql
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -622,7 +691,7 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT pour la table `jury`
 --
 ALTER TABLE `jury`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `memo_selector`
@@ -698,7 +767,8 @@ ALTER TABLE `video_subtitles`
 -- Contraintes pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD CONSTRAINT `admin_video_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_admin_video_user` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_admin_video_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `assignment`
@@ -718,12 +788,6 @@ ALTER TABLE `awards_video`
 --
 ALTER TABLE `contributor`
   ADD CONSTRAINT `fk_contributor_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `events`
---
-ALTER TABLE `events`
-  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
 
 --
 -- Contraintes pour la table `film_tag`
@@ -763,9 +827,6 @@ ALTER TABLE `video_subtitles`
 ALTER TABLE `video_tag`
   ADD CONSTRAINT `fk_video_tag_tag` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_video_tag_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
-=======
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
->>>>>>> c2aca92806357b3dbbe900261e3a7b9c930d13fc:back/src/db/projet_marsai.sql
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

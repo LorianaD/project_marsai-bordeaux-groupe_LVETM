@@ -67,9 +67,9 @@ function SectionHero() {
                         </p>
                     </div>
                     <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[192px] tacking-[-2.4px] md:tracking-[-9.6px] uppercase text-[48px] md:text-[192px] text-center">
-                            {content?.hero?.title_main ?? "MARS"}
+                            {content?.hero?.title_main ?? t("hero.title_main")}
                         <span className="bg-gradient-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent">
-                            {content?.hero?.title_accent ?? "AI"}
+                            {content?.hero?.title_accent ?? t("hero.title_accent")}
                         </span>
                     </h1>
                     <p className="text-[#FFFFFF] text-[35px] font-bold tracking-[0.5px] uppercase text-center">
@@ -92,7 +92,7 @@ function SectionHero() {
                             {content?.hero?.ctaParticipate ?? t("hero.ctaParticipate")}
                         </span>
                         <div className="w-[20px] h-[20px]">
-                            <img src="../src/assets/imgs/icones/arrowRight.svg" alt=""/>
+                            <img src={content?.hero?.ctaParticipate_signe ?? t("hero.ctaParticipate_signe")} alt=""/>
                         </div>
                     </Link>
                     <Link className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
@@ -100,7 +100,7 @@ function SectionHero() {
                             {content?.hero?.ctaLearnMore ?? t("hero.ctaLearnMore")}
                         </span>
                         <span className="flex flex-col justify-center text-[#AD46FF] text-center text-[24px] font-bold leading-[0] uppercase">
-                            +
+                            {content?.hero?.ctaLearnMore_signe ?? t("hero.ctaLearnMore_signe")}
                         </span>
                     </Link>
                 </div> 
@@ -112,3 +112,4 @@ function SectionHero() {
 }
 
 export default SectionHero
+// content?.hero?.ctaParticipate_signe ?? 
