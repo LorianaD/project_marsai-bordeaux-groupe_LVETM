@@ -14,8 +14,6 @@ import faq from "./faq.js";
 
 const router = Router();
 
-const router = Router();
-
 // router.get("/test", testController);
 
 router.use("/users", usersRouter);

@@ -145,15 +145,6 @@ function RegisterForm() {
         />
       </div>
 
-      {/* <div>
-        <label>Role*</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="Admin"></option>
-          <option value="Super_admin"></option>
-          <option value="Selector"></option>
-        </select>
-      </div> */}
-
       {error && <p>{error}</p>}
       {success && <p>{success}</p>}
 
