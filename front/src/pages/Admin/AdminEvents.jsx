@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { clamp, NAV, DAY_TABS } from "./AdminEvents.utils.js";
+import { clamp, DAY_TABS, getDayKeyFromDate, getDayTabsFromEvents } from "./AdminEvents.utils.js";
 import {
   getAdminEvents,
   createEvent,
@@ -7,19 +7,23 @@ import {
   deleteEvent,
   togglePublish,
 } from "../../services/Events/AdminEventApi.js";
+import { ADMIN_NAV } from "../../components/admin/adminNav.js";
+import { useNavigate } from "react-router-dom";
 
 import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
 export default function AdminEvents() {
  
-  const [activeNav, setActiveNav] = useState("Événements");
-  const [day, setDay] = useState("vendredi");
+  const [activeNav, setActiveNav] = useState("events");
+  const [day, setDay] = useState(DAY_TABS[0]?.key ?? "2026-06-13");
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
+
+  const navigate = useNavigate();
  
   // formulaire
   const [form, setForm] = useState({
@@ -29,12 +33,10 @@ export default function AdminEvents() {
     location: "",
     capacity: 30,
     type: "atelier",
-    day: "vendredi", // journée choisie POUR l’event (pas le filtre)
   });
 
 //récupère les events
-//récupère les events
-//récupère les events
+
 useEffect(() => {
   (async () => {
     try {
@@ -43,14 +45,7 @@ useEffect(() => {
 
       const normalized = Array.isArray(data)
         ? data.map((ev) => {
-            let dayKey = "vendredi";
-            if (ev.date) {
-              const d = new Date(ev.date);
-              const dayNum = d.getDate();
-              const month = d.getMonth();
-              if (month === 5 && dayNum === 14) dayKey = "samedi";
-              if (month === 5 && dayNum === 13) dayKey = "vendredi";
-            }
+            const dayKey = getDayKeyFromDate(ev.date);
             return {
               ...ev,
               day: ev.day ?? dayKey,
@@ -90,6 +85,16 @@ useEffect(() => {
       .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
   }, [events, day, query]);
 
+  // Onglets "jour" dérivés des events (sinon défaut Vendredi 13 / Samedi 14)
+  const dayTabs = useMemo(() => getDayTabsFromEvents(events), [events]);
+
+  // Garder l’onglet sélectionné valide : s’il n’est plus dans dayTabs, passer au premier
+  useEffect(() => {
+    if (dayTabs.length > 0 && !dayTabs.some((t) => t.key === day)) {
+      setDay(dayTabs[0].key);
+    }
+  }, [dayTabs, day]);
+
   // 3) Stats calculées pour la journée affichée
   const stats = useMemo(() => {
     const dayEvents = events.filter((e) => e.day === day);
@@ -120,7 +125,6 @@ useEffect(() => {
       location: "",
       capacity: 30,
       type: "atelier",
-      day, // IMPORTANT : ici c’est form.day
     });
 
     setModalOpen(true);
@@ -137,14 +141,13 @@ useEffect(() => {
       location: ev.location || "",
       capacity: ev.capacity ?? 30,
       type: ev.type || "atelier",
-      day: ev.day || day, // journée de l’event
     });
 
     setModalOpen(true);
   }
 
   // Créer ou modifier  event
-   // Créer ou modifier  event
+   
    async function onSave(e) {
     e.preventDefault();
 
@@ -173,15 +176,22 @@ useEffect(() => {
           stock: editing.stock ?? capacity,
         };
         const updated = await updateEvent(editing.id, updatePayload);
+        const updatedDay = getDayKeyFromDate(updated.date);
         setEvents((prev) =>
-          prev.map((x) => (x.id === editing.id ? { ...x, ...updated, capacity, startAt: updated.date } : x))
+          prev.map((x) =>
+            x.id === editing.id
+              ? { ...x, ...updated, day: updatedDay, capacity, startAt: updated.date }
+              : x
+          )
         );
       } else {
         const created = await createEvent(apiPayload);
+        const createdDay = getDayKeyFromDate(created.date);
         setEvents((prev) => [
-          { ...created, day: form.day, type: form.type, capacity, startAt: created.date, published: false },
+          { ...created, day: createdDay, type: form.type, capacity, startAt: created.date, published: false },
           ...prev,
         ]);
+        setDay(createdDay ?? day);
       }
 
       setModalOpen(false);
@@ -191,7 +201,7 @@ useEffect(() => {
     }
   }
 
-  // Supprimer un event
+  // Suppr un event
   async function onDelete(ev) {
     const ok = confirm(`Supprimer "${ev.title}" ?`);
     if (!ok) return;
@@ -228,28 +238,31 @@ useEffect(() => {
           <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
             <img src="/imgs/admin-avatar.png" alt="Oceane Brise" className="h-10 w-10 shrink-0 rounded-full object-cover" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Oceane Brise</p>
+              <p className="truncate text-sm font-semibold text-white">Oceane Brise</p>
               <p className="truncate text-xs text-black/60 dark:text-white/60">RÉALISATEUR STUDIO</p>
             </div>
           </div>
 
           {/* Menu */}
           <nav className="mt-4 space-y-1">
-            {NAV.map((item) => {
-              const active = item === activeNav;
+            {ADMIN_NAV.map((link) => {
+              const isActive = link.id === activeNav;
               return (
                 <button
-                  key={item}
+                  key={link.id}
                   type="button"
-                  onClick={() => setActiveNav(item)}
+                  onClick={() => {
+                    setActiveNav(link.id);
+                    if (link.path) navigate(link.path);
+                  }}
                   className={[
                     "w-full rounded-xl px-3 py-2 text-left text-sm transition",
-                    active
+                    isActive
                       ? "bg-black/10 text-black dark:bg-white/10 dark:text-white"
                       : "text-black/70 dark:text-white/70 hover:bg-black/5 hover:text-black dark:hover:bg-white/5 dark:hover:text-white",
                   ].join(" ")}
                 >
-                  {item}
+                  {link.label}
                 </button>
               );
             })}
@@ -307,8 +320,8 @@ useEffect(() => {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm text-white/80">Heureux de vous revoir,</p>
-                    <h1 className="mt-1 text-2xl font-semibold">
-                      Oceane Brise <span className="text-white/60">(Admin)</span>
+                    <h1 className="mt-1 text-2xl font-semibold text-white">
+                      Oceane Brise <span className="text-white/80">(Admin)</span>
                     </h1>
                     <p className="mt-2 max-w-xl text-xs text-white/60">
                       Gérez l’agenda du festival à Marseille et le flux des participants.
@@ -361,9 +374,9 @@ useEffect(() => {
 
               {/* Controls */}
               <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                {/* Boutons jour (filtre) */}
+                {/* Boutons jour (filtre) — onglets dynamiques selon les dates des events */}
                 <div className="flex flex-wrap gap-2">
-                  {DAY_TABS.map((t) => {
+                  {dayTabs.map((t) => {
                     const active = t.key === day;
                     return (
                       <button
@@ -532,18 +545,6 @@ useEffect(() => {
                   <option value="masterclass">Masterclass</option>
                   <option value="conference">Conférence</option>
                   <option value="projection">Projection</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs text-black/60 dark:text-white/60">Journée</label>
-                <select
-                  value={form.day}
-                  onChange={(e) => setForm((s) => ({ ...s, day: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
-                >
-                  <option value="vendredi">Vendredi</option>
-                  <option value="samedi">Samedi</option>
                 </select>
               </div>
 

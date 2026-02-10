@@ -81,6 +81,18 @@ export const findAllPublishedEvents = async () => {
   return rows;
 };
 
+// Liste page publique avec nombre de réservations (pour afficher les places restantes)
+export const findAllPublishedEventsWithRegistered = async () => {
+  const [rows] = await pool.execute(
+    `SELECT e.id, e.title, e.description, e.date, e.length, e.stock, e.illustration, e.location,
+      (SELECT COUNT(*) FROM bookings b WHERE b.event_id = e.id) AS registered
+     FROM events e
+     WHERE e.published = 1
+     ORDER BY e.date ASC`
+  );
+  return rows;
+};
+
 // liste admin tous les events avec nmbr de réserve
 export const findAllEventsForAdmin = async () => {
   const [rows] = await pool.execute(

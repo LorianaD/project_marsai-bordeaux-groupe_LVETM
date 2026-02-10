@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function AdminSidebar({ active = "overview" }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Élément de navigation réutilisable
   const Item = ({ id, label, to }) => {

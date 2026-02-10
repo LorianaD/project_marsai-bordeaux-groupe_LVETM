@@ -243,9 +243,13 @@ function Events() {
                         )}
                       </div>
                       <p className="text-xs font-medium text-black/80 dark:text-white/80">
-                        {w.stock != null
-                          ? `${w.stock} place${w.stock > 1 ? "s" : ""} restante${w.stock > 1 ? "s" : ""}`
-                          : "—"}
+                        {(() => {
+                          const capacity = w.stock != null ? Number(w.stock) : null;
+                          const registered = Number(w.registered ?? 0);
+                          const remaining = capacity != null ? Math.max(0, capacity - registered) : null;
+                          if (remaining == null) return "—";
+                          return `${remaining} place${remaining !== 1 ? "s" : ""} restante${remaining !== 1 ? "s" : ""}`;
+                        })()}
                       </p>
                       <button
                         type="button"
