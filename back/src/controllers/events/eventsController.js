@@ -5,6 +5,7 @@ import {
   deleteEventById,
   updateEventPublished,
   findAllPublishedEvents,
+  findAllPublishedEventsWithRegistered,
   findAllEventsForAdmin,
 } from "../../models/event.js";
 import { insertBooking, countBookingsByEventId} from "../../models/booking.js";
@@ -86,7 +87,7 @@ export const deleteEvent = async (req, res) => {
 
 export const getEvents = async (req, res) => {
   try {
-    const events = await findAllPublishedEvents();
+    const events = await findAllPublishedEventsWithRegistered();
     res.json(events);
   } catch (err) {
    console.error("Error retrieving events", err);
