@@ -24,6 +24,15 @@
 
 }
 
+/* Force le fond sombre sur les inputs auto-remplis par le navigateur */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #08080e inset;
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 
 
 @media (prefers-color-scheme: light) {
