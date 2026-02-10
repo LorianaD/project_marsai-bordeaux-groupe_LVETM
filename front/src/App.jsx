@@ -41,7 +41,7 @@ export default function App() {
         <Route path="/participation" element={<ParticipationUploadPage />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetails />} />
-        <Route path="/jury" element={<JuryList />} />
+        <Route path="/jury" element={<Jury />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/legal" element={<Legal />} />
