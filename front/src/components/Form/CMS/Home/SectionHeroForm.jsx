@@ -1,6 +1,6 @@
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
 import { updateContentApi, updateImageApi, updateActiveApi } from "../../../../services/CMS/UpdateContentApi.js";
@@ -18,7 +18,26 @@ function SectionHeroForm() {
     const section = "hero";
     console.log("Page:", page, "Section:", section);
 
-    const { values, handleChange, setValues } = useForm({
+    // champs des differents éléments dans la section
+    const fields = [
+        "protocol",
+        "title_main",
+        "title_accent",
+        "tagline_before",
+        "tagline_highlight",
+        "tagline_after",
+        "desc1",
+        "desc2",
+        "ctaParticipate",
+        "ctaParticipate_signe",
+        "ctaLearnMore",
+        "ctaLearnMore_signe"
+    ];
+    console.log(fields);
+
+    const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
+
+    const { values, handleChange } = useForm({
         protocol:"",
         protocol_is_active: 1,
 
@@ -67,24 +86,6 @@ function SectionHeroForm() {
         try {
 
             console.log("try dans handleSubmit OK");
-            
-            // champs des differents éléments dans la section
-            const fields = [
-                "protocol",
-                "title_main",
-                "title_accent",
-                "tagline_before",
-                "tagline_highlight",
-                "tagline_after",
-                "desc1",
-                "desc2",
-                "ctaParticipate",
-                "ctaParticipate_signe",
-                "ctaLearnMore",
-                "ctaLearnMore_signe"
-            ];
-
-            console.log(fields);
 
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
@@ -108,20 +109,8 @@ function SectionHeroForm() {
                 // TEXTE VIDE
                 const empty = val === undefined || val === null || String(val).trim() === "";
 
-                if (empty) {
-
-                    await updateActiveApi({
-                        page,
-                        section,
-                        locale,
-                        content_key: key,
-                        order_index: i,
-                        is_active,
-                    });
-
-                    continue;
-
-                }
+                // si vide on continue sans rien changer
+                if (empty) continue;
 
                 // TEXTE NON VIDE
                 await updateContentApi({
@@ -152,7 +141,7 @@ function SectionHeroForm() {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col intems-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 
                 {/***** Titre du formulaire *****/}
                 <div className="flex items-center gap-[10px] self-stretch">
@@ -165,14 +154,14 @@ function SectionHeroForm() {
                     </h3>
                 </div>
 
-                <div className="flex flex-col intem-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                     {/* Gestion du protocol */}
                     < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
-                        <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale}/>}
+                        <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
                     />
 
                     {/* Gestion des Titres */}
-                    <div  className="flex flex-col md:flex-row justify-around pb-[10px] gap-[50px]">
+                    <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
                         {/* Gestion du titre principal en blanc */}
                         < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
                             <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -186,7 +175,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col md:flex-row md:intem-center p-[10px] gap-[30px] md:justify-around uppercase placeholder:uppercase">
+                    <div className="flex flex-col md:flex-row md:items-center p-[10px] gap-[30px] md:justify-around uppercase placeholder:uppercase">
 
                         < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
                             <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -203,7 +192,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion de la Déscription */}
-                    <div className="flex flex-col gap-[50px]">
+                    <div className="flex flex-col gap-[50px] w-full">
 
                         {/* Gestion de la déscription ligne 1 */}
 
@@ -220,7 +209,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion des boutons */}
-                    <div className="flex flex-col md:flex-row justify-around intem-center gap-[50px]">
+                    <div className="flex flex-col md:flex-row justify-around items-center gap-[50px] w-full">
                         {/* Gestion du premier bouton */}
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
 

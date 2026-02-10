@@ -69,8 +69,8 @@ async function updateActiveApi({ page, section, locale, content_key, order_index
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            order_index: order_index,
-            is_active: is_active,
+            order_index,
+            is_active,
         }),
     });
 
