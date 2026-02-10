@@ -58,9 +58,9 @@ function Partner() {
                 <div className="flex p-[10px] items-start gap-[10px] self-stretch">
                     <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
                     <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                    <h2 className="text-[20px] font-bold tracking-[3.2px] uppercase">
+                    <h3 className="text-[20px] font-bold tracking-[3.2px] uppercase">
                         Section "Partenaires"
-                    </h2>
+                    </h3>
                 </div>
 
                 <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
@@ -85,6 +85,14 @@ function Partner() {
                         </label>
                     </div>
                 </div>
+
+                <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
+                    <label htmlFor="url" className="text-[14px] font-semibold tracking-[2.24px]">
+                        Ajouter le lien du partenaire
+                    </label>
+                    <input type="text" id="url" name="url" value={values.url} onChange={handleChange} placeholder="https://example.com" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]" />
+                </div>
+                
                 <div className="w-full flex justify-center">
                     <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                         Ajouter

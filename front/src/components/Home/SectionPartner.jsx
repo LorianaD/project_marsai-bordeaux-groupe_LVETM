@@ -11,6 +11,8 @@ function SectionPartner() {
     const [loading, setLoading] = useState(true);
     const [Message, setMessage] = useState("");
 
+    let isMounted = true;
+
     async function GetAllPartner() {
         // console.log("Fonction GetAllPartner OK");
         
@@ -22,12 +24,17 @@ function SectionPartner() {
 
             const res = await GetPartnerApi();
             // console.log("API response: ", res);
+
+            const data = Array.isArray(res.data) ? res.data : [];
             
-            setPartners(Array.isArray(res.data) ? res.data : []);
+            setPartners(data.slice(0,8));
 
         } catch (error) {
             console.error(error);
             setMessage("Erreur serveur");
+
+        } finally {
+            setLoading(false);
         }
 
     }
@@ -53,10 +60,10 @@ function SectionPartner() {
                     </span>
                 </h2>
             </div>
-            <div className="grid md:h-[146px] grid-cols-2 md:grid-cols-4 gap-[16px] self-stretch">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[16px] self-stretch">
                 {partners.length > 0 && partners.map((p) => (
                     <div key={ p.id ?? p.name } className="flex items-center justify-center self-stretch justify-self-stretch row-span-1 col-span-1 rounded-[24px] border border-[rgba(128,128,128,0.05)] bg-[rgba(128,128,128,0.05)] dark:border-[rgba(255,255,255,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
-                        <div className="w-[175px] md:w-[154px] md:h-[108px] flex items-center justify-center">
+                        <div className="w-[175px] md:w-[300px] md:h-[200px] flex items-center justify-center">
                             <img src={`${API_URL}${p.img}`} alt={p.name} />
                         </div>
                     </div>

@@ -238,6 +238,32 @@ async function findOneVideoByIdAdmin(id) {
   return rows[0] || null;
 }
 
+// Leaderboard admin : vidéos qui ont une note
+async function findLeaderboardVideos() {
+  const sql = `
+    SELECT
+      v.id,
+      v.title,
+      v.title_en,
+      v.cover,
+      v.country,
+      v.language,
+      v.director_name,
+      v.director_lastname,
+      v.ai_tech,
+      av.score,
+      v.created_at
+    FROM admin_video av
+    JOIN videos v ON v.id = av.video_id
+    WHERE av.score IS NOT NULL
+    ORDER BY av.score DESC, v.created_at DESC
+  `;
+
+  const [rows] = await pool.execute(sql);
+  return rows;
+}
+
+
 export default {
   findPublishedVideos,
   findOnePublishedVideoById,
@@ -247,4 +273,5 @@ export default {
   updateVideoStatus,
   updateVideoFeatured,
   findOneVideoByIdAdmin,
+  findLeaderboardVideos,
 };
