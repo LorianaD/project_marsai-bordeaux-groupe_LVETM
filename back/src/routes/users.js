@@ -1,3 +1,4 @@
+import { isAdmin, isSuperAdmin, verifyToken } from "../utils/isAdmin.js";
 import { Router } from "express";
 import createRegisterController from '../controllers/users/register.controller.js'
 import { loginController } from '../controllers/users/login.controller.js'
@@ -10,9 +11,9 @@ const router = Router();
 
 
 // route en post pour chaque role
-router.post('/superAdmin/register', createRegisterController({ fixedRole:'superadmin'}))
-router.post('/admin/register', createRegisterController({ fixedRole:'admin'}));
-router.post('/selector/register', createRegisterController({ fixedRole:'selector'}));
+router.post('/superAdmin/register', verifyToken, isSuperAdmin, createRegisterController({ fixedRole:'superadmin'}))
+router.post('/admin/register', verifyToken, isAdmin, createRegisterController({ fixedRole:'admin'}));
+router.post('/selector/register', verifyToken, isAdmin, createRegisterController({ fixedRole:'selector'}));
 router.post('/login', loginController);
 
 // router.post("/admin/register", registerController);
