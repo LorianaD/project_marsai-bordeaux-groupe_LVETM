@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router"
 import GetAllContentApi from "../../services/CMS/GetAllContentApi";
 import { buildCmsMap } from "../../utils/cms";
 
@@ -15,23 +14,23 @@ function SectionConcept() {
     const [Message, setMessage] = useState("");
 
     async function CMSConceptHome() {
-        // console.log("Fonction CMSHeroHome OK");
+        console.log("Fonction CMSHeroHome OK");
 
         try {
-            // console.log("try in the function CMSHeroHome OK");
+            console.log("try in the function CMSHeroHome OK");
 
             setLoading(true);
             setMessage("");
 
             const json = await GetAllContentApi();
-            // console.log(json);
+            console.log(json);
 
             const rows = json.data ?? [];
-            // console.log("rows:",rows);
-            // console.log("rows hero fr:", rows.filter(r => r.section === "hero" && r.locale === locale));
+            console.log("rows:",rows);
+            console.log("rows concept fr:", rows.filter(r => r.section === "hero" && r.locale === locale));
 
             const cms = buildCmsMap(rows, locale);
-            // console.log("CMS finale", cms);
+            console.log("CMS finale", cms);
             
             setContent(cms);
 
@@ -48,6 +47,10 @@ function SectionConcept() {
 
     function isVisible(section, key) {
         return Number(content?.[section]?.[`${key}_is_active`]) === 1;
+    }    
+
+    function isCardVisible(cardNumber) {
+        return isVisible("concept", `card${cardNumber}_title`);
     }
 
     useEffect(()=>{
@@ -55,38 +58,45 @@ function SectionConcept() {
     },[locale]);
 
     return(
-        <section className="flex justify-center items-center gap-[10px] md:px-[80px] py-[10px]">
+        <section className="flex flex-col justify-center items-center gap-[20px] md:px-[80px] py-[10px]">
+            {isVisible("concept", "title_main") && (
+                <h2 class="text-[36px] md:text-[60px] font-bold md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase leading-none w-full py-[20px]">
+                    {content?.concept?.title_main?.value ?? t("concept.title_main")}                
+                </h2>
+            )}
             <div className="grid md:h-[218.75px] md:grid-cols-4 gap-6 self-stretch text-left">
-                <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
-                    <h3 className="uppercase text-[#C27AFF] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
-                        {content?.concept?.card1?.value ?? t("concept.OneMinute.title")}
-                    </h3>
-                    <p className="text-[#000000] text-[10px] font-bold leading-[16.25px] tracking-[1px] uppercase dark:text-white">
-                        {t("concept.OneMinute.description")}
-                    </p>
-                </div>
+                {isCardVisible(1) && (
+                    <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
+                        <h3 className="uppercase text-[#C27AFF] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
+                            {content?.concept?.card1_title?.value ?? t("concept.OneMinute.title")}
+                        </h3>
+                        <p className="text-[#000000] text-[10px] font-bold leading-[16.25px] tracking-[1px] uppercase dark:text-white">
+                            {content?.concept?.card1_description?.value ?? t("concept.OneMinute.description")}
+                        </p>
+                    </div>
+                )}
                 <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
                     <h3 className="uppercase text-[#00D492] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
-                        {t("concept.free.title")}
+                        {content?.concept?.card2_title?.value ?? t("concept.free.title")}
                     </h3>
                     <p className="text-[#000000] text-[10px] font-bold leading-[16.25px] tracking-[1px] uppercase dark:text-white">
-                        {t("concept.free.description")}
+                        {content?.concept?.card2_description?.value ?? t("concept.free.description")}
                     </p>
                 </div>
                 <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
                     <h3 className="uppercase text-[#FB64B6] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
-                        {t("concept.forAll.title")}
+                        {content?.concept?.card3_title?.value ?? t("concept.forAll.title")}
                     </h3>
                     <p className="text-[#000000] text-[10px] font-bold leading-[16.25px] tracking-[1px] uppercase dark:text-white">
-                        {t("concept.forAll.description")}
+                        {content?.concept?.card3_description?.value ?? t("concept.forAll.description")}
                     </p>
                 </div>
                 <div className="flex p-[41px] gap-[16px] flex-col items-start self-stretch justify-self-stretch bg-[rgba(161,161,161,0.05)] rounded-[32px] border-[1px] border-solid border-[rgba(173,70,255,0.20)]">
                     <h3 className="uppercase text-[#2B7FFF] font-bold text-[30px] leading-[36px] tracking-[-1.5px]">
-                        {t("concept.expertise.title")}
+                        {content?.concept?.card4_title?.value ?? t("concept.expertise.title")}
                     </h3>
                     <p className="text-[#000000] text-[10px] font-bold leading-[16.25px] tracking-[1px] uppercase dark:text-white">
-                        {t("concept.expertise.description")}
+                        {content?.concept?.card4_description?.value ?? t("concept.expertise.description")}
                     </p>
                 </div>
             </div>

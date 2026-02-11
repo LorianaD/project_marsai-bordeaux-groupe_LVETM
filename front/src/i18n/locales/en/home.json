@@ -3,6 +3,7 @@
       "title_main": "MARS",
       "title_accent":"AI",
       "protocol": "the 2026 temporal protocol",
+      "protocol_icon":"../src/assets/imgs/icones/iconStars.svg",
       "tagline_before": "Imagine",
       "tagline_highlight": "Futures",
       "tagline_after": "worth imagining",

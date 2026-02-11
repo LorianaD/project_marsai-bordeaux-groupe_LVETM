@@ -99,14 +99,12 @@ function SectionHero() {
 
                         {isVisible("hero", "tagline_before") && (
                             <span>
-                                {content?.hero?.tagline_before?.value ?? t("hero.tagline_before")}
+                               {content?.hero?.tagline_before?.value ?? t("hero.tagline_before")}
                             </span>
                         )}
 
                         {isVisible("hero", "tagline_highlight") && (
-                            <span className="bg-gradient-to-r from-[#AD46FF] via-[#F6339A] to-[#FF6900] bg-clip-text text-transparent">
-                                {content?.hero?.tagline_highlight ?? t("hero.tagline_highlight")}
-                            </span>
+                            <span className="bg-gradient-to-r from-[#AD46FF] via-[#F6339A] to-[#FF6900] bg-clip-text text-transparent"> {content?.hero?.tagline_highlight ?? t("hero.tagline_highlight")} </span>
                         )}
 
                         {isVisible("hero", "tagline_after") && (
