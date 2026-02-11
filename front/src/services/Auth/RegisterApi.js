@@ -1,5 +1,5 @@
 // URL de base de l’API (depuis les variables d’environnement)
-const API = import.meta.env.VITE_API_BASE_URL || "";
+const API = import.meta.env.VITE_API_URL || "";
 
 // Fonction pour enregistrer un utilisateur
 export async function registerUser(data, role) {
