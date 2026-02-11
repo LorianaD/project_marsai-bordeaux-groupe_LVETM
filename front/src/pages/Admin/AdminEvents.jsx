@@ -293,15 +293,15 @@ useEffect(() => {
           {/* Top Bar */}
           <div className="flex items-center justify-between gap-3 rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-3">
             <div className="flex items-center gap-3">
-              <span className="rounded-full bg-black/10 dark:bg-white/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase">
+              <span className="rounded-full bg-black/10 dark:bg-white/10 px-4 py-2 text-[20px] font-semibold tracking-[0.22em] uppercase">
                 MARS <span className="text-[#F6339A]">AI</span>
               </span>
 
               <div className="hidden md:block">
-                <p className="text-sm font-semibold">
+                <p className="text-[16px] font-semibold">
                   Administration — <span className="text-black/70 dark:text-white/70">Événements</span>
                 </p>
-                <p className="text-xs text-black/60 dark:text-white/60">Gérer planning, workshops et inscriptions.</p>
+                <p className="text-[15px] text-black/60 dark:text-white/60">Gérer planning, workshops et inscriptions.</p>
               </div>
             </div>
           </div>
