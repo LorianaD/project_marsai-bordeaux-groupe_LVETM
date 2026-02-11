@@ -30,14 +30,14 @@ function Footer() {
           <div>
             <Link to="/">
               <h2 className="text-3xl font-semibold tracking-tight">
-                MARS<span className="text-violet-600">AI</span>
+                {t("brand.logo1")}
+                <span className="text-violet-600">{t("brand.logo2")}</span>
               </h2>
             </Link>
 
-            {/* ✅ Texte exact maquette */}
+            {/* Texte exact maquette */}
             <p className="mt-6 max-w-[320px] text-sm italic leading-7 text-black/80 dark:text-white/80">
-              “La plateforme mondiale de la narration générative,
-              ancrée dans la lumière de Marseille.”
+              {t("brand.quote")}
             </p>
 
             {/* SOCIAL */}
@@ -76,26 +76,26 @@ function Footer() {
             {/* NAVIGATION */}
             <div>
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
-                {t("navigation")}
+                {t("sections.navigation")}
               </h3>
 
               <ul className="mt-8 space-y-6 text-sm">
-                <li><Link to="/gallery">{t("gallery")}</Link></li>
-                <li><Link to="/events">{t("program")}</Link></li>
-                <li><Link to="/events">{t("tickets")}</Link></li>
+                <li><Link to="/gallery">{t("links.gallery")}</Link></li>
+                <li><Link to="/events">{t("links.program")}</Link></li>
+                <li><Link to="/events">{t("links.tickets")}</Link></li>
               </ul>
             </div>
 
             {/* LEGAL */}
             <div>
               <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
-                {t("legal")}
+                {t("sections.legal")}
               </h3>
 
               <ul className="mt-8 space-y-6 text-sm">
-                <li><Link to="/partner">{t("partners")}</Link></li>
-                <li><Link to="/faq">{t("faq")}</Link></li>
-                <li><Link to="/contact">{t("contact")}</Link></li>
+                <li><Link to="/partner">{t("links.partners")}</Link></li>
+                <li><Link to="/faq">{t("links.faq")}</Link></li>
+                <li><Link to="/contact">{t("links.contact")}</Link></li>
               </ul>
             </div>
 
@@ -115,7 +115,7 @@ function Footer() {
         <div className="mt-[30px] flex items-center justify-between opacity-70">
 
           <span className="text-[10px] font-bold tracking-[5px] uppercase">
-            © 2026 MARS.AI PROTOCOL · MARSEILLE HUB
+            {t("bottom.copyright")}
           </span>
 
           <div className="flex items-center gap-[48px]">
@@ -127,7 +127,7 @@ function Footer() {
               to="/legal"
               className="text-[10px] font-bold tracking-[5px] uppercase"
             >
-              {t("legal")}
+              {t("links.legal")}
             </Link>
           </div>
 
