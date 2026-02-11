@@ -37,6 +37,7 @@ import AdminNewsletter from "./pages/Admin/AdminNewsletter.jsx";
 import AdminNewsletters from "./pages/Admin/AdminNewsletters.jsx";
 import AdminNewslettersNew from "./pages/Admin/AdminNewslettersNew.jsx";
 import AdminNewsletterEditor from "./pages/Admin/AdminNewsletterEditor.jsx";
+import SectionAwardForm from "./components/Form/CMS/Home/SectionAwardForm.jsx";
 
 export default function App() {
   return (
@@ -101,6 +102,7 @@ export default function App() {
       <Route path="/partner/:id" element={<UpdatePartner />} />
       <Route path="/cms/sectionhero" element={<SectionHeroForm />} />
       <Route path="/cms/sectionconcept" element={<SectionConceptForm />}/>
+      <Route path="/cms/sectionaward" element={<SectionAwardForm />}/>
 
       {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
