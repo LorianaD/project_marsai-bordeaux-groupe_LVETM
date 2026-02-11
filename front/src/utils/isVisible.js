@@ -1,4 +1,9 @@
-function isVisible(section, key) {
+function isVisible(content, section, key) {
+    console.log("fonction isVisible OK");
+    console.log("content:", content);
+    console.log("section:", section);
+    console.log("key:", key);
+        
     // on recupere le 
     const contentSection = content?.[section];
 
@@ -14,6 +19,7 @@ function isVisible(section, key) {
         return Number(flat) === 1;
     }
 
+    // il stock en block
     const item = contentSection[key];
 
     if (item && typeof item === "object") {
@@ -26,3 +32,5 @@ function isVisible(section, key) {
     return true;
 
 }
+
+export default isVisible
