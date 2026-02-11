@@ -16,7 +16,7 @@ function SectionConceptForm() {
     // Page et section
     const page = "home";
     const section = "concept";
-    console.log("Page:", page, "Section:", section);
+    // console.log("Page:", page, "Section:", section);
 
     // champs des differents éléments dans la section
     const fields = [
@@ -36,7 +36,7 @@ function SectionConceptForm() {
         "card4_description",
 
     ];
-    console.log(fields);
+    // console.log(fields);
 
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
@@ -47,33 +47,33 @@ function SectionConceptForm() {
 
         card1_title:"",
         card1_description:"",
-        card1_is_active: 1,
+        card1_title_is_active: 1,
 
         card2_title:"",
         card2_description:"",
-        card2_is_active: 1,
+        card2_title_is_active: 1,
 
         card3_title:"",
         card3_description:"",
-        card3_is_active: 1,
+        card3_title_is_active: 1,
 
         card4_title:"",
         card4_description:"",
-        card4_is_active: 1
+        card4_title_is_active: 1
 
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        console.log("Fonction handleSubmit OK");
+        // console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
 
-            console.log("try dans handleSubmit OK");
+            // console.log("try dans handleSubmit OK");
 
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
@@ -85,7 +85,7 @@ function SectionConceptForm() {
                 const cardMatch = key.match(/^card(\d+)_/);
                 
                 if (cardMatch) {
-                    is_active = values[`card${cardMatch[1]}_is_active`];
+                    is_active = values[`card${cardMatch[1]}_title_is_active`];
                 } else {
                     is_active = values[`${key}_is_active`];
                 }
@@ -166,7 +166,7 @@ function SectionConceptForm() {
                             <h4 className="text-[20px] font-semibold tracking-[2.24px]">
                                 Carte 1
                             </h4>
-                            <CmsHideToggle name="card1" value={values.card1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                            <CmsHideToggle name="card1_title" value={values.card1_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
                             <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("concept.OneMinute.title")} />
@@ -179,7 +179,7 @@ function SectionConceptForm() {
                             <h4 className="text-[20px] font-semibold tracking-[2.24px]">
                                 Carte 2
                             </h4>
-                            <CmsHideToggle name="card2" value={values.card2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                            <CmsHideToggle name="card2_title" value={values.card2_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
                             <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("concept.free.title")} />
@@ -192,7 +192,7 @@ function SectionConceptForm() {
                             <h4 className="text-[20px] font-semibold tracking-[2.24px]">
                                 Carte 3
                             </h4>
-                            <CmsHideToggle name="card3" value={values.card3_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                            <CmsHideToggle name="card3_title" value={values.card3_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
                             <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("concept.forAll.title")} />
@@ -205,7 +205,7 @@ function SectionConceptForm() {
                             <h4 className="text-[20px] font-semibold tracking-[2.24px]">
                                 Carte 4
                             </h4>
-                            <CmsHideToggle name="card4" value={values.card4_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                            <CmsHideToggle name="card4_title" value={values.card4_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
                             <CmsInput name="card4_title" label="Titre" value={values.card4_title} onChange={handleChange} placeholder={t("concept.expertise.title")} />

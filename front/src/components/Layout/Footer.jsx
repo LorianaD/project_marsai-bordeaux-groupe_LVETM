@@ -19,7 +19,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-white/10 dark:bg-black dark:text-white">
+    <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
 
       <div className="mx-auto w-full max-w-[1280px] px-[40px] py-[60px]">
 
