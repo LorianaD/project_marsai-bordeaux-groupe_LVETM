@@ -1,7 +1,7 @@
 
 
 // fonction pour se logger et faire le lien entre le front et le back
-const API = import.meta.env.VITE_API_BASE_URL || "";
+const API = import.meta.env.VITE_API_URL || "";
 
 export async function loginUser(email, password) {
   const res = await fetch(`${API}/api/users/login`, {
