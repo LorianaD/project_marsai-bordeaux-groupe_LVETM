@@ -260,53 +260,13 @@ function Events() {
                       </button>
                     </li>
                   ))
-                : [
-                    {
-                      time: "14h00",
-                      title: "GÉNÉRATION VIDÉO : LES BASES",
-                      speaker: "PAR ANNA J. SMITH",
-                    },
-                    {
-                      time: "14h00",
-                      title: "IA & SCÉNARIO : CO-ÉCRITURE",
-                      speaker: "PAR MAX MULLER",
-                    },
-                    {
-                      time: "16h00",
-                      title: "MUSIQUE & IA",
-                      speaker: "PAR LÉA DUPONT",
-                    },
-                    {
-                      time: "16h00",
-                      title: "EFFETS VISUELS ASSISTÉS IA",
-                      speaker: "PAR THOMAS BERNARD",
-                    },
-                  ].map((w, i) => (
+                : (  
                     <li
-                      key={i}
-                      className="flex flex-col justify-between gap-3 rounded-2xl border border-black/10 bg-black/15 dark:border-white/10 dark:bg-black/40 p-5"
+                      className="col-span-2 flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-black/5 dark:border-white/15 dark:bg-black/40 p-6 text-sm text-black/70 dark:text-white/70"
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="inline-flex h-8 items-center justify-center rounded-full bg-sky-400 px-4 text-xs font-semibold text-black">
-                          {w.time}
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-semibold text-black dark:text-white">
-                          {w.title}
-                        </h4>
-                        <p className="mt-1 text-xs font-medium tracking-[0.18em] text-black/60 dark:text-white/60">
-                          {w.speaker}
-                        </p>
-                      </div>
-                      <p className="text-xs font-medium text-black/80 dark:text-white/80">
-                        X places restantes
-                      </p>
-                      <button className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase">
-                        RÉSERVER SA PLACE
-                      </button>
+                      Aucun atelier n’est programmé pour le moment. Revenez bientôt.
                     </li>
-                  ))}
+                  )}
             </ul>
           </article>
         </section>
