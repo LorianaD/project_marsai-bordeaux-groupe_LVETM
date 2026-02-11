@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { getFaq } from "../controllers/faq/getAllFaq.Controller.js";
-import { deleteFaq } from "../controllers/faq/deleteFaq.controller.js";
+import { getFaq } from "../controllers/faq/getAllFaq.controller.js";
+import { deleteFaqController } from "../controllers/faq/deleteFaq.controller.js";
+import { updateFaqController } from "../controllers/faq/updateFaq.controller.js";
 
 
 const router = Router();
 
 router.get("/", getFaq);
-router.delete("/:id", deleteFaq);
+router.put("/", updateFaqController);
+router.delete("/:id", deleteFaqController);
 
 export default router;

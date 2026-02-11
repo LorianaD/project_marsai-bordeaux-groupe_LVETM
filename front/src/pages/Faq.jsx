@@ -29,9 +29,6 @@ function Faq() {
             try {
                 const res = await getAllFaq();
                 setFaqs(res.data);
-                
-
-
             } catch (error) {
                 setError(error.message);
             };
@@ -54,6 +51,9 @@ function Faq() {
         await deleteFaq(id);
         setFaqs(prevFaqs => prevFaqs.filter(faq => faq.id !== id));
     }
+
+    //fonction de mise a jour d'un faq
+    const handleUpdate = async
 
     return(
         <main>
@@ -96,24 +96,36 @@ function Faq() {
 						<p>No FAQ available</p>
 					) : (
 						faqsEdit.map((faq) => (
-							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
+							<form key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
                                 {/* Rank update */}
-                                <input type="number" value={faq.rank} onChange={(e) => setRank(e.target.value)} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>
+                                <label className="flex flex-col w-full">Rang:
+                                    <input type="number" value={faq.rank} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, rank: e.target.value } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>
+                                </label>
                                 {/* question update input */}
-                                <textarea name="question_fr" placeholder="Question FR edit" value={faq.question_fr} onChange={(e) => setFaqsEdit(e.target.value)} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>                                    
-                                <textarea name="question_en" placeholder="Question EN edit" value={faq.question_en} onChange={(e) => setQuestionEn(e.target.value)} className="shadow-md p-2"/>
+                                <div className="bg-grey">
+                                    <label className="flex flex-col w-full mb-1">Question FR:
+                                    <textarea name="question_fr" placeholder="Question FR edit" value={faq.question_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, question_fr: e.target.value } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>                                    
+                                    </label>
+                                    <label className="flex flex-col w-full">Question EN:
+                                    <textarea name="question_en" placeholder="Question EN edit" value={faq.question_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, question_en: e.target.value }: item))} className="shadow-md p-2"/>
+                                    </label>
+                                </div>
                                 {/* answer update input */}
-                                <textarea name="answer_fr" placeholder="Answer FR edit" value={faq.answer_fr} onChange={(e) => setAnswerFr(e.target.value)} className="shadow-md p-2"/>
-                                <textarea name="answer_en" placeholder="Answer EN edit" value={faq.answer_en} onChange={(e) => setAnswerEn(e.target.value)} className="shadow-md p-2"/>
+                                <div>
+                                    <label className="flex flex-col w-full mb-1">Réponse FR:
+                                        <textarea name="answer_fr" placeholder="Answer FR edit" value={faq.answer_fr} onChange={(e) => setAnswerFr(e.target.value)} className="shadow-md p-2"/>
+                                    </label>
+                                    <label className="flex flex-col w-full">Answer FR:
+                                        <textarea name="answer_en" placeholder="Answer EN edit" value={faq.answer_en} onChange={(e) => setAnswerEn(e.target.value)} className="shadow-md p-2"/>
+                                    </label>
+                                </div>
                                 {/* delete button */}
-                                <>
+                                {/* delete et submit button */}
                                 <button type="submit">Enregistrer</button>
                                 <button onClick={() => handleDelete(faq.id)} className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">
                                     🗑Supprimer
-                                </button>   
-                                </>
-                    
-                    		</article>
+                                </button>                               
+                    		</form>
 						))
 					)}
 
