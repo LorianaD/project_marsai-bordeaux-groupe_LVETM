@@ -104,9 +104,9 @@ function RegisterForm() {
       onSubmit={handleSubmit}
       className="bg-transparent border border-[#2a2a3a] rounded-2xl p-8 w-full max-w-md flex flex-col items-center gap-6"
     >
-      {/* ===== TITRE ===== */}
+      
       <div className="flex flex-col items-center gap-2">
-        <h2 className="text-2xl font-bold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-t from-[#7c2cfb] to-[#2e7afe]">
+        <h2 className="text-2xl font-bold uppercase tracking-widest text-transparent bg-clip-text bg-linear-to-t from-[#7c2cfb] to-[#2e7afe]">
           Create an Account
         </h2>
         <p className="text-xs text-gray-500 uppercase tracking-wider">
@@ -114,7 +114,7 @@ function RegisterForm() {
         </p>
       </div>
 
-      {/* ===== FIRSTNAME + LASTNAME (côte à côte) ===== */}
+      
       <div className="w-full flex gap-4">
         <div className="flex-1 flex flex-col gap-1">
           <label className="text-xs uppercase tracking-wider text-gray-400">
@@ -142,7 +142,7 @@ function RegisterForm() {
         </div>
       </div>
 
-      {/* ===== EMAIL ===== */}
+
       <div className="w-full flex flex-col gap-1">
         <label className="text-xs uppercase tracking-wider text-gray-400">
           E-mail address *
@@ -156,7 +156,7 @@ function RegisterForm() {
         />
       </div>
 
-      {/* ===== PASSWORD + CONFIRM (côte à côte) ===== */}
+  
       <div className="w-full flex gap-4">
         <div className="flex-1 flex flex-col gap-1">
           <label className="text-xs uppercase tracking-wider text-gray-400">
@@ -184,11 +184,11 @@ function RegisterForm() {
         </div>
       </div>
 
-      {/* ===== MESSAGES ===== */}
+      
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
       {success && <p className="text-green-500 text-sm text-center">{success}</p>}
 
-      {/* ===== BOUTON ===== */}
+      
       <button
         type="submit"
         className="w-full bg-[#0d0d14] border border-[#2a2a3a] rounded-full py-3 text-white uppercase tracking-wider text-sm hover:border-purple-500 transition-colors cursor-pointer"
