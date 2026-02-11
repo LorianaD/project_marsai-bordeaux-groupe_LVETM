@@ -264,7 +264,7 @@ function Events() {
                     <li
                       className="col-span-2 flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-black/5 dark:border-white/15 dark:bg-black/40 p-6 text-sm text-black/70 dark:text-white/70"
                     >
-                      Aucun atelier n’est programmé pour le moment. Revenez bientôt.
+                      Aucun atelier n’est programmé pour le moment. Revenez plus tard.
                     </li>
                   )}
             </ul>
