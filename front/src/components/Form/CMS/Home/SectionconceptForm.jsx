@@ -16,7 +16,7 @@ function SectionConceptForm() {
     // Page et section
     const page = "home";
     const section = "concept";
-    console.log("Page:", page, "Section:", section);
+    // console.log("Page:", page, "Section:", section);
 
     // champs des differents éléments dans la section
     const fields = [
@@ -36,7 +36,7 @@ function SectionConceptForm() {
         "card4_description",
 
     ];
-    console.log(fields);
+    // console.log(fields);
 
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
@@ -66,14 +66,14 @@ function SectionConceptForm() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        console.log("Fonction handleSubmit OK");
+        // console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
 
-            console.log("try dans handleSubmit OK");
+            // console.log("try dans handleSubmit OK");
 
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];

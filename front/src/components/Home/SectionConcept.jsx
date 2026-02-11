@@ -56,7 +56,7 @@ function SectionConcept() {
     return(
         <section className="flex flex-col justify-center items-center gap-[20px] md:px-[80px] py-[10px]">
             {isVisible(content, section, "title_main") && (
-                <h2 class="text-[36px] md:text-[60px] font-bold md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase leading-none w-full py-[20px]">
+                <h2 className="text-[36px] md:text-[60px] font-bold md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase leading-none w-full py-[20px]">
                     {content?.concept?.title_main?.value ?? t("concept.title_main")}                
                 </h2>
             )}

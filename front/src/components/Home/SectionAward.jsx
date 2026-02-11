@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { fetchVideos } from "../../services/Videos/VideosListApi";
 import { useTranslation } from "react-i18next";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function SectionAward() {
   const [videos, setVideos] = useState([]);
