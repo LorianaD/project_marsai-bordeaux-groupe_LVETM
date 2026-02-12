@@ -64,14 +64,14 @@ function Header() {
                     <button
                         type="button"
                         onClick={toggleLang}
-                        className="h-[46px] cursor-pointer"
+                        className="h-[46px] cursor-pointer flex items-center justify-center rounded-lg dark:bg-white/10 dark:p-0.5"
                         aria-label={isFr ? "Switch to English" : "Passer en français"}
                         title={isFr ? "English" : "Français"}
                     >
                         <img
                             src={isFr ? englishFlag : frenchFlag}
                             alt={isFr ? "English" : "Français"}
-                            className="h-full w-full "
+                            className="h-full w-full object-contain"
                         />
                     </button>
                 </div>

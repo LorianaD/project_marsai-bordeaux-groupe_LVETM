@@ -50,7 +50,7 @@ function Footer() {
                     flex items-center justify-center
                     w-[48px] h-[48px]
                     rounded-full
-                    border border-black/15 dark:border-white/15
+                    border border-black/15 dark:border-[#F6339A]/60
                     bg-[#ECECEC] dark:bg-white/5
                     transition
                     hover:scale-105

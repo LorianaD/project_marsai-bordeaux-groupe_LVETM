@@ -27,7 +27,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={onClose}>
-      <div className="bg-white dark:bg-black rounded-2xl border border-black/10 dark:border-white/10 shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white dark:bg-black rounded-2xl border border-black/10 dark:border-[#F6339A]/60 shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold text-black dark:text-white">
           Réserver pour : {event.title}
         </h3>
@@ -42,7 +42,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
               value={first_name}
               onChange={(e) => setFirst_name(e.target.value)}
               required
-              className="w-full rounded-xl border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
+              className="w-full rounded-xl border border-black/20 dark:border-[#F6339A]/60 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
             />
           </div>
           <div>
@@ -52,7 +52,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
               value={last_name}
               onChange={(e) => setLast_name(e.target.value)}
               required
-              className="w-full rounded-xl border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
+              className="w-full rounded-xl border border-black/20 dark:border-[#F6339A]/60 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
             />
           </div>
           <div>
@@ -62,14 +62,14 @@ export default function BookingModal({ event, onClose, onSuccess }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-xl border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
+              className="w-full rounded-xl border border-black/20 dark:border-[#F6339A]/60 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
             />
           </div>
           <div className="flex gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-xl border border-black/20 dark:border-white/20 px-4 py-2 text-sm font-medium"
+              className="flex-1 rounded-xl border border-black/20 dark:border-[#F6339A]/60 px-4 py-2 text-sm font-medium"
             >
               Annuler
             </button>

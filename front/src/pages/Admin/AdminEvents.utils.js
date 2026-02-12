@@ -31,11 +31,12 @@ export function formatTimeFR(iso) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  /** Construit la liste des onglets "jour" à partir des events. Si aucun event, retourne DAY_TABS par défaut. */
+  /** Construit la liste des onglets "jour" à partir des events.
+   */
   export function getDayTabsFromEvents(events) {
-    if (!Array.isArray(events) || events.length === 0) return DAY_TABS;
+    if (!Array.isArray(events) || events.length === 0) return [];
     const keys = [...new Set(events.map((e) => e.day).filter(Boolean))].sort();
-    if (keys.length === 0) return DAY_TABS;
+    if (keys.length === 0) return [];
     return keys.map((key) => ({ key, label: formatDayLabel(key) }));
   }
 
@@ -51,9 +52,3 @@ export function formatTimeFR(iso) {
     "Festival Box",
     "Configuration Festival",
   ];
-  
-  export const DAY_TABS = [
-    { key: "2026-06-13", label: "Vendredi 13" },
-    { key: "2026-06-14", label: "Samedi 14" },
-  ];
-  

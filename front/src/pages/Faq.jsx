@@ -65,7 +65,7 @@ function Faq() {
 						<p>No FAQ available</p>
 					) : (
 						faqs.map((faq) => (
-							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
+							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 dark:border-[#F6339A]/60 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
 								<button onClick={() => toggleFaq(faq.id)}   className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">
                                     <span>Question: {isFrench ? faq.question_fr : faq.question_en}</span>
                                     {/* Flèche d’ouverture de la réponse  */}
