@@ -7,15 +7,12 @@ import {
   deleteEvent,
   togglePublish,
 } from "../../services/Events/AdminEventApi.js";
-import { ADMIN_NAV } from "../../components/admin/adminNav.js";
-import { useNavigate } from "react-router-dom";
-
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
 export default function AdminEvents() {
  
-  const [activeNav, setActiveNav] = useState("events");
   const [day, setDay] = useState(null);
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
@@ -23,8 +20,6 @@ export default function AdminEvents() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
 
-  const navigate = useNavigate();
- 
   // formulaire
   const [form, setForm] = useState({
     title: "",
@@ -233,61 +228,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
-        {/* SIDEBAR */}
-        <aside className="hidden w-[270px] flex-col rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-4 md:flex">
-          {/* Profil */}
-          <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-3">
-            <img src="/imgs/admin-avatar.png" alt="Oceane Brise" className="h-10 w-10 shrink-0 rounded-full object-cover" />
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-white">Oceane Brise</p>
-              <p className="truncate text-xs text-black/60 dark:text-white/60">RÉALISATEUR STUDIO</p>
-            </div>
-          </div>
-
-          {/* Menu */}
-          <nav className="mt-4 space-y-1">
-            {ADMIN_NAV.map((link) => {
-              const isActive = link.id === activeNav;
-              return (
-                <button
-                  key={link.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveNav(link.id);
-                    if (link.path) navigate(link.path);
-                  }}
-                  className={[
-                    "w-full rounded-xl px-3 py-2 text-left text-sm transition",
-                    isActive
-                      ? "bg-black/10 text-black dark:bg-white/10 dark:text-white"
-                      : "text-black/70 dark:text-white/70 hover:bg-black/5 hover:text-black dark:hover:bg-white/5 dark:hover:text-white",
-                  ].join(" ")}
-                >
-                  {link.label}
-                </button>
-              );
-            })}
-          </nav>
-
-          <div className="mt-4 flex-1 rounded-2xl border border-dashed border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/20" />
-
-          <div className="mt-4 rounded-2xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold">Mars AI</p>
-                <p className="text-xs text-black/60 dark:text-white/60">Collaborator</p>
-              </div>
-              <span className="rounded-full bg-black/10 dark:bg-white/10 px-3 py-1 text-xs">Admin</span>
-            </div>
-
-            <button
-              type="button"
-              className="mt-3 w-full rounded-xl bg-black/10 dark:bg-white/10 px-3 py-2 text-sm text-black/80 dark:text-white/80 hover:bg-black/15 dark:hover:bg-white/15"
-            >
-              Log out
-            </button>
-          </div>
-        </aside>
+        <AdminLayoutSidebar active="events" />
 
         {/* MAIN */}
         <main className="flex-1">
