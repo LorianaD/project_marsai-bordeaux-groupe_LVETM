@@ -37,7 +37,7 @@ export default function EventCard({
 
   return (
     // Carte événement
-    <article className="rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-6">
+    <article className="rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         {/* Contenu principal */}
         <div className="min-w-0">

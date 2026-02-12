@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { clamp, DAY_TABS, getDayKeyFromDate, getDayTabsFromEvents } from "./AdminEvents.utils.js";
+import { clamp, getDayKeyFromDate, getDayTabsFromEvents } from "./AdminEvents.utils.js";
 import {
   getAdminEvents,
   createEvent,
@@ -16,7 +16,7 @@ import EventCard from "../../components/admin/EventCard.jsx";
 export default function AdminEvents() {
  
   const [activeNav, setActiveNav] = useState("events");
-  const [day, setDay] = useState(DAY_TABS[0]?.key ?? "2026-06-13");
+  const [day, setDay] = useState(null);
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,12 +85,13 @@ useEffect(() => {
       .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
   }, [events, day, query]);
 
-  // Onglets "jour" dérivés des events (sinon défaut Vendredi 13 / Samedi 14)
+  // Onglets "jour" dérivés des events
   const dayTabs = useMemo(() => getDayTabsFromEvents(events), [events]);
 
   // Garder l’onglet sélectionné valide : s’il n’est plus dans dayTabs, passer au premier
   useEffect(() => {
-    if (dayTabs.length > 0 && !dayTabs.some((t) => t.key === day)) {
+    if (dayTabs.length === 0) return;
+    if (!dayTabs.some((t) => t.key === day)) {
       setDay(dayTabs[0].key);
     }
   }, [dayTabs, day]);
@@ -233,9 +234,9 @@ useEffect(() => {
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
         {/* SIDEBAR */}
-        <aside className="hidden w-[270px] flex-col rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-4 md:flex">
+        <aside className="hidden w-[270px] flex-col rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-4 md:flex">
           {/* Profil */}
-          <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
+          <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-3">
             <img src="/imgs/admin-avatar.png" alt="Oceane Brise" className="h-10 w-10 shrink-0 rounded-full object-cover" />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-white">Oceane Brise</p>
@@ -268,9 +269,9 @@ useEffect(() => {
             })}
           </nav>
 
-          <div className="mt-4 flex-1 rounded-2xl border border-dashed border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/20" />
+          <div className="mt-4 flex-1 rounded-2xl border border-dashed border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/20" />
 
-          <div className="mt-4 rounded-2xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-3">
+          <div className="mt-4 rounded-2xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-3">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold">Mars AI</p>
@@ -291,7 +292,7 @@ useEffect(() => {
         {/* MAIN */}
         <main className="flex-1">
           {/* Top Bar */}
-          <div className="flex items-center justify-between gap-3 rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-3">
+          <div className="flex items-center justify-between gap-3 rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-3">
             <div className="flex items-center gap-3">
               <span className="rounded-full bg-black/10 dark:bg-white/10 px-4 py-2 text-[20px] font-semibold tracking-[0.22em] uppercase">
                 MARS <span className="text-[#F6339A]">AI</span>
@@ -307,7 +308,7 @@ useEffect(() => {
           </div>
 
           {/* Hero */}
-          <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5">
+          <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5">
             {/* Banner */}
             <div className="relative h-[140px] overflow-hidden">
               <img
@@ -348,13 +349,13 @@ useEffect(() => {
 
               {/* Stats */}
               <div className="mt-5 grid gap-3 md:grid-cols-3">
-                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-4">
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
                   <p className="text-xs text-black/60 dark:text-white/60">Réservations totales</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.totalReservations}</p>
                   <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur la journée sélectionnée</p>
                 </div>
 
-                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-4">
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
                   <p className="text-xs text-black/60 dark:text-white/60">Taux de remplissage</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.fillRate}%</p>
                   <div className="mt-3 h-2 w-full rounded-full bg-black/10 dark:bg-white/10">
@@ -365,7 +366,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 p-4">
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
                   <p className="text-xs text-black/60 dark:text-white/60">Événements publiés</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.publishedCount}</p>
                   <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur {stats.eventsCount} événement(s)</p>
@@ -376,24 +377,30 @@ useEffect(() => {
               <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 {/* Boutons jour (filtre) — onglets dynamiques selon les dates des events */}
                 <div className="flex flex-wrap gap-2">
-                  {dayTabs.map((t) => {
-                    const active = t.key === day;
-                    return (
-                      <button
-                        key={t.key}
-                        type="button"
-                        onClick={() => setDay(t.key)}
-                        className={[
-                          "rounded-full px-4 py-2 text-xs font-semibold",
-                          active
-                            ? "bg-black/15 text-black dark:bg-white/15 dark:text-white"
-                            : "bg-black/10 text-black/70 dark:bg-black/35 dark:text-white/70 hover:bg-black/15 hover:text-black dark:hover:bg-white/10 dark:hover:text-white",
-                        ].join(" ")}
-                      >
-                        {t.label}
-                      </button>
-                    );
-                  })}
+                  {dayTabs.length > 0 ? (
+                    dayTabs.map((t) => {
+                      const active = t.key === day;
+                      return (
+                        <button
+                          key={t.key}
+                          type="button"
+                          onClick={() => setDay(t.key)}
+                          className={[
+                            "rounded-full px-4 py-2 text-xs font-semibold",
+                            active
+                              ? "bg-black/15 text-black dark:bg-white/15 dark:text-white"
+                              : "bg-black/10 text-black/70 dark:bg-black/35 dark:text-white/70 hover:bg-black/15 hover:text-black dark:hover:bg-white/10 dark:hover:text-white",
+                          ].join(" ")}
+                        >
+                          {t.label}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <p className="text-xs text-black/60 dark:text-white/60">
+                      Aucun événement pour le moment —
+                    </p>
+                  )}
                 </div>
 
                 {/* Recherche + bouton ajouter */}
@@ -403,7 +410,7 @@ useEffect(() => {
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Rechercher un event, lieu, mot-clé…"
-                      className="w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-2 text-sm text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/40 outline-none focus:border-black/20 dark:focus:border-white/20"
+                      className="w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-2 text-sm text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/40 outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                     />
                   </div>
 
@@ -420,11 +427,11 @@ useEffect(() => {
               {/* List */}
               <div className="mt-6 space-y-4">
                 {loading ? (
-                  <div className="rounded-3xl border border-black/10 bg-black/10 dark:border-white/10 dark:bg-black/30 p-6 text-sm text-black/70 dark:text-white/70">
+                  <div className="rounded-3xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-6 text-sm text-black/70 dark:text-white/70">
                     Chargement…
                   </div>
                 ) : filtered.length === 0 ? (
-                  <div className="rounded-3xl border border-dashed border-black/15 bg-black/5 dark:border-white/15 dark:bg-black/25 p-8">
+                  <div className="rounded-3xl border border-dashed border-black/15 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/25 p-8">
                     <p className="text-sm font-semibold">Aucun événement</p>
                     <p className="mt-1 text-sm text-black/60 dark:text-white/60">
                       Ajoute un workshop ou une conférence pour cette journée.
@@ -459,7 +466,7 @@ useEffect(() => {
       {/* MODAL (création / édition) */}
       {modalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-white/10 dark:bg-[#0b0b0b] p-6">
+          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-[#F6339A]/60 dark:bg-[#0b0b0b] p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold tracking-[0.22em] uppercase text-black/60 dark:text-white/60">
@@ -487,7 +494,7 @@ useEffect(() => {
                   value={form.title}
                   onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
                   required
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                   placeholder="Ex: Atelier — VFX assistés IA"
                 />
               </div>
@@ -498,7 +505,7 @@ useEffect(() => {
                   value={form.description}
                   onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
                   rows={3}
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                   placeholder="Décris l’objectif, le contenu, la cible…"
                 />
               </div>
@@ -509,7 +516,7 @@ useEffect(() => {
                   type="datetime-local"
                   value={form.startAt}
                   onChange={(e) => setForm((s) => ({ ...s, startAt: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 />
               </div>
 
@@ -520,7 +527,7 @@ useEffect(() => {
                   min={0}
                   value={form.capacity}
                   onChange={(e) => setForm((s) => ({ ...s, capacity: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 />
               </div>
 
@@ -529,7 +536,7 @@ useEffect(() => {
                 <input
                   value={form.location}
                   onChange={(e) => setForm((s) => ({ ...s, location: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                   placeholder="Ex: Auditorium Mucem"
                 />
               </div>
@@ -539,7 +546,7 @@ useEffect(() => {
                 <select
                   value={form.type}
                   onChange={(e) => setForm((s) => ({ ...s, type: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 >
                   <option value="atelier">Atelier</option>
                   <option value="masterclass">Masterclass</option>

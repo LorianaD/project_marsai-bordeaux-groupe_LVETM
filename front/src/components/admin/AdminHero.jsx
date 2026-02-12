@@ -1,6 +1,6 @@
 export default function AdminHero({ name = "Ocean" }) {
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-white/10 min-h-[240px]">
+    <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-[#F6339A]/60 min-h-[240px]">
       {/* Image de fond */}
       <img
         src="/imgs/admin-hero.jpg.png"
