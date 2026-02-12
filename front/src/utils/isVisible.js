@@ -1,8 +1,8 @@
 function isVisible(content, section, key) {
-    console.log("fonction isVisible OK");
-    console.log("content:", content);
-    console.log("section:", section);
-    console.log("key:", key);
+    // console.log("fonction isVisible OK");
+    // console.log("content:", content);
+    // console.log("section:", section);
+    // console.log("key:", key);
         
     // on recupere le 
     const contentSection = content?.[section];

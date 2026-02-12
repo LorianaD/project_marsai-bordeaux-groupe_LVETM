@@ -21,9 +21,9 @@ function Footer() {
   return (
     <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
 
-      <div className="mx-auto w-full max-w-[1280px] px-[40px] py-[60px]">
+      <div className="mx-auto w-full px-[60px] py-[60px]">
 
-        {/* GRID PRINCIPAL EXACT MAQUETTE */}
+        {/* GRID PRINCIPAL */}
         <div className="grid grid-cols-[340px_1fr_500px] gap-[80px] items-start">
 
           {/* LEFT */}
@@ -36,7 +36,7 @@ function Footer() {
             </Link>
 
             {/* Texte exact maquette */}
-            <p className="mt-6 max-w-[320px] text-sm italic leading-7 text-black/80 dark:text-white/80">
+            <p className="mt-6 text-sm italic leading-7 text-black/80 dark:text-white/80">
               {t("brand.quote")}
             </p>
 
