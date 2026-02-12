@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminSidebar from "../../components/admin/AdminSidebar.jsx";
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -38,10 +38,7 @@ export default function DistributionJury() {
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          {/* Sidebar desktop */}
-          <aside className="hidden shrink-0 lg:block lg:sticky lg:top-10 lg:self-start">
-            <AdminSidebar active="distribution-jury" />
-          </aside>
+          <AdminLayoutSidebar active="distribution-jury" />
 
           {/* Contenu principal */}
           <div className="min-w-0 flex-1">

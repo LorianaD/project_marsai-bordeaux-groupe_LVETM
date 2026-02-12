@@ -67,7 +67,7 @@ function SectionAward() {
             <span className="block">
               {t("award.title1")}
             </span>
-            <span className="block bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
+            <span className="block bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/40">
               {t("award.title2")}
             </span>
           </h2>

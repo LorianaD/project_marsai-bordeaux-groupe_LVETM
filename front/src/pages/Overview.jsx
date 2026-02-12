@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import AdminHero from "../components/admin/AdminHero.jsx";
-import AdminSidebar from "../components/admin/AdminSidebar.jsx";
+import AdminLayoutSidebar from "../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -85,9 +85,7 @@ export default function Overview() {
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <aside className="hidden shrink-0 lg:block">
-            <AdminSidebar active="overview" />
-          </aside>
+          <AdminLayoutSidebar active="overview" />
 
           <div className="min-w-0 flex-1">
             <div className="mb-4 flex items-center justify-between lg:hidden">

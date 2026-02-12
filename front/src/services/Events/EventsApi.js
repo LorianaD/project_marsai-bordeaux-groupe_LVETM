@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
+const base = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = base.endsWith("/api") ? base : `${base}/api`;
 
 /**
  * Récupère la liste des événements / ateliers (avec stock = places restantes).

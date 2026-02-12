@@ -15,7 +15,7 @@ export default function Legal() {
         {/* Content */}
         <div className="mt-12 space-y-8">
           {/* Section 1 */}
-          <section className="rounded-2xl border border-black/10 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-white/5">
+          <section className="rounded-2xl border border-black/10 bg-white p-7 shadow-sm dark:border-[#F6339A]/60 dark:bg-white/5">
             <h2 className="text-lg font-bold">Mobile Film Festival</h2>
 
             <dl className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -65,7 +65,7 @@ export default function Legal() {
           </section>
 
           {/* Section 2 */}
-          <section className="rounded-2xl border border-black/10 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-white/5">
+          <section className="rounded-2xl border border-black/10 bg-white p-7 shadow-sm dark:border-[#F6339A]/60 dark:bg-white/5">
             <h2 className="text-lg font-bold">La Plateforme (Marseille)</h2>
 
             <p className="mt-3 text-sm text-black/70 dark:text-white/70">
@@ -100,7 +100,7 @@ export default function Legal() {
           </section>
 
           {/* Section 3 */}
-          <section className="rounded-2xl border border-black/10 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-white/5">
+          <section className="rounded-2xl border border-black/10 bg-white p-7 shadow-sm dark:border-[#F6339A]/60 dark:bg-white/5">
             <h2 className="text-lg font-bold">Festival MarsAI</h2>
 
             <p className="mt-3 text-sm text-black/70 dark:text-white/70">

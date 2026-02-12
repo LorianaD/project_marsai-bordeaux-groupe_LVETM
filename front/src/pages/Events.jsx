@@ -26,7 +26,7 @@ function Events() {
       <div className="mx-auto max-w-6xl px-6 py-12 space-y-16">
         {/* INFOS PRATIQUES */}
         <section id="infos-pratiques" className="space-y-6">
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
+          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={agendaIcon} alt="" className="h-6 w-6" />
             <span>Infos pratiques</span>
           </div>
@@ -40,7 +40,7 @@ function Events() {
             </p>
           </div>
 
-          <article className="mt-6 flex gap-5 rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-6 backdrop-blur">
+          <article className="mt-6 flex gap-5 rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-6 backdrop-blur">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] bg-[#51A2FF]">
               <img src={baliseIcon} alt="" className="h-6 w-6" />
             </div>
@@ -61,7 +61,7 @@ function Events() {
 
         {/* PROGRAMME DES CONFÉRENCES */}
         <section id="programme" className="space-y-6">
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
+          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={horlogeIcon} alt="" className="h-6 w-6" />
             <span>Programme des conférences</span>
           </div>
@@ -113,7 +113,7 @@ function Events() {
             ].map((item) => (
               <li
                 key={item.time + item.title}
-                className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-white/5 dark:bg-white/5 px-4 py-3"
+                className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-4 py-3"
               >
                 <span
                   className={`mt-1 inline-flex h-8 items-center justify-center rounded-full px-4 text-xs font-semibold text-black ${item.color}`}
@@ -135,13 +135,13 @@ function Events() {
 
         {/* ACCÈS */}
         <section id="acces" className="space-y-6">
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
+          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={arrowIcon} alt="" className="h-6 w-6" />
             <span>Accès</span>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-5">
+            <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-5">
               <img src={wagonIcon} alt="" className="h-6 w-6" />
               <h3 className="text-xs font-semibold tracking-[0.25em] uppercase text-sky-600 dark:text-sky-300">
                 Transports en commun
@@ -154,7 +154,7 @@ function Events() {
               </p>
             </article>
 
-            <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-5">
+            <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-5">
               <img src={carsIcon} alt="" className="h-6 w-6" />
               <h3 className="text-xs font-semibold tracking-[0.25em] uppercase text-emerald-600 dark:text-emerald-300">
                 Voiture
@@ -167,7 +167,7 @@ function Events() {
               </p>
             </article>
 
-            <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-5">
+            <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-5">
               <img src={baliseIcon} alt="" className="h-6 w-6" />
               <h3 className="text-xs font-semibold tracking-[0.25em] uppercase text-fuchsia-600 dark:text-fuchsia-300">
                 Adresses
@@ -196,12 +196,12 @@ function Events() {
 
         {/* ATELIERS PRATIQUES */}
         <section id="ateliers" className="space-y-6 pb-4">
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
+          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={starIcon} alt="" className="h-6 w-6" />
             <span>Ateliers pratiques</span>
           </div>
 
-          <article className="rounded-3xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-6 md:p-8">
+          <article className="rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-6 md:p-8">
             <div className="flex items-center justify-between gap-4">
               <h3 className="font-['Arimo'] text-[30px] font-bold uppercase leading-[36px] tracking-[-1.5px] text-black dark:text-white">
                 WORKSHOPS{" "}
@@ -220,7 +220,7 @@ function Events() {
                 ? workshops.map((w) => (
                     <li
                       key={w.id}
-                      className="flex flex-col justify-between gap-3 rounded-2xl border border-black/10 bg-black/15 dark:border-white/10 dark:bg-black/40 p-5"
+                      className="flex flex-col justify-between gap-3 rounded-2xl border border-black/10 bg-black/15 dark:border-[#F6339A]/60 dark:bg-black/40 p-5"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <span className="inline-flex h-8 items-center justify-center rounded-full bg-sky-400 px-4 text-xs font-semibold text-black">
@@ -262,7 +262,7 @@ function Events() {
                   ))
                 : (  
                     <li
-                      className="col-span-2 flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-black/5 dark:border-white/15 dark:bg-black/40 p-6 text-sm text-black/70 dark:text-white/70"
+                      className="col-span-2 flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/40 p-6 text-sm text-black/70 dark:text-white/70"
                     >
                       Aucun atelier n’est programmé pour le moment. Revenez plus tard.
                     </li>
