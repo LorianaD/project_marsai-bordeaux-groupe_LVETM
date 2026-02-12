@@ -16,8 +16,8 @@ function SectionAwardForm() {
     // Page et section
     const page = "home";
     const section = "award";
-    console.log("Page:", page);
-    console.log("Section:", section);
+    // console.log("Page:", page);
+    // console.log("Section:", section);
 
     // champs récupérés
     const fields = [
@@ -28,7 +28,7 @@ function SectionAwardForm() {
         "ctaSeeMore",
         "ctaSeeMore_link"
     ]
-    console.log("Champs:", fields);
+    // console.log("Champs:", fields);
     
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 

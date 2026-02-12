@@ -31,6 +31,7 @@ import AdminLogin from "./components/login/LoginForm.jsx";
 import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
 import SectionConceptForm from "./components/Form/CMS/Home/SectionconceptForm.jsx";
+import SectionGoalForm from "./components/Form/CMS/Home/SectionGoalForm.jsx";
 
 // Newsletter admin
 import AdminNewsletter from "./pages/Admin/AdminNewsletter.jsx";
@@ -103,6 +104,7 @@ export default function App() {
       <Route path="/cms/sectionhero" element={<SectionHeroForm />} />
       <Route path="/cms/sectionconcept" element={<SectionConceptForm />}/>
       <Route path="/cms/sectionaward" element={<SectionAwardForm />}/>
+      <Route path="/cms/sectiongoal" element={<SectionGoalForm />}/>
 
       {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
