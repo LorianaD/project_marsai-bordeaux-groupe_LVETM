@@ -14,7 +14,6 @@ function SectionConcept() {
 
     // console.log("Content :", content, "Loading :", loading, "Message :", message);
 
-
     return (
         <section className="flex flex-col justify-center items-center gap-[20px] md:px-[80px] py-[10px]">
 
