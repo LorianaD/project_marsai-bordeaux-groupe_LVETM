@@ -15,9 +15,9 @@ function SectionEvent() {
 
             <div className="flex flex-col gap-[20px] md:gap-[66px] items-start w-full">
                 <h2 className="text-[#000000] dark:text-[#FFFFFF] text-[48px] md:text-[72px] leading-[43.2px] md:leading-[64.8px] font-bold tracking-[-2.4px] md:tracking-[-3.6px] uppercase text-left">
-                    {t("events.title1")}
+                    {t("events.title_main")}
                     <span className="block text-[#AD46FF] underline decoration-[3px] underline-offset-[6px] mt-3">
-                        {t("events.title2")}
+                        {t("events.title_accent")}
                     </span>
                 </h2>
                 <div className="text-[#000000] dark:text-[#FFFFFF] text-[20px] leading-[32.5px] text-left">

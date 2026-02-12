@@ -67,8 +67,8 @@
       }
    },
    "events":{
-      "title1":"Deux journées de",
-      "title2":"Conférences gratuites",
+      "title_main":"Deux journées de",
+      "title_accent":"Conférences gratuites",
       "list":{
          "item1":"Débats engagés sur l’éthique et le futur",
          "item2":"Confrontations d'idées entre artistes et tech",
@@ -92,8 +92,8 @@
    },
    "closingEvent":{
       "eyebrow":"Soirée de Clôture",
-      "title":"MARS.A.I",
-      "title2":"NIGHT",
+      "title_main":"MARS.A.I",
+      "title_accent":"NIGHT",
       "description":{
          "ligne1":"Fête Électro mêlant IA et futurs souhaitables.",
          "ligne2":"Une expérience immersive sonore et visuelle."
@@ -135,8 +135,8 @@
    },
    "projectedStats": {
       "heading": {
-         "titleLine1": "Chiffres",
-         "titleLine2": "Projetés",
+         "title_main": "Chiffres",
+         "title_accent": "Projetés",
          "tagline": "Échelle mondiale, impact local."
       },
       "stats": [
@@ -154,7 +154,7 @@
    },
    "partnersSection": {
       "eyebrow": "Nos Soutiens",
-      "titleLine1": "Ils soutiennent ",
-      "titleLine2": "le futur"
+      "title_main": "Ils soutiennent ",
+      "title_accent": "le futur"
    }
 }

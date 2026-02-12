@@ -66,8 +66,8 @@
       }
    },
    "events":{
-      "title1":"Two days of",
-      "title2":"Free conferences",
+      "title_main":"Two days of",
+      "title_accent":"Free conferences",
       "list":{
          "item1":"Engaging debates on ethics and the future",
          "item2":"Exchange of ideas between artists and tech",
@@ -91,8 +91,8 @@
    },
   "closingEvent": {
       "eyebrow": "Closing Night",
-      "title": "MARS.A.I",
-      "title2": "NIGHT",
+      "title_main": "MARS.A.I",
+      "title_accent": "NIGHT",
       "description": {
          "ligne1": "An electro party blending AI and desirable futures.",
          "ligne2": "An immersive sound and visual experience."
@@ -134,8 +134,8 @@
    },
    "projectedStats": {
       "heading": {
-         "titleLine1": "Projected",
-         "titleLine2": "Figures",
+         "title_main": "Projected",
+         "title_accent": "Figures",
          "tagline": "Global scale, local impact."
       },
       "stats": [
@@ -153,8 +153,8 @@
    },
    "partnersSection": {
       "eyebrow": "Our supporters",
-      "titleLine1": "They support ",
-      "titleLine2": "the future"
+      "title_main": "They support ",
+      "title_accent": "the future"
    }
 
 }

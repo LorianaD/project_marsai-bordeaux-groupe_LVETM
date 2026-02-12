@@ -53,10 +53,10 @@ function SectionPartner() {
                 </div>
                 <h2 className="text-center text-[36px] md:text-[60px] font-bold leading-[40px] md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase w-full">
                     <span>
-                        {t("partnersSection.titleLine1")}
+                        {t("partnersSection.title_main")}
                     </span>
                     <span className="block md:inline text-[#00D3F2]">
-                        {t("partnersSection.titleLine2")}
+                        {t("partnersSection.title_accent")}
                     </span>
                 </h2>
             </div>
