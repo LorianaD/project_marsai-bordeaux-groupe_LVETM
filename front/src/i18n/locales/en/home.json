@@ -38,6 +38,7 @@
       "title2": "Competition",
       "description": "Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.",
       "ctaSeeMore": "View the selection",
+      "ctaSeeMore_link":"/gallery",
       "loading":"Loading videos…",
       "error":"Couldn’t load videos:",
       "notFound":"No videos yet.",

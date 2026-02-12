@@ -12,16 +12,23 @@ import { useState } from "react";
 function Header() {
     // console.log("function header ok");
     
+    // t = traduit, i18n = gere les langues
     const { t, i18n } = useTranslation("header");
 
     const toggleLang = () => {
 
+        // langue actuelle et potensielle
         const next = i18n.language?.startsWith("fr") ? "en" : "fr";
+
+        // change la langue de toute l'application / de tous le web
         i18n.changeLanguage(next);
+
+        // stocke la langue choisie pour : la restaure au rechargement et la garde en base à la préférence utilisateur
         localStorage.setItem("lang", next);
 
     };
 
+    // permet d' afficher le drapeau en base à la langue et changer les textes
     const isFr = i18n.language?.startsWith("fr");
 
     const [ isNavOpen, setIsNavOpen ] = useState(false);
