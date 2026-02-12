@@ -31,15 +31,15 @@ export default function VideoCard({ video, apiBase }) {
       </div>
 
       <div className="mt-4 space-y-2">
-        <h3 className="text-sm font-extrabold uppercase tracking-wide text-neutral-900">
+        <h3 className="text-sm font-extrabold uppercase tracking-wide text-neutral-900 dark:text-white">
           {title}
         </h3>
 
-        <div className="grid grid-cols-2 gap-x-10 text-[10px] uppercase tracking-wide text-neutral-500">
+        <div className="grid grid-cols-2 gap-x-10 text-[10px] uppercase tracking-wide text-neutral-500 dark:text-white/50">
           {/* RÉALISATEUR */}
           <div>
             <div className="font-semibold leading-none">RÉALISATEUR</div>
-            <div className="mt-3 text-[11px] font-semibold normal-case text-neutral-800 leading-none">
+            <div className="mt-3 text-[11px] font-semibold normal-case text-neutral-800 dark:text-white/80 leading-none">
               {director}
             </div>
           </div>
@@ -48,9 +48,7 @@ export default function VideoCard({ video, apiBase }) {
           <div className="ml-auto text-right">
             <div className="font-semibold leading-none">ORIGINE</div>
 
-            {/* ligne globe + pays */}
-            <div className="flex items-center justify-end ">
-              {/* conteneur globe */}
+            <div className="flex items-center justify-end">
               <span className="grid h-13 w-13 place-items-center">
                 <img
                   src="/icons/videoDetails/globe.png"
@@ -61,8 +59,7 @@ export default function VideoCard({ video, apiBase }) {
                 />
               </span>
 
-              {/* pays */}
-              <span className="text-[11px] font-semibold normal-case text-neutral-800 leading-none">
+              <span className="text-[11px] font-semibold normal-case text-neutral-800 dark:text-white/80 leading-none">
                 {country}
               </span>
             </div>

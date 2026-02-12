@@ -1,16 +1,26 @@
 import dotenv from "dotenv";
-dotenv.config();
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// __dirname = .../back/src/config
+// backDir = .../back
+const backDir = path.resolve(__dirname, "..", ".."); 
+const envPath = path.join(backDir, ".env");
+
+dotenv.config({ path: envPath });
 
 const required = ["DB_HOST", "DB_USER", "DB_NAME", "DB_PORT", "JWT_SECRET"];
 for (const key of required) {
   if (!process.env[key]) {
-    throw new Error(key + " manquant dans le fichier .env");
+    throw new Error(`${key} manquant dans le fichier .env (chargé: ${envPath})`);
   }
 }
 
-// DB_PASSWORD : peut être vide (Windows), mais pas undefined
 if (process.env.DB_PASSWORD === undefined) {
-  throw new Error("DB_PASSWORD manquant dans le fichier .env");
+  throw new Error(`DB_PASSWORD manquant dans le fichier .env (chargé: ${envPath})`);
 }
 
 export const env = {

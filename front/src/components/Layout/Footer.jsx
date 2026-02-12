@@ -21,11 +21,12 @@ function Footer() {
   return (
     <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
 
+
       <div className="mx-auto w-full px-[60px] py-[60px]">
 
         {/* GRID PRINCIPAL */}
-        <div className="grid grid-cols-[340px_1fr_500px] gap-[80px] items-start">
 
+        <div className="grid grid-cols-[340px_1fr_500px] gap-[80px] items-start">
           {/* LEFT */}
           <div>
             <Link to="/">
@@ -72,7 +73,6 @@ function Footer() {
 
           {/* CENTER */}
           <div className="grid grid-cols-2 gap-x-[100px]">
-
             {/* NAVIGATION */}
             <div>
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
@@ -80,9 +80,23 @@ function Footer() {
               </h3>
 
               <ul className="mt-8 space-y-6 text-sm">
-                <li><Link to="/gallery">{t("links.gallery")}</Link></li>
-                <li><Link to="/events">{t("links.program")}</Link></li>
-                <li><Link to="/events">{t("links.tickets")}</Link></li>
+                <li>
+                  <Link to="/gallery">{t("links.gallery")}</Link>
+                </li>
+                <li>
+                  <Link to="/events">{t("links.program")}</Link>
+                </li>
+                <li>
+                  <Link to="/events">{t("links.tickets")}</Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/login"
+                    className="hover:text-violet-600 transition"
+                  >
+                    Espace administrateur
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -93,19 +107,23 @@ function Footer() {
               </h3>
 
               <ul className="mt-8 space-y-6 text-sm">
-                <li><Link to="/partner">{t("links.partners")}</Link></li>
-                <li><Link to="/faq">{t("links.faq")}</Link></li>
-                <li><Link to="/contact">{t("links.contact")}</Link></li>
+                <li>
+                  <Link to="/partner">{t("links.partners")}</Link>
+                </li>
+                <li>
+                  <Link to="/faq">{t("links.faq")}</Link>
+                </li>
+                <li>
+                  <Link to="/contact">{t("links.contact")}</Link>
+                </li>
               </ul>
             </div>
-
           </div>
 
           {/* RIGHT - NEWSLETTER */}
           <div className="justify-self-end">
             <Newsletter />
           </div>
-
         </div>
 
         {/* SEPARATOR */}
@@ -113,7 +131,6 @@ function Footer() {
 
         {/* BOTTOM BAR */}
         <div className="mt-[30px] flex items-center justify-between opacity-70">
-
           <span className="text-[10px] font-bold tracking-[5px] uppercase">
             {t("bottom.copyright")}
           </span>
@@ -130,11 +147,8 @@ function Footer() {
               {t("links.legal")}
             </Link>
           </div>
-
         </div>
-
       </div>
-
     </footer>
   );
 }
