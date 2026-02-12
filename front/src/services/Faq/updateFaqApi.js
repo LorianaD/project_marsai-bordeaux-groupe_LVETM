@@ -6,7 +6,7 @@ async function updateFaq(id, question_fr, question_en, answer_fr, answer_en, ran
 		headers: {
 			'Content-Type': 'application/json'
 		},
-        body: JSON.stringify({ question_fr, question_en, answer_fr, answer_en, rank })
+        body: JSON.stringify({ rank, question_fr, question_en, answer_fr, answer_en })
     });
 
     if (!res.ok) throw new Error(`Failed update FAQ ${res.status}`);

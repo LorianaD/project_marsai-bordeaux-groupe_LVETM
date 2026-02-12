@@ -7,19 +7,10 @@ import { findFaqById } from "../../models/faq/getOneFaq.model.js";
 
 export const updateFaqController = async (req, res, next) => {
     try {
-        const {id} = req.params;
-        const {rank, question_fr, question_en, answer_fr, answer_en}= req.body;
-
-        const faqExists = await findFaqById(id);
-
-        if (!faqExists) {
-            return res.status(404).json ({
-                success: false,
-                message: "FAQ not found",
-            });
-        }
-
-        const update = await updateFaqs(id, {rank, question_fr, question_en, answer_fr, answer_en});
+        const { id } = req.params;
+        const data = req.body;
+        
+        const update = await updateFaq(id, data);
 
         if (update.affectedRows === 0) {
             return res.status(404).json({
@@ -39,5 +30,4 @@ export const updateFaqController = async (req, res, next) => {
         console.error("An error occur when attempting tu update FAQ", error);
         next(error);
     }
-    
 }
