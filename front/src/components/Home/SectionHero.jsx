@@ -1,57 +1,17 @@
-import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router"
-import GetAllContentApi from "../../services/CMS/GetAllContentApi";
-import { buildCmsMap } from "../../utils/cms";
+import useCmsContent from "../../hooks/useCmsContent";
+import isVisible from "../../utils/isVisible";
+import { resolveCmsAsset } from "../../utils/cmsAssets";
 
 function SectionHero() {
 
     const { t, i18n } = useTranslation("home");
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
-    const [content, setContent] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [Message, setMessage] = useState("");
+    const section = "hero";
 
-    async function CMSHeroHome() {
-        // console.log("Fonction CMSHeroHome OK");
-
-        try {
-            // console.log("try in the function CMSHeroHome OK");
-
-            setLoading(true);
-            setMessage("");
-
-            const json = await GetAllContentApi();
-            // console.log(json);
-
-            const rows = json.data ?? [];
-            // console.log("rows:",rows);
-            // console.log("rows hero fr:", rows.filter(r => r.section === "hero" && r.locale === locale));
-
-            const cms = buildCmsMap(rows, locale);
-            // console.log("CMS finale", cms);
-            
-            setContent(cms);
-
-        } catch (error) {
-
-            console.error(error);
-            setMessage("Erreur lors du chargement du contenu CMS.");
-            
-        } finally {
-            setLoading(false);
-        }
-
-    }
-
-    function isVisible(section, key) {
-        return Number(content?.[section]?.[`${key}_is_active`]) === 1;
-    }
-
-    useEffect(()=>{
-        CMSHeroHome();
-    },[locale]);
+    const { content, loading, message } = useCmsContent(locale);
 
     return(
         <section className="relative flex w-full flex-col items-center self-stretch p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
@@ -66,15 +26,15 @@ function SectionHero() {
                     
                         <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
 
-                            {isVisible("hero", "protocol_icon") && (
+                            {isVisible(section, "protocol_icon") && (
                                 <div className="">
-                                    <img src={content?.hero?.protocol_icon?.value ?? t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
+                                    <img src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
                                 </div>
                             )}
 
-                            {isVisible("hero", "protocol") && (
+                            {isVisible(section, "protocol") && (
                                 <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
-                                    {content?.hero?.protocol?.value ?? t("hero.protocol")}
+                                    {content?.[section]?.protocol || t("hero.protocol")}
                                 </p>
                             )}
 
@@ -82,34 +42,34 @@ function SectionHero() {
                     
                     
                     <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[192px] tacking-[-2.4px] md:tracking-[-9.6px] uppercase text-[48px] md:text-[192px] text-center">
-                        {isVisible("hero", "title_main") && (
+                        {isVisible(section, "title_main") && (
                             <span>
-                                {content?.hero?.title_main?.value ?? t("hero.title_main")}
+                                {content?.[section]?.title_main || t("hero.title_main")}
                             </span>
                         )}
 
-                        {isVisible("hero", "title_accent") && (
+                        {isVisible(section, "title_accent") && (
                             <span className="bg-gradient-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent">
-                                {content?.hero?.title_accent?.value ?? t("hero.title_accent")}
+                                {content?.[section]?.title_accent || t("hero.title_accent")}
                             </span>
                         )}
                     </h1>
 
                     <p className="text-[#FFFFFF] text-[35px] font-bold tracking-[0.5px] uppercase text-center">
 
-                        {isVisible("hero", "tagline_before") && (
+                        {isVisible(section, "tagline_before") && (
                             <span>
-                               {content?.hero?.tagline_before?.value ?? t("hero.tagline_before")}
+                               {content?.[section]?.tagline_before || t("hero.tagline_before")}
                             </span>
                         )}
 
-                        {isVisible("hero", "tagline_highlight") && (
+                        {isVisible(section, "tagline_highlight") && (
                             <span className="bg-gradient-to-r from-[#AD46FF] via-[#F6339A] to-[#FF6900] bg-clip-text text-transparent"> {content?.hero?.tagline_highlight ?? t("hero.tagline_highlight")} </span>
                         )}
 
-                        {isVisible("hero", "tagline_after") && (
+                        {isVisible(section, "tagline_after") && (
                             <span>
-                                {content?.hero?.tagline_after?.value ?? t("hero.tagline_after")}
+                                {content?.[section]?.tagline_after || t("hero.tagline_after")}
                             </span>
                         )}
                     </p>
@@ -117,12 +77,12 @@ function SectionHero() {
 
                 <div className="flex flex-col items-center justify-center gap-[3px] md:gap-[6px] px-1 self-stretch text-white/40 text-center text-[18px] md:text-[24px] font-normal leading-[29px] md:leading-[39px]">
                     
-                    {isVisible("hero", "desc1") && (
-                        <p>{content?.hero?.desc1?.value ?? t("hero.desc1")}</p>
+                    {isVisible(section, "desc1") && (
+                        <p>{content?.[section]?.desc1 || t("hero.desc1")}</p>
                     )}
                     
-                    {isVisible("hero", "desc2") && (
-                        <p>{content?.hero?.desc2?.value ?? t("hero.desc2")}</p>
+                    {isVisible(section, "desc2") && (
+                        <p>{content?.[section]?.desc2 || t("hero.desc2")}</p>
                     )}
 
                 </div>
@@ -130,15 +90,15 @@ function SectionHero() {
                 <div className="flex flex-col items-center justify-center px-[50px] md:flex-row md:items-start md:justify-end gap-6 md:px-[220px]">
                     <Link to="participation" className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
 
-                        {isVisible("hero", "ctaParticipate") && (
+                        {isVisible(section, "ctaParticipate") && (
                             <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
-                                {content?.hero?.ctaParticipate?.value ?? t("hero.ctaParticipate")}
+                                {content?.[section]?.ctaParticipate || t("hero.ctaParticipate")}
                             </span>
                         )}
 
-                        {isVisible("hero", "ctaParticipate_signe") && (
+                        {isVisible(section, "ctaParticipate_signe") && (
                             <div className="w-[20px] h-[20px]">
-                                <img src={content?.hero?.ctaParticipate_signe?.value ?? t("hero.ctaParticipate_signe")} alt=""/>
+                                <img src={resolveCmsAsset(content?.[section]?.ctaParticipate_signe) || t("hero.ctaParticipate_signe")} alt=""/>
                             </div>
                         )}
 
@@ -146,15 +106,15 @@ function SectionHero() {
 
                     <Link className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
                         
-                        {isVisible("hero", "ctaLearnMore") && (
+                        {isVisible(section, "ctaLearnMore") && (
                             <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
-                                {content?.hero?.ctaLearnMore?.value ?? t("hero.ctaLearnMore")}
+                                {content?.[section]?.ctaLearnMore || t("hero.ctaLearnMore")}
                             </span>
                         )}
 
-                        {isVisible("hero", "ctaLearnMore_signe") && (
+                        {isVisible(section, "ctaLearnMore_signe") && (
                             <span className="flex flex-col justify-center text-[#AD46FF] text-center text-[24px] font-bold leading-[0] uppercase">
-                                {content?.hero?.ctaLearnMore_signe?.value ?? t("hero.ctaLearnMore_signe")}
+                                {content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe")}
                             </span>
                         )}
                     </Link>

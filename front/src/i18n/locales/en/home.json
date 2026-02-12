@@ -38,32 +38,36 @@
       "title2": "Competition",
       "description": "Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.",
       "ctaSeeMore": "View the selection",
+      "ctaSeeMore_link":"/gallery",
       "loading":"Loading videos…",
       "error":"Couldn’t load videos:",
       "notFound":"No videos yet.",
       "ariaViewFilm": "View film: {{title}}"
    },
    "goal":{
-      "title": "Objectives of the",
-      "title2": "festival",
+      "title_main": "Objectives of the",
+      "title_accent": "festival",
       "cards" : {
          "card1":{
             "title":"People at the centre",
-            "description":"Put people at the heart of creation so as not to lose the emotion."
+            "description":"Put people at the heart of creation so as not to lose the emotion.",
+            "icon":"/src/assets/imgs/icones/IconTarget.svg"
          },
          "card2":{
             "title":"Creative challenge",
-            "description":"Challenge creativity with an ultra-short 60-second format."
+            "description":"Challenge creativity with an ultra-short 60-second format.",
+            "icon":"/src/assets/imgs/icones/IconLightning.svg"
          },
          "card3":{
             "title":"Desirable futures",
-            "description":"Exploring desirable futures through emerging technologies."
+            "description":"Exploring desirable futures through emerging technologies.",
+            "icon":"/src/assets/imgs/icones/IconRocket.svg"
          }
       }
    },
    "events":{
-      "title1":"Two days of",
-      "title2":"Free conferences",
+      "title_main":"Two days of",
+      "title_accent":"Free conferences",
       "list":{
          "item1":"Engaging debates on ethics and the future",
          "item2":"Exchange of ideas between artists and tech",
@@ -87,8 +91,8 @@
    },
   "closingEvent": {
       "eyebrow": "Closing Night",
-      "title": "MARS.A.I",
-      "title2": "NIGHT",
+      "title_main": "MARS.A.I",
+      "title_accent": "NIGHT",
       "description": {
          "ligne1": "An electro party blending AI and desirable futures.",
          "ligne2": "An immersive sound and visual experience."
@@ -130,8 +134,8 @@
    },
    "projectedStats": {
       "heading": {
-         "titleLine1": "Projected",
-         "titleLine2": "Figures",
+         "title_main": "Projected",
+         "title_accent": "Figures",
          "tagline": "Global scale, local impact."
       },
       "stats": [
@@ -149,8 +153,8 @@
    },
    "partnersSection": {
       "eyebrow": "Our supporters",
-      "titleLine1": "They support ",
-      "titleLine2": "the future"
+      "title_main": "They support ",
+      "title_accent": "the future"
    }
 
 }
