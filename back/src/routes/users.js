@@ -11,14 +11,14 @@ const router = Router();
 
 
 // route en post pour chaque role
-router.post('/superAdmin/register', verifyToken, isSuperAdmin, createRegisterController({ fixedRole:'superadmin'}))
-router.post('/admin/register', verifyToken, isAdmin, createRegisterController({ fixedRole:'admin'}));
+router.post('/superAdmin/register', verifyToken, isSuperAdmin, createRegisterController({ fixedRole:'superadmin'}));
+
+router.post('/admin/register', verifyToken, isSuperAdmin, createRegisterController({ fixedRole:'admin'}));
+
 router.post('/selector/register', verifyToken, isAdmin, createRegisterController({ fixedRole:'selector'}));
+
 router.post('/login', loginController);
 
-// router.post("/admin/register", registerController);
-// router.post('/selector/register', registerController);
-// router.post("/login", loginController);
 
 
 export default router

@@ -8,6 +8,7 @@ export async function registerUser(data, role) {
     headers: { 
         "Content-Type": "application/json", 
         Accept: "application/json" },
+        Authorization: `Bearer ${localStorage.getIem("token")}`,
 
     body: JSON.stringify(data),
   });
