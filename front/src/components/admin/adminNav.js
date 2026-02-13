@@ -7,4 +7,5 @@ export const ADMIN_NAV = [
   { id: "resultats", label: "Résultats & classement", path: "/admin/results" },
   { id: "newsletter-subs", label: "Newsletter — Abonnés", path: "/admin/newsletter" },
   { id: "newsletters-builder", label: "Newsletters — Builder", path: "/admin/newsletters" },
+  {id: "config",label: "Configuration", path: "/admin/config"},
 ];
