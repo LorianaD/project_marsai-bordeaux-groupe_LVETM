@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
-import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -42,21 +41,17 @@ export default function DistributionJury() {
           <AdminLayoutSidebar active="distribution-jury" />
 
           {/* Contenu principal */}
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             {/* Bouton menu mobile */}
             <div className="mb-4 flex lg:hidden">
               <button
+                type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5"
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
               >
-                Menu
+                ☰ Menu
               </button>
             </div>
-
-            <AdminTopBar
-              pageTitle="Distribution & Jury"
-              subtitle="Informations des membres du jury pour l'administration."
-            />
 
             {/* Hero admin */}
             <div className="mt-5">
@@ -124,7 +119,7 @@ export default function DistributionJury() {
                   </div>
                 ))}
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

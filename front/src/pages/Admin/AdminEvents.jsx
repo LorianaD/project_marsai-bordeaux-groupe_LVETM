@@ -10,7 +10,6 @@ import {
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
@@ -252,11 +251,6 @@ useEffect(() => {
                 ☰ Menu
               </button>
             </div>
-
-            <AdminTopBar
-              pageTitle="Événements"
-              subtitle="Gérer planning, workshops et inscriptions."
-            />
 
           {/* Hero — même bloc que Overview / Gestion films */}
           <div className="mt-5">

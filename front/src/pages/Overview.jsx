@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import AdminHero from "../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../components/admin/AdminLayoutSidebar.jsx";
-import AdminTopBar from "../components/admin/AdminTopBar.jsx";
 import AdminSidebarModal from "../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -88,7 +87,7 @@ export default function Overview() {
         <div className="flex gap-7">
           <AdminLayoutSidebar active="overview" />
 
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <button
                 type="button"
@@ -108,11 +107,6 @@ export default function Overview() {
                 Rafraîchir
               </button>
             </div>
-
-            <AdminTopBar
-              pageTitle="Overview"
-              subtitle="Leaderboard officiel et classement des votes."
-            />
 
             <div className="mt-5">
               <AdminHero name="Ocean" />
@@ -296,7 +290,7 @@ export default function Overview() {
 
               <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

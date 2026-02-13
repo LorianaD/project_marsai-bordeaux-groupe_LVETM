@@ -1,7 +1,6 @@
 import { useState } from "react";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
-import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 import DashboardUser from "../../components/admin/DashboardUser.jsx";
 
 function AdminDashboard() {
@@ -24,16 +23,11 @@ function AdminDashboard() {
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5"
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
               >
                 ☰ Menu
               </button>
             </div>
-
-            <AdminTopBar
-              pageTitle="Overview"
-              subtitle="Vue d'ensemble du dashboard."
-            />
 
             <section className="mt-5 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-[#F6339A]/60 dark:bg-white/5">
               <h1 className="text-xl font-semibold tracking-tight">Dashboard</h1>

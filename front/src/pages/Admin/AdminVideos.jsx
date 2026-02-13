@@ -3,7 +3,6 @@ import StatusPill from "../../components/admin/StatusPill";
 import FeaturedToggle from "../../components/admin/FeaturedToggle";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 import {
@@ -120,7 +119,7 @@ export default function AdminVideos() {
           <AdminLayoutSidebar active="gestion-films" />
 
           {/* CONTENT */}
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             {/* Mobile top actions */}
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <button
@@ -139,11 +138,6 @@ export default function AdminVideos() {
                 Rafraîchir
               </button>
             </div>
-
-            <AdminTopBar
-              pageTitle="Gestion films"
-              subtitle="Gérez l'intégralité des soumissions et les mises en avant."
-            />
 
             <div className="mt-5 min-w-0">
               <AdminHero name="Ocean" />
@@ -372,7 +366,7 @@ export default function AdminVideos() {
               {/* ✅ bottom fade (FIX DARK) */}
               <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>
