@@ -1,7 +1,9 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function getAllFaq() {
-    const res = await fetch(`${API_URL}/api/faq`);
+    const res = await fetch(`${API_URL}/api/faq`,{
+        method: "GET",
+    });
 
     if (!res.ok) throw new Error(`Failed to retrieve FAQ ${res.status}`);
 
