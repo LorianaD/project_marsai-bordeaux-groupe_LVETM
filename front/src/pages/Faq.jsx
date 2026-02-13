@@ -15,7 +15,13 @@ function Faq() {
     const [openFaq, setOpenFaq] = useState(null);
     //usestate pour les inputs
     const [faqsEdit, setFaqsEdit] = useState([]);
-    const [newFaq, setNewFaq] = useState([]);
+    const [newFaq, setNewFaq] = useState({
+  rank: 1,
+  question_fr: "",
+  question_en: "",
+  answer_fr: "",
+  answer_en: ""
+});
 
     //vérifie si la langue du client est "fr".
     const userLang = navigator.language || navigator.userLanguage;
@@ -44,26 +50,37 @@ function Faq() {
         setOpenFaq(openFaq === id ? null : id); //ajoute l'id ou la retire si c'est la meme id
     };
 
-    //fonction d'ajout d'un faq
+    //fonction d'ajout d'une faq
     const handleAdd = async () => {
         try {
-            const addedFaq = await addFaq(newFaq)
+            const addedFaq = await addFaq(newFaq);
             //mise à jour des states
             setFaqs((prev => [...prev, addedFaq]));
-            setFaqsEdit(prev => [...prev, addedFaq]);
+            setFaqsEdit(prev => [...prev, addedFaq]);//prev
+
+            alert("FAQ added !");
         } catch (error) {
             console.error(error);
-            alert("error while adding FAQ");
+            alert("Error while adding FAQ");
         }
+        setNewFaq({
+            rank: 1,
+            question_fr: "",
+            question_en: "",
+            answer_fr: "",
+            answer_en: ""
+});
     }
 
     //fonction de suppresion d'une faq
     const handleDelete = async (id) => {
         try {
             await deleteFaq(id);
-
+            //mise à jour des states
             setFaqs(prevFaqs => prevFaqs.filter(faq => faq.id !== id));
             setFaqsEdit(prev => prev.filter(faq => faq.id !== id));
+
+            alert("FAQ deleted !");
         }catch(error){
             console.error(error);
             alert("Error while deleting FAQ");
@@ -117,54 +134,123 @@ function Faq() {
 						))
 					)}
 				</div>
+
+
+
+
                 {/* ADMIN ADMIN ADMIN */}
                 {/* ADMIN ADMIN ADMIN */}
                 <h1 className="font-bold m-10 text-[34px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">FAQ</h1>
-                <h2 className="font-bold m-10 text-[28px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">ADD FAQ</h2>
+                <h2 className="font-bold m-10 text-[28px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">AJOUTER UNE QUESTION</h2>
+                {/* FORMULAIRE D'AJOUT DE FAQ */}
+                <form onSubmit={(e) => { e.preventDefault(); handleAdd(); }} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col gap-[20px] p-4 md:p-[40px]">
+                    <label className="flex flex-col">
+                        <span className="font-bold">Rang:</span>
+                        <input
+                        type="number"
+                        value={newFaq.rank}
+                        onChange={(e) =>
+                            setNewFaq({ ...newFaq, rank: Number(e.target.value) })
+                        }
+                        className="shadow-md p-2"
+                        />
+                    </label>
+
+                    <label className="flex flex-col">
+                        <span className="font-bold">Question FR:</span>
+                        <textarea
+                        value={newFaq.question_fr}
+                        onChange={(e) =>
+                            setNewFaq({ ...newFaq, question_fr: e.target.value })
+                        }
+                        className="shadow-md p-2"
+                        />
+                    </label>
+
+                    <label className="flex flex-col">
+                        <span className="font-bold">Question EN:</span>
+                        <textarea
+                        value={newFaq.question_en}
+                        onChange={(e) =>
+                            setNewFaq({ ...newFaq, question_en: e.target.value })
+                        }
+                        className="shadow-md p-2"
+                        />
+                    </label>
+
+                    <label className="flex flex-col">
+                        <span className="font-bold">Réponse FR:</span>
+                        <textarea
+                        value={newFaq.answer_fr}
+                        onChange={(e) =>
+                            setNewFaq({ ...newFaq, answer_fr: e.target.value })
+                        }
+                        className="shadow-md p-2"
+                        />
+                    </label>
+
+                    <label className="flex flex-col">
+                        <span className="font-bold">Réponse FR:</span>
+                        <textarea
+                        value={newFaq.answer_en}
+                        onChange={(e) =>
+                            setNewFaq({ ...newFaq, answer_en: e.target.value })
+                        }
+                        className="shadow-md p-2"
+                        />
+                    </label>
+
+                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">Ajouter</button>
+                    </form>
 
                 {/* EDIT FAQ SECTION */}
-                <h2 className="font-bold m-10 text-[28px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">EDIT FAQ</h2>
-                
+                <h2 className="font-bold m-10 text-[28px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">EDITER UNE QUESTION</h2>
+
                 {/* edit faq form */}
+
                 {faqs.length === 0 ? (
                     <p>No FAQ available</p>
                 ) : (
-                    faqsEdit.map((faq) => (
-                        <form key={faq.id}
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleUpdate(faq);
-                        }}className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
-                            {/* rank update */}
-                            <label className="flex flex-col w-full">Rang:
-                                <input type="number" value={faq.rank} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, rank: Number(e.target.value) } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>
-                            </label>
-                            {/* question FR EN update input */}
-                            <div className="bg-grey">
-                                <label className="flex flex-col w-full mb-1">Question FR:
-                                <textarea name="question_fr" placeholder="Question FR edit" value={faq.question_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, question_fr: e.target.value } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>                                    
+                    <div className="flex flex-wrap gap-4 justify-center">
+                        {faqsEdit.map((faq) => (
+                            <form key={faq.id}
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handleUpdate(faq);
+                            }}className="m-2 w-full max-w-[650px] rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
+                                {/* rank update */}
+                                <label className="flex flex-col w-full"><span className="font-bold">Rank:</span>
+                                    <input type="number" value={faq.rank} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, rank: Number(e.target.value) } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>
                                 </label>
-                                <label className="flex flex-col w-full">Question EN:
-                                <textarea name="question_en" placeholder="Question EN edit" value={faq.question_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, question_en: e.target.value }: item))} className="shadow-md p-2"/>
-                                </label>
-                            </div>
-                            {/* answer FR EN update input */}
-                            <div>
-                                <label className="flex flex-col w-full mb-1">Réponse FR:
-                                    <textarea name="answer_fr" placeholder="Answer FR edit" value={faq.answer_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, answer_fr: e.target.value }: item))} className="shadow-md p-2"/>
-                                </label>
-                                <label className="flex flex-col w-full">Answer FR:
-                                    <textarea name="answer_en" placeholder="Answer EN edit" value={faq.answer_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, answer_en: e.target.value }: item))} className="shadow-md p-2"/>
-                                </label>
-                            </div>                              
-                            {/* submit button */}
-                            <button type="submit">Enregistrer</button>
-                            {/* delete button */}
-                            <button type="button" onClick={() => handleDelete(faq.id)} className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">
-                                🗑Supprimer
-                            </button>                               
-                        </form>
-                    ))
+                                {/* question FR EN update input */}
+                                <div className="bg-grey">
+                                    <label className="flex flex-col w-full mb-1"><span className="font-bold">Question FR:</span>
+                                    <textarea name="question_fr" placeholder="Question FR edit" value={faq.question_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, question_fr: e.target.value } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>                                    
+                                    </label>
+                                    <label className="flex flex-col w-full"><span className="font-bold">Question EN:</span>
+                                    <textarea name="question_en" placeholder="Question EN edit" value={faq.question_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, question_en: e.target.value }: item))} className="shadow-md p-2"/>
+                                    </label>
+                                </div>
+                                {/* answer FR EN update input */}
+                                <div>
+                                    <label className="flex flex-col w-full mb-1"><span className="font-bold">Réponse FR:</span>
+                                        <textarea name="answer_fr" placeholder="Answer FR edit" value={faq.answer_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, answer_fr: e.target.value }: item))} className="shadow-md p-2"/>
+                                    </label>
+                                    <label className="flex flex-col w-full"><span className="font-bold">Réponse EN:</span>
+                                        <textarea name="answer_en" placeholder="Answer EN edit" value={faq.answer_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, answer_en: e.target.value }: item))} className="shadow-md p-2"/>
+                                    </label>
+                                </div>
+                                <div className="flex gap-4 flex flex-wrap gap-4 justify-center">                            
+                                    {/* submit button */}
+                                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">Enregistrer</button>
+                                    {/* delete button */}
+                                    <button type="button" onClick={() => handleDelete(faq.id)} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                                        🗑Supprimer
+                                    </button>
+                                </div>                               
+                            </form>
+                        ))}
+                    </div>
                 )}
 			</div>
         </main>
