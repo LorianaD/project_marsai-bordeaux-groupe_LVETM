@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -52,17 +53,20 @@ export default function DistributionJury() {
               </button>
             </div>
 
+            <AdminTopBar
+              pageTitle="Distribution & Jury"
+              subtitle="Informations des membres du jury pour l'administration."
+            />
+
             {/* Hero admin */}
-            <AdminHero />
+            <div className="mt-5">
+              <AdminHero />
+            </div>
 
             {/* En-tête de page */}
             <h1 className="mt-10 text-[42px] font-extrabold tracking-tight">
               DISTRIBUTION & JURY
             </h1>
-            <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-              Informations des membres du jury pour l’administration.
-            </p>
-
             {/* Grille des membres du jury */}
             <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {/* État de chargement */}

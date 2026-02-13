@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import AdminHero from "../../components/admin/AdminHero";
+import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
+import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -58,7 +59,13 @@ export default function AdminNewsletter() {
         <AdminLayoutSidebar active="newsletter-subs" />
 
         <main className="flex-1 px-8 py-8">
-          <AdminHero />
+          <AdminTopBar
+            pageTitle="Newsletter"
+            subtitle="Gestion des abonnés et statistiques (double opt-in)."
+          />
+          <div className="mt-5">
+            <AdminHero />
+          </div>
 
           <div className="mt-10">
             <h1 className="text-4xl font-black tracking-tight">NEWSLETTER</h1>

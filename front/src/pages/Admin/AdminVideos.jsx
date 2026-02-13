@@ -3,6 +3,7 @@ import StatusPill from "../../components/admin/StatusPill";
 import FeaturedToggle from "../../components/admin/FeaturedToggle";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
+import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 import {
@@ -139,13 +140,17 @@ export default function AdminVideos() {
               </button>
             </div>
 
-            {/* HERO */}
-            <div className="min-w-0">
+            <AdminTopBar
+              pageTitle="Gestion films"
+              subtitle="Gérez l'intégralité des soumissions et les mises en avant."
+            />
+
+            <div className="mt-5 min-w-0">
               <AdminHero name="Ocean" />
             </div>
 
             {/* Title */}
-            <div className="mt-10">
+            <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 FILMS SOUMIS
               </div>

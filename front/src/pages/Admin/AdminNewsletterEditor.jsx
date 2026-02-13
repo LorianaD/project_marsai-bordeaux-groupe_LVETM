@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminHero from "../../components/admin/AdminHero";
+import AdminHero from "../../components/admin/AdminHero.jsx";
+import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -301,7 +302,10 @@ export default function AdminNewsletterEditor() {
       <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex">
         <AdminLayoutSidebar active="newsletters-builder" />
         <main className="flex-1 px-8 py-8">
-          <AdminHero />
+          <AdminTopBar pageTitle={`Newsletter #${id}`} subtitle="Builder simple par blocs + preview." />
+          <div className="mt-5">
+            <AdminHero />
+          </div>
           <div className="mt-10 opacity-70">Chargement…</div>
         </main>
       </div>
@@ -312,7 +316,10 @@ export default function AdminNewsletterEditor() {
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex">
       <AdminLayoutSidebar active="newsletters-builder" />
       <main className="flex-1 px-8 py-8">
-        <AdminHero />
+        <AdminTopBar pageTitle={`Newsletter #${id}`} subtitle="Builder simple par blocs + preview." />
+        <div className="mt-5">
+          <AdminHero />
+        </div>
 
         <div className="mt-10 flex items-center justify-between">
           <div>
