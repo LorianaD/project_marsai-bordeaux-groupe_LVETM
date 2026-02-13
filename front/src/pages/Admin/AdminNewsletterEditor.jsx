@@ -6,8 +6,8 @@ import AdminHero from "../../components/admin/AdminHero";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const blockTemplates = [
-  { type: "h1", label: "Titre H1" },
-  { type: "h2", label: "Sous-titre H2" },
+  { type: "h1", label: "Titre " },
+  { type: "h2", label: "Sous-titre " },
   { type: "p", label: "Texte" },
   { type: "image", label: "Image" },
   { type: "divider", label: "Divider" },
