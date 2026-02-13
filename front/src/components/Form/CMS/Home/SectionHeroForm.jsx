@@ -7,6 +7,7 @@ import { updateContentApi, updateImageApi } from "../../../../services/CMS/Updat
 import CmsInput from "./Fields/CmsInput";
 import CmsHideToggle from "./Fields/CmsHideToggle";
 import CmsInputImage from "./Fields/CmsInputImage";
+import CmsInputFile from "./Fields/CmsInputFile.jsx";
 
 function SectionHeroForm() {
 
@@ -22,6 +23,7 @@ function SectionHeroForm() {
     const fields = [
         "protocol",
         "protocol_icon",
+        "media",
         "title_main",
         "title_accent",
         "tagline_before",
@@ -44,6 +46,9 @@ function SectionHeroForm() {
 
         protocol_icon: "",
         protocol_icon_is_active: 1,
+
+        media:"",
+        media_is_active: 1,
 
         title_main:"",
         title_main_is_active: 1,
@@ -171,6 +176,11 @@ function SectionHeroForm() {
                             <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
+                    </div>
+
+                    {/* Gestion de la video ou image */}
+                    <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
+                        <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} onChange={handleChange} />
                     </div>
 
                     {/* Gestion des Titres */}

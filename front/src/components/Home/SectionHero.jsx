@@ -16,10 +16,19 @@ function SectionHero() {
     return(
         <section className="relative flex w-full flex-col items-center self-stretch p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
 
-            <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1" autoPlay muted loop playsInline >
-                <source src="/imgs/backgroundSections/HomeSectionHero.mp4" type="video/mp4" />
-            </video>
+            {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
+            {content?.[section]?.media && (
+                content?.[section]?.media.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+            
+                    <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1" autoPlay muted loop playsInline >
+                        <source src={resolveCmsAsset(content?.[section]?.media)} type={content?.[section]?.media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+                    </video>
+                ) : (
+                    <img src={resolveCmsAsset(content?.[section]?.media)} alt="" className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"/>
+                )
+            )}
 
+            {/* LOGO, TITRE, ECT. */}
             <div className="flex py-[24px] flex-col justify-center items-center gap-[50px] self-stretch z-20">
 
                 <div className="flex flex-col justify-center items-center gap-[10px] self-stretch">
