@@ -4,7 +4,7 @@ import { ADMIN_NAV } from "./adminNav.js";
 export default function AdminSidebarModal({
   open,
   onClose,
-  active = "gestion-films",
+  active = "leaderboard",
 }) {
   const navigate = useNavigate();
 

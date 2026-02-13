@@ -49,3 +49,10 @@ export async function togglePublish(id, published) {
   if (!res.ok) throw new Error("Erreur publication");
   return res.json();
 }
+
+// ADMIN — liste des participants (réservations) d’un événement
+export async function getEventBookings(eventId) {
+  const res = await fetch(`${API_BASE}/admin/events/${eventId}/bookings`);
+  if (!res.ok) throw new Error("Erreur chargement participants");
+  return res.json();
+}

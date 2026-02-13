@@ -4,7 +4,7 @@ import { pool } from "../../db/index.js";
  ******** Effacer une faq *************************
 *************************************************/
 
-export const deleteOneFaq = async (id)=> {
+export const deleteFaq = async (id)=> {
     const query = "DELETE FROM faq WHERE id = ?";
     //Valeur à ajouter.
     const values = [id];

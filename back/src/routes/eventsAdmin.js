@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { getEventsForAdmin, createEvent, updateEvent, deleteEvent, patchPublish,} from "../controllers/events/eventsController.js";
-
+import { getEventsForAdmin, createEvent, updateEvent, deleteEvent, patchPublish, getBookingsForEvent } from "../controllers/events/eventsController.js";
 
 const eventsRouter = Router();
 
 eventsRouter.get("/", getEventsForAdmin);
+eventsRouter.get("/:id/bookings", getBookingsForEvent);
 eventsRouter.post("/", createEvent);
 eventsRouter.put("/:id", updateEvent);
 eventsRouter.delete("/:id", deleteEvent);
