@@ -6,7 +6,7 @@ export const ADMIN_NAV = [
   },
   {
     id: "dashboard",
-    label: "Dashboard",
+    label: "Dashboard User",
     path: "/admin/dashboard",
   },
   {

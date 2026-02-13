@@ -24,9 +24,15 @@ async function UpdateCms(req, res, next) {
         };
 
         if (file) {
-            payload.value = "/uploads/icons/" + file.filename;
+
+            const isMedia = content_key === "media";
+
+            payload.value = isMedia ? `/uploads/medias/${file.filename}` : `/uploads/icons/${file.filename}`;
+
         } else if (value !== undefined) {
+
             payload.value = value;
+        
         }
 
         const result = await updateCms( payload );

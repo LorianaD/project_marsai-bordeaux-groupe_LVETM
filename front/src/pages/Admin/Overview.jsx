@@ -8,6 +8,12 @@ import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const TOP_FILMS_ENDPOINT = "/api/videos/admin/leaderboard";
 
+// ✅ helper pour /public (marche même si ton app est servie dans un sous-dossier)
+const publicUrl = (p) => `${import.meta.env.BASE_URL}${p}`;
+
+// ✅ fallback sûr (existe dans public/)
+const ICON_FALLBACK = publicUrl("vite.svg");
+
 // -----------------------
 // Helpers
 // -----------------------
@@ -32,6 +38,11 @@ function pickCoverUrl(v) {
   const cover = v?.cover || v?.thumbnail || v?.poster || v?.cover_path;
   if (!cover) return "";
   if (String(cover).startsWith("http")) return String(cover);
+
+  // si cover est déjà un path /uploads/...
+  if (String(cover).startsWith("/uploads/")) return `${API_BASE}${cover}`;
+
+  // sinon on suppose juste un filename
   return `${API_BASE}/uploads/covers/${cover}`;
 }
 
@@ -75,8 +86,17 @@ function MetricCard({
                 "bg-black/[0.03] ring-black/10 dark:bg-white/5 dark:ring-white/10",
             ].join(" ")}
           >
-            {/* ✅ SVG depuis /public */}
-            <img src={iconSrc} alt="" className="h-6 w-6 object-contain" />
+            {/* ✅ Ne plus masquer : fallback si l’icône ne charge pas */}
+            <img
+              src={iconSrc}
+              alt=""
+              className="h-6 w-6 object-contain"
+              onError={(e) => {
+                // évite boucle infinie si fallback échoue
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = ICON_FALLBACK;
+              }}
+            />
           </div>
 
           {pill ? (
@@ -136,7 +156,10 @@ function TopFilmRow({ rank, title, likes, votes, coverUrl }) {
               src={coverUrl}
               alt=""
               className="h-full w-full object-cover"
-              onError={(e) => (e.currentTarget.style.display = "none")}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = publicUrl("cover-fallback.jpg");
+              }}
             />
           ) : null}
         </div>
@@ -208,20 +231,16 @@ export default function Overview() {
     loadAll();
   }, []);
 
-  // ✅ KPI réels : 0 partout sauf pays
   const kpi = useMemo(() => {
     const arr = Array.isArray(list) ? list : [];
 
-    // films évalués = score non nul
     const filmsEvaluated = arr.filter(
       (v) => v?.score != null && v?.score !== "",
     ).length;
 
-    // si aucun évalué => 0%
     const completion =
       filmsEvaluated === 0 ? 0 : Math.min(100, (filmsEvaluated / 600) * 100);
 
-    // pays distincts
     const countriesSet = new Set(
       arr
         .map((v) => pickCountry(v))
@@ -230,17 +249,16 @@ export default function Overview() {
     );
 
     return {
-      films: filmsEvaluated, // 0 si aucun évalué
-      completion: Number(completion.toFixed(1)), // 0
+      films: filmsEvaluated,
+      completion: Number(completion.toFixed(1)),
       quota: "0/0",
       quotaState: "EN ATTENTE",
-      countries: countriesSet.size, // ✅ réel
+      countries: countriesSet.size,
       zone: countriesSet.size ? "TOP ZONE : EUROPE" : "TOP ZONE : —",
       occupancy: 0,
     };
   }, [list]);
 
-  // ✅ Top 3 films réels
   const topFilms = useMemo(() => {
     const arr = Array.isArray(list) ? list : [];
     return arr.slice(0, 3).map((v, idx) => {
@@ -313,7 +331,7 @@ export default function Overview() {
             {/* KPI row */}
             <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
               <MetricCard
-                iconSrc="/icons/admin/sparkles.svg"
+                iconSrc={publicUrl("public/icons/admin/sparkles.svg")}
                 iconBgClass="bg-[#EAF1FF] ring-black/10 dark:bg-white/5 dark:ring-white/10"
                 pill="OBJECTIF : 600"
                 pillClass="bg-[#EAF1FF] text-[#2F6BFF] dark:bg-white/5 dark:text-white/80"
@@ -325,7 +343,7 @@ export default function Overview() {
               />
 
               <MetricCard
-                iconSrc="/icons/admin/star.svg"
+                iconSrc={publicUrl("public/icons/admin/star.svg")}
                 iconBgClass="bg-[#FFE9F4] ring-black/10 dark:bg-white/5 dark:ring-white/10"
                 pill="QUOTA : 100/JURE"
                 pillClass="bg-[#FFE9F4] text-[#F6339A] dark:bg-white/5 dark:text-white/80"
@@ -337,7 +355,7 @@ export default function Overview() {
               />
 
               <MetricCard
-                iconSrc="/icons/admin/globe.svg"
+                iconSrc={publicUrl("public/icons/admin/globe.svg")}
                 iconBgClass="bg-[#EAF1FF] ring-black/10 dark:bg-white/5 dark:ring-white/10"
                 value={kpi.countries}
                 label="PAYS REPRÉSENTÉS"
@@ -345,7 +363,7 @@ export default function Overview() {
               />
 
               <MetricCard
-                iconSrc="/icons/admin/ticket.svg"
+                iconSrc={publicUrl("public/icons/admin/ticket.svg")}
                 iconBgClass="bg-[#E9FFF2] ring-black/10 dark:bg-white/5 dark:ring-white/10"
                 value={`${kpi.occupancy}%`}
                 label="TAUX D’OCCUPATION WORKSHOPS"

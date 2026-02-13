@@ -1,33 +1,65 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-function CmsInputFile({name, label, valueUrl, onChange, placeholder, type = "file", rightSlot = null, accept = "image/*, video/*"}) {
+function CmsInputFile({name, label, value, valueUrl, onChange, placeholder, type = "file", rightSlot = null, accept = "image/*, video/*"}) {
     
     const [ previewUrl, setPrevieuwUrl ] = useState("");
     // "image" ou "video"
     const [previewType, setPreviewType] = useState("");
 
+    // Détecte le type depuis une URL (si c'est le média existant)
+    const detectTypeFromUrl = (url) => {
+
+        if (!url) return "";
+
+        if (url.match(/\.(mp4|webm|ogg|mov)$/i)) return "video";
+
+        return "image";
+
+    };
+
+    // On créé un URL témporaire locale
+    const fileObjectUrl = useMemo(() => {
+
+        if (value instanceof File) {
+
+            return URL.createObjectURL(value);
+
+        }
+
+        return "";
+
+    }, [value]);
+
+    // priosise les fichier sélectionné
     useEffect(() => {
-            if (valueUrl) {
 
-                setPrevieuwUrl(valueUrl);
+        if (fileObjectUrl) {
+            setPrevieuwUrl(fileObjectUrl);
 
-                if (valueUrl.match(/\.(mp4|webm|ogg)$/i)) {
+            setPreviewType(value?.type?.startsWith("video/") ? "video" : "image");
 
-                    setPreviewType("video");
+            return;
+        }
 
-                } else {
+        if (valueUrl) {
+            setPrevieuwUrl(valueUrl);
 
-                    setPreviewType("image");
+            setPreviewType(detectTypeFromUrl(valueUrl));
 
-                }
+            return;
+        }
 
-            } else {
+        setPrevieuwUrl("");
+        setPreviewType("");
 
-                setPrevieuwUrl("");
-                setPreviewType("");
+    }, [fileObjectUrl, valueUrl, value] );
 
-            }
-        }, [valueUrl] );
+    // libère la mémoire quand on change de File
+    useEffect(() => {
+        return () => {
+            if (fileObjectUrl) URL.revokeObjectURL(fileObjectUrl);
+        }
+    }, [fileObjectUrl])
 
     function handleFileChange(event) {
 
@@ -75,7 +107,7 @@ function CmsInputFile({name, label, valueUrl, onChange, placeholder, type = "fil
 
             </div> 
 
-            <input type={type} name={name} onChange={handleFileChange} 
+            <input type={type} name={name} accept={accept} onChange={handleFileChange}
                 className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"
             />
             
@@ -107,3 +139,6 @@ function CmsInputFile({name, label, valueUrl, onChange, placeholder, type = "fil
 }
 
 export default CmsInputFile
+
+// Exemple dans le formulaire
+{/* <CmsInputFile name="hero_media" label="Média du hero (vidéo / gif / image)" accept="video/*,image/*" value={values.hero_media} onChange={handleChange} /> */}
