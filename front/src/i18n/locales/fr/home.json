@@ -16,21 +16,25 @@
    },
    "concept":{
       "title_main": "Concept du festival",
-      "OneMinute":{
+      "card1":{
          "title": "1 minute",
-         "description": "Format ultra-court pour un impact maximum."
+         "description": "Format ultra-court pour un impact maximum.",
+         "title_color":"#C27AFF"
       },
-      "free": {
+      "card2": {
          "title": "Gratuité",
-         "description": "Conférences et workshops accessibles."
+         "description": "Conférences et workshops accessibles.",
+         "title_color":"#00D492"
       },
-      "forAll": {
+      "card3": {
         "title": "Pour tous",
-        "description": "Professionnels, étudiants et curieux."
+        "description": "Professionnels, étudiants et curieux.",
+         "title_color":"#FB64B6"
       },
-      "expertise": {
+      "card4": {
         "title": "Expertise",
-        "description": "Leaders mondiaux de l’IA générative."
+        "description": "Leaders mondiaux de l’IA générative.",
+         "title_color":"#2B7FFF"
       }      
    },
    "award":{

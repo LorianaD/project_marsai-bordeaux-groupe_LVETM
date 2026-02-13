@@ -64,7 +64,7 @@ function SectionHero() {
                         )}
 
                         {isVisible(section, "tagline_highlight") && (
-                            <span className="bg-gradient-to-r from-[#AD46FF] via-[#F6339A] to-[#FF6900] bg-clip-text text-transparent"> {content?.hero?.tagline_highlight ?? t("hero.tagline_highlight")} </span>
+                            <span className="bg-gradient-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent"> {content?.hero?.tagline_highlight ?? t("hero.tagline_highlight")} </span>
                         )}
 
                         {isVisible(section, "tagline_after") && (
