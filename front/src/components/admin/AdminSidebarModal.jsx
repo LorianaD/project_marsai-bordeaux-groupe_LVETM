@@ -73,10 +73,15 @@ export default function AdminSidebarModal({
           </button>
         </div>
 
-        {/* Profil */}
+        {/* Profil — clic avatar → Dashboard */}
         <div className="flex flex-col items-center px-5 pb-5 pt-4">
-          <div className="relative">
-            <div className="h-20 w-20 overflow-hidden rounded-full ring-2 ring-[#B84DFF]/60">
+          <button
+            type="button"
+            onClick={() => handleItemClick("/admin/dashboard")}
+            className="relative focus:outline-none focus:ring-2 focus:ring-[#B84DFF]/60 focus:ring-offset-2 focus:ring-offset-transparent rounded-full"
+            aria-label="Aller au dashboard"
+          >
+            <div className="h-20 w-20 overflow-hidden rounded-full ring-2 ring-[#B84DFF]/60 hover:ring-[#B84DFF] transition">
               <img
                 src="/assets/avatar.png"
                 alt=""
@@ -84,7 +89,7 @@ export default function AdminSidebarModal({
               />
             </div>
             <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full bg-[#1AFF7A] ring-2 ring-black" />
-          </div>
+          </button>
 
           <div className="mt-3 text-sm font-semibold text-white/90">
             Ocean Breeze
