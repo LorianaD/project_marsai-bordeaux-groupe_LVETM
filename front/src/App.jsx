@@ -19,6 +19,7 @@ import Overview from "./pages/Overview.jsx";
 import Jury from "./pages/Jury.jsx";
 import NewsletterConfirm from "./pages/NewsletterConfirm";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
+import LearnMore from "./pages/LearnMore.jsx";
 
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
@@ -43,13 +44,13 @@ import SectionAwardForm from "./components/Form/CMS/Home/SectionAwardForm.jsx";
 export default function App() {
   return (
     <Routes>
-
       {/* ROUTES PUBLIQUES */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/gallery/:id" element={<VideoDetails />} />
         <Route path="/participation" element={<ParticipationUploadPage />} />
+        <Route path="/learn-more" element={<LearnMore />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetails />} />
         <Route path="/jury" element={<Jury />} />
@@ -78,8 +79,11 @@ export default function App() {
           <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/distribution-jury" element={<DistributionJury />} />
-            
+          <Route
+            path="/admin/distribution-jury"
+            element={<DistributionJury />}
+          />
+
           {/*  Newsletter admin */}
           <Route path="/admin/newsletter" element={<AdminNewsletter />} />
           <Route path="/admin/newsletters" element={<AdminNewsletters />} />
@@ -91,20 +95,19 @@ export default function App() {
             path="/admin/newsletters/:id"
             element={<AdminNewsletterEditor />}
           />
-  
         </Route>
       </Route>
 
       {/*  Fallback */}
-       <Route path="/jury" element={<Jury />} />
+      <Route path="/jury" element={<Jury />} />
 
       {/* ROUTES TEMPORAIRES / CMS */}
       <Route path="/partnerform" element={<Partner />} />
       <Route path="/partner/:id" element={<UpdatePartner />} />
       <Route path="/cms/sectionhero" element={<SectionHeroForm />} />
-      <Route path="/cms/sectionconcept" element={<SectionConceptForm />}/>
-      <Route path="/cms/sectionaward" element={<SectionAwardForm />}/>
-      <Route path="/cms/sectiongoal" element={<SectionGoalForm />}/>
+      <Route path="/cms/sectionconcept" element={<SectionConceptForm />} />
+      <Route path="/cms/sectionaward" element={<SectionAwardForm />} />
+      <Route path="/cms/sectiongoal" element={<SectionGoalForm />} />
 
       {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
