@@ -7,6 +7,8 @@ import { useState } from "react";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
 import CmsTextarea from "./Fields/CmsTextarea";
 import CmsHideToggle from "./Fields/CmsHideToggle";
+import CmsInputColor from "./Fields/CmsImputColor";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 
 function SectionConceptForm() {
 
@@ -25,15 +27,19 @@ function SectionConceptForm() {
 
         "card1_title",
         "card1_description",
+        "card1_title_color",
 
         "card2_title",
         "card2_description",
+        "card2_title_color",
 
         "card3_title",
         "card3_description",
+        "card3_title_color",
 
         "card4_title",
         "card4_description",
+        "card4_title_color",
 
     ];
     // console.log(fields);
@@ -47,18 +53,22 @@ function SectionConceptForm() {
 
         card1_title:"",
         card1_description:"",
+        card1_title_color:"#C27AFF",
         card1_title_is_active: 1,
 
         card2_title:"",
         card2_description:"",
+        card2_title_color:"#00D492",
         card2_title_is_active: 1,
 
         card3_title:"",
         card3_description:"",
+        card3_title_color:"#FB64B6",
         card3_title_is_active: 1,
 
         card4_title:"",
         card4_description:"",
+        card4_title_color:"#2B7FFF",
         card4_title_is_active: 1
 
     })
@@ -123,6 +133,7 @@ function SectionConceptForm() {
                     is_active,    
                 })
                 
+                console.log("SEND:", key, val);
 
             }
 
@@ -169,8 +180,11 @@ function SectionConceptForm() {
                             <CmsHideToggle name="card1_title" value={values.card1_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
-                            <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("concept.OneMinute.title")} />
-                            <CmsTextarea name="card1_description" label="Description" value={values.card1_description} onChange={handleChange} placeholder={t("concept.OneMinute.description")}/>
+                            <div className="w-full flex items-center justify-between gap-[16px]">
+                                <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("concept.card1.title")} />
+                                <CmsInputColor name="card1_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                            </div>
+                            <CmsTextarea name="card1_description" label="Description" value={values.card1_description} onChange={handleChange} placeholder={t("concept.card1.description")}/>
                         </div>
                     </div>
 
@@ -182,8 +196,11 @@ function SectionConceptForm() {
                             <CmsHideToggle name="card2_title" value={values.card2_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
-                            <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("concept.free.title")} />
-                            <CmsTextarea name="card2_description" label="Description" value={values.card2_description} onChange={handleChange} placeholder={t("concept.free.description")}/>
+                            <div className="w-full flex items-center justify-between gap-[16px]">
+                                <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("concept.card2.title")} />
+                                <CmsInputColor name="card2_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                            </div>
+                            <CmsTextarea name="card2_description" label="Description" value={values.card2_description} onChange={handleChange} placeholder={t("concept.card2.description")}/>
                         </div>
                     </div>
 
@@ -195,8 +212,11 @@ function SectionConceptForm() {
                             <CmsHideToggle name="card3_title" value={values.card3_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
-                            <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("concept.forAll.title")} />
-                            <CmsTextarea name="card3_description" label="Description" value={values.card3_description} onChange={handleChange} placeholder={t("concept.forAll.description")}/>
+                            <div className="w-full flex items-center justify-between gap-[16px]">
+                                <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("concept.card3.title")} />
+                                <CmsInputColor name="card3_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                            </div>
+                            <CmsTextarea name="card3_description" label="Description" value={values.card3_description} onChange={handleChange} placeholder={t("concept.card3.description")}/>
                         </div>                        
                     </div>
 
@@ -208,17 +228,20 @@ function SectionConceptForm() {
                             <CmsHideToggle name="card4_title" value={values.card4_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
                         <div className="w-full flex flex-col gap-[16px]">
-                            <CmsInput name="card4_title" label="Titre" value={values.card4_title} onChange={handleChange} placeholder={t("concept.expertise.title")} />
-                            <CmsTextarea name="card4_description" label="Description" value={values.card4_description} onChange={handleChange} placeholder={t("concept.expertise.description")}/>
+                            <div className="w-full flex items-center gap-[16px]">
+                                <CmsInput name="card4_title" label="Titre" value={values.card4_title} onChange={handleChange} placeholder={t("concept.card4.title")} />
+                                <CmsInputColor name="card3_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                            </div>
+                            <CmsTextarea name="card4_description" label="Description" value={values.card4_description} onChange={handleChange} placeholder={t("concept.card4.description")}/>
                         </div>                        
                     </div>                    
 
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                    <BtnSubmitForm loading={loading}>
                         Mettre à jour
-                    </button>
+                    </BtnSubmitForm>
                 </div>
 
             </form>

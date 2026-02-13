@@ -15,21 +15,25 @@
       "ctaLearnMore_signe":"+"
    },
    "concept":{
-      "OneMinute":{
+      "card1":{
          "title": "1 minute",
-         "description": "Ultra-short format for maximum impact."
+         "description": "Ultra-short format for maximum impact.",
+         "title_color":"#C27AFF"
       },
-      "free": {
+      "card2": {
          "title": "Free",
-         "description": "Conferences and workshops accessible."
+         "description": "Conferences and workshops accessible.",
+         "title_color":"#00D492"
       },
-      "forAll": {
+      "card3": {
         "title": "For everyone",
-        "description": "Professionals, students, and the curious."
+        "description": "Professionals, students, and the curious.",
+         "title_color":"#FB64B6"
       },
-      "expertise": {
+      "card4": {
         "title": "Expertise",
-        "description": "World leaders in generative AI."
+        "description": "World leaders in generative AI.",
+         "title_color":"#2B7FFF"
       }      
    },
    "award": {
