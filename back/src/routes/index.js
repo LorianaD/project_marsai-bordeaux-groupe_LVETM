@@ -25,10 +25,6 @@ router.use("/events", eventsPublicRouter);
 router.use("/admin/events", eventsRouter);
 router.use("/partner", partnerRouter);
 router.use("/contact", contactRouter);
-<<<<<<< Working_on_faq
-// router.use("/newsletter", newsletterRoutes);
-=======
->>>>>>> main
 router.use("/faq", faq);
 router.use("/cms", cmsRouter);
 
