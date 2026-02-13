@@ -24,6 +24,7 @@ import LearnMore from "./pages/LearnMore.jsx";
 
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
+import AdminEventParticipants from "./pages/Admin/AdminEventParticipants.jsx";
 import AdminLeaderboard from "./pages/Admin/AdminLeaderboard.jsx";
 import DistributionJury from "./pages/Admin/DistributionJury.jsx";
 
@@ -79,6 +80,7 @@ export default function App() {
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Overview />} />
           <Route path="/admin/events" element={<AdminEvents />} />
+          <Route path="/admin/events/:eventId/participants" element={<AdminEventParticipants />} />
           <Route path="/admin/videos" element={<AdminVideos />} />
           <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin/login" element={<AdminLogin />} />

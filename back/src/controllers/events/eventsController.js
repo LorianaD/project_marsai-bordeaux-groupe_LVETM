@@ -8,7 +8,7 @@ import {
   findAllPublishedEventsWithRegistered,
   findAllEventsForAdmin,
 } from "../../models/event.js";
-import { insertBooking, countBookingsByEventId} from "../../models/booking.js";
+import { insertBooking, countBookingsByEventId, findBookingsByEventId } from "../../models/booking.js";
 
 function toMySQLDateTime(dateStr) {
   if (!dateStr) return null;
@@ -191,5 +191,24 @@ export const createBooking = async (req, res) => {
     }
     console.error("Error creating booking", err);
     return res.status(500).json({ message: "Erreur lors de la réservation" });
+  }
+};
+
+/**
+ * GET /api/admin/events/:id/bookings
+ * Liste des participants (réservations) pour un événement (admin).
+ */
+export const getBookingsForEvent = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const event = await findEventById(id);
+    if (!event) {
+      return res.status(404).json({ error: "Événement introuvable" });
+    }
+    const bookings = await findBookingsByEventId(id);
+    return res.status(200).json({ event, bookings });
+  } catch (err) {
+    console.error("Error getBookingsForEvent", err);
+    return res.status(500).json({ error: "Erreur serveur" });
   }
 };
