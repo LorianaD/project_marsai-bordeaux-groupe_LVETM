@@ -15,14 +15,16 @@ import Legal from "./pages/Legal.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import PartnersPage from "./pages/Partner.jsx";
-import Overview from "./pages/Overview.jsx";
+import Overview from "./pages/Admin/Overview.jsx";
 import Jury from "./pages/Jury.jsx";
 import NewsletterConfirm from "./pages/NewsletterConfirm";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import LearnMore from "./pages/LearnMore.jsx";
 
+
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import AdminEvents from "./pages/Admin/AdminEvents.jsx";
+import AdminLeaderboard from "./pages/Admin/AdminLeaderboard.jsx";
 import DistributionJury from "./pages/Admin/DistributionJury.jsx";
 
 import Partner from "./components/Form/CMS/Home/Partner.jsx";
@@ -40,6 +42,8 @@ import AdminNewsletters from "./pages/Admin/AdminNewsletters.jsx";
 import AdminNewslettersNew from "./pages/Admin/AdminNewslettersNew.jsx";
 import AdminNewsletterEditor from "./pages/Admin/AdminNewsletterEditor.jsx";
 import SectionAwardForm from "./components/Form/CMS/Home/SectionAwardForm.jsx";
+
+
 
 export default function App() {
   return (
@@ -79,6 +83,8 @@ export default function App() {
           <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/leaderboard" element={<AdminLeaderboard />} />
+          <Route path="/admin/overview" element={<Overview />} />
           <Route
             path="/admin/distribution-jury"
             element={<DistributionJury />}
