@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:3306
--- Généré le : mar. 10 fév. 2026 à 14:05
--- Version du serveur : 8.4.3
--- Version de PHP : 8.3.16
+-- Hôte : localhost:8889
+-- Généré le : ven. 13 fév. 2026 à 12:47
+-- Version du serveur : 8.0.40
+-- Version de PHP : 8.3.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,18 +32,8 @@ CREATE TABLE `admin_video` (
   `status` enum('Video Accepted','Video Rejected','Video Banned','Featured') DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
-  `video_id` int NOT NULL,
-  `score` decimal(4,2) DEFAULT NULL,
-  `admin_user_id` int DEFAULT NULL
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `admin_video`
---
-
-INSERT INTO `admin_video` (`id`, `status`, `comment`, `created_at`, `updated_at`, `video_id`, `score`, `admin_user_id`) VALUES
-(1, 'Video Accepted', NULL, '2026-02-06 11:21:54', '2026-02-06 11:21:54', 4, 9.40, NULL);
 
 -- --------------------------------------------------------
 
@@ -147,12 +137,12 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (22, 'home', 'hero', 'title_accent', 'en', 'text', 'AI', 0, 1, '2026-02-05 16:32:23', '2026-02-05 16:32:23'),
 (23, 'home', 'hero', 'ctaLearnMore_signe', 'fr', 'text', '+', 11, 1, '2026-02-06 09:54:31', '2026-02-10 11:25:02'),
 (24, 'home', 'hero', 'ctaLearnMore_signe', 'en', 'text', '+', 0, 1, '2026-02-06 09:54:31', '2026-02-06 09:54:31'),
-(25, 'home', 'hero', 'ctaParticipate_signe', 'fr', 'text', '/uploads/icons/1770724180233-arrowRight.svg', 9, 1, '2026-02-09 10:41:35', '2026-02-10 12:49:40'),
-(26, 'home', 'hero', 'ctaParticipate_signe', 'en', 'text', NULL, 0, 1, '2026-02-09 10:41:35', '2026-02-09 10:41:35'),
+(25, 'home', 'hero', 'ctaParticipate_signe', 'fr', 'image', '/uploads/icons/1770724180233-arrowRight.svg', 9, 1, '2026-02-09 10:41:35', '2026-02-11 10:02:40'),
+(26, 'home', 'hero', 'ctaParticipate_signe', 'en', 'image', '	\r\n/uploads/icons/1770724180233-arrowRight.svg', 0, 1, '2026-02-09 10:41:35', '2026-02-11 10:02:27'),
 (27, 'home', 'hero', 'protocol_icon', 'fr', 'image', '/uploads/icons/1770724905062-star.png', 1, 1, '2026-02-10 11:59:41', '2026-02-10 13:01:45'),
-(32, 'home', 'hero', 'protocol_icon', 'en', 'image', '../src/assets/imgs/icones/iconStars.svg', 0, 1, '2026-02-10 12:53:13', '2026-02-10 12:53:13'),
-(33, 'home', 'concept', 'title_main', 'fr', 'text', 'Concept du festival MARSAI', 0, 1, '2026-02-10 14:11:53', '2026-02-10 14:33:15'),
-(34, 'home', 'concept', 'card1_title', 'fr', 'text', '1 minute', 1, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(32, 'home', 'hero', 'protocol_icon', 'en', 'image', '/uploads/icons/1770724905062-star.png', 0, 1, '2026-02-10 12:53:13', '2026-02-11 09:27:44'),
+(33, 'home', 'concept', 'title_main', 'fr', 'text', 'Concept du festival MARSAI', 0, 0, '2026-02-10 14:11:53', '2026-02-11 14:08:24'),
+(34, 'home', 'concept', 'card1_title', 'fr', 'text', '1 minute', 1, 1, '2026-02-10 14:11:53', '2026-02-11 14:29:39'),
 (35, 'home', 'concept', 'card1_description', 'fr', 'text', 'Format ultra-court pour un impact maximum.', 2, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
 (36, 'home', 'concept', 'card2_title', 'fr', 'text', 'Gratuité', 3, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
 (37, 'home', 'concept', 'card2_description', 'fr', 'text', 'Conférences et workshops accessibles.', 4, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
@@ -168,7 +158,49 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (47, 'home', 'concept', 'card3_title', 'en', 'text', 'For everyone', 5, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
 (48, 'home', 'concept', 'card3_description', 'en', 'text', 'Professionals, students, and curious minds.', 6, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
 (49, 'home', 'concept', 'card4_title', 'en', 'text', 'Expertise', 7, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
-(50, 'home', 'concept', 'card4_description', 'en', 'text', 'World leaders in generative AI.', 8, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48');
+(50, 'home', 'concept', 'card4_description', 'en', 'text', 'World leaders in generative AI.', 8, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
+(51, 'home', 'award', 'eyebrow', 'en', 'text', 'The MARS.AI Project', 0, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
+(52, 'home', 'award', 'title1', 'en', 'text', 'Films in', 1, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
+(53, 'home', 'award', 'title2', 'en', 'text', 'Competition', 2, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
+(54, 'home', 'award', 'description', 'en', 'text', 'Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.', 3, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
+(55, 'home', 'award', 'ctaSeeMore', 'en', 'text', 'View the selection', 4, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
+(56, 'home', 'award', 'eyebrow', 'fr', 'text', 'le projet MARS.A.I.', 0, 1, '2026-02-12 10:34:16', '2026-02-12 11:06:29'),
+(57, 'home', 'award', 'title1', 'fr', 'text', 'Films en', 1, 1, '2026-02-12 10:34:16', '2026-02-12 10:34:16'),
+(58, 'home', 'award', 'title2', 'fr', 'text', 'Compétition', 2, 1, '2026-02-12 10:34:16', '2026-02-12 10:34:16'),
+(59, 'home', 'award', 'description', 'fr', 'text', 'Découvrez une sélection d’œuvres pionnières explorant de nouvelles frontières de l’imaginaire assisté par IA.', 3, 1, '2026-02-12 10:34:16', '2026-02-12 10:34:16'),
+(60, 'home', 'award', 'ctaSeeMore', 'fr', 'text', 'Voir la sélection', 0, 1, '2026-02-12 10:34:16', '2026-02-12 11:14:03'),
+(61, 'home', 'award', 'ctaSeeMore_link', 'fr', 'text', '/gallery', 5, 1, '2026-02-12 11:31:57', '2026-02-12 11:31:57'),
+(62, 'home', 'award', 'ctaSeeMore_link', 'en', 'text', '/gallery', 5, 1, '2026-02-12 11:31:57', '2026-02-12 11:31:57'),
+(63, 'home', 'goal', 'title_main', 'fr', 'text', 'Objectifs du', 0, 1, '2026-02-12 13:30:45', '2026-02-12 14:40:12'),
+(64, 'home', 'goal', 'title_accent', 'fr', 'text', 'festival', 1, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(65, 'home', 'goal', 'card1_title', 'fr', 'text', 'L\'humain au centre', 2, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(66, 'home', 'goal', 'card1_description', 'fr', 'text', 'Mettre l\'humain au coeur de la création pour ne pas perdre l\'émotion.', 3, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(67, 'home', 'goal', 'card1_icon', 'fr', 'image', '/uploads/icons/1770901742963-IconTarget.svg', 4, 1, '2026-02-12 13:30:45', '2026-02-12 14:09:02'),
+(68, 'home', 'goal', 'card2_title', 'fr', 'text', 'Challenge créatif', 5, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(69, 'home', 'goal', 'card2_description', 'fr', 'text', 'Challenger la créativité grâce à un format ultra court de 60s.', 6, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(70, 'home', 'goal', 'card2_icon', 'fr', 'image', '/uploads/icons/1770901742987-IconLightning.svg', 7, 1, '2026-02-12 13:30:45', '2026-02-12 14:09:02'),
+(71, 'home', 'goal', 'card3_title', 'fr', 'text', 'Futurs souhaitables', 8, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(72, 'home', 'goal', 'card3_description', 'fr', 'text', 'Explorer les futurs désirables via les technologies émergentes.', 9, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
+(73, 'home', 'goal', 'card3_icon', 'fr', 'image', '/uploads/icons/1770901742995-IconRocket.svg', 10, 1, '2026-02-12 13:30:45', '2026-02-12 14:09:02'),
+(74, 'home', 'goal', 'title_main', 'en', 'text', 'Goals of the', 0, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(75, 'home', 'goal', 'title_accent', 'en', 'text', 'festival', 1, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(76, 'home', 'goal', 'card1_title', 'en', 'text', 'People first', 2, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(77, 'home', 'goal', 'card1_description', 'en', 'text', 'Putting humans at the heart of creation so emotion is never lost.', 3, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(78, 'home', 'goal', 'card1_icon', 'en', 'image', '/src/assets/imgs/icones/IconTarget.svg', 4, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(79, 'home', 'goal', 'card2_title', 'en', 'text', 'Creative challenge', 5, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(80, 'home', 'goal', 'card2_description', 'en', 'text', 'Challenge creativity with an ultra-short 60s format.', 6, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(81, 'home', 'goal', 'card2_icon', 'en', 'image', '/src/assets/imgs/icones/IconLightning.svg', 7, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(82, 'home', 'goal', 'card3_title', 'en', 'text', 'Desirable futures', 8, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(83, 'home', 'goal', 'card3_description', 'en', 'text', 'Explore desirable futures through emerging technologies.', 9, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(84, 'home', 'goal', 'card3_icon', 'en', 'image', '/src/assets/imgs/icones/IconRocket.svg', 10, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
+(85, 'home', 'concept', 'card1_title_color', 'fr', 'text', '#C27AFF', 3, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
+(86, 'home', 'concept', 'card2_title_color', 'fr', 'text', '#00D492', 6, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
+(87, 'home', 'concept', 'card3_title_color', 'fr', 'text', '#FB64B6', 9, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
+(88, 'home', 'concept', 'card4_title_color', 'fr', 'text', '#2B7FFF', 12, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
+(89, 'home', 'concept', 'card1_title_color', 'en', 'text', '#A855F7', 100, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52'),
+(90, 'home', 'concept', 'card2_title_color', 'en', 'text', '#10B981', 101, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52'),
+(91, 'home', 'concept', 'card3_title_color', 'en', 'text', '#EC4899', 102, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52'),
+(92, 'home', 'concept', 'card4_title_color', 'en', 'text', '#3B82F6', 103, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52');
 
 -- --------------------------------------------------------
 
@@ -183,7 +215,7 @@ CREATE TABLE `contact_messages` (
   `subject` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `message` text NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT (now())
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -211,13 +243,6 @@ CREATE TABLE `contributor` (
   `created_at` datetime NOT NULL DEFAULT (now()),
   `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `contributor`
---
-
-INSERT INTO `contributor` (`id`, `video_id`, `name`, `last_name`, `gender`, `email`, `profession`, `created_at`, `updated_at`) VALUES
-(1, 7, 'CACA', 'Pipi', 'Mr', 'test123@mail.com', 'Pipo', '2026-02-04 13:12:34', '2026-02-04 13:12:34');
 
 -- --------------------------------------------------------
 
@@ -280,20 +305,8 @@ CREATE TABLE `jury` (
   `bio` varchar(500) DEFAULT NULL,
   `profession` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
-  `role_label` varchar(80) DEFAULT NULL,
-  `is_president` tinyint(1) NOT NULL DEFAULT '0',
-  `filmography_url` varchar(500) DEFAULT NULL,
-  `sort_order` int NOT NULL DEFAULT '0'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `jury`
---
-
-INSERT INTO `jury` (`id`, `name`, `first_name`, `img`, `bio`, `profession`, `created_at`, `updated_at`, `role_label`, `is_president`, `filmography_url`, `sort_order`) VALUES
-(1, 'VALROS', 'JULIEN', 'julien.png', '...', 'Réalisateur', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRÉSIDENT DU JURY', 1, 'https://exemple.com', 1),
-(2, 'MASSON', 'JULIE', 'julie.png', '...', 'Productrice', '2026-02-06 13:11:39', '2026-02-06 13:11:39', 'PRODUCTRICE', 0, 'https://exemple.com', 2);
 
 -- --------------------------------------------------------
 
@@ -334,6 +347,8 @@ CREATE TABLE `newsletters` (
 --
 
 INSERT INTO `newsletters` (`id`, `subject`, `title`, `content_json`, `background_color`, `status`, `scheduled_at`, `sent_at`, `created_at`, `updated_at`) VALUES
+(1, 'MarsAI — Newsletter #1', 'Bienvenue', '{\"blocks\": [{\"text\": \"Hello MarsAI\", \"type\": \"h1\"}, {\"text\": \"Ceci est un test de newsletter.\", \"type\": \"p\"}, {\"type\": \"divider\"}]}', '#ffffff', 'sent', NULL, '2026-02-10 14:02:45', '2026-02-10 12:04:10', '2026-02-10 14:02:45'),
+(1, 'MarsAI — Newsletter #1', 'Bienvenue', '{\"blocks\": [{\"text\": \"Hello MarsAI\", \"type\": \"h1\"}, {\"text\": \"Ceci est un test de newsletter.\", \"type\": \"p\"}, {\"type\": \"divider\"}]}', '#ffffff', 'sent', NULL, '2026-02-10 14:02:45', '2026-02-10 12:04:10', '2026-02-10 14:02:45'),
 (1, 'MarsAI — Newsletter #1', 'Bienvenue', '{\"blocks\": [{\"text\": \"Hello MarsAI\", \"type\": \"h1\"}, {\"text\": \"Ceci est un test de newsletter.\", \"type\": \"p\"}, {\"type\": \"divider\"}]}', '#ffffff', 'sent', NULL, '2026-02-10 14:02:45', '2026-02-10 12:04:10', '2026-02-10 14:02:45');
 
 -- --------------------------------------------------------
@@ -385,9 +400,20 @@ CREATE TABLE `newsletter_subscribers` (
 --
 
 INSERT INTO `newsletter_subscribers` (`id`, `email`, `created_at`, `unsubscribed_at`, `status`, `consent_at`, `confirm_token`, `confirm_expires_at`, `confirmed_at`, `unsubscribe_token`, `last_sent_at`) VALUES
-(1, 'test123@gmail.com', '2026-02-05 14:33:17', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'toi@example.com', '2026-02-10 09:59:35', NULL, 'active', '2026-02-10 10:59:36', NULL, NULL, '2026-02-10 11:05:12', '0ab5de47b16b20d460ba9a99f86e5672d969e30ef9a4a9bdb0b72186eafcd6ed', NULL),
-(3, 'moi@example.com', '2026-02-10 10:05:33', NULL, 'active', '2026-02-10 11:14:22', 'f3856310a1873b7bac740c6d92d54a40a630abe91124acd6800f882e40624800', '2026-02-11 11:14:22', '2026-02-10 11:05:43', 'c751c178fb86aca2b68e0b0c3cf473dfa4fac4d2a9cf21a221781a65a7a112e6', NULL);
+(1, 'test123@gmail.com', '2026-02-05 13:33:17', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'toi@example.com', '2026-02-10 08:59:35', NULL, 'active', '2026-02-10 10:59:36', NULL, NULL, '2026-02-10 11:05:12', '0ab5de47b16b20d460ba9a99f86e5672d969e30ef9a4a9bdb0b72186eafcd6ed', NULL),
+(3, 'moi@example.com', '2026-02-10 09:05:33', NULL, 'active', '2026-02-10 11:14:22', 'f3856310a1873b7bac740c6d92d54a40a630abe91124acd6800f882e40624800', '2026-02-11 11:14:22', '2026-02-10 11:05:43', 'c751c178fb86aca2b68e0b0c3cf473dfa4fac4d2a9cf21a221781a65a7a112e6', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `newsletter_subscriptions`
+--
+
+CREATE TABLE `newsletter_subscriptions` (
+  `id` int NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -424,13 +450,15 @@ CREATE TABLE `partner` (
 --
 
 INSERT INTO `partner` (`id`, `name`, `img`, `url`, `created_at`, `updated_at`) VALUES
-(1, 'unric', '/uploads/logoPartners/1770650983832-unric_logo-standard-e1629825347279.png', NULL, '2026-02-09 16:29:43', '2026-02-09 16:29:43'),
-(2, 'undp', '/uploads/logoPartners/1770651028440-undp-logo-blue-large-1-1-e1629824955655.png', NULL, '2026-02-09 16:30:28', '2026-02-09 16:30:28'),
-(3, 'sdg_action', '/uploads/logoPartners/1770651044971-un_sdg_action_campaign_horizontal-e1629823111796.png', NULL, '2026-02-09 16:30:44', '2026-02-09 16:30:44'),
-(4, 'psl', '/uploads/logoPartners/1770651057617-psl-1-e1629374159330.png', NULL, '2026-02-09 16:30:57', '2026-02-09 16:30:57'),
-(5, 'sns', '/uploads/logoPartners/1770651066880-matrice-logo-e1629825375865.png', NULL, '2026-02-09 16:31:06', '2026-02-09 16:31:06'),
-(6, 'sacd', '/uploads/logoPartners/1770651080570-logo_sacd-e1629892609581.png', NULL, '2026-02-09 16:31:20', '2026-02-09 16:31:20'),
-(7, 'gybn', '/uploads/logoPartners/1770651090428-logo_gybn_vertical-1-e1629825431327.png', NULL, '2026-02-09 16:31:30', '2026-02-09 16:31:30');
+(1, 'UNRIC', '/uploads/logoPartners/1770292880025-unric_logo-standard-e1629825347279.png', 'https://unric.org/fr/', '2026-02-04 11:07:30', '2026-02-04 11:07:30'),
+(2, 'UNDP', '/uploads/logoPartners/1770293162919-undp-logo-blue-large-1-1-e1629824955655.png', 'https://www.undp.org/fr', '2026-02-04 11:09:25', '2026-02-04 11:09:25'),
+(3, 'CNC', '/uploads/logoPartners/1770206751802-matrice-logo-e1629825375865.png', 'https://www.cnc.fr/', '2026-02-04 13:05:51', '2026-02-04 13:05:51'),
+(4, 'PSL', '/uploads/logoPartners/1770212365734-psl-1-e1629374159330.png', 'https://psl.eu/', '2026-02-04 14:39:25', '2026-02-04 14:39:25'),
+(5, 'action campagne', '/uploads/logoPartners/1770650276735-un_sdg_action_campaign_horizontal-e1629823111796.png', NULL, '2026-02-09 16:17:56', '2026-02-09 16:17:56'),
+(6, 'action campagne', '/uploads/logoPartners/1770650279206-un_sdg_action_campaign_horizontal-e1629823111796.png', NULL, '2026-02-09 16:17:59', '2026-02-09 16:17:59'),
+(7, 'action campagne', '/uploads/logoPartners/1770650280807-un_sdg_action_campaign_horizontal-e1629823111796.png', NULL, '2026-02-09 16:18:00', '2026-02-09 16:18:00'),
+(8, 'sacd', '/uploads/logoPartners/1770651117422-logo_sacd-e1629892609581.png', 'https://www.sacd.fr/fr', '2026-02-09 16:31:57', '2026-02-09 16:31:57'),
+(9, 'sacd', '/uploads/logoPartners/1770651120278-logo_sacd-e1629892609581.png', 'https://www.sacd.fr/fr', '2026-02-09 16:32:00', '2026-02-09 16:32:00');
 
 -- --------------------------------------------------------
 
@@ -466,15 +494,17 @@ CREATE TABLE `still` (
 --
 
 INSERT INTO `still` (`id`, `file_name`, `video_id`) VALUES
-(2, '1770022546997-745183-sankaku_john_baldessari_art_--v_7_7d750db0-c595-4d24-8364-1efbdeeeced4.png', 4),
-(3, '1770025470482-577707-ethopstudio_black_and_white_blurred_photograph_of_people_dancin_2df345e4-8c33-4c1d-8515-972758658476.png', 5),
-(4, '1770037126201-841805-Sans_titre__Pr__sentation___5_.jpg', 6),
-(5, '1770037126205-322060-Capture_d___cran_2026-02-02_094320.png', 6),
-(6, '1770037126205-760925-MarsAI_Film_Festival-2026_ABOUT__1_.jpg', 6),
-(7, '1770207153926-434493-korog.art_An_hells_gate_--v_7_f639f163-0927-4d0d-8dbe-ac00144c3afb.png', 7),
-(8, '1770288198692-531971-u7389435774_1977_London_punk_era_hyper-realistic_cinematic_arch_01ef2320-0074-44b4-8999-897af9a08efe.png', 8),
-(9, '1770290692244-408831-MarsAI_Film_Festival-2026_ABOUT__Pr__sentation_.jpg', 9),
-(10, '1770290989726-20633-ethopstudio_black_and_white_blurred_photograph_of_people_dancin_2df345e4-8c33-4c1d-8515-972758658476.png', 10);
+(1, '1770025899003-42278-1769700554238-432365-MarseilleFuture2.jpg', 1),
+(2, '1770038850098-295348-Capture_d___e__cran_2026-02-02_a___14.25.36.png', 2),
+(3, '1770038850110-688957-Capture_d___e__cran_2026-02-02_a___14.25.36.png', 2),
+(4, '1770038850123-440189-Capture_d___e__cran_2026-02-02_a___14.25.36.png', 2),
+(5, '1770038975406-522510-Capture_d___e__cran_2026-02-02_a___14.25.14.png', 3),
+(6, '1770038975413-271348-Capture_d___e__cran_2026-02-02_a___14.25.14.png', 3),
+(7, '1770038975421-991109-Capture_d___e__cran_2026-02-02_a___14.25.14.png', 3),
+(8, '1770039058537-569779-Capture_d___e__cran_2026-02-02_a___14.24.44.png', 4),
+(9, '1770039058551-759924-Capture_d___e__cran_2026-02-02_a___14.24.44.png', 4),
+(10, '1770039058569-990528-Capture_d___e__cran_2026-02-02_a___14.24.44.png', 4),
+(11, '1770209000793-795423-Capture_d___e__cran_2026-02-04_a___13.20.40.png', 5);
 
 -- --------------------------------------------------------
 
@@ -506,6 +536,8 @@ CREATE TABLE `tags` (
 --
 
 INSERT INTO `tags` (`id`, `name`, `created_at`) VALUES
+(1, 'science-fiction', '2026-02-05 10:43:20'),
+(2, 'bio', '2026-02-05 11:24:53'),
 (1, 'science-fiction', '2026-02-05 10:43:20'),
 (2, 'bio', '2026-02-05 11:24:53');
 
@@ -558,27 +590,24 @@ CREATE TABLE `videos` (
   `director_country` varchar(50) NOT NULL,
   `discovery_source` varchar(50) NOT NULL,
   `upload_status` enum('Pending','Uploading','Processing','Published','Rejected','Failed') NOT NULL DEFAULT 'Pending',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `featured` tinyint(1) NOT NULL DEFAULT '0',
   `ownership_certified` tinyint(1) NOT NULL DEFAULT '0',
   `ownership_certified_at` datetime DEFAULT NULL,
   `promo_consent` tinyint(1) NOT NULL DEFAULT '0',
   `promo_consent_at` datetime DEFAULT NULL,
-  `youtube_upload_error` text
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `featured` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `videos`
 --
 
-INSERT INTO `videos` (`id`, `youtube_video_id`, `video_file_name`, `title`, `title_en`, `synopsis`, `synopsis_en`, `cover`, `language`, `country`, `duration`, `tech_resume`, `ai_tech`, `creative_resume`, `email`, `director_name`, `director_lastname`, `director_gender`, `birthday`, `mobile_number`, `home_number`, `address`, `director_country`, `discovery_source`, `upload_status`, `created_at`, `featured`, `ownership_certified`, `ownership_certified_at`, `promo_consent`, `promo_consent_at`, `youtube_upload_error`) VALUES
-(4, NULL, '1770022546953-878781-MarseillefutureGoodone3.mp4', 'Vue sur Marseille', 'View on Marseille', 'Magnifique vue sur Marseille', 'Beautiful view on Marseille', '1770022546993-180497-Sans_titre__Pr__sentation___2_.jpg', 'fr', 'FR', 120, 'sdkcjdkfjzekflnezfklnef', 'Midjourney', 'scklskclmqssqmds', 'vanessa.biamonti@laplate.com', 'Vanessa', 'Callea', 'Mrs', '1995-12-11', '+33650925487', '0556789876', '13 rue Exemple, Paris', 'FR', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL, NULL),
-(5, NULL, '1770025470430-682094-MarseillefutureGoodone2.mp4', 'Les beaux jours', 'Beautiful days', 'sdfjkzejfsdkslfsjdjfklsdfkl', 'qdflvdf;v,dslv,df;v', '1770025470480-428870-Sans_titre__Pr__sentation___3_.jpg', 'fr', 'France', 120, 'ksdcsdlcksdfl', 'Midjourney', 'wx wx;,', 'vanessa.biamonti@gmail.com', 'Julie', 'Callea', 'Mrs', '1977-07-21', NULL, NULL, '15 rue Exemple, Paris', 'France', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL, NULL),
-(6, NULL, '1770037126155-987006-MarseillefutureGoodone3.mp4', 'Video bebe', 'Video Baby', 'sd;v;dsvsd;:v', 'qslcqslmclmqsclmqs', '1770037126194-723445-Sans_titre__Pr__sentation___7_.jpg', 'fr', 'France', 60, 'djfsdjkfjsdfjkd', 'Midjourney', 'sd,c,sdqcf,sd,;sd,;', 'test2@mail.com', 'Biamonti', 'Callea', 'Mr', '2008-06-14', '0650925488', NULL, '16 rue Exemple, Paris', 'Australia', 'Facebook', 'Published', '2026-02-03 10:09:27', 0, 0, NULL, 0, NULL, NULL),
-(7, NULL, '1770207153587-937416-vanessdev_Marseille_in_a_desirable_future_black_and_white_cin_fc2947f3-1740-42ee-bfc4-aedeef052256_2.mp4', 'dsdsvds', 'ddcdssdvsd', 'qssqqs', 'sqqsqs', '1770207153812-118295-sankaku_john_baldessari_art_--v_7_7d750db0-c595-4d24-8364-1efbdeeeced4.png', 'nl', 'Anguilla', 60, 'xdsdsqsqqs', 'Midjourney', 'sddssd', 'vanessa.biamonti@laplate.com', 'Juliette', 'Ravioli', 'Mr', '1986-11-20', '0650925487', NULL, '14 rue Exemple, Paris', 'Antigua and Barbuda', 'Facebook', 'Published', '2026-02-04 13:12:33', 0, 1, '2026-02-04 13:12:34', 1, '2026-02-04 13:12:34', NULL),
-(8, NULL, '1770288198272-43207-vanessdev_Marseille_in_a_desirable_future_black_and_white_cin_fc2947f3-1740-42ee-bfc4-aedeef052256_2.mp4', 'Pascale est bête', 'Pascale is stupid', 'on s\'en fiche', 'we don\'t care', '1770288198673-560183-malbich8_a_black_and_white_photo_of_an_angel_baby_cholo_wearing_0a86c5ec-2866-43a3-85d9-83766948d1f6.png', 'fr', 'France', 60, 'efgfegerger', 'Midjourney', 'gfergregregre', 'p.aubier@test.com', 'Pascale', 'Aubier', 'Mrs', '1973-05-16', '0650925487', NULL, '26 rue Exemple, Paris', 'France', 'Facebook', 'Published', '2026-02-05 11:43:18', 0, 1, '2026-02-05 11:43:20', 1, '2026-02-05 11:43:20', NULL),
-(9, NULL, '1770290692013-334990-vanessdev_futuristic_Provence_lavender_fields_autonomous_dron_f841c869-d7ab-44c5-ab70-1d5066da68a0_1.mp4', 'Test youtube API', 'Youtube API test', 'sdfvsddsf', 'dvsdfvdfdsf', '1770290692215-504971-hamcybele_photographic_grim_reaper_graphic_design_1960s_design__99877147-6258-4ce0-8450-15b594fb8db4.png', 'fr', 'Anguilla', 60, 'sdvsdfsdf', 'Midjourney', 'sddgfsdfd', 'g.gauliter@test.com', 'Ghislaine', 'Gaultier', 'Mrs', '1983-10-27', '0650925487', NULL, '15 rue Exemple, Paris', 'Australia', 'Facebook', 'Published', '2026-02-05 12:24:52', 0, 1, '2026-02-05 12:24:53', 1, '2026-02-05 12:24:53', NULL),
-(10, 'wcy5srKTzbk', '1770290989616-973820-gersto_A_dramatic_black-and-white_film-noir-style_scene_of_a__eed6a183-af7c-4864-ae6c-f81f9949c760_0.mp4', 'C\'est la bonne cette fois', 'This time it works', 'xvvsdvsd', 'svsdvsdv', '1770290989671-508681-sankaku_john_baldessari_art_--v_7_7d750db0-c595-4d24-8364-1efbdeeeced4.png', 'es', 'Albania', 60, 'xvvsccv', 'Midjourney', 'cvcsvc', 'g.fion@gmail.com', 'Gwenaelle', 'FION', 'Mrs', '1990-09-20', '0650925487', NULL, '14 rue Exemple, Paris', 'Algeria', 'Facebook', 'Published', '2026-02-05 12:29:49', 0, 1, '2026-02-05 12:29:53', 1, '2026-02-05 12:29:53', NULL);
+INSERT INTO `videos` (`id`, `youtube_video_id`, `video_file_name`, `title`, `title_en`, `synopsis`, `synopsis_en`, `cover`, `language`, `country`, `duration`, `tech_resume`, `ai_tech`, `creative_resume`, `email`, `director_name`, `director_lastname`, `director_gender`, `birthday`, `mobile_number`, `home_number`, `address`, `director_country`, `discovery_source`, `upload_status`, `ownership_certified`, `ownership_certified_at`, `promo_consent`, `promo_consent_at`, `created_at`, `featured`) VALUES
+(1, NULL, '1770025898957-636311-1769701018595-66094-vanessdev_with_futuristic_elements_as_if_Marseille_were_in_th_bf2ca2a2-cd0a-4cf2-9a53-f15a00805802_3.mp4', 'Marseille', 'Marseille in the futur', 'Marseille', 'Marseille', '1770025898999-462581-1769700554238-432365-MarseilleFuture2.jpg', 'fr', 'France', 5, 'Midjourney', 'Midjourney', 'Midjourney', 'loriana.test@example.com', 'Loriana', 'DIANO', 'Mrs', '1992-07-08', '0630393432', NULL, 'Residence Barthes appt 401 bat 4C', 'France', 'Ami', 'Published', 0, NULL, 0, NULL, '2026-02-03 16:39:22', 0),
+(2, NULL, '1770038850058-765059-172528-847499874_tiny.mp4', 'IA Robot', 'IA Robot', 'IA Robot', 'IA Robot', '1770038850082-388631-Capture_d___e__cran_2026-02-02_a___14.25.36.png', 'fr', 'France', 20, 'Midjourney', 'Midjourney', 'Midjourney', 'loriana.test2@example.com', 'Loriana', 'DIANO', 'Mrs', '1992-07-08', '0630393432', NULL, 'Residence Barthes appt 401 bat 4C', 'France', 'Instagram', 'Published', 0, NULL, 0, NULL, '2026-02-03 16:39:22', 0),
+(3, NULL, '1770038975387-771193-174086-850404739_small.mp4', 'La médecine dans le futur', 'Medical in the future', 'La médecine dans le futur', 'Medical in the future', '1770038975398-881832-Capture_d___e__cran_2026-02-02_a___14.25.14.png', 'fr', 'France', 20, 'Midjourney', 'Midjourney', 'Midjourney', 'loriana.test2@example.com', 'Loriana', 'DIANO', 'Mrs', '1992-07-08', '0630393432', NULL, 'Residence Barthes appt 401 bat 4C', 'France', 'Instagram', 'Published', 0, NULL, 0, NULL, '2026-02-03 16:39:22', 0),
+(4, NULL, '1770039058492-56639-305660_tiny.mp4', 'Foret', 'Wood in the future', 'La foret dans le futur', 'Wood in the future', '1770039058520-321317-Capture_d___e__cran_2026-02-02_a___14.24.44.png', 'fr', 'France', 20, 'Midjourney', 'Midjourney', 'Midjourney', 'loriana.test2@example.com', 'Loriana', 'DIANO', 'Mrs', '1992-07-08', '0630393432', NULL, 'Residence Barthes appt 401 bat 4C', 'France', 'Instagram', 'Published', 0, NULL, 0, NULL, '2026-02-03 16:39:22', 0),
+(5, NULL, '1770209000687-484520-7547566-uhd_3840_2160_25fps.mp4', 'Virtual PC', 'Virtual PC', 'Virtual PC', 'Virtual PC', '1770209000744-255216-Capture_d___e__cran_2026-02-04_a___13.20.40.png', 'fr', 'France', 5, 'Krok', 'Krok', 'Krok', 'loriana.test@example.com', 'Loriana', 'DIANO', 'Mrs', '1992-07-08', '0630393432', NULL, 'Residence Barthes, 33170 GRADIGNAN', 'France', 'Travail', 'Pending', 1, '2026-02-04 13:43:21', 1, '2026-02-04 13:43:21', '2026-02-04 13:43:20', 0);
 
 -- --------------------------------------------------------
 
@@ -599,13 +628,11 @@ CREATE TABLE `video_subtitles` (
 --
 
 INSERT INTO `video_subtitles` (`id`, `video_id`, `file_name`, `language`, `created_at`) VALUES
-(2, 4, '1770022547060-458523-soustitre.srt', NULL, '2026-02-02 09:55:47'),
-(3, 5, '1770025470507-840368-soustitre.srt', NULL, '2026-02-02 10:44:30'),
-(4, 6, '1770037126209-761699-soustitre.srt', NULL, '2026-02-02 13:58:46'),
-(5, 7, '1770207153954-129470-soustitre.srt', NULL, '2026-02-04 13:12:34'),
-(6, 8, '1770288198747-822692-soustitre.srt', NULL, '2026-02-05 11:43:20'),
-(7, 9, '1770290692247-398099-soustitre.srt', NULL, '2026-02-05 12:24:53'),
-(8, 10, '1770290989733-348272-soustitre.srt', NULL, '2026-02-05 12:29:52');
+(1, 1, '1770025899004-754698-1769700659590-516424-soustitre.srt', NULL, '2026-02-02 10:51:39'),
+(2, 2, '1770038850135-506190-1769700659590-516424-soustitre.srt', NULL, '2026-02-02 14:27:30'),
+(3, 3, '1770038975433-815321-1769700659590-516424-soustitre.srt', NULL, '2026-02-02 14:29:35'),
+(4, 4, '1770039058586-51181-1769700659590-516424-soustitre.srt', NULL, '2026-02-02 14:30:58'),
+(5, 5, '1770209000825-731928-1769700659590-516424-soustitre.srt', NULL, '2026-02-04 13:43:20');
 
 -- --------------------------------------------------------
 
@@ -627,6 +654,11 @@ INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
 (9, 1),
 (10, 1),
 (9, 2),
+(10, 2),
+(8, 1),
+(9, 1),
+(10, 1),
+(9, 2),
 (10, 2);
 
 --
@@ -637,9 +669,7 @@ INSERT INTO `video_tag` (`video_id`, `tag_id`) VALUES
 -- Index pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_admin_video_video` (`video_id`),
-  ADD KEY `fk_admin_video_user` (`admin_user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `assignment`
@@ -714,8 +744,7 @@ ALTER TABLE `film_tag`
 -- Index pour la table `jury`
 --
 ALTER TABLE `jury`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_jury_sort` (`is_president`,`sort_order`,`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `memo_selector`
@@ -724,28 +753,10 @@ ALTER TABLE `memo_selector`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `newsletters`
+-- Index pour la table `newsletter_subscriptions`
 --
-ALTER TABLE `newsletters`
+ALTER TABLE `newsletter_subscriptions`
   ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `newsletter_deliveries`
---
-ALTER TABLE `newsletter_deliveries`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uniq_delivery` (`newsletter_id`,`subscriber_id`),
-  ADD KEY `idx_newsletter` (`newsletter_id`);
-
---
--- Index pour la table `newsletter_subscribers`
---
-ALTER TABLE `newsletter_subscribers`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `uq_newsletter_email` (`email`),
-  ADD UNIQUE KEY `uq_newsletter_confirm_token` (`confirm_token`),
-  ADD UNIQUE KEY `uq_newsletter_unsub_token` (`unsubscribe_token`);
 
 --
 -- Index pour la table `parameters`
@@ -779,13 +790,6 @@ ALTER TABLE `tag`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `tags`
---
-ALTER TABLE `tags`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
@@ -805,13 +809,6 @@ ALTER TABLE `video_subtitles`
   ADD KEY `idx_video_subtitles_video_id` (`video_id`);
 
 --
--- Index pour la table `video_tag`
---
-ALTER TABLE `video_tag`
-  ADD PRIMARY KEY (`video_id`,`tag_id`),
-  ADD KEY `fk_video_tag_tag` (`tag_id`);
-
---
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -819,7 +816,7 @@ ALTER TABLE `video_tag`
 -- AUTO_INCREMENT pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `assignment`
@@ -843,7 +840,7 @@ ALTER TABLE `bookings`
 -- AUTO_INCREMENT pour la table `cms`
 --
 ALTER TABLE `cms`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT pour la table `contact_messages`
@@ -873,7 +870,7 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT pour la table `jury`
 --
 ALTER TABLE `jury`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `memo_selector`
@@ -882,22 +879,10 @@ ALTER TABLE `memo_selector`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `newsletters`
+-- AUTO_INCREMENT pour la table `newsletter_subscriptions`
 --
-ALTER TABLE `newsletters`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT pour la table `newsletter_deliveries`
---
-ALTER TABLE `newsletter_deliveries`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `newsletter_subscribers`
---
-ALTER TABLE `newsletter_subscribers`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `newsletter_subscriptions`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `parameters`
@@ -909,7 +894,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT pour la table `partner`
 --
 ALTER TABLE `partner`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `social_media`
@@ -921,19 +906,13 @@ ALTER TABLE `social_media`
 -- AUTO_INCREMENT pour la table `still`
 --
 ALTER TABLE `still`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `tag`
 --
 ALTER TABLE `tag`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `tags`
---
-ALTER TABLE `tags`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `users`
@@ -945,13 +924,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `video_subtitles`
 --
 ALTER TABLE `video_subtitles`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Contraintes pour les tables déchargées
@@ -961,8 +940,7 @@ ALTER TABLE `video_subtitles`
 -- Contraintes pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  ADD CONSTRAINT `fk_admin_video_user` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `fk_admin_video_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `admin_video_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
 
 --
 -- Contraintes pour la table `assignment`
@@ -997,12 +975,6 @@ ALTER TABLE `film_tag`
   ADD CONSTRAINT `film_tag_ibfk_2` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`);
 
 --
--- Contraintes pour la table `newsletter_deliveries`
---
-ALTER TABLE `newsletter_deliveries`
-  ADD CONSTRAINT `fk_delivery_newsletter` FOREIGN KEY (`newsletter_id`) REFERENCES `newsletters` (`id`) ON DELETE CASCADE;
-
---
 -- Contraintes pour la table `social_media`
 --
 ALTER TABLE `social_media`
@@ -1018,20 +990,13 @@ ALTER TABLE `still`
 -- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`id`) REFERENCES `faq` (`id`);
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id`) REFERENCES `cms` (`id`);
 
 --
 -- Contraintes pour la table `video_subtitles`
 --
 ALTER TABLE `video_subtitles`
   ADD CONSTRAINT `fk_video_subtitles_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `video_tag`
---
-ALTER TABLE `video_tag`
-  ADD CONSTRAINT `fk_video_tag_tag` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_video_tag_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
