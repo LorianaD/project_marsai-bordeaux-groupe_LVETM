@@ -33,7 +33,7 @@ import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 import AdminLogin from "./components/login/LoginForm.jsx";
 import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
-import SectionConceptForm from "./components/Form/CMS/Home/SectionconceptForm.jsx";
+import SectionConceptForm from "./components/Form/CMS/Home/SectionConceptForm.jsx";
 import SectionGoalForm from "./components/Form/CMS/Home/SectionGoalForm.jsx";
 
 // Newsletter admin

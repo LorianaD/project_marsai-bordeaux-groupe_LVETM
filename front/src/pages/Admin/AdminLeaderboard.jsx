@@ -88,7 +88,7 @@ export default function AdminLeaderboard() {
         <div className="flex gap-7">
           <AdminLayoutSidebar active="overview" />
 
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <button
                 type="button"
@@ -109,9 +109,11 @@ export default function AdminLeaderboard() {
               </button>
             </div>
 
-            <AdminHero name="Ocean" />
+            <div className="mt-5">
+              <AdminHero name="Ocean" />
+            </div>
 
-            <div className="mt-10">
+            <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 LEADERBOARD OFFICIEL
               </div>
@@ -289,7 +291,7 @@ export default function AdminLeaderboard() {
 
               <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>
