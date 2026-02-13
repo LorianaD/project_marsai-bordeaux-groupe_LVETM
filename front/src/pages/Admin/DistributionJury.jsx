@@ -41,28 +41,27 @@ export default function DistributionJury() {
           <AdminLayoutSidebar active="distribution-jury" />
 
           {/* Contenu principal */}
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             {/* Bouton menu mobile */}
             <div className="mb-4 flex lg:hidden">
               <button
+                type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5"
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
               >
-                Menu
+                ☰ Menu
               </button>
             </div>
 
             {/* Hero admin */}
-            <AdminHero />
+            <div className="mt-5">
+              <AdminHero />
+            </div>
 
             {/* En-tête de page */}
             <h1 className="mt-10 text-[42px] font-extrabold tracking-tight">
               DISTRIBUTION & JURY
             </h1>
-            <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-              Informations des membres du jury pour l’administration.
-            </p>
-
             {/* Grille des membres du jury */}
             <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {/* État de chargement */}
@@ -120,7 +119,7 @@ export default function DistributionJury() {
                   </div>
                 ))}
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

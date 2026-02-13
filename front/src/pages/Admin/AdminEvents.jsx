@@ -8,6 +8,8 @@ import {
   togglePublish,
 } from "../../services/Events/AdminEventApi.js";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
+import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+import AdminHero from "../../components/admin/AdminHero.jsx";
 import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
@@ -18,6 +20,7 @@ export default function AdminEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [editing, setEditing] = useState(null);
 
   // formulaire
@@ -227,61 +230,35 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
-        <AdminLayoutSidebar active="events" />
+      <AdminSidebarModal
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        active="events"
+      />
 
-        {/* MAIN */}
-        <main className="flex-1">
-          {/* Top Bar */}
-          <div className="flex items-center justify-between gap-3 rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-3">
-            <div className="flex items-center gap-3">
-              <span className="rounded-full bg-black/10 dark:bg-white/10 px-4 py-2 text-[20px] font-semibold tracking-[0.22em] uppercase">
-                MARS <span className="text-[#F6339A]">AI</span>
-              </span>
+      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+        <div className="flex gap-7">
+          <AdminLayoutSidebar active="events" />
 
-              <div className="hidden md:block">
-                <p className="text-[16px] font-semibold">
-                  Administration — <span className="text-black/70 dark:text-white/70">Événements</span>
-                </p>
-                <p className="text-[15px] text-black/60 dark:text-white/60">Gérer planning, workshops et inscriptions.</p>
-              </div>
+          <main className="min-w-0 flex-1">
+            {/* Menu mobile */}
+            <div className="mb-4 flex items-center justify-between lg:hidden">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(true)}
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
+              >
+                ☰ Menu
+              </button>
             </div>
+
+          {/* Hero — même bloc que Overview / Gestion films */}
+          <div className="mt-5">
+            <AdminHero name="Ocean" />
           </div>
 
-          {/* Hero */}
+          {/* Contenu Planning & Workshops */}
           <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5">
-            {/* Banner */}
-            <div className="relative h-[140px] overflow-hidden">
-              <img
-                src="/imgs/backgroundSections/DashboardSectionHero.png"
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
-              <div className="absolute inset-0 p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm text-white/80">Heureux de vous revoir,</p>
-                    <h1 className="mt-1 text-2xl font-semibold text-white">
-                      Oceane Brise <span className="text-white/80">(Admin)</span>
-                    </h1>
-                    <p className="mt-2 max-w-xl text-xs text-white/60">
-                      Gérez l’agenda du festival à Marseille et le flux des participants.
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 dark:border-emerald-400/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-200 hover:bg-emerald-500/15"
-                  >
-                    <span className="inline-block h-2 w-2 rounded-full bg-emerald-300" />
-                    Event management
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Content */}
             <div className="p-6">
               <h2 className="text-xl font-semibold tracking-tight">PLANNING & WORKSHOPS</h2>
               <p className="mt-1 text-sm text-black/60 dark:text-white/60">
@@ -402,12 +379,13 @@ useEffect(() => {
             </div>
           </section>
         </main>
+        </div>
       </div>
 
       {/* MODAL (création / édition) */}
       {modalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-[#F6339A]/60 dark:bg-[#0b0b0b] p-6">
+          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-[#F6339A]/60 dark:bg-[#0b0b0b] shadow-xl dark:shadow-[0_0_40px_rgba(246,51,154,0.2)] p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold tracking-[0.22em] uppercase text-black/60 dark:text-white/60">

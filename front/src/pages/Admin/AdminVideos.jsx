@@ -119,7 +119,7 @@ export default function AdminVideos() {
           <AdminLayoutSidebar active="gestion-films" />
 
           {/* CONTENT */}
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             {/* Mobile top actions */}
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <button
@@ -139,13 +139,12 @@ export default function AdminVideos() {
               </button>
             </div>
 
-            {/* HERO */}
-            <div className="min-w-0">
+            <div className="mt-5 min-w-0">
               <AdminHero name="Ocean" />
             </div>
 
             {/* Title */}
-            <div className="mt-10">
+            <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 FILMS SOUMIS
               </div>
@@ -367,7 +366,7 @@ export default function AdminVideos() {
               {/* ✅ bottom fade (FIX DARK) */}
               <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>
