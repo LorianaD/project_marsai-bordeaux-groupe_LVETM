@@ -407,7 +407,7 @@ useEffect(() => {
       {/* MODAL (création / édition) */}
       {modalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-[#F6339A]/60 dark:bg-[#0b0b0b] p-6">
+          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-[#F6339A]/60 dark:bg-[#0b0b0b] shadow-xl dark:shadow-[0_0_40px_rgba(246,51,154,0.2)] p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold tracking-[0.22em] uppercase text-black/60 dark:text-white/60">

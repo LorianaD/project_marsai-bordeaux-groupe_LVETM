@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminHero from "../../components/admin/AdminHero";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -299,7 +299,7 @@ export default function AdminNewsletterEditor() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex">
-        <AdminSidebar active="newsletters-builder" />
+        <AdminLayoutSidebar active="newsletters-builder" />
         <main className="flex-1 px-8 py-8">
           <AdminHero />
           <div className="mt-10 opacity-70">Chargement…</div>
@@ -310,7 +310,7 @@ export default function AdminNewsletterEditor() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex">
-      <AdminSidebar active="newsletters-builder" />
+      <AdminLayoutSidebar active="newsletters-builder" />
       <main className="flex-1 px-8 py-8">
         <AdminHero />
 

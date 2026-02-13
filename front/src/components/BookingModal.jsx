@@ -27,7 +27,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={onClose}>
-      <div className="bg-white dark:bg-black rounded-2xl border border-black/10 dark:border-[#F6339A]/60 shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white dark:bg-black rounded-2xl border border-black/10 dark:border-[#F6339A]/60 shadow-xl dark:shadow-[0_0_40px_rgba(246,51,154,0.4)] max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold text-black dark:text-white">
           Réserver pour : {event.title}
         </h3>
