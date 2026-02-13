@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminHero from "../../components/admin/AdminHero";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -55,13 +55,8 @@ export default function AdminNewsletter() {
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="flex">
-        {/* Sidebar */}
-        <div className="w-[320px] shrink-0">
-          {/* ✅ active correct */}
-          <AdminSidebar active="newsletter-subs" />
-        </div>
+        <AdminLayoutSidebar active="newsletter-subs" />
 
-        {/* Main */}
         <main className="flex-1 px-8 py-8">
           <AdminHero />
 
