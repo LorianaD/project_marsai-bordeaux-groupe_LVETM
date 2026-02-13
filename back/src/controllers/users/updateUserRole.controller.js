@@ -2,12 +2,15 @@ import { updateUserRoleService } from "../../services/users/updateUserRole.servi
 
 // changer le role de l'utilisateur
 export async function updateUserRoleController(req, res, next) {
-    try {
-        const { id } = req.params;
-        const { role } = req.body;
-        await updateUserRoleController(id, role);
-        res.json({ success: true, message: "Role updated" });
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+    await updateUserRoleService(id, role);
+    res.json({
+      success: true,
+      message: "Role updated",
+    });
+  } catch (error) {
+    next(error);
+  }
 }
