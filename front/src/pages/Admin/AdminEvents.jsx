@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { clamp, getDayKeyFromDate, getDayTabsFromEvents } from "./AdminEvents.utils.js";
 import {
   getAdminEvents,
@@ -14,7 +15,7 @@ import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
 export default function AdminEvents() {
- 
+  const navigate = useNavigate();
   const [day, setDay] = useState(null);
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
@@ -371,7 +372,7 @@ useEffect(() => {
                       onEdit={() => openEdit(ev)}
                       onDelete={() => onDelete(ev)}
                       onTogglePublish={() => onTogglePublish(ev)}
-                      onParticipants={() => alert("TODO: page participants / modal")}
+                      onParticipants={() => navigate(`/admin/events/${ev.id}/participants`)}
                     />
                   ))
                 )}
