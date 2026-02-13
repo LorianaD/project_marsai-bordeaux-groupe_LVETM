@@ -118,12 +118,6 @@ function LoginForm() {
         {/* Liens */}
         <div className="mt-6 flex flex-col items-center gap-2 text-center text-sm">
           <Link
-            to="/admin/register"
-            className="text-black/70 underline hover:text-black dark:text-white/70 dark:hover:text-white"
-          >
-            Créer un compte admin
-          </Link>
-          <Link
             to="/"
             className="text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white"
           >
