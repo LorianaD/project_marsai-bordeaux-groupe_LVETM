@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import AdminHero from "../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../components/admin/AdminLayoutSidebar.jsx";
+import AdminTopBar from "../components/admin/AdminTopBar.jsx";
 import AdminSidebarModal from "../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -108,9 +109,16 @@ export default function Overview() {
               </button>
             </div>
 
-            <AdminHero name="Ocean" />
+            <AdminTopBar
+              pageTitle="Overview"
+              subtitle="Leaderboard officiel et classement des votes."
+            />
 
-            <div className="mt-10">
+            <div className="mt-5">
+              <AdminHero name="Ocean" />
+            </div>
+
+            <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 LEADERBOARD OFFICIEL
               </div>

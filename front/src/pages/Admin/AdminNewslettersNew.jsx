@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminHero from "../../components/admin/AdminHero";
+import AdminHero from "../../components/admin/AdminHero.jsx";
+import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -53,7 +54,13 @@ export default function AdminNewsletterNew() {
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex">
       <AdminLayoutSidebar active="newsletters-builder" />
       <main className="flex-1 px-8 py-8">
-        <AdminHero />
+        <AdminTopBar
+          pageTitle="Nouvelle newsletter"
+          subtitle="Crée un brouillon, puis édite le contenu avec des blocs."
+        />
+        <div className="mt-5">
+          <AdminHero />
+        </div>
 
         <div className="mt-10">
           <h1 className="text-4xl font-black">NOUVELLE NEWSLETTER</h1>
