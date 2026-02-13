@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminTopBar from "../../components/admin/AdminTopBar.jsx";
+import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -38,6 +38,7 @@ function StatusBadge({ status }) {
 
 export default function AdminNewsletters() {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -59,19 +60,33 @@ export default function AdminNewsletters() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex">
-      <AdminLayoutSidebar active="newsletters-builder" />
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+      <AdminSidebarModal
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        active="newsletters-builder"
+      />
 
-      <main className="flex-1 px-8 py-8">
-        <AdminTopBar
-          pageTitle="Newsletters"
-          subtitle="Brouillons, programmation et historique d'envoi."
-        />
-        <div className="mt-5">
-          <AdminHero />
-        </div>
+      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+        <div className="flex gap-7">
+          <AdminLayoutSidebar active="newsletters-builder" />
 
-        <div className="mt-10 flex items-center justify-between">
+          <main className="min-w-0 flex-1">
+            <div className="mb-4 flex lg:hidden">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(true)}
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
+              >
+                ☰ Menu
+              </button>
+            </div>
+
+            <div className="mt-5">
+              <AdminHero />
+            </div>
+
+            <div className="mt-10 flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-black">NEWSLETTERS</h1>
             <p className="mt-2 text-sm opacity-70">
@@ -98,9 +113,9 @@ export default function AdminNewsletters() {
               + Nouvelle newsletter
             </button>
           </div>
-        </div>
+            </div>
 
-        <div className="mt-8 space-y-4">
+            <div className="mt-8 space-y-4">
           {items.map((n) => {
             const scheduled = formatDateTime(n.scheduled_at);
             const sent = formatDateTime(n.sent_at);
@@ -149,8 +164,10 @@ export default function AdminNewsletters() {
           {!loading && items.length === 0 && (
             <div className="opacity-60 text-sm">Aucune newsletter.</div>
           )}
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
