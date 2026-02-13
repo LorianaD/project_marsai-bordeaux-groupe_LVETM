@@ -104,7 +104,7 @@ function SectionHero() {
 
                     </Link>
 
-                    <Link className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
+                    <Link to="/learn-more" className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
                         
                         {isVisible(section, "ctaLearnMore") && (
                             <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
