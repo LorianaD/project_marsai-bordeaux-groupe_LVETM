@@ -3,6 +3,7 @@
       "title_main": "MARS",
       "title_accent":"AI",
       "protocol": "le protocole temporel 2026",
+      "protocol_icon":"../src/assets/imgs/icones/iconStars.svg",
       "tagline_before": "Imaginez des",
       "tagline_highlight": "Futurs",
       "tagline_after": "souhaitables",
@@ -14,21 +15,26 @@
       "ctaLearnMore_signe":"+"
    },
    "concept":{
-      "OneMinute":{
+      "title_main": "Concept du festival",
+      "card1":{
          "title": "1 minute",
-         "description": "Format ultra-court pour un impact maximum."
+         "description": "Format ultra-court pour un impact maximum.",
+         "title_color":"#C27AFF"
       },
-      "free": {
+      "card2": {
          "title": "Gratuité",
-         "description": "Conférences et workshops accessibles."
+         "description": "Conférences et workshops accessibles.",
+         "title_color":"#00D492"
       },
-      "forAll": {
+      "card3": {
         "title": "Pour tous",
-        "description": "Professionnels, étudiants et curieux."
+        "description": "Professionnels, étudiants et curieux.",
+         "title_color":"#FB64B6"
       },
-      "expertise": {
+      "card4": {
         "title": "Expertise",
-        "description": "Leaders mondiaux de l’IA générative."
+        "description": "Leaders mondiaux de l’IA générative.",
+         "title_color":"#2B7FFF"
       }      
    },
    "award":{
@@ -37,32 +43,36 @@
       "title2":"compétition",
       "description":"Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.",
       "ctaSeeMore":"Voir la sélection",
+      "ctaSeeMore_link":"/gallery",
       "loading":"Chargement des vidéos...",
       "error":"Impossible de charger les vidéos:",
       "notFound":"Pas encore de vidéos.",
       "ariaViewFilm": "Voir le film : {{title}}"
    },
    "goal":{
-      "title": "Objectifs du",
-      "title2": "festival",
+      "title_main": "Objectifs du",
+      "title_accent": "festival",
       "cards" : {
          "card1":{
             "title":"L'humain au centre",
-            "description":"Mettre l'humain au coeur de la création pour ne pas perdre l'émotion."
+            "description":"Mettre l'humain au coeur de la création pour ne pas perdre l'émotion.",
+            "icon":"/src/assets/imgs/icones/IconTarget.svg"
          },
          "card2":{
             "title":"Challenge créatif",
-            "description":"Challenger la créativité grâce à un format ultra court de 60s."
+            "description":"Challenger la créativité grâce à un format ultra court de 60s.",
+            "icon":"/src/assets/imgs/icones/IconLightning.svg"
          },
          "card3":{
             "title":"Futurs souhaitables",
-            "description":"Explorer les futurs désirables via les technologies émergentes."
+            "description":"Explorer les futurs désirables via les technologies émergentes.",
+            "icon":"/src/assets/imgs/icones/IconRocket.svg"
          }
       }
    },
    "events":{
-      "title1":"Deux journées de",
-      "title2":"Conférences gratuites",
+      "title_main":"Deux journées de",
+      "title_accent":"Conférences gratuites",
       "list":{
          "item1":"Débats engagés sur l’éthique et le futur",
          "item2":"Confrontations d'idées entre artistes et tech",
@@ -86,8 +96,8 @@
    },
    "closingEvent":{
       "eyebrow":"Soirée de Clôture",
-      "title":"MARS.A.I",
-      "title2":"NIGHT",
+      "title_main":"MARS.A.I",
+      "title_accent":"NIGHT",
       "description":{
          "ligne1":"Fête Électro mêlant IA et futurs souhaitables.",
          "ligne2":"Une expérience immersive sonore et visuelle."
@@ -129,8 +139,8 @@
    },
    "projectedStats": {
       "heading": {
-         "titleLine1": "Chiffres",
-         "titleLine2": "Projetés",
+         "title_main": "Chiffres",
+         "title_accent": "Projetés",
          "tagline": "Échelle mondiale, impact local."
       },
       "stats": [
@@ -148,7 +158,7 @@
    },
    "partnersSection": {
       "eyebrow": "Nos Soutiens",
-      "titleLine1": "Ils soutiennent ",
-      "titleLine2": "le futur"
+      "title_main": "Ils soutiennent ",
+      "title_accent": "le futur"
    }
 }

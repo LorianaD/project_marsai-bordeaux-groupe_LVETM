@@ -10,7 +10,7 @@ async function getAllContent() {
     console.log(query);
     
     const [rows] = await pool.execute(query);
-    console.log(rows);
+    // console.log(rows);
     
     return rows;
 

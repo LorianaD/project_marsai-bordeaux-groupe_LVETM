@@ -19,25 +19,26 @@ function Footer() {
   ];
 
   return (
-    <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-white/10 dark:bg-black dark:text-white">
+    <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
 
-      <div className="mx-auto w-full max-w-[1280px] px-[40px] py-[60px]">
 
-        {/* GRID PRINCIPAL EXACT MAQUETTE */}
+      <div className="mx-auto w-full px-[60px] py-[60px]">
+
+        {/* GRID PRINCIPAL */}
+
         <div className="grid grid-cols-[340px_1fr_500px] gap-[80px] items-start">
-
           {/* LEFT */}
           <div>
             <Link to="/">
               <h2 className="text-3xl font-semibold tracking-tight">
-                MARS<span className="text-violet-600">AI</span>
+                {t("brand.logo1")}
+                <span className="text-violet-600">{t("brand.logo2")}</span>
               </h2>
             </Link>
 
-            {/* ✅ Texte exact maquette */}
-            <p className="mt-6 max-w-[320px] text-sm italic leading-7 text-black/80 dark:text-white/80">
-              “La plateforme mondiale de la narration générative,
-              ancrée dans la lumière de Marseille.”
+            {/* Texte exact maquette */}
+            <p className="mt-6 text-sm italic leading-7 text-black/80 dark:text-white/80">
+              {t("brand.quote")}
             </p>
 
             {/* SOCIAL */}
@@ -50,7 +51,7 @@ function Footer() {
                     flex items-center justify-center
                     w-[48px] h-[48px]
                     rounded-full
-                    border border-black/15 dark:border-white/15
+                    border border-black/15 dark:border-[#F6339A]/60
                     bg-[#ECECEC] dark:bg-white/5
                     transition
                     hover:scale-105
@@ -72,40 +73,57 @@ function Footer() {
 
           {/* CENTER */}
           <div className="grid grid-cols-2 gap-x-[100px]">
-
             {/* NAVIGATION */}
             <div>
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
-                {t("navigation")}
+                {t("sections.navigation")}
               </h3>
 
               <ul className="mt-8 space-y-6 text-sm">
-                <li><Link to="/gallery">{t("gallery")}</Link></li>
-                <li><Link to="/events">{t("program")}</Link></li>
-                <li><Link to="/events">{t("tickets")}</Link></li>
+                <li>
+                  <Link to="/gallery">{t("links.gallery")}</Link>
+                </li>
+                <li>
+                  <Link to="/events">{t("links.program")}</Link>
+                </li>
+                <li>
+                  <Link to="/events">{t("links.tickets")}</Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/login"
+                    className="hover:text-violet-600 transition"
+                  >
+                    Espace administrateur
+                  </Link>
+                </li>
               </ul>
             </div>
 
             {/* LEGAL */}
             <div>
               <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
-                {t("legal")}
+                {t("sections.legal")}
               </h3>
 
               <ul className="mt-8 space-y-6 text-sm">
-                <li><Link to="/partner">{t("partners")}</Link></li>
-                <li><Link to="/faq">{t("faq")}</Link></li>
-                <li><Link to="/contact">{t("contact")}</Link></li>
+                <li>
+                  <Link to="/partner">{t("links.partners")}</Link>
+                </li>
+                <li>
+                  <Link to="/faq">{t("links.faq")}</Link>
+                </li>
+                <li>
+                  <Link to="/contact">{t("links.contact")}</Link>
+                </li>
               </ul>
             </div>
-
           </div>
 
           {/* RIGHT - NEWSLETTER */}
           <div className="justify-self-end">
             <Newsletter />
           </div>
-
         </div>
 
         {/* SEPARATOR */}
@@ -113,9 +131,8 @@ function Footer() {
 
         {/* BOTTOM BAR */}
         <div className="mt-[30px] flex items-center justify-between opacity-70">
-
           <span className="text-[10px] font-bold tracking-[5px] uppercase">
-            © 2026 MARS.AI PROTOCOL · MARSEILLE HUB
+            {t("bottom.copyright")}
           </span>
 
           <div className="flex items-center gap-[48px]">
@@ -127,14 +144,11 @@ function Footer() {
               to="/legal"
               className="text-[10px] font-bold tracking-[5px] uppercase"
             >
-              {t("legal")}
+              {t("links.legal")}
             </Link>
           </div>
-
         </div>
-
       </div>
-
     </footer>
   );
 }

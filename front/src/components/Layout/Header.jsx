@@ -12,16 +12,23 @@ import { useState } from "react";
 function Header() {
     // console.log("function header ok");
     
+    // t = traduit, i18n = gere les langues
     const { t, i18n } = useTranslation("header");
 
     const toggleLang = () => {
 
+        // langue actuelle et potensielle
         const next = i18n.language?.startsWith("fr") ? "en" : "fr";
+
+        // change la langue de toute l'application / de tous le web
         i18n.changeLanguage(next);
+
+        // stocke la langue choisie pour : la restaure au rechargement et la garde en base à la préférence utilisateur
         localStorage.setItem("lang", next);
 
     };
 
+    // permet d' afficher le drapeau en base à la langue et changer les textes
     const isFr = i18n.language?.startsWith("fr");
 
     const [ isNavOpen, setIsNavOpen ] = useState(false);
@@ -30,7 +37,7 @@ function Header() {
 
     return(
         <>
-            <header className="flex items-center justify-between w-full p-2 my-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 text-[#3B82F6] dark:text-[#FFFFFF]">
+            <header className="flex items-center justify-between w-full p-2 my-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 text-[#3B82F6] dark:text-[#FFFFFF] dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
                 
                 <Link to="/">
                     <h1 className="text-center font-bold uppercase text-[14px] leading-[20px] tracking-[-0.7px] md:text-[20px] md:leading-[28px] md:tracking-[-0.5px]">
@@ -57,14 +64,14 @@ function Header() {
                     <button
                         type="button"
                         onClick={toggleLang}
-                        className="h-[46px] cursor-pointer"
+                        className="h-[46px] cursor-pointer flex items-center justify-center rounded-lg dark:bg-white/10 dark:p-0.5"
                         aria-label={isFr ? "Switch to English" : "Passer en français"}
                         title={isFr ? "English" : "Français"}
                     >
                         <img
                             src={isFr ? englishFlag : frenchFlag}
                             alt={isFr ? "English" : "Français"}
-                            className="h-full w-full "
+                            className="h-full w-full object-contain"
                         />
                     </button>
                 </div>

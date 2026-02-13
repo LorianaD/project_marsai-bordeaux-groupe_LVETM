@@ -1,8 +1,5 @@
-
-
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
-
-
+const base = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_BASE = base.endsWith("/api") ? base : `${base}/api`;
 
 // ADMIN — récupérer tous les events (publiés + brouillons)
 export async function getAdminEvents() {

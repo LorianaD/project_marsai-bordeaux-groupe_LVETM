@@ -64,3 +64,43 @@ export const deleteEventById = async (id) => {
   const [result] = await pool.execute("DELETE FROM events WHERE id = ?", [id]);
   return result.affectedRows > 0;
 };
+
+//mettre le statut publichs 
+export const updateEventPublished = async (id, published) => {
+  const value = published ? 1 : 0;
+  await pool.execute( "UPDATE events SET published = ? WHERE id = ?", [value, id]);
+  const updated = await findEventById(id);
+  return updated || { id: Number(id), published };
+};
+
+// Liste page publique : uniquement les événements publiés
+export const findAllPublishedEvents = async () => {
+  const [rows] = await pool.execute(
+    "SELECT id, title, description, date, length, stock, illustration, location FROM events WHERE published = 1 ORDER BY date ASC"
+  );
+  return rows;
+};
+
+// Liste page publique avec nombre de réservations (pour afficher les places restantes)
+export const findAllPublishedEventsWithRegistered = async () => {
+  const [rows] = await pool.execute(
+    `SELECT e.id, e.title, e.description, e.date, e.length, e.stock, e.illustration, e.location,
+      (SELECT COUNT(*) FROM bookings b WHERE b.event_id = e.id) AS registered
+     FROM events e
+     WHERE e.published = 1
+     ORDER BY e.date ASC`
+  );
+  return rows;
+};
+
+// liste admin tous les events avec nmbr de réserve
+export const findAllEventsForAdmin = async () => {
+  const [rows] = await pool.execute(
+    `SELECT e.id, e.title, e.description, e.date, e.length, e.stock, e.illustration, e.location, e.published,
+      (SELECT COUNT(*) FROM bookings b WHERE b.event_id = e.id) AS registered
+     FROM events e
+     ORDER BY e.date ASC`
+  );
+  return rows;
+};
+

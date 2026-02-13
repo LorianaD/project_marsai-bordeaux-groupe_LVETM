@@ -1,45 +1,33 @@
+// URL de l’API (fallback en local si variable d’environnement absente)
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-// Fonction async qui va aller chercher la liste des vidéos
+/**
+ * Récupère la liste des vidéos depuis le backend
+ */
 export async function fetchVideos() {
-
-  // On appelle l’API du backend pour récupérer les vidéos
   const res = await fetch(`${API_URL}/api/videos`, {
-
     method: "GET",
-
-    // On dit au serveur :
-    // “je m’attends à recevoir du JSON en réponse”
     headers: {
       Accept: "application/json",
     },
   });
 
-  // Si la réponse du serveur n’est PAS OK (ex: 400, 404, 500…)
+  // Si la réponse HTTP n’est pas OK → on construit une erreur détaillée
   if (!res.ok) {
-
-    // On prépare une variable pour stocker le message d’erreur
     let msg = "";
 
     try {
-      // On essaie de lire l’erreur comme du JSON
-      // (cas le plus courant avec une API)
+      // On tente de lire la réponse comme du JSON (cas API classique)
       const data = await res.json();
-
-      // On récupère le message le plus utile possible
       msg = data?.details || data?.error || JSON.stringify(data);
     } catch {
-      // Si ce n’est pas du JSON (ex: page HTML d’erreur),
-      // on lit le texte brut à la place
+      // Si ce n’est pas du JSON (ex: erreur HTML), on récupère le texte brut
       msg = await res.text().catch(() => "");
     }
 
-    // On déclenche une vraie erreur JavaScript
-    // avec le code HTTP + le message
     throw new Error(`Erreur API videos (${res.status}) ${msg}`);
   }
 
-  // Si tout s’est bien passé :
-  // on retourne les données JSON (la liste des vidéos)
+  // Retourne la liste des vidéos au format JSON
   return res.json();
 }

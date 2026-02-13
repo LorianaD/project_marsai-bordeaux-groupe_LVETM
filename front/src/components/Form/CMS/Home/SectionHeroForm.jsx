@@ -1,9 +1,9 @@
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
-import { updateContentApi, updateImageApi, updateActiveApi } from "../../../../services/CMS/UpdateContentApi.js";
+import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
 import CmsInput from "./Fields/CmsInput";
 import CmsHideToggle from "./Fields/CmsHideToggle";
 import CmsInputImage from "./Fields/CmsInputImage";
@@ -16,11 +16,34 @@ function SectionHeroForm() {
     // Page et section
     const page = "home";
     const section = "hero";
-    console.log("Page:", page, "Section:", section);
+    // console.log("Page:", page, "Section:", section);
 
-    const { values, handleChange, setValues } = useForm({
+    // champs des differents éléments dans la section
+    const fields = [
+        "protocol",
+        "protocol_icon",
+        "title_main",
+        "title_accent",
+        "tagline_before",
+        "tagline_highlight",
+        "tagline_after",
+        "desc1",
+        "desc2",
+        "ctaParticipate",
+        "ctaParticipate_signe",
+        "ctaLearnMore",
+        "ctaLearnMore_signe"
+    ];
+    // console.log(fields);
+
+    const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
+
+    const { values, handleChange } = useForm({
         protocol:"",
         protocol_is_active: 1,
+
+        protocol_icon: "",
+        protocol_icon_is_active: 1,
 
         title_main:"",
         title_main_is_active: 1,
@@ -59,32 +82,14 @@ function SectionHeroForm() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
-        console.log("Fonction handleSubmit OK");
+        // console.log("Fonction handleSubmit OK");
         
         event.preventDefault();
         setLoading(true);
 
         try {
 
-            console.log("try dans handleSubmit OK");
-            
-            // champs des differents éléments dans la section
-            const fields = [
-                "protocol",
-                "title_main",
-                "title_accent",
-                "tagline_before",
-                "tagline_highlight",
-                "tagline_after",
-                "desc1",
-                "desc2",
-                "ctaParticipate",
-                "ctaParticipate_signe",
-                "ctaLearnMore",
-                "ctaLearnMore_signe"
-            ];
-
-            console.log(fields);
+            // console.log("try dans handleSubmit OK");
 
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
@@ -108,20 +113,8 @@ function SectionHeroForm() {
                 // TEXTE VIDE
                 const empty = val === undefined || val === null || String(val).trim() === "";
 
-                if (empty) {
-
-                    await updateActiveApi({
-                        page,
-                        section,
-                        locale,
-                        content_key: key,
-                        order_index: i,
-                        is_active,
-                    });
-
-                    continue;
-
-                }
+                // si vide on continue sans rien changer
+                if (empty) continue;
 
                 // TEXTE NON VIDE
                 await updateContentApi({
@@ -152,7 +145,7 @@ function SectionHeroForm() {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col intems-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 
                 {/***** Titre du formulaire *****/}
                 <div className="flex items-center gap-[10px] self-stretch">
@@ -165,20 +158,28 @@ function SectionHeroForm() {
                     </h3>
                 </div>
 
-                <div className="flex flex-col intem-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+
                     {/* Gestion du protocol */}
-                    < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
-                        <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale}/>}
-                    />
+                    <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+
+                        < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
+                            <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                        />
+
+                        <CmsInputImage name="protocol_icon" label="Icon du protocol" value={values.protocol_icon} onChange={handleChange} placeholder={t("hero.protocol_icon")} rightSlot={
+                            <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
+
+                    </div>
 
                     {/* Gestion des Titres */}
-                    <div  className="flex flex-col md:flex-row justify-around pb-[10px] gap-[50px]">
+                    <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
                         {/* Gestion du titre principal en blanc */}
                         < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
                             <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                         />
 
-                        
                         {/* Gestion du titre accent ou sécondaire en dégradé */}
                         < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
                             <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -186,7 +187,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col md:flex-row md:intem-center p-[10px] gap-[30px] md:justify-around uppercase placeholder:uppercase">
+                    <div className="flex flex-col md:flex-row p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
 
                         < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
                             <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -203,7 +204,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion de la Déscription */}
-                    <div className="flex flex-col gap-[50px]">
+                    <div className="flex flex-col gap-[50px] w-full">
 
                         {/* Gestion de la déscription ligne 1 */}
 
@@ -220,7 +221,7 @@ function SectionHeroForm() {
                     </div>
 
                     {/* Gestion des boutons */}
-                    <div className="flex flex-col md:flex-row justify-around intem-center gap-[50px]">
+                    <div className="flex flex-col md:flex-row justify-around items-center gap-[50px] w-full">
                         {/* Gestion du premier bouton */}
                         <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
 

@@ -1,17 +1,28 @@
+import { useNavigate } from "react-router-dom";
+import { ADMIN_NAV } from "./adminNav.js";
+
 export default function AdminSidebarModal({
   open,
   onClose,
   active = "gestion-films",
 }) {
+  const navigate = useNavigate();
+
   if (!open) return null;
 
+  const handleItemClick = (path) => {
+    if (path) navigate(path);
+    onClose();
+  };
+
   // Élément de menu
-  const Item = ({ id, label, badge }) => {
+  const Item = ({ id, label, path, badge }) => {
     const isActive = id === active;
 
     return (
       <button
-        onClick={onClose}
+        type="button"
+        onClick={() => handleItemClick(path)}
         className={[
           "flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition",
           isActive
@@ -83,17 +94,16 @@ export default function AdminSidebarModal({
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation — même liste que AdminLayoutSidebar (adminNav.js) */}
         <div className="space-y-2 px-5">
-          <Item id="overview" label="Overview" />
-          <Item id="gestion-films" label="Gestion films" />
-          <Item id="distribution-jury" label="Distribution & Jury" />
-          <Item id="resultats" label="Résultats & classement" />
-          <Item id="leaderboard" label="Leaderboard officiel" />
-          <Item id="events" label="Evenements" />
-          <Item id="messages" label="Messages" badge="2" />
-          <Item id="festival-box" label="Festival Box" />
-          <Item id="config" label="Configuration Festival" />
+          {ADMIN_NAV.map((link) => (
+            <Item
+              key={link.id}
+              id={link.id}
+              label={link.label}
+              path={link.path}
+            />
+          ))}
         </div>
 
         {/* Carte footer */}

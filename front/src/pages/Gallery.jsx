@@ -73,7 +73,8 @@ export default function Gallery() {
   }, [filtered, page]);
 
   return (
-    <div className="min-h-screen text-neutral-900 dark:text-white">
+    
+    <div className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-white">
       <div className="mx-auto w-full max-w-6xl px-6 py-10">
         {/* Titre */}
         <div className="mb-8">

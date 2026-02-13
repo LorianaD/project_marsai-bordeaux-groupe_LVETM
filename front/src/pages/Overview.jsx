@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import AdminHero from "../components/admin/AdminHero.jsx";
-import AdminSidebar from "../components/admin/AdminSidebar.jsx";
+import AdminLayoutSidebar from "../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -85,11 +85,9 @@ export default function Overview() {
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <aside className="hidden shrink-0 lg:block">
-            <AdminSidebar active="overview" />
-          </aside>
+          <AdminLayoutSidebar active="overview" />
 
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <button
                 type="button"
@@ -110,9 +108,11 @@ export default function Overview() {
               </button>
             </div>
 
-            <AdminHero name="Ocean" />
+            <div className="mt-5">
+              <AdminHero name="Ocean" />
+            </div>
 
-            <div className="mt-10">
+            <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 LEADERBOARD OFFICIEL
               </div>
@@ -290,7 +290,7 @@ export default function Overview() {
 
               <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

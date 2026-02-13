@@ -12,9 +12,9 @@ function SectionProjected() {
         <section className="flex flex-col md:flex-row items-center justify-center gap-[48px] px-[20px] md:px-[34px] self-stretch w-full">
             <div className="flex w-full md:w-[300px] h-[160px] flex-col items-start gap-[24px] text-center md:text-left">
                 <h2 className="w-full text-[36px] md:text-[60px] font-bold leading-[36px] md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase">
-                    {t("projectedStats.heading.titleLine1")}
+                    {t("projectedStats.heading.title_main")}
                     <span className="text-[#F6339A] block">
-                        {t("projectedStats.heading.titleLine2")}
+                        {t("projectedStats.heading.title_accent")}
                     </span>
                 </h2>
                 <p className="w-full text-[12px] font-normal leading-[16px] tracking-[1.2px] uppercase">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { clamp, NAV, DAY_TABS } from "./AdminEvents.utils.js";
+import { clamp, getDayKeyFromDate, getDayTabsFromEvents } from "./AdminEvents.utils.js";
 import {
   getAdminEvents,
   createEvent,
@@ -7,20 +7,22 @@ import {
   deleteEvent,
   togglePublish,
 } from "../../services/Events/AdminEventApi.js";
-
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
+import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+import AdminHero from "../../components/admin/AdminHero.jsx";
 import EventCard from "../../components/admin/EventCard.jsx";
 
 // Page Admin : gestion des événements
 export default function AdminEvents() {
  
-  const [activeNav, setActiveNav] = useState("Événements");
-  const [day, setDay] = useState("vendredi");
+  const [day, setDay] = useState(null);
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [editing, setEditing] = useState(null);
- 
+
   // formulaire
   const [form, setForm] = useState({
     title: "",
@@ -29,12 +31,10 @@ export default function AdminEvents() {
     location: "",
     capacity: 30,
     type: "atelier",
-    day: "vendredi", // journée choisie POUR l’event (pas le filtre)
   });
 
 //récupère les events
-//récupère les events
-//récupère les events
+
 useEffect(() => {
   (async () => {
     try {
@@ -43,14 +43,7 @@ useEffect(() => {
 
       const normalized = Array.isArray(data)
         ? data.map((ev) => {
-            let dayKey = "vendredi";
-            if (ev.date) {
-              const d = new Date(ev.date);
-              const dayNum = d.getDate();
-              const month = d.getMonth();
-              if (month === 5 && dayNum === 14) dayKey = "samedi";
-              if (month === 5 && dayNum === 13) dayKey = "vendredi";
-            }
+            const dayKey = getDayKeyFromDate(ev.date);
             return {
               ...ev,
               day: ev.day ?? dayKey,
@@ -90,6 +83,17 @@ useEffect(() => {
       .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
   }, [events, day, query]);
 
+  // Onglets "jour" dérivés des events
+  const dayTabs = useMemo(() => getDayTabsFromEvents(events), [events]);
+
+  // Garder l’onglet sélectionné valide : s’il n’est plus dans dayTabs, passer au premier
+  useEffect(() => {
+    if (dayTabs.length === 0) return;
+    if (!dayTabs.some((t) => t.key === day)) {
+      setDay(dayTabs[0].key);
+    }
+  }, [dayTabs, day]);
+
   // 3) Stats calculées pour la journée affichée
   const stats = useMemo(() => {
     const dayEvents = events.filter((e) => e.day === day);
@@ -120,7 +124,6 @@ useEffect(() => {
       location: "",
       capacity: 30,
       type: "atelier",
-      day, // IMPORTANT : ici c’est form.day
     });
 
     setModalOpen(true);
@@ -137,14 +140,13 @@ useEffect(() => {
       location: ev.location || "",
       capacity: ev.capacity ?? 30,
       type: ev.type || "atelier",
-      day: ev.day || day, // journée de l’event
     });
 
     setModalOpen(true);
   }
 
   // Créer ou modifier  event
-   // Créer ou modifier  event
+   
    async function onSave(e) {
     e.preventDefault();
 
@@ -173,15 +175,22 @@ useEffect(() => {
           stock: editing.stock ?? capacity,
         };
         const updated = await updateEvent(editing.id, updatePayload);
+        const updatedDay = getDayKeyFromDate(updated.date);
         setEvents((prev) =>
-          prev.map((x) => (x.id === editing.id ? { ...x, ...updated, capacity, startAt: updated.date } : x))
+          prev.map((x) =>
+            x.id === editing.id
+              ? { ...x, ...updated, day: updatedDay, capacity, startAt: updated.date }
+              : x
+          )
         );
       } else {
         const created = await createEvent(apiPayload);
+        const createdDay = getDayKeyFromDate(created.date);
         setEvents((prev) => [
-          { ...created, day: form.day, type: form.type, capacity, startAt: created.date, published: false },
+          { ...created, day: createdDay, type: form.type, capacity, startAt: created.date, published: false },
           ...prev,
         ]);
+        setDay(createdDay ?? day);
       }
 
       setModalOpen(false);
@@ -191,7 +200,7 @@ useEffect(() => {
     }
   }
 
-  // Supprimer un event
+  // Suppr un event
   async function onDelete(ev) {
     const ok = confirm(`Supprimer "${ev.title}" ?`);
     if (!ok) return;
@@ -220,126 +229,54 @@ useEffect(() => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="mx-auto flex max-w-[1320px] gap-6 px-4 py-5">
-        {/* SIDEBAR */}
-        <aside className="hidden w-[270px] flex-col rounded-3xl border border-white/10 bg-white/5 p-4 md:flex">
-          {/* Profil */}
-          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-3">
-            <div className="h-10 w-10 rounded-full bg-white/10" />
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Name</p>
-              <p className="truncate text-xs text-white/60">RÉALISATEUR STUDIO</p>
+    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
+      <AdminSidebarModal
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        active="events"
+      />
+
+      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+        <div className="flex gap-7">
+          <AdminLayoutSidebar active="events" />
+
+          <main className="min-w-0 flex-1">
+            {/* Menu mobile */}
+            <div className="mb-4 flex items-center justify-between lg:hidden">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(true)}
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
+              >
+                ☰ Menu
+              </button>
             </div>
+
+          {/* Hero — même bloc que Overview / Gestion films */}
+          <div className="mt-5">
+            <AdminHero name="Ocean" />
           </div>
 
-          {/* Menu */}
-          <nav className="mt-4 space-y-1">
-            {NAV.map((item) => {
-              const active = item === activeNav;
-              return (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setActiveNav(item)}
-                  className={[
-                    "w-full rounded-xl px-3 py-2 text-left text-sm transition",
-                    active
-                      ? "bg-white/10 text-white"
-                      : "text-white/70 hover:bg-white/5 hover:text-white",
-                  ].join(" ")}
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </nav>
-
-          <div className="mt-4 flex-1 rounded-2xl border border-dashed border-white/10 bg-black/20" />
-
-          <div className="mt-4 rounded-2xl border border-white/10 bg-black/30 p-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold">Mars AI</p>
-                <p className="text-xs text-white/60">Collaborator</p>
-              </div>
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs">Admin</span>
-            </div>
-
-            <button
-              type="button"
-              className="mt-3 w-full rounded-xl bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15"
-            >
-              Log out
-            </button>
-          </div>
-        </aside>
-
-        {/* MAIN */}
-        <main className="flex-1">
-          {/* Top Bar */}
-          <div className="flex items-center justify-between gap-3 rounded-3xl border border-white/10 bg-white/5 px-5 py-3">
-            <div className="flex items-center gap-3">
-              <span className="rounded-full bg-white/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase">
-                MARS <span className="text-[#F6339A]">AI</span>
-              </span>
-
-              <div className="hidden md:block">
-                <p className="text-sm font-semibold">
-                  Administration — <span className="text-white/70">Événements</span>
-                </p>
-                <p className="text-xs text-white/60">Gérer planning, workshops et inscriptions.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero */}
-          <section className="mt-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-            {/* Banner */}
-            <div className="relative">
-              <div className="h-[140px] bg-[radial-gradient(circle_at_20%_20%,rgba(246,51,154,0.35),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(56,189,248,0.25),transparent_50%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(0,0,0,0.35))]" />
-              <div className="absolute inset-0 p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm text-white/80">Heureux de vous revoir,</p>
-                    <h1 className="mt-1 text-2xl font-semibold">
-                      Name <span className="text-white/60">(Admin)</span>
-                    </h1>
-                    <p className="mt-2 max-w-xl text-xs text-white/60">
-                      Gérez l’agenda du festival à Marseille et le flux des participants.
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/15"
-                  >
-                    <span className="inline-block h-2 w-2 rounded-full bg-emerald-300" />
-                    Event management
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Content */}
+          {/* Contenu Planning & Workshops */}
+          <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5">
             <div className="p-6">
               <h2 className="text-xl font-semibold tracking-tight">PLANNING & WORKSHOPS</h2>
-              <p className="mt-1 text-sm text-white/60">
+              <p className="mt-1 text-sm text-black/60 dark:text-white/60">
                 Créez, publiez, mettez à jour et suivez le remplissage en temps réel.
               </p>
 
               {/* Stats */}
               <div className="mt-5 grid gap-3 md:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
-                  <p className="text-xs text-white/60">Réservations totales</p>
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
+                  <p className="text-xs text-black/60 dark:text-white/60">Réservations totales</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.totalReservations}</p>
-                  <p className="mt-1 text-xs text-white/50">sur la journée sélectionnée</p>
+                  <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur la journée sélectionnée</p>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
-                  <p className="text-xs text-white/60">Taux de remplissage</p>
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
+                  <p className="text-xs text-black/60 dark:text-white/60">Taux de remplissage</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.fillRate}%</p>
-                  <div className="mt-3 h-2 w-full rounded-full bg-white/10">
+                  <div className="mt-3 h-2 w-full rounded-full bg-black/10 dark:bg-white/10">
                     <div
                       className="h-2 rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500"
                       style={{ width: `${stats.fillRate}%` }}
@@ -347,35 +284,41 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
-                  <p className="text-xs text-white/60">Événements publiés</p>
+                <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
+                  <p className="text-xs text-black/60 dark:text-white/60">Événements publiés</p>
                   <p className="mt-1 text-2xl font-semibold">{stats.publishedCount}</p>
-                  <p className="mt-1 text-xs text-white/50">sur {stats.eventsCount} événement(s)</p>
+                  <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur {stats.eventsCount} événement(s)</p>
                 </div>
               </div>
 
               {/* Controls */}
               <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                {/* Boutons jour (filtre) */}
+                {/* Boutons jour (filtre) — onglets dynamiques selon les dates des events */}
                 <div className="flex flex-wrap gap-2">
-                  {DAY_TABS.map((t) => {
-                    const active = t.key === day;
-                    return (
-                      <button
-                        key={t.key}
-                        type="button"
-                        onClick={() => setDay(t.key)}
-                        className={[
-                          "rounded-full px-4 py-2 text-xs font-semibold",
-                          active
-                            ? "bg-white/15 text-white"
-                            : "bg-black/35 text-white/70 hover:bg-white/10 hover:text-white",
-                        ].join(" ")}
-                      >
-                        {t.label}
-                      </button>
-                    );
-                  })}
+                  {dayTabs.length > 0 ? (
+                    dayTabs.map((t) => {
+                      const active = t.key === day;
+                      return (
+                        <button
+                          key={t.key}
+                          type="button"
+                          onClick={() => setDay(t.key)}
+                          className={[
+                            "rounded-full px-4 py-2 text-xs font-semibold",
+                            active
+                              ? "bg-black/15 text-black dark:bg-white/15 dark:text-white"
+                              : "bg-black/10 text-black/70 dark:bg-black/35 dark:text-white/70 hover:bg-black/15 hover:text-black dark:hover:bg-white/10 dark:hover:text-white",
+                          ].join(" ")}
+                        >
+                          {t.label}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <p className="text-xs text-black/60 dark:text-white/60">
+                      Aucun événement pour le moment —
+                    </p>
+                  )}
                 </div>
 
                 {/* Recherche + bouton ajouter */}
@@ -385,7 +328,7 @@ useEffect(() => {
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Rechercher un event, lieu, mot-clé…"
-                      className="w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-white/20"
+                      className="w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-2 text-sm text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/40 outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                     />
                   </div>
 
@@ -402,20 +345,20 @@ useEffect(() => {
               {/* List */}
               <div className="mt-6 space-y-4">
                 {loading ? (
-                  <div className="rounded-3xl border border-white/10 bg-black/30 p-6 text-sm text-white/70">
+                  <div className="rounded-3xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-6 text-sm text-black/70 dark:text-white/70">
                     Chargement…
                   </div>
                 ) : filtered.length === 0 ? (
-                  <div className="rounded-3xl border border-dashed border-white/15 bg-black/25 p-8">
+                  <div className="rounded-3xl border border-dashed border-black/15 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/25 p-8">
                     <p className="text-sm font-semibold">Aucun événement</p>
-                    <p className="mt-1 text-sm text-white/60">
+                    <p className="mt-1 text-sm text-black/60 dark:text-white/60">
                       Ajoute un workshop ou une conférence pour cette journée.
                     </p>
 
                     <button
                       type="button"
                       onClick={openCreate}
-                      className="mt-4 inline-flex rounded-2xl bg-white/10 px-4 py-2 text-xs font-semibold hover:bg-white/15"
+                      className="mt-4 inline-flex rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-2 text-xs font-semibold hover:bg-black/15 dark:hover:bg-white/15"
                     >
                       Créer un événement
                     </button>
@@ -436,15 +379,16 @@ useEffect(() => {
             </div>
           </section>
         </main>
+        </div>
       </div>
 
       {/* MODAL (création / édition) */}
       {modalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-[#0b0b0b] p-6">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
+          <div className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white dark:border-[#F6339A]/60 dark:bg-[#0b0b0b] shadow-xl dark:shadow-[0_0_40px_rgba(246,51,154,0.2)] p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold tracking-[0.22em] uppercase text-white/60">
+                <p className="text-xs font-semibold tracking-[0.22em] uppercase text-black/60 dark:text-white/60">
                   {editing ? "Modifier" : "Créer"} un événement
                 </p>
                 <h3 className="mt-1 text-lg font-semibold">
@@ -456,7 +400,7 @@ useEffect(() => {
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
-                className="rounded-2xl bg-white/10 px-3 py-2 text-sm hover:bg-white/15"
+                className="rounded-2xl bg-black/10 dark:bg-white/10 px-3 py-2 text-sm hover:bg-black/15 dark:hover:bg-white/15"
               >
                 ✕
               </button>
@@ -464,64 +408,64 @@ useEffect(() => {
 
             <form onSubmit={onSave} className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="md:col-span-2">
-                <label className="text-xs text-white/60">Titre</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Titre</label>
                 <input
                   value={form.title}
                   onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
                   required
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                   placeholder="Ex: Atelier — VFX assistés IA"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-xs text-white/60">Description</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Description</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
                   rows={3}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                   placeholder="Décris l’objectif, le contenu, la cible…"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Date & heure</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Date & heure</label>
                 <input
                   type="datetime-local"
                   value={form.startAt}
                   onChange={(e) => setForm((s) => ({ ...s, startAt: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Capacité</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Capacité</label>
                 <input
                   type="number"
                   min={0}
                   value={form.capacity}
                   onChange={(e) => setForm((s) => ({ ...s, capacity: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Lieu</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Lieu</label>
                 <input
                   value={form.location}
                   onChange={(e) => setForm((s) => ({ ...s, location: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                   placeholder="Ex: Auditorium Mucem"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-white/60">Type</label>
+                <label className="text-xs text-black/60 dark:text-white/60">Type</label>
                 <select
                   value={form.type}
                   onChange={(e) => setForm((s) => ({ ...s, type: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 >
                   <option value="atelier">Atelier</option>
                   <option value="masterclass">Masterclass</option>
@@ -530,23 +474,11 @@ useEffect(() => {
                 </select>
               </div>
 
-              <div>
-                <label className="text-xs text-white/60">Journée</label>
-                <select
-                  value={form.day}
-                  onChange={(e) => setForm((s) => ({ ...s, day: e.target.value }))}
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-black/35 px-4 py-3 text-sm outline-none focus:border-white/20"
-                >
-                  <option value="vendredi">Vendredi</option>
-                  <option value="samedi">Samedi</option>
-                </select>
-              </div>
-
               <div className="md:col-span-2 mt-2 flex flex-col-reverse gap-3 md:flex-row md:justify-end">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/15"
+                  className="rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-black/15 dark:hover:bg-white/15"
                 >
                   Annuler
                 </button>

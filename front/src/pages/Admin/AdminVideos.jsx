@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import StatusPill from "../../components/admin/StatusPill";
 import FeaturedToggle from "../../components/admin/FeaturedToggle";
 import AdminHero from "../../components/admin/AdminHero.jsx";
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
-import AdminSidebar from "../../components/admin/AdminSidebar.jsx";
 
 import {
   getAdminVideos,
@@ -116,13 +116,10 @@ export default function AdminVideos() {
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          {/* Sidebar desktop */}
-          <aside className="hidden shrink-0 lg:block">
-            <AdminSidebar active="gestion-films" />
-          </aside>
+          <AdminLayoutSidebar active="gestion-films" />
 
           {/* CONTENT */}
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             {/* Mobile top actions */}
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <button
@@ -142,13 +139,12 @@ export default function AdminVideos() {
               </button>
             </div>
 
-            {/* HERO */}
-            <div className="min-w-0">
+            <div className="mt-5 min-w-0">
               <AdminHero name="Ocean" />
             </div>
 
             {/* Title */}
-            <div className="mt-10">
+            <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 FILMS SOUMIS
               </div>
@@ -370,7 +366,7 @@ export default function AdminVideos() {
               {/* ✅ bottom fade (FIX DARK) */}
               <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

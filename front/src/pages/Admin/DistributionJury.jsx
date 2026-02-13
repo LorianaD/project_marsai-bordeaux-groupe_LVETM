@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminSidebar from "../../components/admin/AdminSidebar.jsx";
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -38,34 +38,30 @@ export default function DistributionJury() {
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          {/* Sidebar desktop */}
-          <aside className="hidden shrink-0 lg:block lg:sticky lg:top-10 lg:self-start">
-            <AdminSidebar active="distribution-jury" />
-          </aside>
+          <AdminLayoutSidebar active="distribution-jury" />
 
           {/* Contenu principal */}
-          <div className="min-w-0 flex-1">
+          <main className="min-w-0 flex-1">
             {/* Bouton menu mobile */}
             <div className="mb-4 flex lg:hidden">
               <button
+                type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5"
+                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
               >
-                Menu
+                ☰ Menu
               </button>
             </div>
 
             {/* Hero admin */}
-            <AdminHero />
+            <div className="mt-5">
+              <AdminHero />
+            </div>
 
             {/* En-tête de page */}
             <h1 className="mt-10 text-[42px] font-extrabold tracking-tight">
               DISTRIBUTION & JURY
             </h1>
-            <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-              Informations des membres du jury pour l’administration.
-            </p>
-
             {/* Grille des membres du jury */}
             <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {/* État de chargement */}
@@ -123,7 +119,7 @@ export default function DistributionJury() {
                   </div>
                 ))}
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

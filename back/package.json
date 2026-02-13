@@ -17,12 +17,14 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "googleapis": "^171.2.0",
+    "googleapis": "^171.4.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "mysql2": "^3.16.1",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.1",
     "nodemon": "^3.1.11",
     "zod": "^4.3.5"
   }
