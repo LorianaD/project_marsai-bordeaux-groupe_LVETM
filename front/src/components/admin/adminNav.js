@@ -40,8 +40,8 @@ export const ADMIN_NAV = [
     path: "/admin/newsletters",
   },
   {
-    id: "config",
+    id: "settings",
     label: "Configuration",
-    path: "/admin/config",
+    path: "/admin/settings",
   },
 ];

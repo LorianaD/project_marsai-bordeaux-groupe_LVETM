@@ -8,6 +8,7 @@ import CmsInput from "./Fields/CmsInput";
 import CmsHideToggle from "./Fields/CmsHideToggle";
 import CmsInputImage from "./Fields/CmsInputImage";
 import CmsInputFile from "./Fields/CmsInputFile.jsx";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
 
 function SectionHeroForm() {
 
@@ -252,7 +253,7 @@ function SectionHeroForm() {
                                 <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
-                            <CmsInput name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
+                            <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
                                 <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
@@ -260,9 +261,9 @@ function SectionHeroForm() {
                     </div>
 
                     <div className="w-full flex justify-center">
-                        <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                             Mettre à jour
-                        </button>
+                        </BtnSubmitForm>
                     </div>
                 </div>
             </form>
