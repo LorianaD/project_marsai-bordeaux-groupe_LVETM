@@ -10,8 +10,8 @@ function BtnSubmitForm({ type="submit", children,  loading = false, disabled = f
 
     const variants = {
         primary: "border border-[#DBE3E6] bg-white dark:bg-[#333] hover:bg-[#D5D5D5] dark:hover:bg-[#DBE3E6] dark:hover:text-[#000000]",
-        success: "bg-green-600 text-white hover:bg-green-700",
-        danger: "bg-red-600 text-white hover:bg-red-700",
+        success: "bg-[#51A2FF] text-white hover:bg-green-700",
+        danger: "bg-[#FF2B7F] text-white hover:bg-red-700",
     };
 
     return(

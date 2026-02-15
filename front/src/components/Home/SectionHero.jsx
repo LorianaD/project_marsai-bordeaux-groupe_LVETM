@@ -122,9 +122,9 @@ function SectionHero() {
                         )}
 
                         {isVisible(section, "ctaLearnMore_signe") && (
-                            <span className="flex flex-col justify-center text-[#AD46FF] text-center text-[24px] font-bold leading-[0] uppercase">
-                                {content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe")}
-                            </span>
+                            <div className="w-[20px] h-[20px]">
+                                <img src={resolveCmsAsset(content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe"))} alt="" />
+                            </div>
                         )}
                     </Link>
 
