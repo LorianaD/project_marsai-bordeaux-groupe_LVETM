@@ -33,22 +33,21 @@ function SectionHero() {
 
                 <div className="flex flex-col justify-center items-center gap-[10px] self-stretch">
                     
-                        <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
+                    <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
 
-                            {isVisible(section, "protocol_icon") && (
-                                <div className="">
-                                    <img src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
-                                </div>
-                            )}
+                        {isVisible(section, "protocol_icon") && (
+                            <div className="">
+                                <img src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
+                            </div>
+                        )}
 
-                            {isVisible(section, "protocol") && (
-                                <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
-                                    {content?.[section]?.protocol || t("hero.protocol")}
-                                </p>
-                            )}
+                        {isVisible(section, "protocol") && (
+                            <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                                {content?.[section]?.protocol || t("hero.protocol")}
+                            </p>
+                        )}
 
-                        </div>
-                    
+                    </div>
                     
                     <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[192px] tacking-[-2.4px] md:tracking-[-9.6px] uppercase text-[48px] md:text-[192px] text-center">
                         {isVisible(section, "title_main") && (
@@ -81,6 +80,7 @@ function SectionHero() {
                                 {content?.[section]?.tagline_after || t("hero.tagline_after")}
                             </span>
                         )}
+
                     </p>
                 </div>
 
@@ -97,7 +97,7 @@ function SectionHero() {
                 </div>
 
                 <div className="flex flex-col items-center justify-center px-[50px] md:flex-row md:items-start md:justify-end gap-6 md:px-[220px]">
-                    <Link to="participation" className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
+                    <Link to={content?.[section]?.ctaParticipate_link || t("hero.ctaParticipate_link")} className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
 
                         {isVisible(section, "ctaParticipate") && (
                             <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
@@ -113,7 +113,7 @@ function SectionHero() {
 
                     </Link>
 
-                    <Link to="/learn-more" className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
+                    <Link to={content?.[section]?.ctaLearnMore_link || t("hero.ctaLearnMore_link")} className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
                         
                         {isVisible(section, "ctaLearnMore") && (
                             <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
@@ -126,6 +126,7 @@ function SectionHero() {
                                 <img src={resolveCmsAsset(content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe"))} alt="" />
                             </div>
                         )}
+
                     </Link>
 
                 </div>

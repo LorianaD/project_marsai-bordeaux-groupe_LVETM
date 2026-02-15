@@ -11,8 +11,10 @@
       "desc2": "2 jours d'immersion au cœur de Marseille.",
       "ctaParticipate": "Participer",
       "ctaParticipate_signe": "../src/assets/imgs/icones/arrowRight.svg",
+      "ctaParticipate_link": "/participation",
       "ctaLearnMore": "En savoir plus",
-      "ctaLearnMore_signe":"+"
+      "ctaLearnMore_signe":"+",
+      "ctaLearnMore_link":"/learnMore"
    },
    "concept":{
       "title_main": "Concept du festival",
