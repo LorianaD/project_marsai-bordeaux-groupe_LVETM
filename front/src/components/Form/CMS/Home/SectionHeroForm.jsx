@@ -4,16 +4,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
-import CmsInput from "./Fields/CmsInput";
-import CmsHideToggle from "./Fields/CmsHideToggle";
-import CmsInputImage from "./Fields/CmsInputImage";
-import CmsInputFile from "./Fields/CmsInputFile.jsx";
+import CmsInput from "../Fields/CmsInput";
+import CmsHideToggle from "../Fields/CmsHideToggle";
+import CmsInputImage from "../Fields/CmsInputImage";
+import CmsInputFile from "../Fields/CmsInputFile.jsx";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
 
-function SectionHeroForm() {
+function SectionHeroForm({ forcedLocale }) {
 
     const { t, i18n } = useTranslation("home");
-    const locale = i18n.language.startsWith("fr") ? "fr" : "en";
+    const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
 
     // Page et section
     const page = "home";

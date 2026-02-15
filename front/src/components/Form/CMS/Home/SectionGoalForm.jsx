@@ -1,13 +1,13 @@
-import CmsInput from "./Fields/CmsInput"
+import CmsInput from "../Fields/CmsInput"
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
 import { useState } from "react";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
-import CmsTextarea from "./Fields/CmsTextarea";
-import CmsHideToggle from "./Fields/CmsHideToggle";
-import CmsInputImage from "./Fields/CmsInputImage";
+import CmsTextarea from "../Fields/CmsTextarea";
+import CmsHideToggle from "../Fields/CmsHideToggle";
+import CmsInputImage from "../Fields/CmsInputImage";
 
 function SectionConceptForm() {
 
