@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
-import DashboardUser from "../../components/admin/DashboardUser.jsx";
+import AdminDashboardContent from "../../components/admin/Dashboard/AdminDashboardContent.jsx";
 
 function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -29,10 +29,7 @@ function AdminDashboard() {
               </button>
             </div>
 
-            <section className="mt-5 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-[#F6339A]/60 dark:bg-white/5">
-              <h1 className="text-xl font-semibold tracking-tight">Dashboard</h1>
-              <DashboardUser />
-            </section>
+            <AdminDashboardContent />
           </main>
         </div>
       </div>

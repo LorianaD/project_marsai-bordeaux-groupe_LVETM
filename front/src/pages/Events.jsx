@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import agendaIcon from "../assets/imgs/icones/agenda.png";
 import arrowIcon from "../assets/imgs/icones/arrow.png";
 import baliseIcon from "../assets/imgs/icones/balise.png";
@@ -228,13 +229,21 @@ function Events() {
                           return `${remaining} place${remaining !== 1 ? "s" : ""} restante${remaining !== 1 ? "s" : ""}`;
                         })()}
                       </p>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedEvent(w)}
-                        className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase"
-                      >
-                        RÉSERVER SA PLACE
-                      </button>
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <Link
+                          to={`/events/${w.id}`}
+                          className="inline-flex items-center justify-center rounded-full border border-black/20 dark:border-[#F6339A]/60 px-4 py-2 text-xs font-semibold text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5"
+                        >
+                          Voir le détail
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedEvent(w)}
+                          className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase"
+                        >
+                          RÉSERVER SA PLACE
+                        </button>
+                      </div>
                     </li>
                   ))
                 : (  
