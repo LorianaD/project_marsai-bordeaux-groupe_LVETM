@@ -6,14 +6,14 @@ import {
 } from "../../services/Admin/Users.api.js";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-const ROLE_OPTIONS = ["All", "admin", "selector", "superadmin"];
+const ROLE_OPTIONS = ["Filter by role", "admin", "selector", "superadmin"];
 
 function DashboardUser() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
+  const [success, setSuccess] = useState("");
+  const [roleFilter, setRoleFilter] = useState("Filter by role");
   const [busyId, setBusyId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -33,21 +33,16 @@ function DashboardUser() {
 
   // Filtre les users en temps réel selon la recherche et le filtre de rôle
   const filtered = useMemo(() => {
-    const search = searchQuery.trim().toLowerCase();
-    return users
-      .filter((user) => {
-        if (roleFilter === "All") return true;
-        return user.role === roleFilter;
-      })
-      .filter((user) => {
-        if (!search) return true;
-        const fullText = [user.name, user.last_name, user.email, user.role]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-        return fullText.includes(search);
-      });
-  }, [users, searchQuery, roleFilter]);
+    const superadmins = users.filter((user) => user.role === "superadmin");
+    const others = users.filter((user) => {
+      if (user.role === "superadmin") return false;
+      if (roleFilter === "Filter by role") return true;
+
+      return user.role === roleFilter;
+    });
+
+    return [...superadmins, ...others];
+  }, [users, roleFilter]);
 
   useEffect(() => {
     refresh();
@@ -68,6 +63,8 @@ function DashboardUser() {
 
     try {
       await updateUserRole(userId, newRole);
+      setSuccess(`The role has been successfully updated to "${newRole}"`);
+      setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       setUsers(previousUsers);
       setError(error?.message || "Error while changing role");
@@ -88,6 +85,8 @@ function DashboardUser() {
 
     try {
       await deleteUser(userId);
+      setSuccess("The user has been successfully deleted.");
+      setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       setUsers(previousUsers);
       setError(error?.message || "Error while deleting");
@@ -99,24 +98,28 @@ function DashboardUser() {
   return (
     <>
       <div>
-        <h2>Gestion des utilisateurs</h2>
-        {error && <p>{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500">{success}</p>}
       </div>
 
       <div>
-        <input
+        <h2>Gestion des utilisateurs</h2>
+      </div>
+
+      <div>
+        {/* <input
           type="text"
           placeholder="Search by name, email..."
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
-        />
+        /> */}
 
         <select
           value={roleFilter}
           onChange={(event) => setRoleFilter(event.target.value)}
           className="text-black bg-white"
         >
-          {ROLE_OPTIONS.map((role) => (
+          {ROLE_OPTIONS.filter((role) => role !== "superadmin").map((role) => (
             <option key={role} value={role}>
               {role}
             </option>
@@ -135,53 +138,67 @@ function DashboardUser() {
                 <th>Lastname</th>
                 <th>E-mail</th>
                 <th>Role</th>
+                {currentUser?.role === "superadmin" && <th>Change role</th>}
                 {currentUser?.role === "superadmin" && <th>Actions</th>}
+                
               </tr>
             </thead>
-            
-              <tbody>
-                            {filtered.map((user) => (
-              <tr key={user.id}>
-                <td>{user.last_name}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
-                  {/* Si superAdmin connecté → menu déroulant pour changer le rôle */}
-                  {/* Sinon → juste le texte du rôle */}
-                  {currentUser?.role === "superadmin" ? (
-                    <select
-                      value={user.role}
-                      disabled={busyId === user.id}
-                      onChange={(event) => onChangeRole(user.id, event.target.value)}
-                      className="text-black bg-white"
-                    >
-                      {/* On affiche seulement "admin", "selector", "superAdmin" (pas "All") */}
-                      {ROLE_OPTIONS.filter((role) => role !== "All").map((role) => (
-                        <option key={role} value={role}>
-                          {role}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    user.role
-                  )}
-                </td>
 
-                {/* Bouton supprimer — visible seulement pour le superAdmin */}
-                {currentUser?.role === "superadmin" && (
-                  <td>
-                    <button
-                      disabled={busyId === user.id}
-                      onClick={() => onDeleteUser(user.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
-              </tr>
-            ))}
-              </tbody>
-            
+            <tbody>
+              {filtered.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.last_name}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  {/* Colonne Role — affiche toujours le rôle en texte */}
+                  <td>{user.role}</td>
+
+                  {/* Colonne Change role — select pour changer le rôle (superadmin uniquement) */}
+                  {currentUser?.role === "superadmin" && (
+                    <td>
+                      {user.role !== "superadmin" ? (
+                        <select
+                          value=""
+                          disabled={busyId === user.id}
+                          onChange={(event) =>
+                            onChangeRole(user.id, event.target.value)
+                          }
+                          className="text-black bg-white"
+                        >
+
+                          <option value= "" disabled>Change role</option>,
+                          {ROLE_OPTIONS.filter(
+                            
+                            (role) =>
+                              role !== "Filter by role" &&
+                              role !== "superadmin",
+                          ).map((role) => (
+                            <option key={role} value={role}>
+                              {role}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                  )}
+
+                  {/* Bouton supprimer — visible seulement pour le superAdmin */}
+                  {currentUser?.role === "superadmin" &&
+                    user.role !== "superadmin" && (
+                      <td>
+                        <button
+                          disabled={busyId === user.id}
+                          onClick={() => onDeleteUser(user.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    )}
+                </tr>
+              ))}
+            </tbody>
           </table>
         )}
       </div>
