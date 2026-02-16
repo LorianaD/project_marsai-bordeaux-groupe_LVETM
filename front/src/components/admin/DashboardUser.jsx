@@ -6,7 +6,7 @@ import {
 } from "../../services/Admin/Users.api.js";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-const ROLE_OPTIONS = ["All", "admin", "selector", "superAdmin"];
+const ROLE_OPTIONS = ["All", "admin", "selector", "superadmin"];
 
 function DashboardUser() {
   const [users, setUsers] = useState([]);
@@ -135,7 +135,7 @@ function DashboardUser() {
                 <th>Lastname</th>
                 <th>E-mail</th>
                 <th>Role</th>
-                {currentUser?.role === "superAdmin" && <th>Actions</th>}
+                {currentUser?.role === "superadmin" && <th>Actions</th>}
               </tr>
             </thead>
             
@@ -148,7 +148,7 @@ function DashboardUser() {
                 <td>
                   {/* Si superAdmin connecté → menu déroulant pour changer le rôle */}
                   {/* Sinon → juste le texte du rôle */}
-                  {currentUser?.role === "superAdmin" ? (
+                  {currentUser?.role === "superadmin" ? (
                     <select
                       value={user.role}
                       disabled={busyId === user.id}
@@ -168,7 +168,7 @@ function DashboardUser() {
                 </td>
 
                 {/* Bouton supprimer — visible seulement pour le superAdmin */}
-                {currentUser?.role === "superAdmin" && (
+                {currentUser?.role === "superadmin" && (
                   <td>
                     <button
                       disabled={busyId === user.id}
