@@ -89,14 +89,7 @@ function Footer() {
                 <li>
                   <Link to="/events">{t("links.tickets")}</Link>
                 </li>
-                <li>
-                  <Link
-                    to="/admin/login"
-                    className="hover:text-violet-600 transition"
-                  >
-                    Espace administrateur
-                  </Link>
-                </li>
+               
               </ul>
             </div>
 
@@ -146,6 +139,14 @@ function Footer() {
             >
               {t("links.legal")}
             </Link>
+             
+                  <Link
+                    to="/admin/login"
+                    className="text-[10px] font-bold tracking-[5px] uppercase"
+                  >
+                    Espace administrateur
+                  </Link>
+                
           </div>
         </div>
       </div>

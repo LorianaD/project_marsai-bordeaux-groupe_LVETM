@@ -23,7 +23,7 @@ export function AdminRouter() {
             <Route index element={<AdminDashboard />} />
 
             {/* Pages admin */}
-            <Route path="/" element={<Overview />} />
+            <Route path="/overview" element={<Overview />} />
             <Route path="events" element={<AdminEvents />} />
             <Route path="videos" element={<AdminVideos />} />
             <Route path="distribution-jury" element={<DistributionJury />} />
