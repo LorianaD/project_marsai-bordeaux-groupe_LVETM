@@ -13,6 +13,7 @@ import DistributionJury from "./DistributionJury";
 import AdminDashboard from "./AdminDashboard";
 import AdminVideos from "./AdminVideos";
 import AdminEvents from "./AdminEvents";
+import AdminConferenceProgram from "./AdminConferenceProgram";
 import AdminSettings from "./AdminSettings";
 
 export function AdminRouter() {
@@ -25,6 +26,7 @@ export function AdminRouter() {
             {/* Pages admin */}
             <Route path="/overview" element={<Overview />} />
             <Route path="events" element={<AdminEvents />} />
+            <Route path="conference-program" element={<AdminConferenceProgram />} />
             <Route path="videos" element={<AdminVideos />} />
             <Route path="distribution-jury" element={<DistributionJury />} />
             <Route path="settings" element={<AdminSettings />} />
