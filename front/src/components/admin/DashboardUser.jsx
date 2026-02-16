@@ -1,19 +1,23 @@
 import { useState, useEffect, useMemo } from "react";
-import {
-  getUsers,
-  updateUserRole,
-  deleteUser,
-} from "../../services/Admin/Users.api.js";
+import { getUsers, updateUserRole, deleteUser } from "../../services/Admin/Users.api.js";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-const ROLE_OPTIONS = ["Filter by role", "admin", "selector", "superadmin"];
+const ROLE_OPTIONS = ["Filtrer par rôle", "admin", "selector", "superadmin"];
+
+// Traduction des rôles pour l'affichage
+const ROLE_LABELS = {
+  "Filtrer par rôle": "Filtrer par rôle",
+  admin: "Administrateur",
+  selector: "Sélectionneur",
+  superadmin: "Super administrateur",
+};
 
 function DashboardUser() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [roleFilter, setRoleFilter] = useState("Filter by role");
+  const [roleFilter, setRoleFilter] = useState("Filtrer par rôle");
   const [busyId, setBusyId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -25,7 +29,7 @@ function DashboardUser() {
       const data = await getUsers();
       setUsers(Array.isArray(data?.users) ? data.users : []);
     } catch (error) {
-      setError(error?.message || "Loading error");
+      setError(error?.message || "Erreur de chargement");
     } finally {
       setLoading(false);
     }
@@ -36,7 +40,7 @@ function DashboardUser() {
     const superadmins = users.filter((user) => user.role === "superadmin");
     const others = users.filter((user) => {
       if (user.role === "superadmin") return false;
-      if (roleFilter === "Filter by role") return true;
+      if (roleFilter === "Filtrer par rôle") return true;
 
       return user.role === roleFilter;
     });
@@ -63,11 +67,11 @@ function DashboardUser() {
 
     try {
       await updateUserRole(userId, newRole);
-      setSuccess(`The role has been successfully updated to "${newRole}"`);
+      setSuccess(`Le rôle a été changé en "${newRole}" avec succès`);
       setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       setUsers(previousUsers);
-      setError(error?.message || "Error while changing role");
+      setError(error?.message || "Erreur lors du changement de rôle");
     } finally {
       setBusyId(null);
     }
@@ -75,7 +79,7 @@ function DashboardUser() {
 
   // Delete un user
   async function onDeleteUser(userId) {
-    if (!window.confirm("Are you sure you want to delete this user?")) {
+    if (!window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
       return;
     }
 
@@ -85,11 +89,11 @@ function DashboardUser() {
 
     try {
       await deleteUser(userId);
-      setSuccess("The user has been successfully deleted.");
+      setSuccess("L'utilisateur a été supprimé avec succès");
       setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       setUsers(previousUsers);
-      setError(error?.message || "Error while deleting");
+      setError(error?.message || "Erreur lors de la suppression");
     } finally {
       setBusyId(null);
     }
@@ -103,7 +107,7 @@ function DashboardUser() {
       </div>
 
       <div>
-        <h2>User Management</h2>
+        <h2>Gestion des utilisateurs</h2>
       </div>
 
       <div>
@@ -114,24 +118,24 @@ function DashboardUser() {
         >
           {ROLE_OPTIONS.filter((role) => role !== "superadmin").map((role) => (
             <option key={role} value={role}>
-              {role}
+              {ROLE_LABELS[role] || role}
             </option>
           ))}
         </select>
       </div>
 
       <div>
-        {loading && <p>Loading...</p>}
-        {!loading && filtered.length === 0 && <p>No users found.</p>}
+        {loading && <p>Chargement...</p>}
+        {!loading && filtered.length === 0 && <p>Aucun utilisateur trouvé.</p>}
         {!loading && filtered.length > 0 && (
           <table>
             <thead>
               <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
+                <th>Prénom</th>
+                <th>Nom</th>
                 <th>E-mail</th>
-                <th>Role</th>
-                {currentUser?.role === "superadmin" && <th>Change role</th>}
+                <th>Rôle</th>
+                {currentUser?.role === "superadmin" && <th>Changer le rôle</th>}
                 {currentUser?.role === "superadmin" && <th>Actions</th>}
               </tr>
             </thead>
@@ -158,16 +162,15 @@ function DashboardUser() {
                           className="text-black bg-white"
                         >
                           <option value="" disabled>
-                            Change role
+                            Changer le rôle
                           </option>
-                          ,
                           {ROLE_OPTIONS.filter(
                             (role) =>
-                              role !== "Filter by role" &&
+                              role !== "Filtrer par rôle" &&
                               role !== "superadmin",
                           ).map((role) => (
                             <option key={role} value={role}>
-                              {role}
+                              {ROLE_LABELS[role] || role}
                             </option>
                           ))}
                         </select>
@@ -185,7 +188,7 @@ function DashboardUser() {
                           disabled={busyId === user.id}
                           onClick={() => onDeleteUser(user.id)}
                         >
-                          Delete
+                          Supprimer
                         </button>
                       </td>
                     )}

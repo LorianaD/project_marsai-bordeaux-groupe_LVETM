@@ -8,23 +8,23 @@ const VALID_ROLES = ["admin", "selector"];
 // Vérifie que l'id est fourni
 export async function updateUserRoleService(id, role) {
     if (!id) {
-        throw new Error("User ID is required");
+        throw new Error("L'ID utilisateur est requis");
     }
 
     if (!role || !VALID_ROLES.includes(role)) {
-        throw new Error(`Invalid role. Must be one of: ${VALID_ROLES.join(", ")}`);
+        throw new Error(`Rôle invalide. Doit être l'un des suivants : ${VALID_ROLES.join(", ")}`);
     }
 
     // verifie si l'utilisateur ciblé est superadmin
     const[rows] = await pool.execute("SELECT role FROM users WHERE id = ?", [id]);
     if (rows.length > 0 && rows[0].role === "superadmin") {
-        throw new Error("Cannot change the role of a superadmin");
+        throw new Error("Impossible de modifier le rôle d'un superadmin");
     }
 
     const result = await updateUserRole(id, role);
 
     if (result.affectedRows === 0) {
-        throw new Error("User not found");
+        throw new Error("Utilisateur introuvable");
     }
 
     return result;
