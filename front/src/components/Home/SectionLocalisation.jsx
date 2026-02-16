@@ -51,7 +51,7 @@ function SectionLocalisation() {
                 <div className="w-full md:w-[976px] flex flex-col md:flex-row gap-[32px] text-left">
                     {spaces.map((space, i) => (
                         <div key={i} className="flex flex-col items-start gap-[16px] px-[41px] py-[25px] self-stretch justify-self-stretch col-span-1 row-span-1 rounded-[32px] border border-[rgba(0,0,0,0.20)] bg-[rgba(138,138,138,0.10)]">
-                            <h3 className="text-[#51A2FF] text-[24px] font-bold leading-[32px] tracking-[-1.2px] underline uppercase" style={{ color: space.color }}>
+                            <h3 className="text-[#51A2FF] text-[24px] font-bold leading-[32px] tracking-[-1.2px] uppercase" style={{ color: space.color }}>
                                 {space.name}
                             </h3>
                             <p className="text-[16px] font-normal leading-[26px]">
