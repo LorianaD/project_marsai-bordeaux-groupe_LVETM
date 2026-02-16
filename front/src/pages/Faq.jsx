@@ -7,6 +7,7 @@ import getAllFaq from "../services/Faq/getFaqApi"
 import deleteFaq from "../services/Faq/deleteFaqApi";
 import updateFaq from "../services/Faq/updateFaqapi";
 import addFaq from "../services/Faq/addFaqApi";
+import BtnSubmitForm from "../components/Buttons/BtnSubmitForm";
 
 function Faq() {
     //usestate pour le fetch
@@ -14,6 +15,7 @@ function Faq() {
     const [error, setError] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
     //usestate pour les inputs
+    const [loading, setLoading] = useState(false);
     const [faqsEdit, setFaqsEdit] = useState([]);
     const [newFaq, setNewFaq] = useState({
   rank: 1,
@@ -199,8 +201,7 @@ function Faq() {
                         className="shadow-md p-2"
                         />
                     </label>
-
-                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">Ajouter</button>
+                    <BtnSubmitForm loading={loading} variant="submit">Mettre à jour</BtnSubmitForm>
                     </form>
 
                 {/* EDIT FAQ SECTION */}
@@ -242,11 +243,9 @@ function Faq() {
                                 </div>
                                 <div className="flex gap-4 flex flex-wrap gap-4 justify-center">                            
                                     {/* submit button */}
-                                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">Enregistrer</button>
+                                    <BtnSubmitForm loading={loading} variant="submit">Mettre à jour</BtnSubmitForm>
                                     {/* delete button */}
-                                    <button type="button" onClick={() => handleDelete(faq.id)} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
-                                        🗑Supprimer
-                                    </button>
+                                    <BtnSubmitForm type="button" variant="danger" onClick={() => handleDelete(faq.id)}>Supprimer</BtnSubmitForm>
                                 </div>                               
                             </form>
                         ))}
@@ -264,6 +263,4 @@ function Faq() {
 // };
 
 {/* <textarea value={faq.question_fr} onChange={(e) => handleEditChange(faq.id, "question_fr", e.target.value)} /> */}
-
-
 export default Faq
