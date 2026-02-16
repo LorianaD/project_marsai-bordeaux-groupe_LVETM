@@ -7,6 +7,7 @@ import { useForm } from "../../../../hooks/useForm";
 import { useState } from "react";
 import CmsTextarea from "../Fields/CmsTextarea";
 import { updateContentApi } from "../../../../services/CMS/UpdateContentApi";
+import CmsInputColor from "../Fields/CmsImputColor";
 
 function SectionAwardForm() {
 
@@ -113,10 +114,10 @@ function SectionAwardForm() {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="w-full p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch w-full">
+                <div className="flex items-center gap-[10px] self-stretch">
                     <div>
                         <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
                         <img src={ iconPaint } alt="" className="block dark:hidden"/>
@@ -126,41 +127,47 @@ function SectionAwardForm() {
                     </h3>
                 </div>
 
-                {/**** Corp du formulaire : inputs ****/}
-                <div className="w-full">
-                    <CmsInput name="eyebrow" label="Titre du projet" value={values.eyebrow} onChange={handleChange} placeholder={t("award.eyebrow")} rightSlot={
-                        <CmsHideToggle name="eyebrow" value={values.eyebrow_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                    />
-                </div>
+                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                    {/**** Corp du formulaire : inputs ****/}
+                    <div className="w-full flex gap-[20px] items-center">
+                        <CmsInput name="eyebrow" label="Titre du projet" value={values.eyebrow} onChange={handleChange} placeholder={t("award.eyebrow")} rightSlot={
+                            <CmsHideToggle name="eyebrow" value={values.eyebrow_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                        />
+                        <CmsInputColor name="eyebrow_color" value={values.eyebrow_color} onChange={handleChange} placeholder={t("award.eyebrow_color")} />
+                    </div>
 
-                <div className="w-full flex flex-col md:flex-row gap-[20px]">
-                    <CmsInput name="title1" label="Titre principal (ligne 1)" value={values.title1} onChange={handleChange} placeholder={t("award.title1")} rightSlot={
-                        <CmsHideToggle name="title1" value={values.title1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                    }/>
-                    <CmsInput name="title2" label="Titre principal (ligne 2 dégradée)" value={values.title2} onChange={handleChange} placeholder={t("award.title2")} rightSlot={
-                        <CmsHideToggle name="title2" value={values.title2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                    }/>
-                </div>
+                    <div className="w-full flex flex-col md:flex-row gap-[20px] items-end">
+                        <CmsInput name="title1" label="Titre principal (ligne 1)" value={values.title1} onChange={handleChange} placeholder={t("award.title1")} rightSlot={
+                            <CmsHideToggle name="title1" value={values.title1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                        }/>
+                        <CmsInput name="title2" label="Titre principal (ligne 2 dégradée)" value={values.title2} onChange={handleChange} placeholder={t("award.title2")} rightSlot={
+                            <CmsHideToggle name="title2" value={values.title2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                        }/>
+                    </div>
 
-                <div className="w-full">
-                    <CmsTextarea name="description" label="Description" value={values.description} onChange={handleChange} placeholder={t("award.description")} rightSlot={
-                        <CmsHideToggle name="description" value={values.description_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                    }/>
-                </div>
+                    <div className="w-full">
+                        <CmsTextarea name="description" label="Description" value={values.description} onChange={handleChange} placeholder={t("award.description")} rightSlot={
+                            <CmsHideToggle name="description" value={values.description_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                        }/>
+                    </div>
 
-                <div className="w-full flex flex-col md:flex-row gap-[20px]">
-                    <CmsInput name="ctaSeeMore" label="Bouton" value={values.ctaSeeMore} onChange={handleChange} placeholder={t("award.ctaSeeMore")} rightSlot={
-                        <CmsHideToggle name="ctaSeeMore" value={values.ctaSeeMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                    }/>
+                    <div className="w-full flex flex-col md:flex-row gap-[20px] items-center">
+                        <CmsInput name="ctaSeeMore" label="Bouton" value={values.ctaSeeMore} onChange={handleChange} placeholder={t("award.ctaSeeMore")} rightSlot={
+                            <CmsHideToggle name="ctaSeeMore" value={values.ctaSeeMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                        }/>
 
-                    <CmsInput name="ctaSeeMore_link" label="Lien du bouton" value={values.ctaSeeMore_link} onChange={handleChange} placeholder={t("award.ctaSeeMore_link")} />
-                </div>                
+                        <CmsInput name="ctaSeeMore_link" label="Lien du bouton" value={values.ctaSeeMore_link} onChange={handleChange} placeholder={t("award.ctaSeeMore_link")} />
 
-                {/**** Footer du formulaire : bouton de submission ****/}
-                <div className="w-full flex justify-center">
-                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
-                        Mettre à jour
-                    </button>
+                        <CmsInputColor name="ctaSeeMore_color" value={values.ctaSeeMore_color} onChange={handleChange} placeholder={t("award.ctaSeeMore_color")} />
+
+                    </div>                
+
+                    {/**** Footer du formulaire : bouton de submission ****/}
+                    <div className="w-full flex justify-center">
+                        <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                            Mettre à jour
+                        </button>
+                    </div>
                 </div>
 
             </form>

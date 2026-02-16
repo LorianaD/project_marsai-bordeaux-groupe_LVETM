@@ -22,25 +22,6 @@ import LearnMore from "./pages/LearnMore.jsx";
 
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
 
-// import Overview from "./pages/Overview.jsx";
-
-// import AdminVideos from "./pages/Admin/AdminVideos.jsx";
-// import AdminEvents from "./pages/Admin/AdminEvents.jsx";
-// import DistributionJury from "./pages/Admin/DistributionJury.jsx";
-
-// import Partner from "./components/Form/CMS/Home/Partner.jsx";
-// import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
-// import AdminRegister from "./pages/Admin/AdminRegister.jsx";
-// import AdminLogin from "./components/login/LoginForm.jsx";
-// import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
-
-// // Newsletter admin
-// import AdminNewsletter from "./pages/Admin/AdminNewsletter.jsx";
-// import AdminNewsletters from "./pages/Admin/AdminNewsletters.jsx";
-// import AdminNewslettersNew from "./pages/Admin/AdminNewslettersNew.jsx";
-// import AdminNewsletterEditor from "./pages/Admin/AdminNewsletterEditor.jsx";
-
-
 export default function App() {
   return (
     <Routes>
@@ -68,20 +49,6 @@ export default function App() {
       <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin/*" element={<AdminRouter />} />
-          {/* <Route path="/admin" element={<Overview />} />
-          <Route path="/admin/events" element={<AdminEvents />} />
-          <Route path="/admin/events/:eventId/participants" element={<AdminEventParticipants />} />
-          <Route path="/admin/videos" element={<AdminVideos />} />
-          <Route path="/admin/register" element={<AdminRegister />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/distribution-jury" element={<DistributionJury />} /> */}
-
-          {/*  Newsletter admin */}
-          {/* <Route path="/admin/newsletter" element={<AdminNewsletter />} />
-          <Route path="/admin/newsletters" element={<AdminNewsletters />} />
-          <Route element={<AdminNewslettersNew />} />
-          <Route path="/admin/newsletters/:id" element={<AdminNewsletterEditor />} /> */}
         </Route>
       </Route>
 
