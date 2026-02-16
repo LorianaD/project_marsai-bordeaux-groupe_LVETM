@@ -1,4 +1,4 @@
-function BtnSubmitForm({ type="submit", children,  loading = false, disabled = false, variant = "primary" }) {
+function BtnSubmitForm({ type="submit", children,  loading = false, disabled = false, variant = "primary", onClick }) {
 
     const baseStyle = `
         flex w-[200px] h-[53px] items-center justify-center gap-[13px]
@@ -10,13 +10,14 @@ function BtnSubmitForm({ type="submit", children,  loading = false, disabled = f
 
     const variants = {
         primary: "border border-[#DBE3E6] bg-white dark:bg-[#333] hover:bg-[#D5D5D5] dark:hover:bg-[#DBE3E6] dark:hover:text-[#000000]",
-        success: "bg-[#51A2FF] text-white hover:bg-green-700",
-        danger: "bg-[#FF2B7F] text-white hover:bg-red-700",
+        success: "bg-green-600 text-white hover:bg-green-700",
+        danger: "bg-[#FB64B6] text-white hover:bg-red-700",
+        submit: "bg-blue-600 text-white hover:bg-blue-800",
     };
 
     return(
-        <div className="w-full flex justify-center">
-            <button type={type} disabled={loading || disabled} 
+        <div className="flex justify-center">
+            <button type={type} onClick={onClick} disabled={loading || disabled} 
                 className={`${baseStyle} ${variants[variant]}`}
             >
             {loading ? (
@@ -45,6 +46,6 @@ export default BtnSubmitForm
 // </BtnSubmitForm>
 
 // Suppression
-//<BtnSubmitForm variant="danger">
+//<BtnSubmitForm type="button" variant="danger" onClick={() => handleDelete()(ou le nom de votre fonction)>
 //    Supprimer
 //</BtnSubmitForm>
