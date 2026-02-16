@@ -15,6 +15,8 @@ import AdminVideos from "./AdminVideos";
 import AdminEvents from "./AdminEvents";
 import AdminSettings from "./AdminSettings";
 import AdminLeaderboard from "./AdminLeaderboard";
+import AdminMessages from "./AdminMessages";
+
 
 export function AdminRouter() {
     return(
@@ -24,12 +26,14 @@ export function AdminRouter() {
             <Route index element={<AdminDashboard />} />
 
             {/* Pages admin */}
-            <Route path="/overview" element={<Overview />} />
+            <Route path="overview" element={<Overview />} />
             <Route path="events" element={<AdminEvents />} />
             <Route path="videos" element={<AdminVideos />} />
             <Route path="distribution-jury" element={<DistributionJury />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="leaderboard" element={<AdminLeaderboard />} />
+            <Route path="messages" element={<AdminMessages />} />
+
 
             {/* auth/admin */}
             <Route path="register" element={<AdminRegister />} />

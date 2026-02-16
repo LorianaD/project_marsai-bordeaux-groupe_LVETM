@@ -222,7 +222,7 @@ function Events() {
                       key={w.id}
                       className="flex flex-col justify-between gap-3 rounded-2xl border border-black/10 bg-black/15 dark:border-[#F6339A]/60 dark:bg-black/40 p-5"
                     >
-                      <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
                         <span className="inline-flex h-8 items-center justify-center rounded-full bg-sky-400 px-4 text-xs font-semibold text-black">
                           {w.date
                             ? new Date(w.date).toLocaleTimeString("fr-FR", {
@@ -230,6 +230,9 @@ function Events() {
                                 minute: "2-digit",
                               })
                             : "—"}
+                        </span>
+                        <span className="text-xs text-black/70 dark:text-white/70">
+                          {w.location ? `• ${w.location}` : "• Lieu à préciser"}
                         </span>
                       </div>
                       <div>
@@ -241,6 +244,7 @@ function Events() {
                             {w.description}
                           </p>
                         )}
+
                       </div>
                       <p className="text-xs font-medium text-black/80 dark:text-white/80">
                         {(() => {
