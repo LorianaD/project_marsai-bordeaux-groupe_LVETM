@@ -11,8 +11,10 @@
       "desc2": "2 days of immersion in the heart of Marseille.",
       "ctaParticipate": "participate",
       "ctaParticipate_signe": "../src/assets/imgs/icones/arrowRight.svg",
+      "ctaParticipate_link": "/participation",
       "ctaLearnMore": "Learn more",
-      "ctaLearnMore_signe":"+"
+      "ctaLearnMore_signe":"+",
+      "ctaLearnMore_link":"/learnMore"
    },
    "concept":{
       "card1":{
@@ -72,22 +74,28 @@
    "events":{
       "title_main":"Two days of",
       "title_accent":"Free conferences",
+      "title_accent_color":"#AD46FF",
       "list":{
          "item1":"Engaging debates on ethics and the future",
          "item2":"Exchange of ideas between artists and tech",
          "item3":"Stimulating questions on creation"
       },
       "ctaAgenda":"Full Agenda",
+      "ctaAgenda_link":"/events",
+      "ctaAgenda_icon":"../../assets/imgs/icones/IconCalendar.svg",
       "cards":{
          "card1":{
+            "icon":"../../assets/imgs/icones/IconPlay.svg",
             "title":"Screenings",
             "description":"Screening on giant screen in the presence of the directors."
          },
          "card2":{
+            "icon":"../../assets/imgs/icones/IconPeople.svg",
             "title":"Workshops",
             "description":"Hands-on sessions to master AI tools."
          },
          "card3":{
+            "icon":"../../assets/imgs/icones/IconAward.svg",
             "title":"Awards",
             "description":"Closing ceremony rewarding boldness."
          }
@@ -102,6 +110,7 @@
          "ligne2": "An immersive sound and visual experience."
       },
       "card": {
+         "icon":"/src/assets/imgs/icones/iconClock.svg",
          "date": "JUNE 13",
          "hour": "FROM 7:00 PM",
          "localisation": "MARSEILLE",

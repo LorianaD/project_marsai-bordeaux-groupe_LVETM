@@ -16,7 +16,7 @@ function SectionEvent() {
             <div className="flex flex-col gap-[20px] md:gap-[66px] items-start w-full">
                 <h2 className="text-[#000000] dark:text-[#FFFFFF] text-[48px] md:text-[72px] leading-[43.2px] md:leading-[64.8px] font-bold tracking-[-2.4px] md:tracking-[-3.6px] uppercase text-left">
                     {t("events.title_main")}
-                    <span className="block text-[#AD46FF] underline decoration-[3px] underline-offset-[6px] mt-3">
+                    <span className="block text-[#AD46FF] mt-3">
                         {t("events.title_accent")}
                     </span>
                 </h2>
@@ -27,7 +27,7 @@ function SectionEvent() {
                         <li>{t("events.list.item3")}</li>
                     </ol>
                 </div>
-                <Link className="flex h-[42px] px-[25px] py-[13px] gap-[8px] justify-center items-center rounded-[100px] border-[rgba(15,15,15,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5">
+                <Link to={t("events.ctaAgenda_link")} className="flex h-[42px] px-[25px] py-[13px] gap-[8px] justify-center items-center rounded-[100px] border-[rgba(15,15,15,0.1)] bg-[rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-white/5">
                     <div>
                         <img src={IconCalendar} alt="" />
                     </div>

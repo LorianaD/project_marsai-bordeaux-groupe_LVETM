@@ -11,8 +11,10 @@
       "desc2": "2 jours d'immersion au cœur de Marseille.",
       "ctaParticipate": "Participer",
       "ctaParticipate_signe": "../src/assets/imgs/icones/arrowRight.svg",
+      "ctaParticipate_link": "/participation",
       "ctaLearnMore": "En savoir plus",
-      "ctaLearnMore_signe":"+"
+      "ctaLearnMore_signe":"+",
+      "ctaLearnMore_link":"/learnMore"
    },
    "concept":{
       "title_main": "Concept du festival",
@@ -39,11 +41,13 @@
    },
    "award":{
       "eyebrow":"Le projet MARS.AI",
+      "eyebrow_color":"#2B7FFF",
       "title1":"Films en",
       "title2":"compétition",
       "description":"Découvrez une sélection d'œuvres pionnières explorant les nouvelles frontières de l'imaginaire assisté par l'IA.",
       "ctaSeeMore":"Voir la sélection",
       "ctaSeeMore_link":"/gallery",
+      "ctaSeeMore_color":"rgba(194, 122, 255, 0.52)",
       "loading":"Chargement des vidéos...",
       "error":"Impossible de charger les vidéos:",
       "notFound":"Pas encore de vidéos.",
@@ -73,29 +77,40 @@
    "events":{
       "title_main":"Deux journées de",
       "title_accent":"Conférences gratuites",
+      "title_accent_color":"#AD46FF",
       "list":{
          "item1":"Débats engagés sur l’éthique et le futur",
          "item2":"Confrontations d'idées entre artistes et tech",
          "item3":"Interrogations stimulantes sur la création"
       },
       "ctaAgenda":"Agenda Complet",
+      "ctaAgenda_link":"/events",
+      "ctaAgenda_icon":"../../assets/imgs/icones/IconCalendar.svg",      
       "cards":{
          "card1":{
+            "icon":"../../assets/imgs/icones/IconPlay.svg",
             "title":"Projections",
-            "description":"Diffusion sur écran géant en présence des réalisateurs."
+            "description":"Diffusion sur écran géant en présence des réalisateurs.",
+            "link":"/events"
          },
          "card2":{
+            "icon":"../../assets/imgs/icones/IconPeople.svg",
             "title":"Workshops",
-            "description":"Sessions pratiques pour maîtriser les outils IA."
+            "description":"Sessions pratiques pour maîtriser les outils IA.",
+            "link":"/events"
          },
          "card3":{
+            "icon":"../../assets/imgs/icones/IconAward.svg",
             "title":"Awards",
-            "description":"Cérémonie de clôture récompensant l'audace."
+            "description":"Cérémonie de clôture récompensant l'audace.",
+            "link":"/events"
          }
       }
    },
    "closingEvent":{
       "eyebrow":"Soirée de Clôture",
+      "eyebrow_text_color":"#C27AFF",
+      "eyebrow_bg_color":"rgba(173, 70, 255, 0.2)",
       "title_main":"MARS.A.I",
       "title_accent":"NIGHT",
       "description":{
@@ -103,14 +118,17 @@
          "ligne2":"Une expérience immersive sonore et visuelle."
       },
       "card":{
+         "icon":"/src/assets/imgs/icones/iconClock.svg",
          "date":"13 JUIN",
          "hour":"DÈS 19H00",
          "localisation":"MARSEILLE",
-         "ctaBooking":"Réserver"
+         "ctaBooking":"Réserver",
+         "ctaBooking_link":"/events"
       }
    },
    "localisationEvent":{
       "eyebrow":"Le lieu",
+      "eyebrow_icon":"../../assets/imgs/icones/IconLocalisation.svg",
       "venue": {
          "namePart1": "La",
          "namePart2": "Plateforme",
@@ -135,7 +153,8 @@
             "description": "L'épicentre du festival : accueil, animations, workshops et restauration. Le point de rencontre de tous les participants.",
             "color": "#C27AFF"
          }
-      ]
+      ],
+      "maps_link":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8044.241161952438!2d5.362378323117001!3d43.314391970182314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9c13ddc0211b9%3A0xd1642ae4b32c4bc4!2s%C3%89cole%20La%20Plateforme_%20Marseille%20-%20Entr%C3%A9e%20Sud!5e1!3m2!1sfr!2sfr!4v1769784840463!5m2!1sfr!2sfr"
    },
    "projectedStats": {
       "heading": {
@@ -159,6 +178,7 @@
    "partnersSection": {
       "eyebrow": "Nos Soutiens",
       "title_main": "Ils soutiennent ",
-      "title_accent": "le futur"
+      "title_accent": "le futur",
+      "title_accent_color": "#00D3F2"
    }
 }

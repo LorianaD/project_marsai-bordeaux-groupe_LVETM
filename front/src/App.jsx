@@ -50,7 +50,7 @@ export default function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/gallery/:id" element={<VideoDetails />} />
         <Route path="/participation" element={<ParticipationUploadPage />} />
-        <Route path="/learn-more" element={<LearnMore />} />
+        <Route path="/learnMore" element={<LearnMore />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetails />} />
         <Route path="/jury" element={<Jury />} />
