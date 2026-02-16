@@ -8,17 +8,25 @@ import carsIcon from "../assets/imgs/icones/cars.png";
 import peopleIcon from "../assets/imgs/icones/people.png";
 import starIcon from "../assets/imgs/icones/star.png";
 import { getEvents } from "../services/Events/EventsApi.js";
+import { getProgram } from "../services/Events/ConferenceProgramAPI.js";
 import BookingModal from "../components/BookingModal.jsx";
 
 
 function Events() {
   const [workshops, setWorkshops] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [programItems, setProgramItems] = useState([]);
 
   useEffect(() => {
     getEvents()
       .then(setWorkshops)
       .catch((err) => console.error("Erreur chargement événements:", err));
+  }, []);
+
+  useEffect(() => {
+    getProgram()
+      .then(setProgramItems)
+      .catch((err) => console.error("Erreur programme:", err));
   }, []);
 
   return (
@@ -67,69 +75,34 @@ function Events() {
           </div>
 
           <ul className="mt-4 space-y-3">
-            {[
-              {
-                time: "09:30",
-                color: "bg-emerald-400",
-                title: "Accueil & Café Networking",
-                speaker: null,
-              },
-              {
-                time: "10:30",
-                color: "bg-sky-400",
-                title: "Conférence d'ouverture : L'IA au service du Cinéma",
-                speaker: "Par : Jean-Luc Godart",
-              },
-              {
-                time: "13:00",
-                color: "bg-emerald-400",
-                title: "Déjeuner Libre",
-                speaker: null,
-              },
-              {
-                time: "14:30",
-                color: "bg-sky-400",
-                title: "Projection Débat/IA Difficile",
-                speaker: "Par : Wim Wenders, Paul Verhoeven",
-              },
-              {
-                time: "16:30",
-                color: "bg-emerald-400",
-                title: "Table Ronde : Futurs Distopiales",
-                speaker: null,
-              },
-              {
-                time: "20:30",
-                color: "bg-sky-400",
-                title: "Grand Prix IA Créative de l'EDI",
-                speaker: null,
-              },
-              {
-                time: "21:30",
-                color: "bg-emerald-400",
-                title: "Soirée DJ & VJ : DJ Samantha",
-                speaker: null,
-              },
-            ].map((item) => (
-              <li
-                key={item.time + item.title}
-                className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-4 py-3"
-              >
-                <span
-                  className={`mt-1 inline-flex h-8 items-center justify-center rounded-full px-4 text-xs font-semibold text-black ${item.color}`}
-                >
-                  {item.time}
-                </span>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-black dark:text-white">
-                    {item.title}
-                  </p>
-                  {item.speaker && (
-                    <p className="text-xs text-black/60 dark:text-white/60 text-left">{item.speaker}</p>
-                  )}
-                </div>
-              </li>
-            ))}
+            {programItems.length > 0
+              ? programItems.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-4 py-3"
+                  >
+                    <span
+                      className={`mt-1 inline-flex h-8 items-center justify-center rounded-full px-4 text-xs font-semibold text-black ${item.color || "bg-sky-400"}`}
+                    >
+                      {item.time}
+                    </span>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-black dark:text-white">
+                        {item.title}
+                      </p>
+                      {item.speaker && (
+                        <p className="text-xs text-black/60 dark:text-white/60 text-left">
+                          {item.speaker}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))
+              : (
+                <li className="rounded-2xl border border-dashed border-black/15 bg-black/5 px-4 py-6 text-center text-sm text-black/60 dark:text-white/60">
+                  Aucun créneau pour le moment.
+                </li>
+              )}
           </ul>
         </section>
 

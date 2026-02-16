@@ -14,6 +14,8 @@ import adminNewslettersRoutes from "./adminNewsletters.routes.js";
 import newsletterUploadRoutes from "./newsletterUpload.routes.js";
 import contactAdminRoutes from "./contactAdmin.routes.js";
 import faq from "./faq.js";
+import conferenceProgramPublicRouter from "./conferenceProgramPublic.js";
+import conferenceProgramAdminRouter from "./conferenceProgramAdmin.js";
 
 const router = Router();
 
@@ -28,11 +30,15 @@ router.use("/contact", contactRouter);
 router.use("/contact/admin", contactAdminRoutes); 
 router.use("/faq", faq);
 router.use("/cms", cmsRouter);
+router.use("/conference-program", conferenceProgramPublicRouter);
 
 router.use("/jury", juryRouter);
 router.use("/newsletter", newsletterRoutes);
 router.use(adminNewsletterRoutes);
 router.use(adminNewslettersRoutes);
 router.use(newsletterUploadRoutes);
+router.use("/admin/conference-program", conferenceProgramAdminRouter);
+
+
 
 export default router;

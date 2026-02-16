@@ -30,6 +30,11 @@ export const ADMIN_NAV = [
     path: "/admin/events",
   },
   {
+    id: "conference-program",
+    label: "Programme de conférence",
+    path: "/admin/conference-program",
+  },
+  {
     id: "messages",
     label: "Messages",
     path: "/admin/messages",
