@@ -158,8 +158,8 @@ function SectionEventsForm({ forcedLocale }) {
 
                     {/* GESTION DE LA LISTE */}
                     <div>
-                        <div className="">
-                            <h4>
+                        <div className="pb-[20px]">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
                                 Gestion de la liste
                             </h4>
                         </div>
