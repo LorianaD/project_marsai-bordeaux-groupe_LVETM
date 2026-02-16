@@ -3,112 +3,48 @@ import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import iconImg from "../../../../assets/imgs/icones/iconImg.svg";
 import iconClose from "../../../../assets/imgs/icones/x.svg"
 import { useForm } from "../../../../hooks/useForm.js";
-import { useEffect, useState } from "react";
-import updatePartnerApi from "../../../../services/Partner/UpdatePartnerApi.js";
-import { useParams } from "react-router";
-import GetOnePartnerApi from "../../../../services/Partner/GetOnePartnerApi.js";
+import { useState } from "react";
+import InsertPartnerApi from "../../../../services/Partner/InsertPartnerApi.js";
 
-function UpdatePartner() {
+function PartnerAdd() {
 
-    const { id } = useParams();
-
-    const { values, handleChange, setValues } = useForm({
-        name: "",
-        file: "",
-        url: ""
+    const { values, handleChange } = useForm({
+        name:"",
+        file:"",
+        url:""
     })
-
-    const [partner, setPartner] = useState(null);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const [loadingPartner, setLoadingPartner] = useState(true);
 
-    //---- Je recupére les informations du partenaire depuis la BDD ----//
-
-    async function loadPartner() {
-        console.log("function loadPartner in the UpdatePartner OK");
-
-        try {
-
-            setLoadingPartner(true);
-
-            const res = await GetOnePartnerApi(id);
-            // console.log(res);
-            
-            const p = res?.data;
-            // console.log(p);
-            
-            setPartner(p);
-
-            // Pré-remplir le formulaire
-            setValues({
-                name: p?.name ?? "",
-                url: p?.url ?? "",
-                file: null,
-            });
-
-        } catch (error) {
-
-            console.error("Impossible de charger le partenaire");
-            setMessage("Impossible de charger le partenaire");
-
-        } finally {
-            setLoadingPartner(false);
-        }
-    }
-
-    useEffect(() => {
-
-        loadPartner();
-
-    }, [id, setValues]);
-
-    //---- Je récupére les données depuis le formulaire et je l'envoi à la BDD (avec l'API qui envoi au BACK, ect.) ----//
-
-    async function handleUpdate(event) {
-        // console.log("Fonction handleUpdate OK", values);
-
+    async function handleSubmit(event) {
+        // console.log("Fonction handleSubmit OK");
+        
         event.preventDefault();
+        setLoading(true);
 
         try {
-            // console.log("try dans la fonction handleUpdate OK");
+            // console.log("try dans la fonction handleSubmit OK");
             
-            setLoading(true);
-            setMessage("");
+            const formData = new FormData();
 
-            const payload = {
-                name: values.name,
-                url: values.url,
-                file: values.file,
-            };
+            formData.append("name", values.name);
+            formData.append("img", values.file);
+            formData.append("url", values.url);
 
-            const res = await updatePartnerApi(id, payload);
-            // console.log(res);
-
-            await loadPartner();
-
-            setMessage("Mis à jour !")
+            const result = await InsertPartnerApi(formData)
+            // console.log(result);
             
+            setMessage("Partener ajouté")
             
         } catch (error) {
 
             console.error("erreur:", error);
-            setMessage("Erreur lors de la mise à jour");
+            setMessage("Erreur lors de l'envoi");
 
         } finally {
-
             setLoading(false);
-
         }
 
-    }
-
-    if (loadingPartner) {
-        return <p className="p-6">Chargement</p>;
-    }
-
-    if (!partner) {
-        return <p>Partenaire introuvable</p>;
     }
 
     return(
@@ -117,21 +53,21 @@ function UpdatePartner() {
                 <img src={iconClose} alt="" />
             </button>
 
-            <form onSubmit={ handleUpdate } className="p-[30px] flex flex-col intems-start gap-[20px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[30px] flex flex-col intems-start gap-[20px] self-stretch font-[Outfit]">
 
                 <div className="flex p-[10px] items-start gap-[10px] self-stretch">
                     <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
                     <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                    <h2 className="text-[20px] font-bold tracking-[3.2px] uppercase">
+                    <h3 className="text-[20px] font-bold tracking-[3.2px] uppercase">
                         Section "Partenaires"
-                    </h2>
+                    </h3>
                 </div>
 
                 <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
                     <label htmlFor="name" className="text-[14px] font-semibold tracking-[2.24px]">
                         Titre principal
                     </label>
-                    <input type="text" name="name" value={values.name} onChange={handleChange} placeholder="" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
+                    <input type="text" name="name" value={values.name} onChange={handleChange} placeholder="le projet marsai" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"/>
                 </div>
 
                 <div className="flex items-center justify-center gap-[10px] p-[10px] self-stretch">
@@ -149,21 +85,24 @@ function UpdatePartner() {
                         </label>
                     </div>
                 </div>
+
                 <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">
                     <label htmlFor="url" className="text-[14px] font-semibold tracking-[2.24px]">
                         Ajouter le lien du partenaire
                     </label>
                     <input type="text" id="url" name="url" value={values.url} onChange={handleChange} placeholder="https://example.com" className="placeholder:uppercase placeholder:text-[rgba(255, 255, 255, 0.70)] placeholder:text-[14px] placeholder:tracking-[2.24px] flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]" />
                 </div>
+                
                 <div className="w-full flex justify-center">
-                    <button type="submit" disabled={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
-                        {loading ? "Enregistrement..." : "Mettre à jour"}
+                    <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        Ajouter
                     </button>
                 </div>
+                
                 
             </form>
         </div>
     )
 }
 
-export default UpdatePartner
+export default PartnerAdd

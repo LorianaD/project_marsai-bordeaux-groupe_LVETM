@@ -158,7 +158,7 @@ function SectionConceptForm() {
                     </h3>
                 </div>
 
-                <div className="w-full">
+                <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
                     <CmsInput name="title_main" label="Titre principal (en Blanc)" value={values.title_main} onChange={handleChange} placeholder={t("goal.title_main")} rightSlot={
                         <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                     />
