@@ -76,6 +76,7 @@
    },
    "events":{
       "title_main":"Deux journées de",
+      "title_main_color":"",
       "title_accent":"Conférences gratuites",
       "title_accent_color":"#AD46FF",
       "list":{
@@ -90,18 +91,21 @@
          "card1":{
             "icon":"../../assets/imgs/icones/IconPlay.svg",
             "title":"Projections",
+            "title_color":"",
             "description":"Diffusion sur écran géant en présence des réalisateurs.",
             "link":"/events"
          },
          "card2":{
             "icon":"../../assets/imgs/icones/IconPeople.svg",
             "title":"Workshops",
+            "title_color":"",
             "description":"Sessions pratiques pour maîtriser les outils IA.",
             "link":"/events"
          },
          "card3":{
             "icon":"../../assets/imgs/icones/IconAward.svg",
             "title":"Awards",
+            "title_color":"",
             "description":"Cérémonie de clôture récompensant l'audace.",
             "link":"/events"
          }
@@ -112,7 +116,9 @@
       "eyebrow_text_color":"#C27AFF",
       "eyebrow_bg_color":"rgba(173, 70, 255, 0.2)",
       "title_main":"MARS.A.I",
+      "title_main_color":"",
       "title_accent":"NIGHT",
+      "title_accent_color":"#F6339A",
       "description":{
          "ligne1":"Fête Électro mêlant IA et futurs souhaitables.",
          "ligne2":"Une expérience immersive sonore et visuelle."
@@ -129,6 +135,7 @@
    "localisationEvent":{
       "eyebrow":"Le lieu",
       "eyebrow_icon":"../../assets/imgs/icones/IconLocalisation.svg",
+      "eyebrow_color":"",
       "venue": {
          "namePart1": "La",
          "namePart2": "Plateforme",
