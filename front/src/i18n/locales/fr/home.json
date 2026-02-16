@@ -139,15 +139,18 @@
       "venue": {
          "namePart1": "La",
          "namePart2": "Plateforme",
-         "cityTagline": "Marseille, Hub Créatif"
+         "cityTagline": "Marseille, Hub Créatif",
+         "color":"#51A2FF"
       },
       "address": {
          "street": "12 Rue d'Uzes",
          "postalCode": "13002",
-         "city": "Marseille"
+         "city": "Marseille",
+         "color":""
       },
       "access": {
-         "tram": "Accès Tram T2/T3 – Arrêt Arenc Le Silo"
+         "tram": "Accès Tram T2/T3 – Arrêt Arenc Le Silo",
+         "color":""
       },
       "spaces": [
          {
@@ -166,19 +169,21 @@
    "projectedStats": {
       "heading": {
          "title_main": "Chiffres",
+         "title_main_color": "",
          "title_accent": "Projetés",
+         "title_accent_color": "#F6339A",
          "tagline": "Échelle mondiale, impact local."
       },
       "stats": [
          {
             "value": "+120",
             "label": "Pays représentés",
-            "color": "#AD46FF"
+            "label_color": "#AD46FF"
          },
          {
             "value": "+600",
             "label": "Films soumis",
-            "color": "#F6339A"
+            "label_color": "#F6339A"
          }
       ]
    },
