@@ -14,6 +14,8 @@ import AdminDashboard from "./AdminDashboard";
 import AdminVideos from "./AdminVideos";
 import AdminEvents from "./AdminEvents";
 import AdminSettings from "./AdminSettings";
+import AdminMessages from "./AdminMessages";
+
 
 export function AdminRouter() {
     return(
@@ -28,6 +30,8 @@ export function AdminRouter() {
             <Route path="videos" element={<AdminVideos />} />
             <Route path="distribution-jury" element={<DistributionJury />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="messages" element={<AdminMessages />} />
+
 
             {/* auth/admin */}
             <Route path="register" element={<AdminRegister />} />
