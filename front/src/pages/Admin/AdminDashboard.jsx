@@ -11,12 +11,12 @@ function AdminDashboard() {
       <AdminSidebarModal
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        active="overview"
+        active="dashboard"
       />
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="overview" />
+          <AdminLayoutSidebar active="dashboard" />
 
           <main className="min-w-0 flex-1">
             <div className="mb-4 flex lg:hidden">

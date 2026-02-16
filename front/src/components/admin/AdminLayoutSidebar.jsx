@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ADMIN_NAV } from "./adminNav.js";
 
 /**
@@ -10,8 +10,11 @@ export default function AdminLayoutSidebar({ active }) {
 
   return (
     <aside className="hidden w-[270px] shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#F6339A]/60 dark:bg-white/5 md:flex">
-      {/* Profil */}
-      <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#F6339A]/60 dark:bg-black/30">
+      {/* Profil — clic → Dashboard */}
+      <Link
+        to="/admin/dashboard"
+        className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 transition hover:bg-black/15 dark:border-[#F6339A]/60 dark:bg-black/30 dark:hover:bg-black/40"
+      >
         <img
           src="/imgs/admin-avatar.png"
           alt="Oceane Brise"
@@ -25,7 +28,7 @@ export default function AdminLayoutSidebar({ active }) {
             RÉALISATEUR STUDIO
           </p>
         </div>
-      </div>
+      </Link>
 
       {/* Menu */}
       <nav className="mt-4 space-y-1">
@@ -70,6 +73,10 @@ export default function AdminLayoutSidebar({ active }) {
 
         <button
           type="button"
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/admin/login");
+          }}
           className="mt-3 w-full rounded-xl bg-black/10 px-3 py-2 text-sm text-black/80 hover:bg-black/15 dark:bg-white/10 dark:text-white/80 dark:hover:bg-white/15"
         >
           Log out

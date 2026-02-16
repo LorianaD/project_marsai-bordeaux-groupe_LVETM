@@ -4,14 +4,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
-import CmsInput from "./Fields/CmsInput";
-import CmsHideToggle from "./Fields/CmsHideToggle";
-import CmsInputImage from "./Fields/CmsInputImage";
+import CmsInput from "../Fields/CmsInput";
+import CmsHideToggle from "../Fields/CmsHideToggle";
+import CmsInputImage from "../Fields/CmsInputImage";
+import CmsInputFile from "../Fields/CmsInputFile.jsx";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
 
-function SectionHeroForm() {
+function SectionHeroForm({ forcedLocale }) {
 
     const { t, i18n } = useTranslation("home");
-    const locale = i18n.language.startsWith("fr") ? "fr" : "en";
+    const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
 
     // Page et section
     const page = "home";
@@ -22,6 +24,7 @@ function SectionHeroForm() {
     const fields = [
         "protocol",
         "protocol_icon",
+        "media",
         "title_main",
         "title_accent",
         "tagline_before",
@@ -44,6 +47,9 @@ function SectionHeroForm() {
 
         protocol_icon: "",
         protocol_icon_is_active: 1,
+
+        media:"",
+        media_is_active: 1,
 
         title_main:"",
         title_main_is_active: 1,
@@ -173,6 +179,11 @@ function SectionHeroForm() {
 
                     </div>
 
+                    {/* Gestion de la video ou image */}
+                    <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
+                        <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} onChange={handleChange} />
+                    </div>
+
                     {/* Gestion des Titres */}
                     <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
                         {/* Gestion du titre principal en blanc */}
@@ -242,7 +253,7 @@ function SectionHeroForm() {
                                 <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
-                            <CmsInput name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
+                            <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
                                 <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
@@ -250,9 +261,9 @@ function SectionHeroForm() {
                     </div>
 
                     <div className="w-full flex justify-center">
-                        <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                             Mettre à jour
-                        </button>
+                        </BtnSubmitForm>
                     </div>
                 </div>
             </form>

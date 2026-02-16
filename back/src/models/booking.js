@@ -36,3 +36,16 @@ export const countBookingsByEventId = async (eventId) => {
   );
   return rows[0].total;
 };
+
+/**
+ * Liste des réservations pour un événement (admin).
+ * @returns {Promise<Array<{ id, event_id, first_name, last_name, email, created_at }>>}
+ */
+export const findBookingsByEventId = async (eventId) => {
+  const [rows] = await pool.execute(
+    `SELECT id, event_id, first_name, last_name, email, created_at
+     FROM bookings WHERE event_id = ? ORDER BY created_at DESC`,
+    [eventId]
+  );
+  return rows;
+};

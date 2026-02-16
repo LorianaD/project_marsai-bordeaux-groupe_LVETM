@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 
-import AdminHero from "../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../components/admin/AdminSidebarModal.jsx";
+import AdminHero from "../../components/admin/AdminHero.jsx";
+import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
+import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-export default function Overview() {
+export default function AdminLeaderboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [items, setItems] = useState([]);
@@ -80,7 +81,7 @@ export default function Overview() {
       <AdminSidebarModal
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        active="overview"
+        active="leaderboard"
       />
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">

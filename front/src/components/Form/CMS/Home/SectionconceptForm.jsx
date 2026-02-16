@@ -1,13 +1,13 @@
-import CmsInput from "./Fields/CmsInput"
+import CmsInput from "../Fields/CmsInput"
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
 import { useState } from "react";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
-import CmsTextarea from "./Fields/CmsTextarea";
-import CmsHideToggle from "./Fields/CmsHideToggle";
-import CmsInputColor from "./Fields/CmsImputColor";
+import CmsTextarea from "../Fields/CmsTextarea";
+import CmsHideToggle from "../Fields/CmsHideToggle";
+import CmsInputColor from "../Fields/CmsImputColor";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 
 function SectionConceptForm() {
@@ -182,7 +182,7 @@ function SectionConceptForm() {
                         <div className="w-full flex flex-col gap-[16px]">
                             <div className="w-full flex items-center justify-between gap-[16px]">
                                 <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("concept.card1.title")} />
-                                <CmsInputColor name="card1_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                                <CmsInputColor name="card1_title_color" label="" value={values.card1_title_color} onChange={handleChange} />
                             </div>
                             <CmsTextarea name="card1_description" label="Description" value={values.card1_description} onChange={handleChange} placeholder={t("concept.card1.description")}/>
                         </div>
@@ -198,7 +198,7 @@ function SectionConceptForm() {
                         <div className="w-full flex flex-col gap-[16px]">
                             <div className="w-full flex items-center justify-between gap-[16px]">
                                 <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("concept.card2.title")} />
-                                <CmsInputColor name="card2_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                                <CmsInputColor name="card2_title_color" label="" value={values.card1_title_color} onChange={handleChange} />
                             </div>
                             <CmsTextarea name="card2_description" label="Description" value={values.card2_description} onChange={handleChange} placeholder={t("concept.card2.description")}/>
                         </div>
@@ -214,7 +214,7 @@ function SectionConceptForm() {
                         <div className="w-full flex flex-col gap-[16px]">
                             <div className="w-full flex items-center justify-between gap-[16px]">
                                 <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("concept.card3.title")} />
-                                <CmsInputColor name="card3_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                                <CmsInputColor name="card3_title_color" label="" value={values.card1_title_color} onChange={handleChange} />
                             </div>
                             <CmsTextarea name="card3_description" label="Description" value={values.card3_description} onChange={handleChange} placeholder={t("concept.card3.description")}/>
                         </div>                        
@@ -230,7 +230,7 @@ function SectionConceptForm() {
                         <div className="w-full flex flex-col gap-[16px]">
                             <div className="w-full flex items-center gap-[16px]">
                                 <CmsInput name="card4_title" label="Titre" value={values.card4_title} onChange={handleChange} placeholder={t("concept.card4.title")} />
-                                <CmsInputColor name="card3_title_color" label="" value={values.card1_title_color} onChange={handleChange} placeholder={t(" ")}/>
+                                <CmsInputColor name="card3_title_color" label="" value={values.card1_title_color} onChange={handleChange} />
                             </div>
                             <CmsTextarea name="card4_description" label="Description" value={values.card4_description} onChange={handleChange} placeholder={t("concept.card4.description")}/>
                         </div>                        
