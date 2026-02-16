@@ -103,17 +103,10 @@ function DashboardUser() {
       </div>
 
       <div>
-        <h2>Gestion des utilisateurs</h2>
+        <h2>User Management</h2>
       </div>
 
       <div>
-        {/* <input
-          type="text"
-          placeholder="Search by name, email..."
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-        /> */}
-
         <select
           value={roleFilter}
           onChange={(event) => setRoleFilter(event.target.value)}
@@ -140,7 +133,6 @@ function DashboardUser() {
                 <th>Role</th>
                 {currentUser?.role === "superadmin" && <th>Change role</th>}
                 {currentUser?.role === "superadmin" && <th>Actions</th>}
-                
               </tr>
             </thead>
 
@@ -165,10 +157,11 @@ function DashboardUser() {
                           }
                           className="text-black bg-white"
                         >
-
-                          <option value= "" disabled>Change role</option>,
+                          <option value="" disabled>
+                            Change role
+                          </option>
+                          ,
                           {ROLE_OPTIONS.filter(
-                            
                             (role) =>
                               role !== "Filter by role" &&
                               role !== "superadmin",
@@ -179,7 +172,7 @@ function DashboardUser() {
                           ))}
                         </select>
                       ) : (
-                        "—"
+                        ""
                       )}
                     </td>
                   )}
