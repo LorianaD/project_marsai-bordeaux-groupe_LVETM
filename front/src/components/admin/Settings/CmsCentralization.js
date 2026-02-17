@@ -43,6 +43,14 @@ function CmsCentralization() {
                 // { id: "form", label: "Formulaire", component: ContactFormSectionForm },
             ],
         },
+        {
+            pageId: "fag",
+            label: "FAQ",
+            sections: [
+                // { id: "hero", label: "Hero", component: FaqHeroForm },
+                // { id: "form", label: "Formulaire", component: ContactFormSectionForm },
+            ],
+        },        
     ];
 }
 

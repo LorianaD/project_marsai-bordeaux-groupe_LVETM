@@ -1,7 +1,6 @@
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next";
 
-import IconCalendar from "../../assets/imgs/icones/IconCalendar.svg";
 import IconPlay from "../../assets/imgs/icones/IconPlay.svg";
 import IconAward from "../../assets/imgs/icones/IconAward.svg";
 import IconPeople from "../../assets/imgs/icones/IconPeople.svg";
