@@ -2,6 +2,17 @@ import { useTranslation } from "react-i18next";
 
 export default function AdminHero({ name = "Ocean" }) {
   const { t } = useTranslation("adminHero");
+import { useState, useEffect } from "react";
+import { decodeToken } from "../../utils/decodeToken";
+
+export default function AdminHero() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    setCurrentUser(decodeToken());
+  }, [])
+
+  const name = currentUser?.name || "Utilisateur"
 
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-[#F6339A]/60 min-h-[240px]">

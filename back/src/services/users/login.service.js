@@ -6,7 +6,7 @@ import { env } from '../../config/env.js';
 // service qui verifie si l'user existe et verifie ses données d'authentification
 export async function login(email, password) {
     if(!email || !password) {
-        const error = new Error ('The email address or password is invalid.');
+        const error = new Error ('L’adresse e-mail ou le mot de passe est invalide');
         error.status = 400;
         throw error;
     }
@@ -14,20 +14,20 @@ export async function login(email, password) {
     const [row] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
     const user = row[0];
     if (!user) {
-        const error = new Error('User not found');
+        const error = new Error('Utilisateur introuvable');
             error.status = 401;
             throw error;
         }
     
     const match = await bcrypt.compare(password, user.password_hash)
     if(!match) {
-        const error = new Error('Invalid credentials');
+        const error = new Error('Identifiants invalides');
         error.status = 401;
         throw error;
     }
 
     const token = await jwt.sign(
-        {sub: user.id, email: user.email, role: user.role},
+        {sub: user.id, email: user.email, role: user.role, name: user.name, last_name: user.last_name},
         env.jwtSecret,
         {expiresIn: '1000h'}
     )
