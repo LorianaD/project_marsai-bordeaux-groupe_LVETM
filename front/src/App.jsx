@@ -48,7 +48,9 @@ export default function App() {
       {/* ADMIN  */}
       <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
+
           <Route path="/admin/*" element={<AdminRouter />} />
+
         </Route>
       </Route>
 

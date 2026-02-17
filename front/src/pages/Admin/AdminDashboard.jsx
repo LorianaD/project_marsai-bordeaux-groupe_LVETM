@@ -29,7 +29,10 @@ function AdminDashboard() {
               </button>
             </div>
 
-            <AdminDashboardContent />
+            <section className="mt-5 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-[#F6339A]/60 dark:bg-white/5">
+              <h1 className="text-xl font-semibold tracking-tight"></h1>
+              <DashboardUser />
+            </section>
           </main>
         </div>
       </div>
