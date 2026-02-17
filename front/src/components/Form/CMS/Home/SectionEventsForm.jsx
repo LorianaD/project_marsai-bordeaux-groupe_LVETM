@@ -7,6 +7,9 @@ import { updateContentApi, updateImageApi } from "../../../../services/CMS/Updat
 import CmsInput from "../Fields/CmsInput";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInputColor from "../Fields/CmsImputColor";
+import CmsInputImage from "../Fields/CmsInputImage";
+import CmsTextarea from "../Fields/CmsTextarea";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 
 function SectionEventsForm({ forcedLocale }) {
 
@@ -128,7 +131,7 @@ function SectionEventsForm({ forcedLocale }) {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-auto md:px-auto md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 <div className="flex items-center gap-[10px] self-stretch">
                     <div>
                         <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
@@ -157,13 +160,13 @@ function SectionEventsForm({ forcedLocale }) {
                     </div>
 
                     {/* GESTION DE LA LISTE */}
-                    <div>
-                        <div className="">
-                            <h4>
+                    <div className="w-full">
+                        <div className="pb-[20px]">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
                                 Gestion de la liste
                             </h4>
                         </div>
-                        <div className="flex flex-col md:flex-row md:justify-between w-full gap-[20px]">
+                        <div className="flex flex-col md:flex-row md:justify-between gap-[10px] w-full">
                             < CmsInput name="list_item1" label="Petit 1" value={values.list_item1} onChange={handleChange} placeholder={t("events.list.item1")} rightSlot={
                                 <CmsHideToggle name="list_item1" value={values.list_item1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
@@ -178,6 +181,108 @@ function SectionEventsForm({ forcedLocale }) {
                         </div>
                     </div>
 
+                    {/* GESTION DU BOUTON */}
+                    <div className="w-full flex flex-col gap-[20px] md:gap-[30px]">
+                        <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            Gestion du bouton
+                        </h4>                        
+                        <div className="flex flex-col md:flex-row w-full gap-[10px]">
+                            <CmsInput name="ctaAgenda" label="Intitulé du bouton" value={values.ctaAgenda} onChange={handleChange} placeholder={t("events.ctaAgenda")}/>
+                            <CmsInput name="ctaAgenda_link" label="Lien du bouton" value={values.ctaAgenda_link} onChange={handleChange} placeholder={t("events.ctaAgenda_link")}/>
+                            <CmsInputImage name="ctaAgenda_icon" label="Icon du bouton" value={values.ctaAgenda_icon} onChange={handleChange} placeholder={t("events.ctaAgenda_icon")}/>
+                        </div>
+                    </div>
+
+                    {/* GESTION DES CARDS */}
+                    <div className="w-full flex flex-col gap-[20px]">
+
+                        <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            Gestion des cartes
+                        </h4>
+
+                        {/* Cards 1 & 2 */}
+                        <div className="flex flex-col md:flex-row gap-[20px]">
+
+                            {/* Gestion card 1 */}
+                            <div className="flex flex-col w-full gap-[20px] md:gap-[30px]">
+                                <div className="flex justify-between items-center">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                                        Card 1
+                                    </h5>
+                                    <CmsHideToggle/>
+                                </div>
+                                <div>
+                                    {/* card1_icon */}
+                                    <CmsInputImage name="card1_icon" label="Icon de la card" value={values.card1_icon} onChange={handleChange} placeholder={t("events.cards.card1.icon")}/>
+                                    {/* card1_title */}
+                                    <div className="flex items-center gap-[10px] w-full">
+                                        <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("events.cards.card1.title")}/>
+                                        {/* card1_title_color */}
+                                        <CmsInputColor name="card1_title_color" label="" value={values.card1_title_color} onChange={handleChange} />                                
+                                    </div>
+                                    {/* card1_description */}
+                                    <CmsTextarea name="card1_description" label="Déscription" value={values.card1_description} onChange={handleChange} placeholder={t("events.cards.card1.description")} />
+                                    {/* card1_link */}
+                                    <CmsInput name="card1_link" label="Lien" value={values.card1_link} onChange={handleChange} placeholder={t("events.cards.card1.link")} />                                
+                                </div>
+                            </div>
+
+                            {/* Gestion card 2 */}
+                            <div className="flex flex-col w-full gap-[20px] md:gap-[30px]">
+                                <div className="flex justify-between items-center">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                                        Card 2
+                                    </h5>
+                                    <CmsHideToggle/>
+                                </div>
+                                <div>
+                                    {/* card2_icon */}
+                                    <CmsInputImage name="card2_icon" label="Icon de la card" value={values.card2_icon} onChange={handleChange} placeholder={t("events.cards.card2.icon")}/>
+                                    {/* card2_title */}
+                                    <div className="flex items-center gap-[10px] w-full">
+                                        <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("events.cards.card2.title")}/>
+                                        {/* card2_title_color */}
+                                        <CmsInputColor name="card2_title_color" label="" value={values.card2_title_color} onChange={handleChange} />                                
+                                    </div>
+                                    {/* card2_description */}
+                                    <CmsTextarea name="card2_description" label="Déscription" value={values.card2_description} onChange={handleChange} placeholder={t("events.cards.card2.description")} />
+                                    {/* card2_link */}
+                                    <CmsInput name="card2_link" label="Lien" value={values.card2_link} onChange={handleChange} placeholder={t("events.cards.card2.link")} />                                
+                                </div>
+                            </div>
+
+                            {/* Gestion card 3 */}
+                            <div className="flex flex-col w-full gap-[20px] md:gap-[30px]">
+                                <div className="flex justify-between items-center">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                                        Card 3
+                                    </h5>
+                                    <CmsHideToggle/>
+                                </div>
+                                <div>
+                                    {/* card3_icon */}
+                                    <CmsInputImage name="card3_icon" label="Icon de la card" value={values.card3_icon} onChange={handleChange} placeholder={t("events.cards.card3.icon")}/>
+                                    {/* card3_title */}
+                                    <div className="flex items-center gap-[10px] w-full">
+                                        <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("events.cards.card3.title")}/>
+                                        {/* card1_title_color */}
+                                        <CmsInputColor name="card3_title_color" label="" value={values.card3_title_color} onChange={handleChange} />                                
+                                    </div>
+                                    {/* card1_description */}
+                                    <CmsTextarea name="card3_description" label="Déscription" value={values.card3_description} onChange={handleChange} placeholder={t("events.cards.card3.description")} />
+                                    {/* card1_link */}
+                                    <CmsInput name="card3_link" label="Lien" value={values.card3_link} onChange={handleChange} placeholder={t("events.cards.card3.link")} />                                
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div className="w-full flex justify-center">
+                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        Mettre à jour
+                    </BtnSubmitForm>
                 </div>
             </form>
         </section>
