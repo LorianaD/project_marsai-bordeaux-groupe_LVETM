@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 function Newsletter() {
+
+  const { t } = useTranslation("newsletters");
+
   // Etat du formulaire newsletter
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
@@ -61,8 +65,8 @@ function Newsletter() {
       className="flex flex-1 flex-col items-center justify-center gap-[25px] p-[41px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)]"
     >
       <h2 className="text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full">
-        <span>RESTEZ</span>
-        <span className="block">CONNECTÉ</span>
+        <span>{t("title_main")}</span>
+        <span className="block">{t("title_accent")}</span>
       </h2>
 
       <div className="flex items-start gap-[10px] self-stretch">
@@ -70,7 +74,7 @@ function Newsletter() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email Signal"
+          placeholder={t("email_placeholder")}
           className="flex h-[54px] flex-1 items-center px-[24px] py-[16px] rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[14px] placeholder:font-normal"
         />
 
@@ -83,7 +87,7 @@ function Newsletter() {
         </button>
       </div>
 
-      {/* ✅ Consentement obligatoire */}
+      {/* Consentement obligatoire */}
       <label className="w-full flex items-start gap-2 text-xs opacity-80">
         <input
           type="checkbox"
@@ -92,8 +96,7 @@ function Newsletter() {
           className="mt-1"
         />
         <span>
-          J’accepte de recevoir la newsletter de MARS.AI et je peux me
-          désinscrire à tout moment.
+          {t("consent")}
         </span>
       </label>
 

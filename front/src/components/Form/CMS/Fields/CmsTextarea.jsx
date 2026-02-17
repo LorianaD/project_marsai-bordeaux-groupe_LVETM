@@ -1,4 +1,4 @@
-function CmsTextarea({name, label, type = "text", value, onChange, placeholder, rows = 2, rightSlot = null}) {
+function CmsTextarea({name, label, type = "text", value, onChange, placeholder, rows = 4, rightSlot = null}) {
 
     return(
         <div className="flex flex-col pb-[10px] w-full justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">

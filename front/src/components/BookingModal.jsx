@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createBooking } from "../services/Events/EventsApi.js";
+import { inputBaseClasses } from "../utils/formInputClasses.js";
 
 export default function BookingModal({ event, onClose, onSuccess }) {
   const [first_name, setFirst_name] = useState("");
@@ -42,7 +43,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
               value={first_name}
               onChange={(e) => setFirst_name(e.target.value)}
               required
-              className="w-full rounded-xl border border-black/20 dark:border-[#F6339A]/60 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
+              className={inputBaseClasses}
             />
           </div>
           <div>
@@ -52,7 +53,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
               value={last_name}
               onChange={(e) => setLast_name(e.target.value)}
               required
-              className="w-full rounded-xl border border-black/20 dark:border-[#F6339A]/60 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
+              className={inputBaseClasses}
             />
           </div>
           <div>
@@ -62,7 +63,7 @@ export default function BookingModal({ event, onClose, onSuccess }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-xl border border-black/20 dark:border-[#F6339A]/60 bg-black/5 dark:bg-white/5 px-4 py-2 text-black dark:text-white"
+              className={inputBaseClasses}
             />
           </div>
           <div className="flex gap-2 pt-2">
