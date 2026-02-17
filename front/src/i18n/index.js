@@ -14,6 +14,9 @@ import footerFR from "./locales/fr/footer.json";
 import detailvideoFR from "./locales/fr/detailvideo.json";
 import detailvideoEN from "./locales/en/detailvideo.json";
 
+import faqFR from "./locales/fr/faq.json";
+import faqEN from "./locales/en/faq.json";
+
 import newslettersFR from "./locales/fr/newsletters.json";
 import newslettersEN from "./locales/en/newsletters.json";
 
@@ -38,6 +41,7 @@ i18n
         newsletters: newslettersFR,
         detailvideo: detailvideoFR,
         event: eventFR,
+        faq: faqFR,
       },
       en: {
         header: headerEN,
@@ -46,10 +50,11 @@ i18n
         newsletters: newslettersEN,
         detailvideo: detailvideoEN,
         event: eventEN,
+        faq: faqEN,
       },
     },
 
-    ns: ["header", "footer", "home", "detailvideo", "newsletters"],
+    ns: ["header", "footer", "home", "detailvideo", "newsletters", "faq"],
     defaultNS: "home",
 
     detection: {

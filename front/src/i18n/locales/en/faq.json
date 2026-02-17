@@ -1,0 +1,19 @@
+{
+    "form":{
+        "button":{
+            "add": "Add",
+            "update": "Update",
+            "delete": "Delete"
+        },
+        "label":{
+            "rank": "Rank",
+            "question_fr": "Question FR",
+            "question_en": "Question EN",
+            "answer_fr": "Answer FR",
+            "answer_en": "Answer EN"
+        }
+    },
+    "faq_display":{
+        "answer": "Answer"
+    }
+}

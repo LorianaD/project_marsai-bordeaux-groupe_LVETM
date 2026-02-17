@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router"
 import useCmsContent from "../../hooks/useCmsContent";
@@ -13,43 +12,20 @@ function SectionHero() {
     const section = "hero";
 
     const { content, loading, message } = useCmsContent(locale);
-    const [mediaLoadFailed, setMediaLoadFailed] = useState(false);
-
-    const mediaValue = content?.[section]?.media;
-    const mediaUrl = mediaValue ? resolveCmsAsset(mediaValue) : "";
-    const isVideo = mediaValue?.match(/\.(mp4|webm|ogg|mov)$/i);
-    const showFallback = !mediaValue || mediaLoadFailed;
-
-    // Réafficher la vidéo/image quand le média change (ex. après chargement du CMS)
-    useEffect(() => {
-        setMediaLoadFailed(false);
-    }, [mediaValue]);
 
     return(
-        <section className="relative flex w-full flex-col items-center self-stretch min-h-[60vh] p-[25px] gap-[48px] md:px-[75px] md:gap-[10px] bg-[#0B0F1A]">
+        <section className="relative flex w-full flex-col items-center self-stretch p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
 
-            {/* BACKGROUND : vidéo ou image CMS, ou dégradé si absent / erreur */}
-            {showFallback ? (
-                <div className="absolute inset-0 z-1 bg-gradient-to-br from-[#0B0F1A] via-[#1a0a1f] to-[#0B0F1A]" aria-hidden />
-            ) : isVideo ? (
-                    <video
-                        className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        onError={() => setMediaLoadFailed(true)}
-                    >
-                        <source src={mediaUrl} type={content[section].media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+            {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
+            {content?.[section]?.media && (
+                content?.[section]?.media.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                    <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1" autoPlay muted loop playsInline >
+                        <source src={resolveCmsAsset(content?.[section]?.media)} type={content?.[section]?.media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
                     </video>
                 ) : (
-                    <img
-                        src={mediaUrl}
-                        alt=""
-                        className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"
-                        onError={() => setMediaLoadFailed(true)}
-                    />
-                )}
+                    <img src={resolveCmsAsset(content?.[section]?.media)} alt="" className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"/>
+                )
+            )}
 
             {/* LOGO, TITRE, ECT. */}
             <div className="flex py-[24px] flex-col justify-center items-center gap-[50px] self-stretch z-20">
