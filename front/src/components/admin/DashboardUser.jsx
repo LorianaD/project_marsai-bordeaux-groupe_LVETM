@@ -9,7 +9,7 @@ const ROLE_LABELS = {
   "Filtrer par rôle": "Filtrer par rôle",
   admin: "Administrateur",
   selector: "Sélectionneur",
-  superadmin: "Super administrateur",
+  superadmin: "Super admin",
 };
 
 function DashboardUser() {
@@ -101,15 +101,20 @@ function DashboardUser() {
 
   return (
     <>
-      <div>
-        {error && <p className="text-red-500">{error}</p>}
-        {success && <p className="text-green-500">{success}</p>}
-      </div>
+            {error && (
+        <div className="mb-3 rounded-2xl bg-[#FF3D6E]/15 px-5 py-3 text-sm font-semibold text-[#FF3D6E] ring-1 ring-[#FF3D6E]/25">
+          {error}
+        </div>
+      )}
+      {success && (
+        <div className="mb-3 rounded-2xl bg-[#1AFF7A]/15 px-5 py-3 text-sm font-semibold text-[#1AFF7A] ring-1 ring-[#1AFF7A]/25">
+          {success}
+        </div>
+      )}
 
-            <div className="flex flex-col gap-3 px-6 py-5 md:flex-row md:items-center md:justify-between md:gap-4">
+            <div className="flex flex-col gap-3 pt-2 pb-4 md:flex-row md:items-center md:justify-between md:gap-4">
         <div className="flex items-center gap-3">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#F6339A]/15 ring-1 ring-[#F6339A]/25">
-            👥
+<span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE9F4] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">            👥
           </span>
           <div className="text-sm font-semibold">Gestion des utilisateurs</div>
         </div>
@@ -133,78 +138,118 @@ function DashboardUser() {
         </div>
       </div>
 
-      <div>
-        {loading && <p>Chargement...</p>}
-        {!loading && filtered.length === 0 && <p>Aucun utilisateur trouvé.</p>}
-        {!loading && filtered.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>E-mail</th>
-                <th>Rôle</th>
-                {currentUser?.role === "superadmin" && <th>Changer le rôle</th>}
-                {currentUser?.role === "superadmin" && <th>Actions</th>}
-              </tr>
-            </thead>
+            <div>
+        {loading && (
+          <div className="py-8 text-sm text-black/55 dark:text-white/55">
+            Chargement...
+          </div>
+        )}
+        {!loading && filtered.length === 0 && (
+          <div className="py-8 text-sm text-black/55 dark:text-white/55">
+            Aucun utilisateur trouvé.
+          </div>
+        )}
+                {!loading && filtered.length > 0 && (
+          <>
+            {/* Header */}
+            <div
+              className="grid grid-cols-[1fr_1fr_1.5fr_0.8fr_0.8fr_0.6fr] gap-4 border-t border-black/10 py-3 text-xs font-semibold tracking-wider text-black/55
+                          dark:border-white/10 dark:text-white/55"
+            >
+              <div>PRÉNOM</div>
+              <div>NOM</div>
+              <div>E-MAIL</div>
+              <div>RÔLE</div>
+              {currentUser?.role === "superadmin" && <div>CHANGER LE RÔLE</div>}
+              {currentUser?.role === "superadmin" && <div className="text-right">ACTIONS</div>}
+            </div>
 
-            <tbody>
+            {/* Lignes */}
+            <div className="divide-y divide-black/10 dark:divide-white/10">
               {filtered.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.last_name}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  {/* Colonne Role — affiche toujours le rôle en texte */}
-                  <td>{user.role}</td>
+                <div
+                  key={user.id}
+                  className="grid grid-cols-[1fr_1fr_1.5fr_0.8fr_0.8fr_0.6fr] items-center gap-4 py-4 text-sm"
+                >
+                  {/* Prénom */}
+                  <div className="truncate font-semibold text-black/90 dark:text-white/90">
+                    {user.name}
+                  </div>
 
-                  {/* Colonne Change role — select pour changer le rôle (superadmin uniquement) */}
+                  {/* Nom */}
+                  <div className="truncate text-black/70 dark:text-white/70">
+                    {user.last_name}
+                  </div>
+
+                  {/* Email */}
+                  <div className="truncate text-black/55 dark:text-white/55">
+                    {user.email}
+                  </div>
+
+                  {/* Rôle — badge pill */}
+                  <div>
+                    <span
+                      className={[
+                        "inline-flex min-w-[120px] justify-center rounded-full px-4 py-2 text-[11px] font-extrabold tracking-wider ring-1",
+                        user.role === "superadmin"
+                          ? "bg-[#F6339A]/15 text-[#F6339A] ring-[#F6339A]/25"
+                          : user.role === "admin"
+                            ? "bg-[#2F6BFF]/15 text-[#2F6BFF] ring-[#2F6BFF]/25"
+                            : "bg-[#FFD24A]/15 text-[#FFD24A] ring-[#FFD24A]/25",
+                      ].join(" ")}
+                    >
+                      {ROLE_LABELS[user.role] || user.role}
+                    </span>
+                  </div>
+
+                  {/* Changer le rôle */}
                   {currentUser?.role === "superadmin" && (
-                    <td>
+                    <div>
                       {user.role !== "superadmin" ? (
-                        <select
-                          value=""
-                          disabled={busyId === user.id}
-                          onChange={(event) =>
-                            onChangeRole(user.id, event.target.value)
-                          }
-                          className="text-black bg-white"
-                        >
-                          <option value="" disabled>
-                            Changer le rôle
-                          </option>
-                          {ROLE_OPTIONS.filter(
-                            (role) =>
-                              role !== "Filtrer par rôle" &&
-                              role !== "superadmin",
-                          ).map((role) => (
-                            <option key={role} value={role}>
-                              {ROLE_LABELS[role] || role}
+                        <div className="w-full rounded-full border border-black/10 bg-black/0 px-3 py-2 dark:border-white/10 dark:bg-white/5">
+                          <select
+                            value=""
+                            disabled={busyId === user.id}
+                            onChange={(event) => onChangeRole(user.id, event.target.value)}
+                            className="w-full bg-transparent text-sm text-black/70 outline-none dark:text-white/80"
+                          >
+                            <option value="" disabled className="bg-white text-black dark:bg-black dark:text-white">
+                              Modifier rôle
                             </option>
-                          ))}
-                        </select>
+                            {ROLE_OPTIONS.filter(
+                              (role) => role !== "Filtrer par rôle" && role !== "superadmin",
+                            ).map((role) => (
+                              <option key={role} value={role} className="bg-white text-black dark:bg-black dark:text-white">
+                                {ROLE_LABELS[role] || role}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       ) : (
                         ""
                       )}
-                    </td>
+                    </div>
                   )}
 
-                  {/* Bouton supprimer — visible seulement pour le superAdmin */}
-                  {currentUser?.role === "superadmin" &&
-                    user.role !== "superadmin" && (
-                      <td>
+                  {/* Bouton supprimer */}
+                  {currentUser?.role === "superadmin" && (
+                    <div className="text-right">
+                      {user.role !== "superadmin" && (
                         <button
                           disabled={busyId === user.id}
                           onClick={() => onDeleteUser(user.id)}
+                          className="rounded-full border border-[#FF3D6E]/25 bg-[#FF3D6E]/15 px-4 py-2 text-xs font-semibold text-[#FF3D6E] hover:bg-[#FF3D6E]/25
+                                     disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           Supprimer
                         </button>
-                      </td>
-                    )}
-                </tr>
+                      )}
+                    </div>
+                  )}
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </>
         )}
       </div>
     </>
