@@ -29,7 +29,7 @@ function LoginForm() {
       localStorage.setItem("token", result.token);
       setSuccess(true);
       setTimeout(() => {
-        navigate("/admin/dashboard");
+        navigate("/admin/overview");
       }, 1200);
     } catch (err) {
       setError(err?.message || "Échec de la connexion.");

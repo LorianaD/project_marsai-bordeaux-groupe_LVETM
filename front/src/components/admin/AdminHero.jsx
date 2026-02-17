@@ -1,4 +1,15 @@
-export default function AdminHero({ name = "Ocean" }) {
+import { useState, useEffect } from "react";
+import { decodeToken } from "../../utils/decodeToken";
+
+export default function AdminHero() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    setCurrentUser(decodeToken());
+  }, [])
+
+  const name = currentUser?.name || "Utilisateur"
+
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-[#F6339A]/60 min-h-[240px]">
       {/* Image de fond */}
