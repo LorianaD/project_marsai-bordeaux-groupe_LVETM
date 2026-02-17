@@ -7,9 +7,18 @@ import getAllFaq from "../services/Faq/getFaqApi"
 import deleteFaq from "../services/Faq/deleteFaqApi";
 import updateFaq from "../services/Faq/updateFaqapi";
 import addFaq from "../services/Faq/addFaqApi";
-import BtnSubmitForm from "../components/Buttons/BtnSubmitForm";
+import FaqForm from "../components/Form/Faq/faqForm";
+import { useTranslation } from "react-i18next"
 
 function Faq() {
+    //paramétre i18n
+    const { t, i18n } = useTranslation("faq");
+    const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+    //vérifie si la langue du client est "fr".
+    // const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = i18n.language.startsWith("fr");
+
     //usestate pour le fetch
     const [faqs, setFaqs] = useState([]);
     const [error, setError] = useState(null);
@@ -24,10 +33,6 @@ function Faq() {
   answer_fr: "",
   answer_en: ""
 });
-
-    //vérifie si la langue du client est "fr".
-    const userLang = navigator.language || navigator.userLanguage;
-    const isFrench = userLang.startsWith("fr");
 
     //fetch des faqs
     useEffect(() => {
@@ -55,6 +60,7 @@ function Faq() {
     //fonction d'ajout d'une faq
     const handleAdd = async () => {
         try {
+            setLoading(true);
             const addedFaq = await addFaq(newFaq);
             //mise à jour des states
             setFaqs((prev => [...prev, addedFaq]));
@@ -64,19 +70,22 @@ function Faq() {
         } catch (error) {
             console.error(error);
             alert("Error while adding FAQ");
-        }
+        } finally {
         setNewFaq({
             rank: 1,
             question_fr: "",
             question_en: "",
             answer_fr: "",
             answer_en: ""
-});
+        });
+        setLoading(false);
+        }
     }
 
     //fonction de suppresion d'une faq
     const handleDelete = async (id) => {
         try {
+            setLoading(true);
             await deleteFaq(id);
             //mise à jour des states
             setFaqs(prevFaqs => prevFaqs.filter(faq => faq.id !== id));
@@ -86,12 +95,15 @@ function Faq() {
         }catch(error){
             console.error(error);
             alert("Error while deleting FAQ");
+        } finally {
+            setLoading(false);
         }
     }
 
     //fonction de mise a jour d'un faq
     const handleUpdate = async (faq) => {
         try {
+            setLoading(true);
             const updatedFaq = await updateFaq(faq);
             //mise à jour du state avec le return du backend
             setFaqs(prevFaqs => prevFaqs.map(item => item.id === faq.id ? updatedFaq : item))
@@ -103,8 +115,19 @@ function Faq() {
         } catch (error) {
             console.error(error);
             alert("Error while updating the FAQ");
+        } finally {
+            setLoading(false);
         }
     }
+
+    //fonction pour mettre à jour un champ spécifique d'une FAQ dans le state faqsEdit
+    const handleEditChange = (id, field, value) => {
+        setFaqsEdit(current =>
+            current.map(faq =>
+                faq.id === id ? { ...faq, [field]: value } : faq
+            )
+        );
+    };
 
     return(
         <main>
@@ -137,130 +160,34 @@ function Faq() {
 					)}
 				</div>
 
-
-
-
                 {/* ADMIN ADMIN ADMIN */}
                 {/* ADMIN ADMIN ADMIN */}
-                <h1 className="font-bold m-10 text-[34px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">FAQ</h1>
-                <h2 className="font-bold m-10 text-[28px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">AJOUTER UNE QUESTION</h2>
-                {/* FORMULAIRE D'AJOUT DE FAQ */}
-                <form onSubmit={(e) => { e.preventDefault(); handleAdd(); }} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col gap-[20px] p-4 md:p-[40px]">
-                    <label className="flex flex-col">
-                        <span className="font-bold">Rang:</span>
-                        <input
-                        type="number"
-                        value={newFaq.rank}
-                        onChange={(e) =>
-                            setNewFaq({ ...newFaq, rank: Number(e.target.value) })
-                        }
-                        className="shadow-md p-2"
-                        />
-                    </label>
-
-                    <label className="flex flex-col">
-                        <span className="font-bold">Question FR:</span>
-                        <textarea
-                        value={newFaq.question_fr}
-                        onChange={(e) =>
-                            setNewFaq({ ...newFaq, question_fr: e.target.value })
-                        }
-                        className="shadow-md p-2"
-                        />
-                    </label>
-
-                    <label className="flex flex-col">
-                        <span className="font-bold">Question EN:</span>
-                        <textarea
-                        value={newFaq.question_en}
-                        onChange={(e) =>
-                            setNewFaq({ ...newFaq, question_en: e.target.value })
-                        }
-                        className="shadow-md p-2"
-                        />
-                    </label>
-
-                    <label className="flex flex-col">
-                        <span className="font-bold">Réponse FR:</span>
-                        <textarea
-                        value={newFaq.answer_fr}
-                        onChange={(e) =>
-                            setNewFaq({ ...newFaq, answer_fr: e.target.value })
-                        }
-                        className="shadow-md p-2"
-                        />
-                    </label>
-
-                    <label className="flex flex-col">
-                        <span className="font-bold">Réponse FR:</span>
-                        <textarea
-                        value={newFaq.answer_en}
-                        onChange={(e) =>
-                            setNewFaq({ ...newFaq, answer_en: e.target.value })
-                        }
-                        className="shadow-md p-2"
-                        />
-                    </label>
-                    <BtnSubmitForm loading={loading} variant="submit">Mettre à jour</BtnSubmitForm>
-                    </form>
-
-                {/* EDIT FAQ SECTION */}
-                <h2 className="font-bold m-10 text-[28px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">EDITER UNE QUESTION</h2>
-
-                {/* edit faq form */}
-
-                {faqs.length === 0 ? (
-                    <p>No FAQ available</p>
-                ) : (
-                    <div className="flex flex-wrap gap-4 justify-center">
-                        {faqsEdit.map((faq) => (
-                            <form key={faq.id}
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                handleUpdate(faq);
-                            }}className="m-2 w-full max-w-[650px] rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
-                                {/* rank update */}
-                                <label className="flex flex-col w-full"><span className="font-bold">Rank:</span>
-                                    <input type="number" value={faq.rank} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, rank: Number(e.target.value) } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>
-                                </label>
-                                {/* question FR EN update input */}
-                                <div className="bg-grey">
-                                    <label className="flex flex-col w-full mb-1"><span className="font-bold">Question FR:</span>
-                                    <textarea name="question_fr" placeholder="Question FR edit" value={faq.question_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ...item, question_fr: e.target.value } : item))} className="shadow-[0_2px_4px_0_#dbdbdb] p-2"/>                                    
-                                    </label>
-                                    <label className="flex flex-col w-full"><span className="font-bold">Question EN:</span>
-                                    <textarea name="question_en" placeholder="Question EN edit" value={faq.question_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, question_en: e.target.value }: item))} className="shadow-md p-2"/>
-                                    </label>
-                                </div>
-                                {/* answer FR EN update input */}
-                                <div>
-                                    <label className="flex flex-col w-full mb-1"><span className="font-bold">Réponse FR:</span>
-                                        <textarea name="answer_fr" placeholder="Answer FR edit" value={faq.answer_fr} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, answer_fr: e.target.value }: item))} className="shadow-md p-2"/>
-                                    </label>
-                                    <label className="flex flex-col w-full"><span className="font-bold">Réponse EN:</span>
-                                        <textarea name="answer_en" placeholder="Answer EN edit" value={faq.answer_en} onChange={(e) => setFaqsEdit(current => current.map(item => item.id === faq.id ? { ... item, answer_en: e.target.value }: item))} className="shadow-md p-2"/>
-                                    </label>
-                                </div>
-                                <div className="flex gap-4 flex flex-wrap gap-4 justify-center">                            
-                                    {/* submit button */}
-                                    <BtnSubmitForm loading={loading} variant="submit">Mettre à jour</BtnSubmitForm>
-                                    {/* delete button */}
-                                    <BtnSubmitForm type="button" variant="danger" onClick={() => handleDelete(faq.id)}>Supprimer</BtnSubmitForm>
-                                </div>                               
-                            </form>
-                        ))}
-                    </div>
-                )}
+                {/* Formulaire d'ajout d'une faq */}
+                <div className="flex justify-center">
+                    <FaqForm
+                        faq={newFaq}
+                        onChange={(id, field, value) => setNewFaq(prev => ({ ...prev, [field]: value }))}
+                        onSubmit={handleAdd}
+                        loading={loading}
+                    />
+                </div>
+                {/* formulaire de modification d'une faq */}
+                <div className="flex flex-wrap gap-4 justify-center">
+                {faqsEdit.map(faq => (
+                    <FaqForm
+                        key={faq.id}
+                        faq={faq}
+                        onChange={handleEditChange}
+                        onSubmit={handleUpdate}
+                        onDelete={handleDelete}
+                        loading={loading}
+                        isEdit={true}
+                    />
+                ))}
+                </div>
 			</div>
         </main>
     )
 }
 
-// Inputs pour éditer la FAQ : tes onChange répétitifs peuvent être extraits dans une fonction générique pour réduire le code, par exemple :
-
-// const handleEditChange = (id, field, value) => {
-//   setFaqsEdit(prev => prev.map(faq => faq.id === id ? { ...faq, [field]: value } : faq));
-// };
-
-{/* <textarea value={faq.question_fr} onChange={(e) => handleEditChange(faq.id, "question_fr", e.target.value)} /> */}
 export default Faq

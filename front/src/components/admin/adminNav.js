@@ -1,7 +1,7 @@
 export const ADMIN_NAV = [
   {
     id: "overview",
-    label: "Overview",
+    label: "Vue d'ensemble",
     path: "/admin/overview",
   },
   {
@@ -28,6 +28,11 @@ export const ADMIN_NAV = [
     id: "events",
     label: "Événements",
     path: "/admin/events",
+  },
+  {
+    id: "conference-program",
+    label: "Programme de conférence",
+    path: "/admin/conference-program",
   },
   {
     id: "messages",

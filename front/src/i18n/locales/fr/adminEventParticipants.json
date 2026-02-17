@@ -1,0 +1,13 @@
+{
+  "title": "Liste des participants",
+  "backToEvents": "← Retour aux événements",
+  "loading": "Chargement…",
+  "noParticipants": "Aucun participant pour le moment.",
+  "participantCount": "{{count}} participant",
+  "participantCount_other": "{{count}} participants",
+  "tableFirstName": "Prénom",
+  "tableLastName": "Nom",
+  "tableEmail": "Email",
+  "tableRegisteredAt": "Inscrit le",
+  "menuButton": "☰ Menu"
+}

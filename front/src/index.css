@@ -1,30 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
 @import "tailwindcss";
 
 :root {
   font-family: "Arimo", sans-serif;
 
-  /* color-scheme: light dark; */
+  /* On garde un rendu propre */
+  font-synthesis: none;
 
   background-color: #242424;
   color: #ffffff;
 
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
 }
 
-/* Force le fond sombre sur les inputs auto-remplis par le navigateur */
+/* Structure main */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Force le fond sombre sur les inputs auto-remplis */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
@@ -33,11 +34,15 @@ input:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-
-
 @media (prefers-color-scheme: light) {
   :root {
     background-color: #ffffff;
     color: #242424;
   }
+}
+
+/*  Force italique dans CKEditor */
+.ck.ck-editor__main .ck-content em,
+.ck.ck-editor__main .ck-content i {
+  font-style: italic !important;
 }

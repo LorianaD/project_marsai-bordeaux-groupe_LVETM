@@ -17,8 +17,8 @@ const transporter = nodemailer.createTransport({
 // Optionnel mais utile : vérifier SMTP au démarrage
 transporter
   .verify()
-  .then(() => console.log("✅ SMTP OK (Mailtrap prêt)"))
-  .catch((err) => console.error("❌ SMTP KO:", err?.message || err));
+  .then(() => console.log(" SMTP OK (Mailtrap prêt)"))
+  .catch((err) => console.error(" SMTP KO:", err?.message || err));
 
 function escapeHtml(str) {
   return String(str || "")

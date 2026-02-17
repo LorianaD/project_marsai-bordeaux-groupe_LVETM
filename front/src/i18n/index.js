@@ -14,8 +14,23 @@ import footerFR from "./locales/fr/footer.json";
 import detailvideoFR from "./locales/fr/detailvideo.json";
 import detailvideoEN from "./locales/en/detailvideo.json";
 
+import faqFR from "./locales/fr/faq.json";
+import faqEN from "./locales/en/faq.json";
+
 import newslettersFR from "./locales/fr/newsletters.json";
 import newslettersEN from "./locales/en/newsletters.json";
+
+import eventFR from "./locales/fr/event.json";
+import eventEN from "./locales/en/event.json";
+
+import adminConferenceProgramFR from "./locales/fr/adminConferenceProgram.json";
+import adminConferenceProgramEN from "./locales/en/adminConferenceProgram.json";
+import adminEventsFR from "./locales/fr/adminEvents.json";
+import adminEventsEN from "./locales/en/adminEvents.json";
+import adminEventParticipantsFR from "./locales/fr/adminEventParticipants.json";
+import adminEventParticipantsEN from "./locales/en/adminEventParticipants.json";
+import adminHeroFR from "./locales/fr/adminHero.json";
+import adminHeroEN from "./locales/en/adminHero.json";
 
 i18n
   .use(LanguageDetector)
@@ -27,12 +42,18 @@ i18n
     interpolation: { escapeValue: false },
 
     resources: {
-      fr: { 
+      fr: {
         header: headerFR,
         home: homeFR,
         footer: footerFR,
         newsletters: newslettersFR,
         detailvideo: detailvideoFR,
+        event: eventFR,
+        faq: faqFR,
+        adminConferenceProgram: adminConferenceProgramFR,
+        adminEvents: adminEventsFR,
+        adminEventParticipants: adminEventParticipantsFR,
+        adminHero: adminHeroFR,
       },
       en: {
         header: headerEN,
@@ -40,10 +61,16 @@ i18n
         footer: footerEN,
         newsletters: newslettersEN,
         detailvideo: detailvideoEN,
+        event: eventEN,
+        faq: faqEN,
+        adminConferenceProgram: adminConferenceProgramEN,
+        adminEvents: adminEventsEN,
+        adminEventParticipants: adminEventParticipantsEN,
+        adminHero: adminHeroEN,
       },
     },
 
-    ns: ["header", "footer", "home", "detailvideo", "newsletters"],
+    ns: ["header", "footer", "home", "detailvideo", "newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero"],
     defaultNS: "home",
 
     detection: {

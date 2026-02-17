@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ADMIN_NAV } from "./adminNav.js";
+import { useState, useEffect } from "react";
+import { decodeToken } from "../../utils/decodeToken.js";
 
 export default function AdminSidebarModal({
   open,
@@ -7,6 +9,11 @@ export default function AdminSidebarModal({
   active = "leaderboard",
 }) {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    setCurrentUser(decodeToken());
+  }, []);
 
   if (!open) return null;
 
@@ -73,29 +80,20 @@ export default function AdminSidebarModal({
           </button>
         </div>
 
-        {/* Profil — clic avatar → Dashboard */}
-        <div className="flex flex-col items-center px-5 pb-5 pt-4">
-          <button
-            type="button"
-            onClick={() => handleItemClick("/admin/dashboard")}
-            className="relative focus:outline-none focus:ring-2 focus:ring-[#B84DFF]/60 focus:ring-offset-2 focus:ring-offset-transparent rounded-full"
-            aria-label="Aller au dashboard"
-          >
-            <div className="h-20 w-20 overflow-hidden rounded-full ring-2 ring-[#B84DFF]/60 hover:ring-[#B84DFF] transition">
-              <img
-                src="/assets/avatar.png"
-                alt=""
-                className="h-full w-full object-cover"
-              />
+        {/* Profil */}
+                        <div className="flex flex-col items-center px-5 pb-5 pt-4">
+          <div className="relative">
+            <div className="grid h-20 w-20 place-items-center rounded-full bg-[#F6339A]/15 text-3xl ring-2 ring-[#B84DFF]/60">
+              👤
             </div>
             <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full bg-[#1AFF7A] ring-2 ring-black" />
-          </button>
+          </div>
 
           <div className="mt-3 text-sm font-semibold text-white/90">
-            Ocean Breeze
+            {currentUser ? `${currentUser.name || ""} ${currentUser.last_name || ""}` : "..."}
           </div>
           <div className="mt-1 text-[11px] tracking-widest text-white/45">
-            RÉALISATEUR STUDIO
+            {currentUser?.role?.toUpperCase() || ""}
           </div>
         </div>
 
@@ -116,8 +114,13 @@ export default function AdminSidebarModal({
           <div className="text-sm font-semibold text-white/85">Mars AI</div>
           <div className="mt-1 text-xs text-white/45">Dashboard</div>
 
-          <button className="mt-4 w-full rounded-xl bg-[#0E1628] py-3 text-sm font-semibold text-white/90 ring-1 ring-white/10 hover:bg-[#111c34]">
-            Log out
+          <button onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/admin/login");
+          }}
+          className="mt-4 w-full rounded-xl bg-[#0E1628] py-3 text-sm font-semibold text-white/90 ring-1 ring-white/10 hover:bg-[#111c34]"
+          >
+            Déconnexion
           </button>
         </div>
       </aside>
