@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import { getEventBookings } from "../../services/Events/AdminEventApi.js";
 
 export default function AdminEventParticipants() {
+  const { t } = useTranslation("adminEventParticipants");
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,7 +60,7 @@ export default function AdminEventParticipants() {
                 onClick={() => setSidebarOpen(true)}
                 className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
               >
-                ☰ Menu
+                {t("menuButton")}
               </button>
             </div>
 
@@ -69,7 +71,7 @@ export default function AdminEventParticipants() {
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white">
-                  Liste des participants
+                  {t("title")}
                 </h1>
                 <p className="mt-1 text-sm text-black/60 dark:text-white/60">
                   {event ? event.title : "…"}
@@ -80,13 +82,13 @@ export default function AdminEventParticipants() {
                 onClick={() => navigate("/admin/events")}
                 className="rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-black/15 dark:hover:bg-white/15"
               >
-                ← Retour aux événements
+                {t("backToEvents")}
               </button>
             </div>
 
             {loading && (
               <div className="mt-8 text-sm text-black/60 dark:text-white/60">
-                Chargement…
+                {t("loading")}
               </div>
             )}
 
@@ -103,16 +105,16 @@ export default function AdminEventParticipants() {
                     <thead className="border-b border-black/10 bg-black/[0.03] dark:border-white/10 dark:bg-white/[0.06]">
                       <tr className="text-left">
                         <th className="px-5 py-4 font-semibold text-black/70 dark:text-white/70">
-                          Prénom
+                          {t("tableFirstName")}
                         </th>
                         <th className="px-5 py-4 font-semibold text-black/70 dark:text-white/70">
-                          Nom
+                          {t("tableLastName")}
                         </th>
                         <th className="px-5 py-4 font-semibold text-black/70 dark:text-white/70">
-                          Email
+                          {t("tableEmail")}
                         </th>
                         <th className="px-5 py-4 font-semibold text-black/70 dark:text-white/70">
-                          Inscrit le
+                          {t("tableRegisteredAt")}
                         </th>
                       </tr>
                     </thead>
@@ -120,7 +122,7 @@ export default function AdminEventParticipants() {
                       {bookings.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="px-5 py-8 text-center text-black/50 dark:text-white/50">
-                            Aucun participant pour le moment.
+                            {t("noParticipants")}
                           </td>
                         </tr>
                       ) : (
@@ -140,7 +142,7 @@ export default function AdminEventParticipants() {
                 </div>
                 {bookings.length > 0 && (
                   <div className="border-t border-black/10 px-5 py-3 text-xs text-black/50 dark:border-white/10 dark:text-white/50">
-                    {bookings.length} participant{bookings.length !== 1 ? "s" : ""}
+                    {t("participantCount", { count: bookings.length })}
                   </div>
                 )}
               </div>

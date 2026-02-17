@@ -1,0 +1,23 @@
+{
+  "title": "Programme des conférences",
+  "subtitle": "Les créneaux affichés sur la page Events (programme statique remplacé par ce contenu).",
+  "addSlot": "+ Ajouter un créneau",
+  "loading": "Chargement…",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "modalTitleEdit": "Modifier",
+  "modalTitleNew": "Nouveau créneau",
+  "labelDay": "Jour",
+  "labelTime": "Heure",
+  "labelTitle": "Titre",
+  "labelSpeaker": "Intervenant (optionnel)",
+  "labelColor": "Couleur",
+  "placeholderTime": "09:30",
+  "placeholderSpeaker": "Par : …",
+  "colorBlue": "Bleu",
+  "colorGreen": "Vert",
+  "cancel": "Annuler",
+  "save": "Enregistrer",
+  "create": "Créer",
+  "confirmDelete": "Supprimer « {{title}} » ?"
+}
