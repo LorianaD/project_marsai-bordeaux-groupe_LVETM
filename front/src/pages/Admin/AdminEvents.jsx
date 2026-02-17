@@ -4,8 +4,10 @@ import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminEventsContent from "../../components/admin/Events/AdminEventsContent.jsx";
 
+
 export default function AdminEvents() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
 
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
@@ -15,9 +17,11 @@ export default function AdminEvents() {
         active="events"
       />
 
+
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
           <AdminLayoutSidebar active="events" />
+
 
           <main className="min-w-0 flex-1">
             <div className="mb-4 flex items-center justify-between lg:hidden">
@@ -30,9 +34,11 @@ export default function AdminEvents() {
               </button>
             </div>
 
-          <div className="mt-5">
-            <AdminHero name="Ocean" />
-          </div>
+
+            {/* Hero */}
+            <div className="mt-5">
+              <AdminHero />
+            </div>
 
           <AdminEventsContent />
           {/* Contenu Planning & Workshops */}
@@ -163,3 +169,4 @@ export default function AdminEvents() {
     </div>
   );
 }
+
