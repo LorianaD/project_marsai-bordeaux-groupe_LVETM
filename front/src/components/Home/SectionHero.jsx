@@ -26,7 +26,7 @@ function SectionHero() {
     }, [mediaValue]);
 
     return(
-        <section className="relative flex w-full flex-col items-center self-stretch p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
+        <section className="relative flex w-full flex-col items-center self-stretch min-h-[60vh] p-[25px] gap-[48px] md:px-[75px] md:gap-[10px] bg-[#0B0F1A]">
 
             {/* BACKGROUND : vidéo ou image CMS, ou dégradé si absent / erreur */}
             {showFallback ? (
