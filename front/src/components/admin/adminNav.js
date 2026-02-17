@@ -5,6 +5,11 @@ export const ADMIN_NAV = [
     path: "/admin/overview",
   },
   {
+    id: "dashboard",
+    label: "Dashboard User",
+    path: "/admin/dashboard",
+  },
+  {
     id: "films",
     label: "Gestion films",
     path: "/admin/videos",
@@ -25,6 +30,11 @@ export const ADMIN_NAV = [
     path: "/admin/events",
   },
   {
+    id: "conference-program",
+    label: "Programme de conférence",
+    path: "/admin/conference-program",
+  },
+  {
     id: "messages",
     label: "Messages",
     path: "/admin/messages",
@@ -40,8 +50,8 @@ export const ADMIN_NAV = [
     path: "/admin/newsletters",
   },
   {
-    id: "config",
+    id: "settings",
     label: "Configuration",
-    path: "/admin/config",
+    path: "/admin/settings",
   },
 ];

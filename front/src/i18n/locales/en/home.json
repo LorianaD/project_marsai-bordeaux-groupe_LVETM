@@ -11,8 +11,10 @@
       "desc2": "2 days of immersion in the heart of Marseille.",
       "ctaParticipate": "participate",
       "ctaParticipate_signe": "../src/assets/imgs/icones/arrowRight.svg",
+      "ctaParticipate_link": "/participation",
       "ctaLearnMore": "Learn more",
-      "ctaLearnMore_signe":"+"
+      "ctaLearnMore_signe":"+",
+      "ctaLearnMore_link":"/learnMore"
    },
    "concept":{
       "card1":{
@@ -69,59 +71,82 @@
          }
       }
    },
-   "events":{
-      "title_main":"Two days of",
-      "title_accent":"Free conferences",
-      "list":{
-         "item1":"Engaging debates on ethics and the future",
-         "item2":"Exchange of ideas between artists and tech",
-         "item3":"Stimulating questions on creation"
+  "events": {
+      "title_main": "Two days of",
+      "title_main_color": "",
+      "title_accent": "Free conferences",
+      "title_accent_color": "#AD46FF",
+      "list": {
+         "item1": "Engaging debates on ethics and the future",
+         "item2": "Thought-provoking exchanges between artists and tech",
+         "item3": "Stimulating questions about creation"
       },
-      "ctaAgenda":"Full Agenda",
-      "cards":{
-         "card1":{
-            "title":"Screenings",
-            "description":"Screening on giant screen in the presence of the directors."
+      "ctaAgenda": "Full agenda",
+      "ctaAgenda_link": "/events",
+      "ctaAgenda_icon": "../../assets/imgs/icones/IconCalendar.svg",
+      "cards": {
+         "card1": {
+            "icon": "../../assets/imgs/icones/IconPlay.svg",
+            "title": "Screenings",
+            "title_color": "",
+            "description": "Big-screen screenings with the filmmakers present.",
+            "link": "/events"
          },
-         "card2":{
-            "title":"Workshops",
-            "description":"Hands-on sessions to master AI tools."
+         "card2": {
+            "icon": "../../assets/imgs/icones/IconPeople.svg",
+            "title": "Workshops",
+            "title_color": "",
+            "description": "Hands-on sessions to master AI tools.",
+            "link": "/events"
          },
-         "card3":{
-            "title":"Awards",
-            "description":"Closing ceremony rewarding boldness."
+         "card3": {
+            "icon": "../../assets/imgs/icones/IconAward.svg",
+            "title": "Awards",
+            "title_color": "",
+            "description": "A closing ceremony celebrating bold creativity.",
+            "link": "/events"
          }
       }
    },
   "closingEvent": {
       "eyebrow": "Closing Night",
+      "eyebrow_text_color": "#C27AFF",
+      "eyebrow_bg_color": "rgba(173, 70, 255, 0.2)",
       "title_main": "MARS.A.I",
       "title_accent": "NIGHT",
+      "title_accent_color": "#F6339A",
       "description": {
          "ligne1": "An electro party blending AI and desirable futures.",
          "ligne2": "An immersive sound and visual experience."
       },
       "card": {
+         "icon":"/src/assets/imgs/icones/iconClock.svg",
          "date": "JUNE 13",
          "hour": "FROM 7:00 PM",
          "localisation": "MARSEILLE",
-         "ctaBooking": "Book now"
+         "ctaBooking": "Book now",
+         "ctaBooking_link": "/events"
       }
    },
    "localisationEvent":{
       "eyebrow":"The venue",
+      "eyebrow_icon": "../../assets/imgs/icones/IconLocalisation.svg",
+      "eyebrow_color": "",
       "venue": {
          "namePart1": "La",
          "namePart2": "Plateforme",
-         "cityTagline": "Marseille, Hub Créatif"
+         "cityTagline": "Marseille, Hub Créatif",
+         "color": "#51A2FF"
       },
       "address": {
          "street": "12 Rue d'Uzes",
          "postalCode": "13002",
-         "city": "Marseille"
+         "city": "Marseille",
+         "color": ""
       },
       "access": {
-         "tram": "Tram T2/T3 – Arenc Le Silo stop"
+         "tram": "Tram T2/T3 – Arenc Le Silo stop",
+         "color": ""
       },
       "spaces": [
          {
@@ -134,12 +159,15 @@
             "description": "The festival’s epicenter: welcome desk, activities, workshops, and food. The meeting point for all participants.",
             "color": "#C27AFF"
          }
-      ]
+      ],
+      "maps_link":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8044.241161952438!2d5.362378323117001!3d43.314391970182314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9c13ddc0211b9%3A0xd1642ae4b32c4bc4!2s%C3%89cole%20La%20Plateforme_%20Marseille%20-%20Entr%C3%A9e%20Sud!5e1!3m2!1sfr!2sfr!4v1769784840463!5m2!1sfr!2sfr"
    },
    "projectedStats": {
       "heading": {
          "title_main": "Projected",
+         "title_main_color": "",
          "title_accent": "Figures",
+         "title_accent_color": "#F6339A",
          "tagline": "Global scale, local impact."
       },
       "stats": [
@@ -158,7 +186,7 @@
    "partnersSection": {
       "eyebrow": "Our supporters",
       "title_main": "They support ",
-      "title_accent": "the future"
+      "title_accent": "the future",
+      "title_accent_color": "#00D3F2"
    }
-
 }

@@ -87,7 +87,7 @@ export default function AdminSidebarModal({
               👤
             </div>
             <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full bg-[#1AFF7A] ring-2 ring-black" />
-          </div>
+          </button>
 
           <div className="mt-3 text-sm font-semibold text-white/90">
             {currentUser ? `${currentUser.name || ""} ${currentUser.last_name || ""}` : "..."}

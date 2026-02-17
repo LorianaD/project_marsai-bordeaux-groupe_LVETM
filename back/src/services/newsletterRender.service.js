@@ -6,12 +6,34 @@ function esc(s = "") {
     .replaceAll('"', "&quot;");
 }
 
+function normalizeLocale(locale) {
+  const l = String(locale || "")
+    .trim()
+    .toLowerCase();
+  if (l === "fr" || l.startsWith("fr-")) return "fr";
+  return "en";
+}
+
 export function renderNewsletterHtml({
   subject,
   blocks = [],
   background = "#ffffff",
   unsubscribeUrl = "",
+  locale = "en", // ✅ NEW
 }) {
+  const lang = normalizeLocale(locale);
+
+  const i18n =
+    lang === "fr"
+      ? {
+          unsubscribeLabel: "Se désinscrire :",
+          unsubscribeCta: "clique ici",
+        }
+      : {
+          unsubscribeLabel: "Unsubscribe:",
+          unsubscribeCta: "click here",
+        };
+
   const body = blocks
     .map((b) => {
       if (b.type === "h1")
@@ -29,9 +51,10 @@ export function renderNewsletterHtml({
     .join("");
 
   return `<!doctype html>
-<html>
+<html lang="${lang}">
 <head>
   <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>${esc(subject || "Newsletter")}</title>
 </head>
 <body style="margin:0;background:${esc(background)};font-family:Arial,sans-serif;">
@@ -40,8 +63,8 @@ export function renderNewsletterHtml({
       ${body}
       <hr style="border:none;border-top:1px solid rgba(0,0,0,.12);margin:22px 0" />
       <p style="font-size:12px;opacity:.75;margin:0">
-        Se désinscrire :
-        <a href="${esc(unsubscribeUrl)}">clique ici</a>
+        ${esc(i18n.unsubscribeLabel)}
+        <a href="${esc(unsubscribeUrl)}">${esc(i18n.unsubscribeCta)}</a>
       </p>
     </div>
   </div>

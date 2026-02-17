@@ -16,30 +16,37 @@ function SectionHero() {
     return(
         <section className="relative flex w-full flex-col items-center self-stretch p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
 
-            <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1" autoPlay muted loop playsInline >
-                <source src="/imgs/backgroundSections/HomeSectionHero.mp4" type="video/mp4" />
-            </video>
+            {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
+            {content?.[section]?.media && (
+                content?.[section]?.media.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                    <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1" autoPlay muted loop playsInline >
+                        <source src={resolveCmsAsset(content?.[section]?.media)} type={content?.[section]?.media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+                    </video>
+                ) : (
+                    <img src={resolveCmsAsset(content?.[section]?.media)} alt="" className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"/>
+                )
+            )}
 
+            {/* LOGO, TITRE, ECT. */}
             <div className="flex py-[24px] flex-col justify-center items-center gap-[50px] self-stretch z-20">
 
                 <div className="flex flex-col justify-center items-center gap-[10px] self-stretch">
                     
-                        <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
+                    <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
 
-                            {isVisible(section, "protocol_icon") && (
-                                <div className="">
-                                    <img src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
-                                </div>
-                            )}
+                        {isVisible(section, "protocol_icon") && (
+                            <div className="">
+                                <img src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
+                            </div>
+                        )}
 
-                            {isVisible(section, "protocol") && (
-                                <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
-                                    {content?.[section]?.protocol || t("hero.protocol")}
-                                </p>
-                            )}
+                        {isVisible(section, "protocol") && (
+                            <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                                {content?.[section]?.protocol || t("hero.protocol")}
+                            </p>
+                        )}
 
-                        </div>
-                    
+                    </div>
                     
                     <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[192px] tacking-[-2.4px] md:tracking-[-9.6px] uppercase text-[48px] md:text-[192px] text-center">
                         {isVisible(section, "title_main") && (
@@ -72,6 +79,7 @@ function SectionHero() {
                                 {content?.[section]?.tagline_after || t("hero.tagline_after")}
                             </span>
                         )}
+
                     </p>
                 </div>
 
@@ -88,7 +96,7 @@ function SectionHero() {
                 </div>
 
                 <div className="flex flex-col items-center justify-center px-[50px] md:flex-row md:items-start md:justify-end gap-6 md:px-[220px]">
-                    <Link to="participation" className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
+                    <Link to={content?.[section]?.ctaParticipate_link || t("hero.ctaParticipate_link")} className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
 
                         {isVisible(section, "ctaParticipate") && (
                             <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
@@ -104,7 +112,7 @@ function SectionHero() {
 
                     </Link>
 
-                    <Link to="/learn-more" className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
+                    <Link to={content?.[section]?.ctaLearnMore_link || t("hero.ctaLearnMore_link")} className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
                         
                         {isVisible(section, "ctaLearnMore") && (
                             <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
@@ -113,10 +121,11 @@ function SectionHero() {
                         )}
 
                         {isVisible(section, "ctaLearnMore_signe") && (
-                            <span className="flex flex-col justify-center text-[#AD46FF] text-center text-[24px] font-bold leading-[0] uppercase">
-                                {content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe")}
-                            </span>
+                            <div className="w-[20px] h-[20px]">
+                                <img src={resolveCmsAsset(content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe"))} alt="" />
+                            </div>
                         )}
+
                     </Link>
 
                 </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
+import { inputLightClasses } from "../../utils/formInputClasses.js";
 
 /**
  * Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
@@ -78,7 +79,8 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 placeholder="admin@example.com"
-                className="mt-2 h-12 w-full rounded-xl border border-black/10 bg-white px-4 text-sm placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-[#F6339A]/50 dark:border-white/10 dark:bg-black/30 dark:placeholder:text-white/40"
+                required
+                className={`mt-2 h-12 text-sm ${inputLightClasses}`}
               />
             </div>
 
@@ -96,7 +98,8 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
                 placeholder="••••••••"
-                className="mt-2 h-12 w-full rounded-xl border border-black/10 bg-white px-4 text-sm placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-[#F6339A]/50 dark:border-white/10 dark:bg-black/30 dark:placeholder:text-white/40"
+                required
+                className={`mt-2 h-12 text-sm ${inputLightClasses}`}
               />
             </div>
 

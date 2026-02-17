@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import agendaIcon from "../assets/imgs/icones/agenda.png";
 import arrowIcon from "../assets/imgs/icones/arrow.png";
 import baliseIcon from "../assets/imgs/icones/balise.png";
@@ -8,17 +9,50 @@ import carsIcon from "../assets/imgs/icones/cars.png";
 import peopleIcon from "../assets/imgs/icones/people.png";
 import starIcon from "../assets/imgs/icones/star.png";
 import { getEvents } from "../services/Events/EventsApi.js";
+import { getProgram } from "../services/Events/ConferenceProgramAPI.js";
 import BookingModal from "../components/BookingModal.jsx";
+import { useTranslation } from "react-i18next";
 
+function formatDayLabel(dayStr, locale = "fr") {
+  if (!dayStr) return "—";
+  const d = new Date(dayStr + "T12:00:00");
+  if (Number.isNaN(d.getTime())) return dayStr;
+  const s = d.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 function Events() {
+  const { t, i18n } = useTranslation("event");
+  const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
   const [workshops, setWorkshops] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [programItems, setProgramItems] = useState([]);
+  const [selectedProgramDay, setSelectedProgramDay] = useState(null);
+
+  const programDays = [
+    ...new Set(programItems.map((item) => item.day).filter(Boolean)),
+  ].sort();
+
+  const effectiveDay = selectedProgramDay ?? programDays[0] ?? null;
+  const filteredProgramItems = effectiveDay
+    ? programItems.filter((item) => item.day === effectiveDay)
+    : programItems;
 
   useEffect(() => {
     getEvents()
       .then(setWorkshops)
       .catch((err) => console.error("Erreur chargement événements:", err));
+  }, []);
+
+  useEffect(() => {
+    getProgram()
+      .then(setProgramItems)
+      .catch((err) => console.error("Erreur programme:", err));
   }, []);
 
   return (
@@ -28,7 +62,7 @@ function Events() {
         <section id="infos-pratiques" className="space-y-6">
           <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={agendaIcon} alt="" className="h-6 w-6" />
-            <span>Infos pratiques</span>
+            <span>{t("title")}</span>
           </div>
 
           <div className="space-y-3">
@@ -61,75 +95,70 @@ function Events() {
 
         {/* PROGRAMME DES CONFÉRENCES */}
         <section id="programme" className="space-y-6">
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
-            <img src={horlogeIcon} alt="" className="h-6 w-6" />
-            <span>Programme des conférences</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
+              <img src={horlogeIcon} alt="" className="h-6 w-6" />
+              <span>Programme des conférences</span>
+            </div>
+            {programDays.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                {programDays.map((day) => {
+                  const isSelected = effectiveDay === day;
+                  return (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => setSelectedProgramDay(day)}
+                      className={`rounded-full px-4 py-2 text-xs font-semibold transition-colors normal-case tracking-normal ${
+                        isSelected
+                          ? "bg-[#F6339A] text-white dark:bg-[#F6339A] dark:text-white"
+                          : "border border-black/20 bg-black/5 text-black dark:border-[#F6339A]/40 dark:bg-white/5 dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
+                      }`}
+                    >
+                      {formatDayLabel(day, locale)}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <ul className="mt-4 space-y-3">
-            {[
-              {
-                time: "09:30",
-                color: "bg-emerald-400",
-                title: "Accueil & Café Networking",
-                speaker: null,
-              },
-              {
-                time: "10:30",
-                color: "bg-sky-400",
-                title: "Conférence d'ouverture : L'IA au service du Cinéma",
-                speaker: "Par : Jean-Luc Godart",
-              },
-              {
-                time: "13:00",
-                color: "bg-emerald-400",
-                title: "Déjeuner Libre",
-                speaker: null,
-              },
-              {
-                time: "14:30",
-                color: "bg-sky-400",
-                title: "Projection Débat/IA Difficile",
-                speaker: "Par : Wim Wenders, Paul Verhoeven",
-              },
-              {
-                time: "16:30",
-                color: "bg-emerald-400",
-                title: "Table Ronde : Futurs Distopiales",
-                speaker: null,
-              },
-              {
-                time: "20:30",
-                color: "bg-sky-400",
-                title: "Grand Prix IA Créative de l'EDI",
-                speaker: null,
-              },
-              {
-                time: "21:30",
-                color: "bg-emerald-400",
-                title: "Soirée DJ & VJ : DJ Samantha",
-                speaker: null,
-              },
-            ].map((item) => (
-              <li
-                key={item.time + item.title}
-                className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-4 py-3"
-              >
-                <span
-                  className={`mt-1 inline-flex h-8 items-center justify-center rounded-full px-4 text-xs font-semibold text-black ${item.color}`}
-                >
-                  {item.time}
-                </span>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-black dark:text-white">
-                    {item.title}
-                  </p>
-                  {item.speaker && (
-                    <p className="text-xs text-black/60 dark:text-white/60 text-left">{item.speaker}</p>
-                  )}
-                </div>
-              </li>
-            ))}
+            {filteredProgramItems.length > 0
+              ? filteredProgramItems.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-4 py-3"
+                  >
+                    <span
+                      className={`mt-1 inline-flex h-8 items-center justify-center rounded-full px-4 text-xs font-semibold text-black ${item.color || "bg-sky-400"}`}
+                    >
+                      {item.time}
+                    </span>
+                    {item.day && (
+                      <span className="mt-1 text-xs text-black/70 dark:text-white/70">
+                        {formatDayLabel(item.day, locale)}
+                      </span>
+                    )}
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-black dark:text-white">
+                        {item.title}
+                      </p>
+                      {item.speaker && (
+                        <p className="text-xs text-black/60 dark:text-white/60 text-left">
+                          {item.speaker}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))
+              : (
+                <li className="rounded-2xl border border-dashed border-black/15 bg-black/5 px-4 py-6 text-center text-sm text-black/60 dark:text-white/60">
+                  {effectiveDay
+                    ? "Aucun créneau pour ce jour."
+                    : "Aucun créneau pour le moment."}
+                </li>
+              )}
           </ul>
         </section>
 
@@ -222,7 +251,7 @@ function Events() {
                       key={w.id}
                       className="flex flex-col justify-between gap-3 rounded-2xl border border-black/10 bg-black/15 dark:border-[#F6339A]/60 dark:bg-black/40 p-5"
                     >
-                      <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
                         <span className="inline-flex h-8 items-center justify-center rounded-full bg-sky-400 px-4 text-xs font-semibold text-black">
                           {w.date
                             ? new Date(w.date).toLocaleTimeString("fr-FR", {
@@ -230,6 +259,9 @@ function Events() {
                                 minute: "2-digit",
                               })
                             : "—"}
+                        </span>
+                        <span className="text-xs text-black/70 dark:text-white/70">
+                          {w.location ? `• ${w.location}` : "• Lieu à préciser"}
                         </span>
                       </div>
                       <div>
@@ -241,6 +273,7 @@ function Events() {
                             {w.description}
                           </p>
                         )}
+
                       </div>
                       <p className="text-xs font-medium text-black/80 dark:text-white/80">
                         {(() => {
@@ -251,13 +284,21 @@ function Events() {
                           return `${remaining} place${remaining !== 1 ? "s" : ""} restante${remaining !== 1 ? "s" : ""}`;
                         })()}
                       </p>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedEvent(w)}
-                        className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase"
-                      >
-                        RÉSERVER SA PLACE
-                      </button>
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <Link
+                          to={`/events/${w.id}`}
+                          className="inline-flex items-center justify-center rounded-full border border-black/20 dark:border-[#F6339A]/60 px-4 py-2 text-xs font-semibold text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5"
+                        >
+                          Voir le détail
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedEvent(w)}
+                          className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase"
+                        >
+                          RÉSERVER SA PLACE
+                        </button>
+                      </div>
                     </li>
                   ))
                 : (  

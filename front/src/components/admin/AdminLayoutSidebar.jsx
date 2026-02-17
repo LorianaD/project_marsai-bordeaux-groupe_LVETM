@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ADMIN_NAV } from "./adminNav.js";
 import { useState, useEffect } from "react";
 import { decodeToken } from "../../utils/decodeToken.js";
@@ -32,7 +32,7 @@ export default function AdminLayoutSidebar({ active }) {
             {currentUser?.email || ""}
           </p>
         </div>
-      </div>
+      </Link>
 
       {/* Menu */}
       <nav className="mt-4 space-y-1">

@@ -1,13 +1,13 @@
-import CmsInput from "./Fields/CmsInput"
+import CmsInput from "../Fields/CmsInput"
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
 import { useState } from "react";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
-import CmsTextarea from "./Fields/CmsTextarea";
-import CmsHideToggle from "./Fields/CmsHideToggle";
-import CmsInputImage from "./Fields/CmsInputImage";
+import CmsTextarea from "../Fields/CmsTextarea";
+import CmsHideToggle from "../Fields/CmsHideToggle";
+import CmsInputImage from "../Fields/CmsInputImage";
 
 function SectionConceptForm() {
 
@@ -158,7 +158,7 @@ function SectionConceptForm() {
                     </h3>
                 </div>
 
-                <div className="w-full">
+                <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
                     <CmsInput name="title_main" label="Titre principal (en Blanc)" value={values.title_main} onChange={handleChange} placeholder={t("goal.title_main")} rightSlot={
                         <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                     />
