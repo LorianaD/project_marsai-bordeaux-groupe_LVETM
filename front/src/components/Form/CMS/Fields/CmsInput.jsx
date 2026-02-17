@@ -23,3 +23,8 @@ function CmsInput({ name, label, value, onChange, placeholder, type = "text", ri
 }
 
 export default CmsInput
+
+// Exemple utilisation
+// < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
+//     <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+// />

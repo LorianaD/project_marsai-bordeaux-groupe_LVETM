@@ -22,8 +22,6 @@ import LearnMore from "./pages/LearnMore.jsx";
 
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
 
-
-
 export default function App() {
   return (
     <Routes>
@@ -51,7 +49,6 @@ export default function App() {
       <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin/*" element={<AdminRouter />} />
-      
         </Route>
       </Route>
 
