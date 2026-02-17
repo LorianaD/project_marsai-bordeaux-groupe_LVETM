@@ -1,0 +1,13 @@
+{
+  "title": "Participants list",
+  "backToEvents": "← Back to events",
+  "loading": "Loading…",
+  "noParticipants": "No participants yet.",
+  "participantCount": "{{count}} participant",
+  "participantCount_other": "{{count}} participants",
+  "tableFirstName": "First name",
+  "tableLastName": "Last name",
+  "tableEmail": "Email",
+  "tableRegisteredAt": "Registered on",
+  "menuButton": "☰ Menu"
+}

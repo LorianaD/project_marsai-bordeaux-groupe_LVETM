@@ -1,0 +1,23 @@
+{
+  "title": "Conference programme",
+  "subtitle": "Slots displayed on the Events page (static programme replaced by this content).",
+  "addSlot": "+ Add slot",
+  "loading": "Loading…",
+  "edit": "Edit",
+  "delete": "Delete",
+  "modalTitleEdit": "Edit",
+  "modalTitleNew": "New slot",
+  "labelDay": "Day",
+  "labelTime": "Time",
+  "labelTitle": "Title",
+  "labelSpeaker": "Speaker (optional)",
+  "labelColor": "Colour",
+  "placeholderTime": "09:30",
+  "placeholderSpeaker": "By: …",
+  "colorBlue": "Blue",
+  "colorGreen": "Green",
+  "cancel": "Cancel",
+  "save": "Save",
+  "create": "Create",
+  "confirmDelete": "Delete « {{title}} »?"
+}

@@ -67,10 +67,10 @@ function Events() {
 
           <div className="space-y-3">
             <p className="text-sm font-semibold tracking-[0.35em] text-black dark:text-white">
-              13 JUIN 2026
+              {t("datePlaceholder")}
             </p>
             <p className="text-3xl font-semibold tracking-tight text-[#F6339A]">
-              MARSEILLE
+              {t("city")}
             </p>
           </div>
 
@@ -80,14 +80,14 @@ function Events() {
             </div>
             <div className="space-y-2 justify-center w-full ">
               <h3 className="text-sm font-semibold tracking-[0.25em] text-blue-600 dark:text-blue-300">
-                LA PLATEFORME
+                {t("platformTitle")}
               </h3>
               <p className="text-sm text-black/80 dark:text-white/80">
-                L&apos; épicentre de la révolution créative marseillaise.<br/>
-                4000m² dédiés à l'image et au futur.
+                {t("platformDesc")}<br/>
+                {t("platformDesc2")}
               </p>
               <p className="text-xs font-medium text-black/60 dark:text-white/60">
-                2 Rue d&apos;Arras, 13007 Marseille (France)
+                {t("platformAddress")}
               </p>
             </div>
           </article>
@@ -98,7 +98,7 @@ function Events() {
           <div className="flex flex-wrap items-center gap-3">
             <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
               <img src={horlogeIcon} alt="" className="h-6 w-6" />
-              <span>Programme des conférences</span>
+              <span>{t("programmeTitle")}</span>
             </div>
             {programDays.length > 0 && (
               <div className="flex flex-wrap items-center gap-2">
@@ -154,9 +154,7 @@ function Events() {
                 ))
               : (
                 <li className="rounded-2xl border border-dashed border-black/15 bg-black/5 px-4 py-6 text-center text-sm text-black/60 dark:text-white/60">
-                  {effectiveDay
-                    ? "Aucun créneau pour ce jour."
-                    : "Aucun créneau pour le moment."}
+                  {effectiveDay ? t("noSlotDay") : t("noSlot")}
                 </li>
               )}
           </ul>
@@ -166,43 +164,43 @@ function Events() {
         <section id="acces" className="space-y-6">
           <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={arrowIcon} alt="" className="h-6 w-6" />
-            <span>Accès</span>
+            <span>{t("accessTitle")}</span>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-5">
               <img src={wagonIcon} alt="" className="h-6 w-6" />
               <h3 className="text-xs font-semibold tracking-[0.25em] uppercase text-sky-600 dark:text-sky-300">
-                Transports en commun
+                {t("transportTitle")}
               </h3>
               <p className="mt-3 text-sm text-black/80 dark:text-white/80">
-                Bus Ligne 32, Arrêt Ruisseau
+                {t("transportBus")}
               </p>
               <p className="text-sm text-black/80 dark:text-white/80">
-                Métro Ligne 2, Arrêt National
+                {t("transportMetro")}
               </p>
             </article>
 
             <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-5">
               <img src={carsIcon} alt="" className="h-6 w-6" />
               <h3 className="text-xs font-semibold tracking-[0.25em] uppercase text-emerald-600 dark:text-emerald-300">
-                Voiture
+                {t("carTitle")}
               </h3>
               <p className="mt-3 text-sm text-black/80 dark:text-white/80">
-                Avenue Kiff-Saoul 1
+                {t("carAddress")}
               </p>
               <p className="text-sm text-black/80 dark:text-white/80">
-                Parking du Château de la Buzine à 500m
+                {t("carParking")}
               </p>
             </article>
 
             <article className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-5">
               <img src={baliseIcon} alt="" className="h-6 w-6" />
               <h3 className="text-xs font-semibold tracking-[0.25em] uppercase text-fuchsia-600 dark:text-fuchsia-300">
-                Adresses
+                {t("addressTitle")}
               </h3>
               <p className="mt-3 text-sm text-black/80 dark:text-white/80">
-              12 Rue d&apos;Uzes, 13002 Marseille (Entrée Principale).
+                {t("addressValue")}
               </p>
             </article>
           </div>
@@ -217,7 +215,7 @@ function Events() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Carte — École de la Plateforme, 12 Rue d'Uzes, Marseille"
+              title={t("mapTitle")}
               className="max-w-full"
             />
           </div>
@@ -227,21 +225,20 @@ function Events() {
         <section id="ateliers" className="space-y-6 pb-4">
           <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={starIcon} alt="" className="h-6 w-6" />
-            <span>Ateliers pratiques</span>
+            <span>{t("workshopsTitle")}</span>
           </div>
 
           <article className="rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-6 md:p-8">
             <div className="flex items-center justify-between gap-4">
               <h3 className="font-['Arimo'] text-[30px] font-bold uppercase leading-[36px] tracking-[-1.5px] text-black dark:text-white">
-                WORKSHOPS{" "}
-                <span className="text-[#F6339A]">IA CREATIVE</span>
+                {t("workshopsHeading")}{" "}
+                <span className="text-[#F6339A]">{t("workshopsHeadingAccent")}</span>
               </h3>
               <img src={peopleIcon} alt="" className="h-9 w-9" />
             </div>
 
             <p className="mt-4 text-sm text-black/80 dark:text-white/80">
-              Profitez de la plateforme pour développer vos compétences. Découvrez
-              nos ateliers pratiques et participez à nos sessions.
+              {t("workshopsIntro")}
             </p>
 
             <ul className="mt-6 grid gap-4 md:grid-cols-2">
@@ -261,7 +258,7 @@ function Events() {
                             : "—"}
                         </span>
                         <span className="text-xs text-black/70 dark:text-white/70">
-                          {w.location ? `• ${w.location}` : "• Lieu à préciser"}
+                          {w.location ? `• ${w.location}` : `• ${t("locationDefault")}`}
                         </span>
                       </div>
                       <div>
@@ -281,7 +278,7 @@ function Events() {
                           const registered = Number(w.registered ?? 0);
                           const remaining = capacity != null ? Math.max(0, capacity - registered) : null;
                           if (remaining == null) return "—";
-                          return `${remaining} place${remaining !== 1 ? "s" : ""} restante${remaining !== 1 ? "s" : ""}`;
+                          return t("placeRemaining", { count: remaining });
                         })()}
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -289,14 +286,14 @@ function Events() {
                           to={`/events/${w.id}`}
                           className="inline-flex items-center justify-center rounded-full border border-black/20 dark:border-[#F6339A]/60 px-4 py-2 text-xs font-semibold text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5"
                         >
-                          Voir le détail
+                          {t("seeDetail")}
                         </Link>
                         <button
                           type="button"
                           onClick={() => setSelectedEvent(w)}
                           className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase"
                         >
-                          RÉSERVER SA PLACE
+                          {t("reserveCta")}
                         </button>
                       </div>
                     </li>
@@ -305,7 +302,7 @@ function Events() {
                     <li
                       className="col-span-2 flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/40 p-6 text-sm text-black/70 dark:text-white/70"
                     >
-                      Aucun atelier n’est programmé pour le moment. Revenez plus tard.
+                      {t("noWorkshops")}
                     </li>
                   )}
             </ul>

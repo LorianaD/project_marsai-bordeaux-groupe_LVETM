@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { clamp, getDayKeyFromDate, getDayTabsFromEvents } from "../../../pages/Admin/AdminEvents.utils.js";
 import {
   getAdminEvents,
@@ -11,6 +12,7 @@ import {
 import EventCard from "../EventCard.jsx";
 
 export default function AdminEventsContent() {
+  const { t } = useTranslation("adminEvents");
   const navigate = useNavigate();
   const [day, setDay] = useState(null);
   const [query, setQuery] = useState("");
@@ -200,19 +202,19 @@ export default function AdminEventsContent() {
     <>
       <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5">
         <div className="p-6">
-          <h2 className="text-xl font-semibold tracking-tight">PLANNING & WORKSHOPS</h2>
+          <h2 className="text-xl font-semibold tracking-tight">{t("sectionTitle")}</h2>
           <p className="mt-1 text-sm text-black/60 dark:text-white/60">
-            Créez, publiez, mettez à jour et suivez le remplissage en temps réel.
+            {t("sectionSubtitle")}
           </p>
 
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
-              <p className="text-xs text-black/60 dark:text-white/60">Réservations totales</p>
+              <p className="text-xs text-black/60 dark:text-white/60">{t("statsTotalReservations")}</p>
               <p className="mt-1 text-2xl font-semibold">{stats.totalReservations}</p>
-              <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur la journée sélectionnée</p>
+              <p className="mt-1 text-xs text-black/50 dark:text-white/50">{t("statsOnSelectedDay")}</p>
             </div>
             <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
-              <p className="text-xs text-black/60 dark:text-white/60">Taux de remplissage</p>
+              <p className="text-xs text-black/60 dark:text-white/60">{t("statsFillRate")}</p>
               <p className="mt-1 text-2xl font-semibold">{stats.fillRate}%</p>
               <div className="mt-3 h-2 w-full rounded-full bg-black/10 dark:bg-white/10">
                 <div
@@ -222,22 +224,22 @@ export default function AdminEventsContent() {
               </div>
             </div>
             <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 p-4">
-              <p className="text-xs text-black/60 dark:text-white/60">Événements publiés</p>
+              <p className="text-xs text-black/60 dark:text-white/60">{t("statsPublished")}</p>
               <p className="mt-1 text-2xl font-semibold">{stats.publishedCount}</p>
-              <p className="mt-1 text-xs text-black/50 dark:text-white/50">sur {stats.eventsCount} événement(s)</p>
+              <p className="mt-1 text-xs text-black/50 dark:text-white/50">{t("statsOnEvents", { count: stats.eventsCount })}</p>
             </div>
           </div>
 
           <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-wrap gap-2">
               {dayTabs.length > 0 ? (
-                dayTabs.map((t) => {
-                  const active = t.key === day;
+                dayTabs.map((tab) => {
+                  const active = tab.key === day;
                   return (
                     <button
-                      key={t.key}
+                      key={tab.key}
                       type="button"
-                      onClick={() => setDay(t.key)}
+                      onClick={() => setDay(tab.key)}
                       className={[
                         "rounded-full px-4 py-2 text-xs font-semibold",
                         active
@@ -245,13 +247,13 @@ export default function AdminEventsContent() {
                           : "bg-black/10 text-black/70 dark:bg-black/35 dark:text-white/70 hover:bg-black/15 hover:text-black dark:hover:bg-white/10 dark:hover:text-white",
                       ].join(" ")}
                     >
-                      {t.label}
+                      {tab.label}
                     </button>
                   );
                 })
               ) : (
                 <p className="text-xs text-black/60 dark:text-white/60">
-                  Aucun événement pour le moment —
+                  {t("noEventsYet")}
                 </p>
               )}
             </div>
@@ -260,7 +262,7 @@ export default function AdminEventsContent() {
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Rechercher un event, lieu, mot-clé…"
+                  placeholder={t("searchPlaceholder")}
                   className="w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-2 text-sm text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/40 outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 />
               </div>
@@ -269,7 +271,7 @@ export default function AdminEventsContent() {
                 onClick={openCreate}
                 className="rounded-2xl bg-gradient-to-r from-sky-500 to-fuchsia-500 px-4 py-2 text-xs font-semibold tracking-[0.18em] uppercase"
               >
-                + Ajouter
+                {t("addButton")}
               </button>
             </div>
           </div>
@@ -277,20 +279,20 @@ export default function AdminEventsContent() {
           <div className="mt-6 space-y-4">
             {loading ? (
               <div className="rounded-3xl border border-black/10 bg-black/10 dark:border-[#F6339A]/60 dark:bg-black/30 p-6 text-sm text-black/70 dark:text-white/70">
-                Chargement…
+                {t("loading")}
               </div>
             ) : filtered.length === 0 ? (
               <div className="rounded-3xl border border-dashed border-black/15 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/25 p-8">
-                <p className="text-sm font-semibold">Aucun événement</p>
+                <p className="text-sm font-semibold">{t("noEvents")}</p>
                 <p className="mt-1 text-sm text-black/60 dark:text-white/60">
-                  Ajoute un workshop ou une conférence pour cette journée.
+                  {t("noEventsHint")}
                 </p>
                 <button
                   type="button"
                   onClick={openCreate}
                   className="mt-4 inline-flex rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-2 text-xs font-semibold hover:bg-black/15 dark:hover:bg-white/15"
                 >
-                  Créer un événement
+                  {t("createEvent")}
                 </button>
               </div>
             ) : (
@@ -315,10 +317,10 @@ export default function AdminEventsContent() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold tracking-[0.22em] uppercase text-black/60 dark:text-white/60">
-                  {editing ? "Modifier" : "Créer"} un événement
+                  {editing ? t("modalSubtitleEdit") : t("modalSubtitleCreate")} {t("modalSubtitleSuffix")}
                 </p>
                 <h3 className="mt-1 text-lg font-semibold">
-                  {editing ? "Mise à jour" : "Nouvel event"} —{" "}
+                  {editing ? t("modalTitleEdit") : t("modalTitleNew")} —{" "}
                   <span className="text-[#F6339A]">marsAI</span>
                 </h3>
               </div>
@@ -333,27 +335,27 @@ export default function AdminEventsContent() {
 
             <form onSubmit={onSave} className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="md:col-span-2">
-                <label className="text-xs text-black/60 dark:text-white/60">Titre</label>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelTitle")}</label>
                 <input
                   value={form.title}
                   onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
                   required
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
-                  placeholder="Ex: Atelier — VFX assistés IA"
+                  placeholder={t("placeholderTitle")}
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="text-xs text-black/60 dark:text-white/60">Description</label>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelDescription")}</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
                   rows={3}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
-                  placeholder="Décris l'objectif, le contenu, la cible…"
+                  placeholder={t("placeholderDescription")}
                 />
               </div>
               <div>
-                <label className="text-xs text-black/60 dark:text-white/60">Date & heure</label>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelDateHour")}</label>
                 <input
                   type="datetime-local"
                   value={form.startAt}
@@ -362,7 +364,7 @@ export default function AdminEventsContent() {
                 />
               </div>
               <div>
-                <label className="text-xs text-black/60 dark:text-white/60">Capacité</label>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelCapacity")}</label>
                 <input
                   type="number"
                   min={0}
@@ -372,25 +374,25 @@ export default function AdminEventsContent() {
                 />
               </div>
               <div>
-                <label className="text-xs text-black/60 dark:text-white/60">Lieu</label>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelLocation")}</label>
                 <input
                   value={form.location}
                   onChange={(e) => setForm((s) => ({ ...s, location: e.target.value }))}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
-                  placeholder="Ex: Auditorium Mucem"
+                  placeholder={t("placeholderLocation")}
                 />
               </div>
               <div>
-                <label className="text-xs text-black/60 dark:text-white/60">Type</label>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelType")}</label>
                 <select
                   value={form.type}
                   onChange={(e) => setForm((s) => ({ ...s, type: e.target.value }))}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-black/35 px-4 py-3 text-sm outline-none focus:border-black/20 dark:focus:border-[#F6339A]/60"
                 >
-                  <option value="atelier">Atelier</option>
-                  <option value="masterclass">Masterclass</option>
-                  <option value="conference">Conférence</option>
-                  <option value="projection">Projection</option>
+                  <option value="atelier">{t("typeAtelier")}</option>
+                  <option value="masterclass">{t("typeMasterclass")}</option>
+                  <option value="conference">{t("typeConference")}</option>
+                  <option value="projection">{t("typeProjection")}</option>
                 </select>
               </div>
               <div className="md:col-span-2 mt-2 flex flex-col-reverse gap-3 md:flex-row md:justify-end">
@@ -399,7 +401,7 @@ export default function AdminEventsContent() {
                   onClick={() => setModalOpen(false)}
                   className="rounded-2xl bg-black/10 dark:bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-black/15 dark:hover:bg-white/15"
                 >
-                  Annuler
+                  {t("cancel")}
                 </button>
                 <button
                   type="button"
@@ -409,7 +411,7 @@ export default function AdminEventsContent() {
                   }}
                   className="rounded-2xl bg-gradient-to-r from-sky-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold"
                 >
-                  {editing ? "Enregistrer" : "Créer l'événement"}
+                  {editing ? t("save") : t("createEventButton")}
                 </button>
               </div>
             </form>

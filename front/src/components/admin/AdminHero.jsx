@@ -1,29 +1,29 @@
+import { useTranslation } from "react-i18next";
+
 export default function AdminHero({ name = "Ocean" }) {
+  const { t } = useTranslation("adminHero");
+
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-[#F6339A]/60 min-h-[240px]">
-      {/* Image de fond */}
       <img
         src="/imgs/admin-hero.jpg.png"
-        alt=""
+        alt={t("imageAlt")}
         className="absolute inset-0 h-full w-full object-cover object-center"
         draggable={false}
       />
 
-      {/* Overlay léger pour éviter les zones noires et améliorer lisibilité */}
       <div className="absolute inset-0 bg-black/40" />
 
-      {/* Contenu */}
       <div className="relative flex h-full items-center justify-between gap-8 px-10 py-10 md:px-14 md:py-12">
         <div>
           <h1 className="text-[36px] font-extrabold leading-tight tracking-tight text-white md:text-[42px]">
-            Heureux de vous revoir,{" "}
+            {t("greeting")}{" "}
             <span className="text-[#3B82F6]">{name}</span>
           </h1>
 
           <p className="mt-3 text-sm text-white/90">
-            Le festival approche. N&apos;oubliez pas de finaliser vos
-            soumissions avant le{" "}
-            <span className="font-medium text-white">15 Mai</span>.
+            {t("message")}{" "}
+            <span className="font-medium text-white">{t("deadline")}</span>.
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export default function AdminHero({ name = "Ocean" }) {
               />
             </svg>
           </span>
-          ADMIN MANAGEMENT
+          {t("button")}
         </button>
       </div>
     </div>
