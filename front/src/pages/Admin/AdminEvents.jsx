@@ -155,8 +155,8 @@ export default function AdminEvents() {
                 )}
               </div>
             </div>
-
             <AdminEventsContent />
+            </section>
           </main>
         </div>
       </div>
