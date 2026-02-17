@@ -28,9 +28,16 @@ function LoginForm() {
       const result = await loginUser(email, password);
       localStorage.setItem("token", result.token);
       setSuccess(true);
+
       setTimeout(() => {
-        navigate("/admin/overview");
+        const token = JSON.parse(atob(result.token.split(".")[1]));
+        if (token.role === "selector") {
+          navigate("/selector/videos");
+        } else {
+          navigate("/admin/overview");
+        }
       }, 1200);
+
     } catch (err) {
       setError(err?.message || "Échec de la connexion.");
     } finally {

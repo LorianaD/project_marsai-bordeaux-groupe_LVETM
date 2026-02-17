@@ -321,7 +321,7 @@ export default function Overview() {
 
             <div className="mt-10">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[56px]">
-                VUE D&apos;ENSEMBLE
+                VUE D'ENSEMBLE
               </div>
               <div className="mt-2 max-w-2xl text-black/55 dark:text-white/55">
                 Analyse détaillée de la progression du festival et des
