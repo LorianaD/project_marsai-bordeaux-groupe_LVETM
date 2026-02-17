@@ -14,6 +14,9 @@ import footerFR from "./locales/fr/footer.json";
 import detailvideoFR from "./locales/fr/detailvideo.json";
 import detailvideoEN from "./locales/en/detailvideo.json";
 
+import faqFR from "./locales/fr/faq.json";
+import faqEN from "./locales/en/faq.json";
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -29,12 +32,14 @@ i18n
         home: homeFR,
         footer: footerFR,
         detailvideo: detailvideoFR,
+        faq: faqFR,
       },
       en: {
         header: headerEN,
         home: homeEN,
         footer: footerEN,
         detailvideo: detailvideoEN,
+        faq: faqEN,
       },
     },
 
