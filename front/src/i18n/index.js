@@ -14,6 +14,9 @@ import footerFR from "./locales/fr/footer.json";
 import detailvideoFR from "./locales/fr/detailvideo.json";
 import detailvideoEN from "./locales/en/detailvideo.json";
 
+import newslettersFR from "./locales/fr/newsletters.json";
+import newslettersEN from "./locales/en/newsletters.json";
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -28,17 +31,19 @@ i18n
         header: headerFR,
         home: homeFR,
         footer: footerFR,
+        newsletters: newslettersFR,
         detailvideo: detailvideoFR,
       },
       en: {
         header: headerEN,
         home: homeEN,
         footer: footerEN,
+        newsletters: newslettersEN,
         detailvideo: detailvideoEN,
       },
     },
 
-    ns: ["header", "footer", "home", "detailvideo"],
+    ns: ["header", "footer", "home", "detailvideo", "newsletters"],
     defaultNS: "home",
 
     detection: {

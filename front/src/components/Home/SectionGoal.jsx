@@ -54,8 +54,8 @@ function SectionGoal() {
         CMSGoalHome();
     },[locale]);
 
-    console.log("goal card1_icon =", content?.goal?.card1_icon);
-    console.log("goal object =", content?.goal);
+    // console.log("goal card1_icon =", content?.goal?.card1_icon);
+    // console.log("goal object =", content?.goal);
 
     return(
         <section className="flex flex-col items-center justify-center md:gap-5 px-[20px] md:px-[75px] md:py-[20px] self-stretch dark:text-[#FFFFFF] text-left w-full">
