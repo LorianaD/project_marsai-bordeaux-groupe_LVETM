@@ -1,3 +1,4 @@
+// fonction qui gere l'affichage
 function isVisible(content, section, key) {
     // console.log("fonction isVisible OK");
     // console.log("content:", content);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import GetAllContentApi from "../services/CMS/GetAllContentApi";
-import { buildCmsMap } from "../utils/cms";
+import { buildCmsMap } from "../utils/buildCmsMap";
 
 
 function useCmsContent(locale) {
