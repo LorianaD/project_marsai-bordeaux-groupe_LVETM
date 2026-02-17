@@ -1,9 +1,15 @@
 import { Outlet } from "react-router-dom";
+import AdminLayoutSidebar from "../admin/AdminLayoutSidebar";
+import AdminHero from "../admin/AdminHero";
 
 function AdminLayout() {
   return (
-    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <Outlet />
+    <div className="flex gap-[20px] m-[50px]">
+      <AdminLayoutSidebar/>
+      <div>
+        <AdminHero/>
+        <Outlet />
+      </div>
     </div>
   );
 }
