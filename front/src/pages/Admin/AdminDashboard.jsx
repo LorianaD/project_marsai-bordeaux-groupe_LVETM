@@ -3,7 +3,7 @@ import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import AdminDashboardContent from "../../components/admin/Dashboard/AdminDashboardContent.jsx";
 
-function AdminDashboard() {
+export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -29,15 +29,11 @@ function AdminDashboard() {
               </button>
             </div>
 
-            <section className="mt-5 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-[#F6339A]/60 dark:bg-white/5">
-              <h1 className="text-xl font-semibold tracking-tight"></h1>
-              <DashboardUser />
-            </section>
+            {/* Contenu du dashboard */}
+            <AdminDashboardContent />
           </main>
         </div>
       </div>
     </div>
   );
 }
-
-export default AdminDashboard;
