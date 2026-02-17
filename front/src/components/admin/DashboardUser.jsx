@@ -106,22 +106,31 @@ function DashboardUser() {
         {success && <p className="text-green-500">{success}</p>}
       </div>
 
-      <div>
-        <h2>Gestion des utilisateurs</h2>
-      </div>
+            <div className="flex flex-col gap-3 px-6 py-5 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#F6339A]/15 ring-1 ring-[#F6339A]/25">
+            👥
+          </span>
+          <div className="text-sm font-semibold">Gestion des utilisateurs</div>
+        </div>
 
-      <div>
-        <select
-          value={roleFilter}
-          onChange={(event) => setRoleFilter(event.target.value)}
-          className="text-black bg-white"
-        >
-          {ROLE_OPTIONS.filter((role) => role !== "superadmin").map((role) => (
-            <option key={role} value={role}>
-              {ROLE_LABELS[role] || role}
-            </option>
-          ))}
-        </select>
+        <div className="w-full rounded-full border border-black/10 bg-black/0 px-3 py-2 md:w-auto dark:border-white/10 dark:bg-white/5">
+          <select
+            value={roleFilter}
+            onChange={(event) => setRoleFilter(event.target.value)}
+            className="w-full bg-transparent text-sm text-black/70 outline-none md:w-auto dark:text-white/80"
+          >
+            {ROLE_OPTIONS.filter((role) => role !== "superadmin").map((role) => (
+              <option
+                key={role}
+                value={role}
+                className="bg-white text-black dark:bg-black dark:text-white"
+              >
+                {ROLE_LABELS[role] || role}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
