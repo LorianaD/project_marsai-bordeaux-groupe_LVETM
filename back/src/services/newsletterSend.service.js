@@ -112,7 +112,7 @@ export async function sendNewsletterToAllActive(newsletterId) {
 
       const subject = subjectForLocale(nl, locale);
 
-      // ✅ 1) HTML normal
+      // 1) HTML normal
       const rendered = renderNewsletterHtml({
         subject,
         blocks: content?.blocks || [],
@@ -121,7 +121,7 @@ export async function sendNewsletterToAllActive(newsletterId) {
         locale,
       });
 
-      // ✅ 2) Adaptation: inline base64 des images /uploads
+      // 2) Adaptation: inline base64 des images /uploads
       const html = inlineUploadsAsBase64(rendered);
 
       try {
