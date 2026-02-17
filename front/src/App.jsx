@@ -32,7 +32,6 @@ import Partner from "./components/Form/CMS/Home/Partner.jsx";
 import UpdatePartner from "./components/Form/CMS/Home/UpdatePartner.jsx";
 import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 import AdminLogin from "./components/login/LoginForm.jsx";
-import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import SectionHeroForm from "./components/Form/CMS/Home/SectionHeroForm.jsx";
 import SectionConceptForm from "./components/Form/CMS/Home/SectionConceptForm.jsx";
 import SectionGoalForm from "./components/Form/CMS/Home/SectionGoalForm.jsx";
@@ -84,7 +83,6 @@ export default function App() {
           <Route path="/admin/videos" element={<AdminVideos />} />
           <Route path="/admin/register" element={<AdminRegister />} />
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/leaderboard" element={<AdminLeaderboard />} />
           <Route path="/admin/overview" element={<Overview />} />
           <Route

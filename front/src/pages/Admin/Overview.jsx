@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+import DashboardUser from "../../components/admin/DashboardUser.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const TOP_FILMS_ENDPOINT = "/api/videos/admin/leaderboard";
@@ -328,6 +329,17 @@ export default function Overview() {
               </div>
             </div>
 
+
+
+
+          {/* gestion des roles users */}
+            <section
+              className="mt-6 overflow-hidden rounded-[22px] border border-black/10 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.06)]
+                  dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl
+                  dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+              <DashboardUser />
+            </section>
+
             {/* KPI row */}
             <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
               <MetricCard
@@ -437,7 +449,6 @@ export default function Overview() {
                 </Link>
               </div>
             </div>
-
             <div className="h-10" />
           </div>
         </div>
