@@ -1,3 +1,8 @@
+// Import formulaire CMS Header
+import HeaderLeftSideForm from "../../Form/CMS/Header/HeaderLeftSideForm";
+import HeaderCenterSideForm from "../../Form/CMS/Header/HeaderCenterSideForm";
+import HeaderRightSideForm from "../../Form/CMS/Header/HeaderRightSideForm";
+
 // Import formulaires CMS HomePage
 import SectionHeroForm from "../../Form/CMS/Home/SectionHeroForm";
 import SectionConceptForm from "../../Form/CMS/Home/SectionConceptForm";
@@ -27,8 +32,18 @@ import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
 // Import formulaire CMS LegalPage
 import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
 
+
 function CmsCentralization() {
     return [
+        {
+            pageId: "header",
+            label: "Header",
+            sections: [
+                { id: "leftSide", label: "Titre du site", component: HeaderLeftSideForm },
+                { id: "centerSide", label: "Navbar", component: HeaderCenterSideForm },
+                { id: "rightSide", label: "Bouttons à droite", component: HeaderRightSideForm },
+            ]
+        },
         {
             pageId: "home",
             label: "Home",

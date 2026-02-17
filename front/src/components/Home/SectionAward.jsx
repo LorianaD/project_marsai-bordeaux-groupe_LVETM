@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { fetchVideos } from "../../services/Videos/VideosListApi";
 import { useTranslation } from "react-i18next";
 import GetAllContentApi from "../../services/CMS/GetAllContentApi";
-import { buildCmsMap } from "../../utils/cms";
+import { buildCmsMap } from "../../utils/buildCmsMap";
 import isVisible from "../../utils/isVisible";
 
 const API_BASE = import.meta.env.VITE_API_URL;

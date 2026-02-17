@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-export default function AdminHero({ name: nameProp = "Ocean" }) {
+export default function AdminHero() {
+
   const { t } = useTranslation("adminHero");
   const [currentUser, setCurrentUser] = useState(null);
+
 
   useEffect(() => {
     setCurrentUser(decodeToken());

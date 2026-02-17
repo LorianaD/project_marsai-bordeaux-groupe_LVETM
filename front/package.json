@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-react": "^5.1.0",
     "@react-google-maps/api": "^2.20.8",
     "@tailwindcss/vite": "^4.1.18",
     "daisyui": "^5.5.14",
