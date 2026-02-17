@@ -20,7 +20,7 @@ export default function AdminHero({ name = "Ocean" }) {
             <span className="text-[#3B82F6]">{name}</span>
           </h1>
 
-          <p className="mt-3 max-w-[720px] text-sm text-white/90">
+          <p className="mt-3 text-sm text-white/90">
             Le festival approche. N&apos;oubliez pas de finaliser vos
             soumissions avant le{" "}
             <span className="font-medium text-white">15 Mai</span>.

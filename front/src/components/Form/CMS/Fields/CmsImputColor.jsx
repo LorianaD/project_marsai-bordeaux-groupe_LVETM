@@ -34,10 +34,10 @@ function CmsInputColor({name, label, value, onChange, placeholder, type = "color
     }
 
     return(
-        <div className="flex flex-col pb-[10px] w-20 items-center justify-start gap-[16px] uppercase placeholder:uppercase">
+        <div className="flex flex-col w-20 items-center justify-start gap-[16px] uppercase placeholder:uppercase">
 
             <div className="flex justify-between md:flex-row w-full">
-                <label htmlFor={name} className="text-[14px] font-semibold tracking-[2.24px] w-full">
+                <label htmlFor={name} className="text-[14px] font-semibold tracking-[2.24px] w-full m-[5px]">
                     { label }
                 </label>
                 {rightSlot}
@@ -47,7 +47,7 @@ function CmsInputColor({name, label, value, onChange, placeholder, type = "color
                 style={
                     type === "color" ? { background: safeValue, color: isLightColor(safeValue) ? "#000" : "#fff" } : underfined
                 }
-                className="flex py-[11px] px-[21px] items-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"
+                className="flex py-[11px] px-[21px] items-center justify-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"
             />
             
         </div>

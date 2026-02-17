@@ -1,5 +1,3 @@
-import { inputCmsClasses } from "../../../../utils/formInputClasses.js";
-
 function CmsTextarea({ name, label, type = "text", value, onChange, placeholder, rows = 4, rightSlot = null, required = false }) {
   return (
     <div className="flex flex-col pb-[10px] w-full justify-start gap-[16px] self-stretch uppercase placeholder:uppercase">

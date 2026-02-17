@@ -130,18 +130,23 @@
    },
    "localisationEvent":{
       "eyebrow":"The venue",
+      "eyebrow_icon": "../../assets/imgs/icones/IconLocalisation.svg",
+      "eyebrow_color": "",
       "venue": {
          "namePart1": "La",
          "namePart2": "Plateforme",
-         "cityTagline": "Marseille, Hub Créatif"
+         "cityTagline": "Marseille, Hub Créatif",
+         "color": "#51A2FF"
       },
       "address": {
          "street": "12 Rue d'Uzes",
          "postalCode": "13002",
-         "city": "Marseille"
+         "city": "Marseille",
+         "color": ""
       },
       "access": {
-         "tram": "Tram T2/T3 – Arenc Le Silo stop"
+         "tram": "Tram T2/T3 – Arenc Le Silo stop",
+         "color": ""
       },
       "spaces": [
          {
@@ -160,7 +165,9 @@
    "projectedStats": {
       "heading": {
          "title_main": "Projected",
+         "title_main_color": "",
          "title_accent": "Figures",
+         "title_accent_color": "#F6339A",
          "tagline": "Global scale, local impact."
       },
       "stats": [
@@ -179,7 +186,7 @@
    "partnersSection": {
       "eyebrow": "Our supporters",
       "title_main": "They support ",
-      "title_accent": "the future"
+      "title_accent": "the future",
+      "title_accent_color": "#00D3F2"
    }
-
 }
