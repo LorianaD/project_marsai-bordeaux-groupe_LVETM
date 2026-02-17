@@ -4,16 +4,18 @@ export async function createNewsletter({
   subject,
   title,
   contentJson,
+  contentHtml, // ✅ NEW
   backgroundColor,
 }) {
   const sql = `
-    INSERT INTO newsletters (subject, title, content_json, background_color, status)
-    VALUES (?, ?, ?, ?, 'draft')
+    INSERT INTO newsletters (subject, title, content_json, content_html, background_color, status)
+    VALUES (?, ?, ?, ?, ?, 'draft')
   `;
   const [res] = await pool.execute(sql, [
     subject,
     title || null,
     JSON.stringify(contentJson),
+    contentHtml || null, // ✅ NEW
     backgroundColor || null,
   ]);
   return res.insertId;
@@ -21,17 +23,26 @@ export async function createNewsletter({
 
 export async function updateNewsletter(
   id,
-  { subject, title, contentJson, backgroundColor, status, scheduledAt },
+  {
+    subject,
+    title,
+    contentJson,
+    contentHtml,
+    backgroundColor,
+    status,
+    scheduledAt,
+  },
 ) {
   const sql = `
     UPDATE newsletters
-    SET subject=?, title=?, content_json=?, background_color=?, status=?, scheduled_at=?
+    SET subject=?, title=?, content_json=?, content_html=?, background_color=?, status=?, scheduled_at=?
     WHERE id=?
   `;
   const [res] = await pool.execute(sql, [
     subject,
     title || null,
     JSON.stringify(contentJson),
+    contentHtml || null, // ✅ NEW
     backgroundColor || null,
     status || "draft",
     scheduledAt || null,

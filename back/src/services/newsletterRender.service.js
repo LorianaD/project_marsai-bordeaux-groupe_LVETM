@@ -17,9 +17,10 @@ function normalizeLocale(locale) {
 export function renderNewsletterHtml({
   subject,
   blocks = [],
+  htmlContent = "", // ✅ NEW: contenu CKEditor (HTML)
   background = "#ffffff",
   unsubscribeUrl = "",
-  locale = "en", // ✅ NEW
+  locale = "en",
 }) {
   const lang = normalizeLocale(locale);
 
@@ -34,7 +35,9 @@ export function renderNewsletterHtml({
           unsubscribeCta: "click here",
         };
 
-  const body = blocks
+  const hasHtml = String(htmlContent || "").trim().length > 0;
+
+  const blocksBody = blocks
     .map((b) => {
       if (b.type === "h1")
         return `<h1 style="margin:0 0 16px;font-size:28px">${esc(b.text)}</h1>`;
@@ -49,6 +52,9 @@ export function renderNewsletterHtml({
       return "";
     })
     .join("");
+
+  // ✅ priorité au HTML CKEditor si présent
+  const body = hasHtml ? htmlContent : blocksBody;
 
   return `<!doctype html>
 <html lang="${lang}">

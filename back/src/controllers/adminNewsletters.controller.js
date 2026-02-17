@@ -34,10 +34,14 @@ export async function adminCreateNewsletter(req, res) {
   const backgroundColor = String(req.body?.background_color || "#ffffff");
   const contentJson = req.body?.content_json || { blocks: [] };
 
+  // ✅ NEW: HTML depuis CKEditor
+  const contentHtml = String(req.body?.content_html || "");
+
   const id = await createNewsletter({
     subject,
     title,
     contentJson,
+    contentHtml, // ✅ NEW
     backgroundColor,
   });
 
@@ -59,6 +63,10 @@ export async function adminUpdateNewsletter(req, res) {
   const title = String(req.body?.title || "").trim();
   const backgroundColor = String(req.body?.background_color || "#ffffff");
   const contentJson = req.body?.content_json || { blocks: [] };
+
+  // ✅ NEW: HTML depuis CKEditor
+  const contentHtml = String(req.body?.content_html || "");
+
   const status = String(req.body?.status || "draft");
   const scheduledAt = req.body?.scheduled_at || null;
 
@@ -66,6 +74,7 @@ export async function adminUpdateNewsletter(req, res) {
     subject,
     title,
     contentJson,
+    contentHtml, // ✅ NEW
     backgroundColor,
     status,
     scheduledAt,
@@ -87,6 +96,7 @@ export async function adminPreviewNewsletter(req, res) {
   const html = renderNewsletterHtml({
     subject: row.subject,
     blocks: content?.blocks || [],
+    htmlContent: row.content_html || "", // ✅ NEW: priorité au HTML si présent
     background: row.background_color || "#ffffff",
     unsubscribeUrl: "http://localhost:5173/newsletter/unsubscribe?token=TEST",
   });
@@ -97,7 +107,9 @@ export async function adminPreviewNewsletter(req, res) {
 
 export async function adminSendTestNewsletter(req, res) {
   const id = Number(req.params.id);
-  const to = String(req.body?.to || "").trim().toLowerCase();
+  const to = String(req.body?.to || "")
+    .trim()
+    .toLowerCase();
   if (!to) return res.status(400).json({ error: "Champ to manquant" });
 
   const row = await getNewsletterById(id);
@@ -111,6 +123,7 @@ export async function adminSendTestNewsletter(req, res) {
   const html = renderNewsletterHtml({
     subject: row.subject,
     blocks: content?.blocks || [],
+    htmlContent: row.content_html || "", // ✅ NEW
     background: row.background_color || "#ffffff",
     unsubscribeUrl: "http://localhost:5173/newsletter/unsubscribe?token=TEST",
   });
