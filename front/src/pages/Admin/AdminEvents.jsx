@@ -255,7 +255,7 @@ useEffect(() => {
 
           {/* Hero — même bloc que Overview / Gestion films */}
           <div className="mt-5">
-            <AdminHero name="Ocean" />
+            <AdminHero />
           </div>
 
           {/* Contenu Planning & Workshops */}

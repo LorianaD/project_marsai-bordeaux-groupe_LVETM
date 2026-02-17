@@ -110,7 +110,7 @@ export default function AdminLeaderboard() {
             </div>
 
             <div className="mt-5">
-              <AdminHero name="Ocean" />
+              <AdminHero />
             </div>
 
             <div className="mt-8">

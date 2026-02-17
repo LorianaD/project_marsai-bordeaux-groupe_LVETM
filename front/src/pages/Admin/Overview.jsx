@@ -317,7 +317,7 @@ export default function Overview() {
               </button>
             </div>
 
-            <AdminHero name="Ocean" />
+            <AdminHero />
 
             <div className="mt-10">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[56px]">
