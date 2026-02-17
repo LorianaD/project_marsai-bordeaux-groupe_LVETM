@@ -11,12 +11,21 @@ const COLORS = [
   { value: "bg-emerald-400", label: "Vert" },
 ];
 
+function formatDayLabel(dayStr) {
+  if (!dayStr) return "—";
+  const d = new Date(dayStr + "T12:00:00");
+  if (Number.isNaN(d.getTime())) return dayStr;
+  const s = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 export default function AdminConferenceProgramContent() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({
+    day: "",
     time: "09:00",
     title: "",
     speaker: "",
@@ -32,13 +41,15 @@ export default function AdminConferenceProgramContent() {
 
   const openCreate = () => {
     setEditing(null);
-    setForm({ time: "09:00", title: "", speaker: "", color: "bg-sky-400" });
+    const today = new Date().toISOString().slice(0, 10);
+    setForm({ day: today, time: "09:00", title: "", speaker: "", color: "bg-sky-400" });
     setModalOpen(true);
   };
 
   const openEdit = (item) => {
     setEditing(item);
     setForm({
+      day: item.day || "",
       time: item.time || "09:00",
       title: item.title || "",
       speaker: item.speaker || "",
@@ -51,6 +62,7 @@ export default function AdminConferenceProgramContent() {
     e.preventDefault();
     try {
       const payload = {
+        day: form.day || null,
         time: form.time,
         title: form.title,
         speaker: form.speaker || null,
@@ -102,6 +114,7 @@ export default function AdminConferenceProgramContent() {
                 key={item.id}
                 className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5"
               >
+                <span className="text-sm text-black/70 dark:text-white/70">{formatDayLabel(item.day)}</span>
                 <span className="font-mono text-sm">{item.time}</span>
                 <span className="font-medium">{item.title}</span>
                 {item.speaker && (
@@ -134,6 +147,15 @@ export default function AdminConferenceProgramContent() {
           <div className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-6 dark:bg-black dark:border-white/10">
             <h3 className="text-lg font-semibold">{editing ? "Modifier" : "Nouveau créneau"}</h3>
             <form onSubmit={handleSave} className="mt-4 space-y-3">
+              <div>
+                <label className="block text-xs text-black/60">Jour</label>
+                <input
+                  type="date"
+                  value={form.day}
+                  onChange={(e) => setForm((f) => ({ ...f, day: e.target.value }))}
+                  className="mt-1 w-full rounded-xl border border-black/10 bg-black/5 px-3 py-2 dark:bg-white/5"
+                />
+              </div>
               <div>
                 <label className="block text-xs text-black/60">Heure</label>
                 <input

@@ -11,12 +11,37 @@ import starIcon from "../assets/imgs/icones/star.png";
 import { getEvents } from "../services/Events/EventsApi.js";
 import { getProgram } from "../services/Events/ConferenceProgramAPI.js";
 import BookingModal from "../components/BookingModal.jsx";
+import { useTranslation } from "react-i18next";
 
+function formatDayLabel(dayStr, locale = "fr") {
+  if (!dayStr) return "—";
+  const d = new Date(dayStr + "T12:00:00");
+  if (Number.isNaN(d.getTime())) return dayStr;
+  const s = d.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 function Events() {
+  const { t, i18n } = useTranslation("event");
+  const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
   const [workshops, setWorkshops] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [programItems, setProgramItems] = useState([]);
+  const [selectedProgramDay, setSelectedProgramDay] = useState(null);
+
+  const programDays = [
+    ...new Set(programItems.map((item) => item.day).filter(Boolean)),
+  ].sort();
+
+  const effectiveDay = selectedProgramDay ?? programDays[0] ?? null;
+  const filteredProgramItems = effectiveDay
+    ? programItems.filter((item) => item.day === effectiveDay)
+    : programItems;
 
   useEffect(() => {
     getEvents()
@@ -37,7 +62,7 @@ function Events() {
         <section id="infos-pratiques" className="space-y-6">
           <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={agendaIcon} alt="" className="h-6 w-6" />
-            <span>Infos pratiques</span>
+            <span>{t("title")}</span>
           </div>
 
           <div className="space-y-3">
@@ -70,14 +95,37 @@ function Events() {
 
         {/* PROGRAMME DES CONFÉRENCES */}
         <section id="programme" className="space-y-6">
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
-            <img src={horlogeIcon} alt="" className="h-6 w-6" />
-            <span>Programme des conférences</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
+              <img src={horlogeIcon} alt="" className="h-6 w-6" />
+              <span>Programme des conférences</span>
+            </div>
+            {programDays.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                {programDays.map((day) => {
+                  const isSelected = effectiveDay === day;
+                  return (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => setSelectedProgramDay(day)}
+                      className={`rounded-full px-4 py-2 text-xs font-semibold transition-colors normal-case tracking-normal ${
+                        isSelected
+                          ? "bg-[#F6339A] text-white dark:bg-[#F6339A] dark:text-white"
+                          : "border border-black/20 bg-black/5 text-black dark:border-[#F6339A]/40 dark:bg-white/5 dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
+                      }`}
+                    >
+                      {formatDayLabel(day, locale)}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <ul className="mt-4 space-y-3">
-            {programItems.length > 0
-              ? programItems.map((item) => (
+            {filteredProgramItems.length > 0
+              ? filteredProgramItems.map((item) => (
                   <li
                     key={item.id}
                     className="flex items-start gap-4 rounded-2xl border border-black/5 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-4 py-3"
@@ -87,6 +135,11 @@ function Events() {
                     >
                       {item.time}
                     </span>
+                    {item.day && (
+                      <span className="mt-1 text-xs text-black/70 dark:text-white/70">
+                        {formatDayLabel(item.day, locale)}
+                      </span>
+                    )}
                     <div className="space-y-1">
                       <p className="text-sm font-medium text-black dark:text-white">
                         {item.title}
@@ -101,7 +154,9 @@ function Events() {
                 ))
               : (
                 <li className="rounded-2xl border border-dashed border-black/15 bg-black/5 px-4 py-6 text-center text-sm text-black/60 dark:text-white/60">
-                  Aucun créneau pour le moment.
+                  {effectiveDay
+                    ? "Aucun créneau pour ce jour."
+                    : "Aucun créneau pour le moment."}
                 </li>
               )}
           </ul>

@@ -28,8 +28,9 @@ export async function getProgramAdmin(req, res) {
  
 export async function createItem(req, res) {
     try {
-      const { time, title, speaker, color, sort_order } = req.body;
+      const { day, time, title, speaker, color, sort_order } = req.body;
       const created = await conferenceProgramModel.create({
+        day: day || null,
         time,
         title,
         speaker: speaker || null,
@@ -47,10 +48,11 @@ export async function createItem(req, res) {
   export async function updateItem(req, res) {
     try {
       const { id } = req.params;
-      const { time, title, speaker, color, sort_order } = req.body;
+      const { day, time, title, speaker, color, sort_order } = req.body;
       const existing = await conferenceProgramModel.findById(id);
       if (!existing) return res.status(404).json({ error: "Créneau introuvable" });
       const updated = await conferenceProgramModel.update(id, {
+        day: day ?? existing.day ?? null,
         time,
         title,
         speaker: speaker || null,

@@ -1,20 +1,21 @@
 import { pool} from "../db/index.js"
 
 export async function findAll() {
-    const [rows] = await pool.execute("SELECT id, time, title, speaker, color, sort_order FROM conference_program ORDER BY time ASC, id ASC");
+    const [rows] = await pool.execute("SELECT id, day, time, title, speaker, color, sort_order FROM conference_program ORDER BY day ASC, time ASC, id ASC");
     return rows;
 }
 
 export async function findById(id) {
-    const [rows] = await pool.execute("SELECT id, time, title, speaker, color, sort_order FROM conference_program WHERE id = ?", [id]);
+    const [rows] = await pool.execute("SELECT id, day, time, title, speaker, color, sort_order FROM conference_program WHERE id = ?", [id]);
     return rows[0] || null;
 }
 
 // creea les progrms
 export async function insert(data) {
     const [result] = await pool.execute(
-        "INSERT INTO conference_program (time, title, speaker, color, sort_order) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO conference_program (day, time, title, speaker, color, sort_order) VALUES (?, ?, ?, ?, ?, ?)",
         [
+            data.day ?? null,
             data.time ?? "09:00",
             data.title ?? "",
             data.speaker ?? null,
@@ -30,8 +31,9 @@ export const create = insert;
 
 export async function update(id, data) {
     await pool.execute(
-        "UPDATE conference_program SET time = ?, title = ?, speaker = ?, color = ?, sort_order = ? WHERE id = ?",
+        "UPDATE conference_program SET day = ?, time = ?, title = ?, speaker = ?, color = ?, sort_order = ? WHERE id = ?",
         [
+            data.day ?? null,
             data.time ?? "09:00",
             data.title ?? "",
             data.speaker ?? null,
