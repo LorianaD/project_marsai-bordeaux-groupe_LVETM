@@ -7,10 +7,18 @@ import getAllFaq from "../services/Faq/getFaqApi"
 import deleteFaq from "../services/Faq/deleteFaqApi";
 import updateFaq from "../services/Faq/updateFaqapi";
 import addFaq from "../services/Faq/addFaqApi";
-import BtnSubmitForm from "../components/Buttons/BtnSubmitForm";
 import FaqForm from "../components/Form/Faq/faqForm";
+import { useTranslation } from "react-i18next"
 
 function Faq() {
+    //paramétre i18n
+    const { t, i18n } = useTranslation("faq");
+    const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+    //vérifie si la langue du client est "fr".
+    // const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = i18n.language.startsWith("fr");
+
     //usestate pour le fetch
     const [faqs, setFaqs] = useState([]);
     const [error, setError] = useState(null);
@@ -25,10 +33,6 @@ function Faq() {
   answer_fr: "",
   answer_en: ""
 });
-
-    //vérifie si la langue du client est "fr".
-    const userLang = navigator.language || navigator.userLanguage;
-    const isFrench = userLang.startsWith("fr");
 
     //fetch des faqs
     useEffect(() => {
