@@ -32,7 +32,7 @@ export default function AdminLayoutSidebar({ active }) {
             {currentUser?.email || ""}
           </p>
         </div>
-      </Link>
+      </div>
 
       {/* Menu */}
       <nav className="mt-4 space-y-1">
