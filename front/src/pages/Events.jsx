@@ -11,9 +11,16 @@ import starIcon from "../assets/imgs/icones/star.png";
 import { getEvents } from "../services/Events/EventsApi.js";
 import { getProgram } from "../services/Events/ConferenceProgramAPI.js";
 import BookingModal from "../components/BookingModal.jsx";
+import { useTranslation } from "react-i18next";
+
+
+
 
 
 function Events() {
+  const { t , i18n } = useTranslation("event");
+  const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
   const [workshops, setWorkshops] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [programItems, setProgramItems] = useState([]);
@@ -37,7 +44,7 @@ function Events() {
         <section id="infos-pratiques" className="space-y-6">
           <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">
             <img src={agendaIcon} alt="" className="h-6 w-6" />
-            <span>Infos pratiques</span>
+            <span>{t("title")}</span>
           </div>
 
           <div className="space-y-3">

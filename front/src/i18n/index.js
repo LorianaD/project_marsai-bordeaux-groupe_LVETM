@@ -17,6 +17,10 @@ import detailvideoEN from "./locales/en/detailvideo.json";
 import newslettersFR from "./locales/fr/newsletters.json";
 import newslettersEN from "./locales/en/newsletters.json";
 
+import eventFR from './locales/fr/event.json';
+import eventEN from './locales/en/event.json';
+
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -33,6 +37,7 @@ i18n
         footer: footerFR,
         newsletters: newslettersFR,
         detailvideo: detailvideoFR,
+        event: eventFR,
       },
       en: {
         header: headerEN,
@@ -40,6 +45,7 @@ i18n
         footer: footerEN,
         newsletters: newslettersEN,
         detailvideo: detailvideoEN,
+        event: eventEN,
       },
     },
 
