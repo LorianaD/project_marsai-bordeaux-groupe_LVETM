@@ -28,6 +28,7 @@ async function UpdateCms(req, res, next) {
             const isMedia = content_key === "media";
 
             payload.value = isMedia ? `/uploads/medias/${file.filename}` : `/uploads/icons/${file.filename}`;
+            payload.type = "image";
 
         } else if (value !== undefined) {
 
@@ -35,7 +36,7 @@ async function UpdateCms(req, res, next) {
         
         }
 
-        const result = await updateCms( payload );
+        const result = await updateCms(payload);
 
         return res.status(200).json({
             success: true,

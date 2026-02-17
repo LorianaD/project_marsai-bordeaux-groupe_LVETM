@@ -1,3 +1,4 @@
+// Import formulaires CMS HomePage
 import SectionHeroForm from "../../Form/CMS/Home/SectionHeroForm";
 import SectionConceptForm from "../../Form/CMS/Home/SectionConceptForm";
 import SectionAwardForm from "../../Form/CMS/Home/SectionAwardForm";
@@ -7,7 +8,24 @@ import SectionClosingEventForm from "../../Form/CMS/Home/SectionClosingEventForm
 import SectionLocalisationEventForm from "../../Form/CMS/Home/SectionLocalisationEventForm";
 import SectionProjectedStatsForm from "../../Form/CMS/Home/SectionProjectedStatsForm";
 import SectionPartners from "../../Form/CMS/Home/SectionPartners";
+
+// Import formulaire CMS GalleryPage
+import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm";
+
+// Import formulaires CMS JuryPage
+import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
+
+// Import formulaire CMS PartnersPage
 import PartnersSectionHeroForm from "../../Form/CMS/Partners/PartnerSectionHeroForm";
+
+// Import formulaire CMS ContactPage
+import ContactSectionHeroForm from "../../Form/CMS/Contact/PartnerSectionHeroForm";
+
+// Import formulaire CMS FaqPage
+import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
+
+// Import formulaire CMS LegalPage
+import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
 
 function CmsCentralization() {
     return [
@@ -27,20 +45,46 @@ function CmsCentralization() {
             ],
         },
         {
+            pageId: "gallery",
+            label: "Gallerie",
+            sections: [
+                { id: "hero", label: "Hero", component: GallerySectionHeroForm},
+            ],            
+        },
+        {
+            pageId: "jury",
+            label: "Jury",
+            sections: [
+                { id: "hero", label: "Hero", component: JurySectionHeroForm},
+            ],
+        },        
+        {
             pageId: "partner",
             label: "Partner",
             sections: [
                 { id: "hero", label: "Hero", component: PartnersSectionHeroForm},
-                // { id: "partner", label: "Partenaires", component: Partner },
-                // { id: "partner-update", label: "Update partenaire", component: UpdatePartner },
             ],            
+        },
+        {
+            pageId: "fag",
+            label: "FAQ",
+            sections: [
+                { id: "hero", label: "Hero", component: FaqSectionHeroForm },
+            ],
         },
         {
             pageId: "contact",
             label: "Contact",
             sections: [
-                // { id: "hero", label: "Hero", component: ContactHeroForm },
-                // { id: "form", label: "Formulaire", component: ContactFormSectionForm },
+                { id: "hero", label: "Hero", component: ContactSectionHeroForm },
+
+            ],
+        },
+        {
+            pageId: "legal",
+            label: "Mentions légales",
+            sections: [
+                { id: "hero", label: "Hero", component: LegalSectionHeroForm },
             ],
         },
     ];

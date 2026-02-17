@@ -140,7 +140,7 @@ export default function AdminVideos() {
             </div>
 
             <div className="mt-5 min-w-0">
-              <AdminHero name="Ocean" />
+              <AdminHero />
             </div>
 
             {/* Title */}
