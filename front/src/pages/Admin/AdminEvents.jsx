@@ -30,11 +30,11 @@ export default function AdminEvents() {
               </button>
             </div>
 
-          {/* Hero — même bloc que Overview / Gestion films */}
           <div className="mt-5">
-            <AdminHero />
+            <AdminHero name="Ocean" />
           </div>
 
+          <AdminEventsContent />
           {/* Contenu Planning & Workshops */}
           <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5">
             <div className="p-6">
