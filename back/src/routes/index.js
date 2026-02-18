@@ -21,7 +21,7 @@ import { isAdmin, isSuperAdmin, verifyToken } from "../utils/isAdmin.js";
 
 const router = Router();
 
-router.use("/users", isAdmin, usersRouter);
+router.use("/users", usersRouter);
 router.use("/videos", videosRouter);
 
 router.use("/events", eventsPublicRouter);
