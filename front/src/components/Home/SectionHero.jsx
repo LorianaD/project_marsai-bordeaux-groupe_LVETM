@@ -56,7 +56,7 @@ function SectionHero() {
                         )}
 
                         {isVisible(section, "title_accent") && (
-                            <span className="bg-gradient-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent text-gradient-animate-b-to-t bg-[length:100%_200%]">
                                 {content?.[section]?.title_accent || t("hero.title_accent")}
                             </span>
                         )}
