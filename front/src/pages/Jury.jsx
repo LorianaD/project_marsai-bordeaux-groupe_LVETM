@@ -122,10 +122,10 @@ export default function Jury() {
               {/* Quote box */}
               <div
                 className="mt-8 max-w-[520px] rounded-[28px] p-7 text-black
-  bg-[radial-gradient(120%_140%_at_20%_20%,#7C3AED_0%,#1E3A8A_45%,#0B0B12_100%)]
-  shadow-[0_25px_70px_rgba(0,0,0,0.10)] ring-1 ring-black/10
-  dark:text-white dark:ring-white/10 dark:shadow-[0_30px_90px_rgba(0,0,0,0.65)]
-"
+                  bg-[radial-gradient(120%_140%_at_20%_20%,#7C3AED_0%,#1E3A8A_45%,#0B0B12_100%)]
+                  shadow-[0_25px_70px_rgba(0,0,0,0.10)] ring-1 ring-black/10
+                  dark:text-white dark:ring-white/10 dark:shadow-[0_30px_90px_rgba(0,0,0,0.65)]
+                "
               >
                 {/* léger voile rose/bleu comme la maquette */}
                 <div className="pointer-events-none absolute" />
@@ -144,8 +144,8 @@ export default function Jury() {
                     target="_blank"
                     rel="noreferrer"
                     className="mt-6 inline-flex items-center justify-center rounded-full
-        bg-gradient-to-r from-[#A855F7] to-[#EC4899]
-        px-6 py-3 text-[12px] font-bold tracking-wide text-white"
+                      bg-gradient-to-r from-[#A855F7] to-[#EC4899]
+                      px-6 py-3 text-[12px] font-bold tracking-wide text-white"
                   >
                     VOIR SA FILMOGRAPHIE
                   </a>

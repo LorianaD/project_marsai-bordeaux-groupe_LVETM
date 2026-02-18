@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -28,38 +25,16 @@ export default function DistributionJury() {
 
   return (
     // Conteneur global de la page admin
-    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      {/* Sidebar mobile (overlay) */}
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="distribution-jury"
-      />
+    <div className="w-full">
 
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="mx-auto w-full px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="distribution-jury" />
 
           {/* Contenu principal */}
-          <main className="min-w-0 flex-1">
-            {/* Bouton menu mobile */}
-            <div className="mb-4 flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-            </div>
-
-            {/* Hero admin */}
-            <div className="mt-5">
-              <AdminHero />
-            </div>
+          <main className="min-w-0 flex-1 w-full">
 
             {/* En-tête de page */}
-            <h1 className="mt-10 text-[42px] font-extrabold tracking-tight">
+            <h1 className="mt-10 text-[42px] font-extrabold tracking-tight w-full">
               DISTRIBUTION & JURY
             </h1>
             {/* Grille des membres du jury */}

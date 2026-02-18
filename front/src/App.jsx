@@ -19,8 +19,11 @@ import PartnersPage from "./pages/Partner.jsx";
 import NewsletterConfirm from "./pages/NewsletterConfirm";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import LearnMore from "./pages/LearnMore.jsx";
+import AdminRegister from "./pages/Admin/AdminRegister.jsx";
+import AdminLogin from "./pages/Login.jsx";
 
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
+
 
 export default function App() {
   return (
@@ -43,6 +46,11 @@ export default function App() {
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
         <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+
+        {/* auth/admin */}
+        <Route path="register" element={<AdminRegister />} />
+        <Route path="login" element={<AdminLogin />} />
+
       </Route>
 
       {/* ADMIN  */}

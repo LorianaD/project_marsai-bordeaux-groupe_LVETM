@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function AdminNewsletter() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [subscribers, setSubscribers] = useState([]);
   const [stats, setStats] = useState(null);
 
@@ -55,38 +51,19 @@ export default function AdminNewsletter() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="newsletter-subs"
-      />
+    <div className="">
 
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="mx-auto w-full px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="newsletter-subs" />
 
           <main className="min-w-0 flex-1">
-            <div className="mb-4 flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-            </div>
 
-            <div className="mt-5">
-              <AdminHero />
+            <div className="mt-10 w-full">
+              <h1 className="text-4xl font-black tracking-tight w-full">NEWSLETTER</h1>
+              <p className="mt-2 text-sm opacity-70">
+                Gestion des abonnés et statistiques (double opt-in).
+              </p>
             </div>
-
-            <div className="mt-10">
-            <h1 className="text-4xl font-black tracking-tight">NEWSLETTER</h1>
-            <p className="mt-2 text-sm opacity-70">
-              Gestion des abonnés et statistiques (double opt-in).
-            </p>
-          </div>
 
           {/* Stats */}
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-4">
