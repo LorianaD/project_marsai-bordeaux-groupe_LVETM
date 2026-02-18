@@ -34,6 +34,9 @@ export default function AdminEvents() {
               </button>
             </div>
 
+            {/* Hero */}
+            <div className="mt-5">
+              <AdminHero />
 
             {/* Hero */}
             <div className="mt-5">
@@ -161,8 +164,9 @@ export default function AdminEvents() {
                 )}
               </div>
             </div>
+
+            {/* Contenu Events (tout le state/logic doit être dedans) */}
             <AdminEventsContent />
-            </section>
           </main>
         </div>
       </div>
