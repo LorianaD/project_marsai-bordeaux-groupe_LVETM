@@ -2,9 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import StatusPill from "../../components/admin/StatusPill";
 import FeaturedToggle from "../../components/admin/FeaturedToggle";
 
-// ⚠️ IMPORTANT : on n'importe PLUS AdminHero ici (tu avais 2 heroes)
-// import AdminHero from "../../components/admin/AdminHero.jsx";
-
 import {
   getAdminVideos,
   patchAdminVideoFeatured,
@@ -44,10 +41,12 @@ export default function AdminVideos() {
 
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
+
     return videos
       .filter((v) => {
         if (statusFilter === "All") return true;
@@ -67,6 +66,7 @@ export default function AdminVideos() {
           .filter(Boolean)
           .join(" ")
           .toLowerCase();
+
         return hay.includes(s);
       });
   }, [videos, q, statusFilter]);
@@ -119,16 +119,16 @@ export default function AdminVideos() {
           </div>
         </div>
 
-        {/* ✅ Table Card */}
+        {/* Card */}
         <div
           className="mt-8 overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.08)]
                      dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]"
         >
-          {/* ✅ Scroll zone (Top bar + Table ensemble) */}
+          {/* ✅ Scroll horizontal sur TOUT (top bar + table) */}
           <div className="overflow-x-auto">
             <div className="min-w-[1100px]">
               {/* Top bar */}
-              <div className="flex flex-col gap-3 px-6 py-5 md:flex-row md:items-center md:justify-between md:gap-4">
+              <div className="flex items-center justify-between gap-4 px-6 py-5">
                 <div className="flex items-center gap-3">
                   <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#2F6BFF]/15 ring-1 ring-[#2F6BFF]/25">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -145,22 +145,23 @@ export default function AdminVideos() {
                   <button
                     onClick={refresh}
                     className="ml-2 rounded-full border border-black/10 bg-black/5 px-4 py-2 text-xs text-black/70 hover:bg-black/10
-                     dark:border-white/10 dark:bg-white/5 dark:text-white/75 dark:hover:bg-white/8"
+                               dark:border-white/10 dark:bg-white/5 dark:text-white/75 dark:hover:bg-white/8"
                   >
                     Rafraîchir
                   </button>
                 </div>
 
-                <div className="flex flex-col gap-3 md:ml-auto md:flex-row md:items-center md:gap-4 md:flex-nowrap">
+                {/* Right controls */}
+                <div className="flex items-center gap-4">
                   {/* Search */}
-                  <div className="relative w-full md:w-[520px]">
+                  <div className="relative w-[520px]">
                     <input
                       value={q}
                       onChange={(e) => setQ(e.target.value)}
                       placeholder="Rechercher (titre, réal, pays, langue, email)…"
                       className="w-full rounded-full border border-black/10 bg-transparent px-5 py-3 text-sm text-black placeholder:text-black/40 outline-none
-                       focus:border-black/20
-                       dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-white/35 dark:focus:border-white/20"
+                                 focus:border-black/20
+                                 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-white/35 dark:focus:border-white/20"
                     />
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-black/45 dark:text-white/45">
                       <svg
@@ -179,12 +180,12 @@ export default function AdminVideos() {
                     </span>
                   </div>
 
-                  {/* Status filter */}
-                  <div className="w-full md:w-auto shrink-0 rounded-full border border-black/10 bg-black/0 px-3 py-2 dark:border-white/10 dark:bg-white/5">
+                  {/* Filter */}
+                  <div className="shrink-0 rounded-full border border-black/10 bg-black/0 px-3 py-2 dark:border-white/10 dark:bg-white/5">
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                      className="w-full bg-transparent text-sm text-black/70 outline-none md:w-auto dark:text-white/80"
+                      className="bg-transparent text-sm text-black/70 outline-none dark:text-white/80"
                     >
                       {STATUS_OPTIONS.map((s) => (
                         <option
@@ -264,6 +265,7 @@ export default function AdminVideos() {
                           key={v.id}
                           className="border-t border-black/10 dark:border-white/10"
                         >
+                          {/* FILM */}
                           <td className="pl-6 pr-4 py-4 align-middle">
                             <div className="flex items-center gap-4">
                               <div className="h-12 w-16 overflow-hidden rounded-xl bg-black/5 ring-1 ring-black/10 dark:bg-white/10 dark:ring-white/10">
@@ -275,9 +277,9 @@ export default function AdminVideos() {
                                   }
                                   alt={v.title || ""}
                                   className="h-full w-full object-cover"
-                                  onError={(e) =>
-                                    (e.currentTarget.style.display = "none")
-                                  }
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                  }}
                                 />
                               </div>
 
@@ -294,16 +296,19 @@ export default function AdminVideos() {
                             </div>
                           </td>
 
+                          {/* REAL */}
                           <td className="pr-4 py-4 align-middle text-sm text-black/75 dark:text-white/75">
                             {[v.director_name, v.director_lastname]
                               .filter(Boolean)
                               .join(" ") || "—"}
                           </td>
 
+                          {/* DUREE */}
                           <td className="pr-4 py-4 align-middle text-sm text-black/60 dark:text-white/60 whitespace-nowrap">
                             {formatDuration(v.duration)}
                           </td>
 
+                          {/* STATUT */}
                           <td className="pr-4 py-4 align-middle">
                             <div className="flex flex-wrap items-center gap-3">
                               <div className="shrink-0">
@@ -317,7 +322,7 @@ export default function AdminVideos() {
                                   onChangeStatus(v.id, e.target.value)
                                 }
                                 className="min-w-[140px] shrink-0 rounded-full border border-black/10 bg-black/5 px-3 py-2 text-xs text-black/80 outline-none disabled:opacity-50
-                                 dark:border-white/10 dark:bg-white/5 dark:text-white/80"
+                                           dark:border-white/10 dark:bg-white/5 dark:text-white/80"
                                 title="Changer le statut"
                               >
                                 {[
@@ -340,6 +345,7 @@ export default function AdminVideos() {
                             </div>
                           </td>
 
+                          {/* FEATURED */}
                           <td className="pr-4 py-4 align-middle">
                             <FeaturedToggle
                               value={Number(v.featured) === 1}
@@ -348,6 +354,7 @@ export default function AdminVideos() {
                             />
                           </td>
 
+                          {/* DATE */}
                           <td className="pr-6 py-4 align-middle text-right text-sm text-black/55 dark:text-white/55 whitespace-nowrap">
                             {formatDate(v.created_at)}
                           </td>
