@@ -30,7 +30,7 @@ export { createJurySchema } from "./juryCreationValidation.js";
 export { createMemoSelectorSchema } from "./memoSelectorValidationSchema.js";
 
 //Validation des données du partenaire commercial.
-export { createPartenerSchema } from "./partenerValidationSchema.js";
+// export { createPartenerSchema } from "./partenerValidationSchema.js";
 
 //Validation des données des liens social media.
 export { createSocialMediaSchema} from "./socialMediaValidationSchema.js";
