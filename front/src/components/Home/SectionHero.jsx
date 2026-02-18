@@ -3,6 +3,8 @@ import { Link } from "react-router"
 import useCmsContent from "../../hooks/useCmsContent";
 import isVisible from "../../utils/isVisible";
 import { resolveCmsAsset } from "../../utils/cmsAssets";
+import fallbackProtocolIcon from "../../assets/imgs/icones/IconStars.svg";
+import fallbackArrowIcon from "../../assets/imgs/icones/arrowRight.svg";
 
 function SectionHero() {
 
@@ -19,11 +21,23 @@ function SectionHero() {
             {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
             {content?.[section]?.media && (
                 content?.[section]?.media.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                    <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-0 pointer-events-none" autoPlay muted loop playsInline >
-                        <source src={resolveCmsAsset(content?.[section]?.media)} type={content?.[section]?.media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+                    <video
+                      className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-0 pointer-events-none"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    >
+                      <source src={resolveCmsAsset(content?.[section]?.media)} type={content?.[section]?.media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
                     </video>
                 ) : (
-                    <img src={resolveCmsAsset(content?.[section]?.media)} alt="" className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"/>
+                    <img
+                      src={resolveCmsAsset(content?.[section]?.media)}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1"
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = "none"; }}
+                    />
                 )
             )}
 
@@ -36,7 +50,12 @@ function SectionHero() {
 
                         {isVisible(section, "protocol_icon") && (
                             <div className="">
-                                <img src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")} alt="" className="h-5 w-5 opacity-80" />
+                                <img
+                                  src={resolveCmsAsset(content?.[section]?.protocol_icon) || t("hero.protocol_icon")}
+                                  alt=""
+                                  className="h-5 w-5 opacity-80"
+                                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = fallbackProtocolIcon; }}
+                                />
                             </div>
                         )}
 
@@ -106,7 +125,11 @@ function SectionHero() {
 
                         {isVisible(section, "ctaParticipate_signe") && (
                             <div className="w-[20px] h-[20px]">
-                                <img src={resolveCmsAsset(content?.[section]?.ctaParticipate_signe) || t("hero.ctaParticipate_signe")} alt=""/>
+                                <img
+                                  src={resolveCmsAsset(content?.[section]?.ctaParticipate_signe) || t("hero.ctaParticipate_signe")}
+                                  alt=""
+                                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = fallbackArrowIcon; }}
+                                />
                             </div>
                         )}
 
@@ -122,7 +145,11 @@ function SectionHero() {
 
                         {isVisible(section, "ctaLearnMore_signe") && (
                             <div className="w-[20px] h-[20px]">
-                                <img src={resolveCmsAsset(content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe"))} alt="" />
+                                <img
+                                  src={resolveCmsAsset(content?.[section]?.ctaLearnMore_signe || t("hero.ctaLearnMore_signe"))}
+                                  alt=""
+                                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = fallbackArrowIcon; }}
+                                />
                             </div>
                         )}
 

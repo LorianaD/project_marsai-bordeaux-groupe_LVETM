@@ -142,12 +142,21 @@ export default function AdminEventsContent() {
     setModalOpen(true);
   }
 
+  /** Pour datetime-local : format attendu YYYY-MM-DDTHH:mm (avec T, pas d'espace) */
+  function toDatetimeLocalValue(dateStr) {
+    if (!dateStr) return "";
+    const s = String(dateStr).trim();
+    if (!s) return "";
+    const normalized = s.replace(" ", "T").slice(0, 16);
+    return normalized;
+  }
+
   function openEdit(ev) {
     setEditing(ev);
     setForm({
       title: ev.title || "",
       description: ev.description || "",
-      startAt: ev.startAt ? String(ev.startAt).slice(0, 16) : "",
+      startAt: toDatetimeLocalValue(ev.startAt ?? ev.date),
       location: ev.location || "",
       capacity: ev.capacity ?? 30,
       type: ev.type || "atelier",
@@ -164,9 +173,14 @@ export default function AdminEventsContent() {
 
     const capacity = Number(form.capacity) || 0;
 
+    // Garder la date/heure locale (éviter toISOString qui décale jour/année autour de minuit)
     const dateForApi = startAtRaw
-      ? new Date(startAtRaw).toISOString().slice(0, 19).replace("T", " ")
-      : new Date().toISOString().slice(0, 19).replace("T", " ");
+      ? `${startAtRaw.replace("T", " ")}:00`
+      : (() => {
+          const n = new Date();
+          const pad = (x) => String(x).padStart(2, "0");
+          return `${n.getFullYear()}-${pad(n.getMonth() + 1)}-${pad(n.getDate())} ${pad(n.getHours())}:${pad(n.getMinutes())}:00`;
+        })();
 
     const duration = Number(form.length);
     const apiPayload = {
@@ -406,9 +420,11 @@ export default function AdminEventsContent() {
                   value={form.title}
                   onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
                   required
+                  maxLength={255}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm outline-none focus:border-black/20 dark:border-[#F6339A]/60 dark:bg-black/35 dark:focus:border-[#F6339A]/60"
                   placeholder={t("placeholderTitle")}
                 />
+                <p className="mt-0.5 text-right text-xs text-black/50 dark:text-white/50">{form.title.length}/255</p>
               </div>
 
               <div className="md:col-span-2">
@@ -417,9 +433,11 @@ export default function AdminEventsContent() {
                   value={form.description}
                   onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
                   rows={3}
+                  maxLength={500}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm outline-none focus:border-black/20 dark:border-[#F6339A]/60 dark:bg-black/35 dark:focus:border-[#F6339A]/60"
                   placeholder={t("placeholderDescription")}
                 />
+                <p className="mt-0.5 text-right text-xs text-black/50 dark:text-white/50">{form.description.length}/500</p>
               </div>
 
               <div>
@@ -460,9 +478,11 @@ export default function AdminEventsContent() {
                 <input
                   value={form.location}
                   onChange={(e) => setForm((s) => ({ ...s, location: e.target.value }))}
+                  maxLength={255}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm outline-none focus:border-black/20 dark:border-[#F6339A]/60 dark:bg-black/35 dark:focus:border-[#F6339A]/60"
                   placeholder={t("placeholderLocation")}
                 />
+                <p className="mt-0.5 text-right text-xs text-black/50 dark:text-white/50">{form.location.length}/255</p>
               </div>
 
               <div>

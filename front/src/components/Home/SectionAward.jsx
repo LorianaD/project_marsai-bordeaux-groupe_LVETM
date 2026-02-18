@@ -200,8 +200,17 @@ function SectionAward() {
                   to={`/gallery/${video.id}`}
                   aria-label={t("award.ariaViewFilm", { title })}
                 >
-                  <div className="w-full aspect-video overflow-hidden rounded-t-[40px]">  
-                    <img src={coverUrl} alt={title} loading="lazy" className="h-full w-full object-cover"/>
+                  <div className="w-full aspect-video overflow-hidden rounded-t-[40px] bg-black/10">
+                    <img
+                      src={coverUrl}
+                      alt={title}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect fill="%231a1a1a" width="400" height="225"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23666" font-size="14">Aperçu indisponible</text></svg>');
+                      }}
+                    />
                   </div>
                 </Link>
                 

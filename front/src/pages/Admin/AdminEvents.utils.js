@@ -13,6 +13,9 @@ export function formatTimeFR(iso) {
   /** Dérive un "jour" (YYYY-MM-DD) à partir de la date de l'event. Utilisé pour filtrer par onglet. */
   export function getDayKeyFromDate(isoDate) {
     if (!isoDate) return null;
+    const s = String(isoDate).trim();
+    const match = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    if (match) return match[1];
     const d = new Date(isoDate);
     if (Number.isNaN(d.getTime())) return null;
     return d.toISOString().slice(0, 10);

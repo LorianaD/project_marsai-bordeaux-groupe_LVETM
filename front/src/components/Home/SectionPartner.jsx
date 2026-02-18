@@ -64,7 +64,14 @@ function SectionPartner() {
                 {partners.length > 0 && partners.map((p) => (
                     <div key={ p.id ?? p.name } className="flex items-center justify-center self-stretch justify-self-stretch row-span-1 col-span-1 rounded-[24px] border border-[rgba(128,128,128,0.05)] bg-[rgba(128,128,128,0.05)] dark:border-[rgba(255,255,255,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
                         <div className="w-[175px] md:w-[300px] md:h-[200px] flex items-center justify-center">
-                            <img src={`${API_URL}${p.img}`} alt={p.name} />
+                            <img
+                              src={p.img ? `${API_URL}${p.img}` : ""}
+                              alt={p.name}
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80"><rect fill="%23f0f0f0" width="120" height="80"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-size="11">Logo</text></svg>');
+                              }}
+                            />
                         </div>
                     </div>
                 ))}
