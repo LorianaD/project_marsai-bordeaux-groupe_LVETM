@@ -1,16 +1,12 @@
 import { Navigate, Route, Routes } from "react-router";
-
 import AdminRegister from "./AdminRegister";
 import AdminLogin from "../../components/login/LoginForm";
-
 import Overview from "./Overview";
-
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
 import AdminNewsletters from "./AdminNewsletters";
 import AdminNewsletter from "./AdminNewsletter";
 import AdminNewsletterNew from "./AdminNewslettersNew";
 import DistributionJury from "./DistributionJury";
-import AdminDashboard from "./AdminDashboard";
 import AdminVideos from "./AdminVideos";
 import AdminEvents from "./AdminEvents";
 import AdminEventParticipants from "./AdminEventParticipants";
@@ -25,7 +21,7 @@ export function AdminRouter() {
         <Routes>
 
             {/* Admin */}
-            <Route index element={<AdminDashboard />} />
+            <Route index element={<Overview />} />
 
             {/* Pages admin */}
             <Route path="overview" element={<Overview />} />

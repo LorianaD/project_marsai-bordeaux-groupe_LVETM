@@ -8,7 +8,7 @@ export async function updateUserRoleController(req, res, next) {
     await updateUserRoleService(id, role);
     res.json({
       success: true,
-      message: "Role updated",
+      message: "Rôle mis à jour",
     });
   } catch (error) {
     next(error);

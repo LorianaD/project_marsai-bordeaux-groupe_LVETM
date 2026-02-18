@@ -5,11 +5,6 @@ export const ADMIN_NAV = [
     path: "/admin/overview",
   },
   {
-    id: "dashboard",
-    label: "Dashboard User",
-    path: "/admin/dashboard",
-  },
-  {
     id: "films",
     label: "Gestion films",
     path: "/admin/videos",

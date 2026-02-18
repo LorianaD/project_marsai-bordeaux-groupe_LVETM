@@ -1,8 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import MainLayout from "./components/Layout/MainLayout.jsx";
 import AdminLayout from "./components/Layout/AdminLayout.jsx";
-
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
@@ -19,8 +17,8 @@ import PartnersPage from "./pages/Partner.jsx";
 import NewsletterConfirm from "./pages/NewsletterConfirm";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import LearnMore from "./pages/LearnMore.jsx";
-
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
+import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 
 export default function App() {
   return (
@@ -42,15 +40,20 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
-        <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+        <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} /> 
       </Route>
 
       {/* ADMIN  */}
-      <Route element={<MainLayout />}>
-        <Route element={<AdminLayout />}>
-
+      <Route element={<MainLayout />} >
+        <Route element={<AdminLayout />} >
           <Route path="/admin/*" element={<AdminRouter />} />
+        </Route>
+      </Route>
 
+      {/* SELECTOR */}
+      <Route element={<MainLayout />} >
+        <Route element={<AdminLayout />} >
+          <Route path="/selector/videos" element={<AdminVideos />} />
         </Route>
       </Route>
 

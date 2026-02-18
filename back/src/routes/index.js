@@ -16,10 +16,12 @@ import contactAdminRoutes from "./contactAdmin.routes.js";
 import faq from "./faq.js";
 import conferenceProgramPublicRouter from "./conferenceProgramPublic.js";
 import conferenceProgramAdminRouter from "./conferenceProgramAdmin.js";
+import { isAdmin, isSuperAdmin, verifyToken } from "../utils/isAdmin.js";
+
 
 const router = Router();
 
-router.use("/users", usersRouter);
+router.use("/users", isAdmin, usersRouter);
 router.use("/videos", videosRouter);
 
 router.use("/events", eventsPublicRouter);
