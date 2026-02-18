@@ -73,12 +73,16 @@ export default function Gallery() {
   }, [filtered, page]);
 
   return (
-    
     <div className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-white">
       <div className="mx-auto w-full max-w-6xl px-6 py-10">
         {/* Titre */}
         <div className="mb-8">
-          <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
+          <h1
+            className="font-extrabold leading-[1.05] tracking-tight"
+            style={{
+              fontSize: "clamp(48px, 6vw, 80px)",
+            }}
+          >
             <span className="block text-blue-600">LA GALERIE DES</span>
 
             <span className="block">
