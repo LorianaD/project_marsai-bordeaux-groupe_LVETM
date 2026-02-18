@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -38,7 +35,6 @@ function StatusBadge({ status }) {
 
 export default function AdminNewsletters() {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -60,35 +56,16 @@ export default function AdminNewsletters() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="newsletters-builder"
-      />
+    <div className="">
 
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="mx-auto w-full px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="newsletters-builder" />
 
           <main className="min-w-0 flex-1">
-            <div className="mb-4 flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-            </div>
 
-            <div className="mt-5">
-              <AdminHero />
-            </div>
-
-            <div className="mt-10 flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-black">NEWSLETTERS</h1>
+            <div className="mt-10 flex items-center justify-between w-full">
+          <div className="w-full">
+            <h1 className="text-4xl font-black w-full">NEWSLETTERS</h1>
             <p className="mt-2 text-sm opacity-70">
               Brouillons, programmation et historique d’envoi.
             </p>

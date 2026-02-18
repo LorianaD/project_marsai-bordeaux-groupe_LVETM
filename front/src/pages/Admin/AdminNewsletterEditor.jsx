@@ -1,8 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import NewsletterCkEditor from "../../components/newsletter/NewsletterCkEditor.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -38,7 +35,6 @@ function esc(s = "") {
 export default function AdminNewsletterEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [subject, setSubject] = useState("");
   const [title, setTitle] = useState("");
@@ -80,7 +76,7 @@ export default function AdminNewsletterEditor() {
           ? JSON.parse(data.content_json)
           : data.content_json;
 
-      // ✅ on garde uniquement image/divider si jamais des vieux blocs existent
+      // on garde uniquement image/divider si jamais des vieux blocs existent
       const onlyAllowed = (parsed?.blocks || []).filter(
         (b) => b?.type === "image" || b?.type === "divider",
       );
@@ -176,7 +172,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur sauvegarde");
 
-      setMsg("Sauvegardé ✅");
+      setMsg("Sauvegardé");
     } catch (e) {
       setError(e?.message || "Erreur");
     } finally {
@@ -208,7 +204,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur envoi test");
 
-      setMsg("Test envoyé (check Mailtrap) ✅");
+      setMsg("Test envoyé (check Mailtrap)");
     } catch (e) {
       setError(e?.message || "Erreur");
     }
@@ -242,7 +238,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur programmation");
 
-      setMsg("Programmée ✅");
+      setMsg("Programmée");
       await load();
     } catch (e) {
       setError(e?.message || "Erreur");
@@ -268,7 +264,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur annulation");
 
-      setMsg("Programmation annulée ✅");
+      setMsg("Programmation annulée");
       setScheduledAt("");
       await load();
     } catch (e) {
@@ -295,7 +291,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur envoi");
 
-      setMsg("Envoi terminé ✅ (check Mailtrap)");
+      setMsg("Envoi terminé (check Mailtrap)");
       await load();
     } catch (e) {
       setError(e?.message || "Erreur");
@@ -304,7 +300,7 @@ export default function AdminNewsletterEditor() {
     }
   }
 
-  // ✅ PREVIEW LIVE (sans API)
+  // PREVIEW LIVE (sans API)
   const previewDoc = useMemo(() => {
     const blocksHtml = blocks
       .map((b) => {
@@ -356,28 +352,10 @@ export default function AdminNewsletterEditor() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
-        <AdminSidebarModal
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          active="newsletters-builder"
-        />
-        <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="">
+        <div className="mx-auto w-full px-6 pb-14 pt-10">
           <div className="flex gap-7">
-            <AdminLayoutSidebar active="newsletters-builder" />
             <main className="min-w-0 flex-1">
-              <div className="mb-4 flex lg:hidden">
-                <button
-                  type="button"
-                  onClick={() => setSidebarOpen(true)}
-                  className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-                >
-                  ☰ Menu
-                </button>
-              </div>
-              <div className="mt-5">
-                <AdminHero />
-              </div>
               <div className="mt-10 opacity-70">Chargement…</div>
             </main>
           </div>
@@ -387,28 +365,16 @@ export default function AdminNewsletterEditor() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+    <div className="">
       <AdminSidebarModal
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         active="newsletters-builder"
       />
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="mx-auto w-full px-6 pb-14 pt-10">
         <div className="flex gap-7">
           <AdminLayoutSidebar active="newsletters-builder" />
           <main className="min-w-0 flex-1">
-            <div className="mb-4 flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-            </div>
-            <div className="mt-5">
-              <AdminHero />
-            </div>
 
             <div className="mt-10 flex items-center justify-between">
               <div>
