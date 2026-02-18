@@ -43,6 +43,7 @@ export default function AdminEvents() {
               <AdminHero />
             </div>
 
+            {/* Contenu Events (tout le state/logic est dans AdminEventsContent) */}
           <AdminEventsContent />
           {/* Contenu Planning & Workshops */}
           <section className="mt-5 overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5">
