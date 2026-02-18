@@ -39,11 +39,13 @@ function SectionHeroForm({ forcedLocale }) {
         "desc1",
         "desc2",
 
-        "ctaParticipate",
+        "ctaParticipate", 
         "ctaParticipate_signe",
+        "ctaParticipate_link",
 
         "ctaLearnMore",
-        "ctaLearnMore_signe"
+        "ctaLearnMore_signe",
+        "ctaLearnMore_link"
 
     ];
     // console.log(fields);
@@ -87,11 +89,18 @@ function SectionHeroForm({ forcedLocale }) {
         ctaParticipate_signe:"",
         ctaParticipate_signe_is_active: 1,
 
+        ctaParticipate_link:"",
+        ctaParticipate_link_is_active: 1,        
+
         ctaLearnMore:"",
         ctaLearnMore_is_active: 1,
 
         ctaLearnMore_signe:"",
-        ctaLearnMore_signe_is_active: 1
+        ctaLearnMore_signe_is_active: 1,
+
+        ctaLearnMore_link:"",
+        ctaLearnMore_link_is_active: 1
+
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -100,6 +109,11 @@ function SectionHeroForm({ forcedLocale }) {
     const [hasHydrated, setHasHydrated] = useState(false);
     
     useEffect(() => {
+
+        if (cmsLoading) {
+            return;
+        }
+
         if (hasHydrated) return;
 
         const cmsSection = content?.[section];
@@ -108,19 +122,22 @@ function SectionHeroForm({ forcedLocale }) {
 
         // construit les valeurs initiales depuis le CMS
         const built = buildInitialValuesFromCms(fields, cmsSection, {
-            fileFields: ["ctaAgenda_icon", "card1_icon", "card2_icon", "card3_icon"],
+            fileFields: ["media", "protocol_icon", "ctaParticipate_signe", "ctaLearnMore_signe"],
         });
 
         setValues(built);
+
         setInitialValues(built);
+
         setHasHydrated(true);
-    }, [content, section, hasHydrated, setValues])
+
+    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
     useEffect(()=>{
         setHasHydrated(false);
-    }, [locale]);    
+    }, [locale]);
 
     async function handleSubmit(event) {
         // console.log("Fonction handleSubmit OK");
@@ -132,42 +149,55 @@ function SectionHeroForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
+            const sharedImageKeys = new Set([ "media", "protocol_icon", "ctaParticipate_signe", "ctaLearnMore_signe" ]);
+
+            const sharedLinkKeys = new Set([ "ctaParticipate_link", "ctaLearnMore_link" ]);
+
+            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
+
+            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
+
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
                 const val = values[key];
                 const is_active = values[`${key}_is_active`];
 
-                // IMAGE
-                if (val instanceof File) {
-                    await updateImageApi({
+                const targetLocales = localesToSave(key);
+
+                for (const loc of targetLocales) {
+
+                    // IMAGE
+                    if (val instanceof File) {
+                        await updateImageApi({
+                            page,
+                            section,
+                            locale: loc,
+                            content_key: key,
+                            value: val,
+                            order_index: i,
+                            is_active,
+                        });
+                        continue;
+                    }
+
+                    // TEXTE VIDE
+                    const empty = val === undefined || val === null || String(val).trim() === "";
+
+                    // si vide on continue sans rien changer
+                    if (empty) continue;
+
+                    // TEXTE NON VIDE
+                    await updateContentApi({
                         page,
                         section,
-                        locale,
+                        locale: loc,
                         content_key: key,
                         value: val,
                         order_index: i,
-                        is_active,
-                    });
-                    continue;
+                        is_active,    
+                    })
+
                 }
-
-                // TEXTE VIDE
-                const empty = val === undefined || val === null || String(val).trim() === "";
-
-                // si vide on continue sans rien changer
-                if (empty) continue;
-
-                // TEXTE NON VIDE
-                await updateContentApi({
-                    page,
-                    section,
-                    locale,
-                    content_key: key,
-                    value: val,
-                    order_index: i,
-                    is_active,    
-                })
-                
 
             }
 
@@ -213,7 +243,7 @@ function SectionHeroForm({ forcedLocale }) {
                                 <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
                             />
 
-                            <CmsInputImage name="protocol_icon" label="Icon du protocol" value={values.protocol_icon} onChange={handleChange} placeholder={t("hero.protocol_icon")} rightSlot={
+                            <CmsInputImage name="protocol_icon" label="Icon du protocol" valueUrl={values.protocol_icon} onChange={handleChange} rightSlot={
                                 <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
                         </div>
@@ -228,7 +258,7 @@ function SectionHeroForm({ forcedLocale }) {
                                 </h4>
                             </div>
                             <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
-                                <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} onChange={handleChange} />
+                                <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} valueUrl={values.media} onChange={handleChange} />
                             </div>                        
                         </div>
 
@@ -325,7 +355,7 @@ function SectionHeroForm({ forcedLocale }) {
                                 <div className="flex flex-col gap-[20px]">
                                     <CmsInput name="ctaParticipate" label="Nom" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")}/>
 
-                                    <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
+                                    <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" valueUrl={values.ctaParticipate_signe} onChange={handleChange} rightSlot={
                                         <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                                     />
 
@@ -345,7 +375,7 @@ function SectionHeroForm({ forcedLocale }) {
                                 <div className="flex flex-col gap-[20px]">
                                     <CmsInput name="ctaLearnMore" label="Nom" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} />
 
-                                    <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
+                                    <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" valueUrl={values.ctaLearnMore_signe} onChange={handleChange} rightSlot={
                                         <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                                     />
 
