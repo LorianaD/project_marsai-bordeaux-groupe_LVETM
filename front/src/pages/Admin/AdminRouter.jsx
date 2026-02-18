@@ -1,8 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
 
-import AdminRegister from "./AdminRegister";
-import AdminLogin from "../../components/login/LoginForm";
-
 import Overview from "./Overview";
 
 import AdminNewsletterEditor from "./AdminNewsletterEditor";

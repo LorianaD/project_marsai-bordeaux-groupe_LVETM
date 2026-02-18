@@ -280,8 +280,7 @@ function SectionEventsForm({ forcedLocale }) {
                                     {/* card1_title */}
                                     <div className="flex items-center gap-[10px] w-full">
                                         <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("events.cards.card1.title")}/>
-                                        {/* card1_title_color */}
-                                        <CmsInputColor name="card1_title_color" label="" value={values.card1_title_color} onChange={handleChange} />                                
+                                        {/* card1_title_color */}                                
                                     </div>
                                     {/* card1_description */}
                                     <CmsTextarea name="card1_description" label="Déscription" value={values.card1_description} onChange={handleChange} placeholder={t("events.cards.card1.description")} />
@@ -304,8 +303,7 @@ function SectionEventsForm({ forcedLocale }) {
                                     {/* card2_title */}
                                     <div className="flex items-center gap-[10px] w-full">
                                         <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("events.cards.card2.title")}/>
-                                        {/* card2_title_color */}
-                                        <CmsInputColor name="card2_title_color" label="" value={values.card2_title_color} onChange={handleChange} />                                
+                                        {/* card2_title_color */}                                
                                     </div>
                                     {/* card2_description */}
                                     <CmsTextarea name="card2_description" label="Déscription" value={values.card2_description} onChange={handleChange} placeholder={t("events.cards.card2.description")} />
@@ -328,8 +326,7 @@ function SectionEventsForm({ forcedLocale }) {
                                     {/* card3_title */}
                                     <div className="flex items-center gap-[10px] w-full">
                                         <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("events.cards.card3.title")}/>
-                                        {/* card1_title_color */}
-                                        <CmsInputColor name="card3_title_color" label="" value={values.card3_title_color} onChange={handleChange} />                                
+                                        {/* card1_title_color */}                                
                                     </div>
                                     {/* card1_description */}
                                     <CmsTextarea name="card3_description" label="Déscription" value={values.card3_description} onChange={handleChange} placeholder={t("events.cards.card3.description")} />
