@@ -6,7 +6,6 @@ function AdminSettings() {
 
     return(
         <div>
-            <AdminHero/>
             <AdminCmsSettings/>
         </div>
     )
