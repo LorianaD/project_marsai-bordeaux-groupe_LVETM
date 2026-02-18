@@ -22,6 +22,7 @@
   "labelDescription": "Description",
   "labelDateHour": "Date & time",
   "labelCapacity": "Capacity",
+  "labelDuration": "Duration (min)",
   "labelLocation": "Location",
   "labelType": "Type",
   "placeholderTitle": "e.g. Workshop — AI-assisted VFX",

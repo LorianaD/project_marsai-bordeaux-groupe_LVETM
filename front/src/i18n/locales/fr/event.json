@@ -1,4 +1,12 @@
 {
+  "detailDuration": "Durée : {{count}} min",
+  "detailReserveCta": "Réserver ma place",
+  "detailLoading": "Chargement…",
+  "detailNotFound": "Événement introuvable",
+  "detailNotFoundHint": "Cet atelier n'existe pas ou n'est plus disponible.",
+  "detailBackToEvents": "Retour aux événements",
+  "detailPlaceRemaining": "{{count}} place restante",
+  "detailPlaceRemaining_other": "{{count}} places restantes",
   "title": "INFOS PRATIQUES",
   "description": "Découvrez l'agenda des événements",
   "cta": "Voir l'agenda",

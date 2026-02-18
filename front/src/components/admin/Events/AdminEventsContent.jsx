@@ -34,6 +34,7 @@ export default function AdminEventsContent() {
     location: "",
     capacity: 30,
     type: "atelier",
+    length: 90,
   });
 
   // Load
@@ -136,6 +137,7 @@ export default function AdminEventsContent() {
       location: "",
       capacity: 30,
       type: "atelier",
+      length: "",
     });
     setModalOpen(true);
   }
@@ -149,6 +151,7 @@ export default function AdminEventsContent() {
       location: ev.location || "",
       capacity: ev.capacity ?? 30,
       type: ev.type || "atelier",
+      length: ev.length != null ? String(ev.length) : "",
     });
     setModalOpen(true);
   }
@@ -165,11 +168,12 @@ export default function AdminEventsContent() {
       ? new Date(startAtRaw).toISOString().slice(0, 19).replace("T", " ")
       : new Date().toISOString().slice(0, 19).replace("T", " ");
 
+    const duration = Number(form.length);
     const apiPayload = {
       title: form.title,
       description: form.description || null,
       date: dateForApi,
-      length: 90,
+      length: duration > 0 ? duration : 90,
       stock: capacity,
       illustration: "",
       location: form.location || null,
@@ -180,7 +184,7 @@ export default function AdminEventsContent() {
         const updatePayload = {
           ...apiPayload,
           date: editing.date || dateForApi,
-          length: editing.length ?? 90,
+          length: duration > 0 ? duration : (editing.length ?? 90),
           stock: editing.stock ?? capacity,
         };
 
@@ -436,6 +440,18 @@ export default function AdminEventsContent() {
                   value={form.capacity}
                   onChange={(e) => setForm((s) => ({ ...s, capacity: e.target.value }))}
                   className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm outline-none focus:border-black/20 dark:border-[#F6339A]/60 dark:bg-black/35 dark:focus:border-[#F6339A]/60"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs text-black/60 dark:text-white/60">{t("labelDuration")}</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={form.length}
+                  onChange={(e) => setForm((s) => ({ ...s, length: e.target.value }))}
+                  className="mt-1 w-full rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm outline-none focus:border-black/20 dark:border-[#F6339A]/60 dark:bg-black/35 dark:focus:border-[#F6339A]/60"
+                  placeholder="90"
                 />
               </div>
 
