@@ -1,6 +1,6 @@
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
@@ -9,6 +9,8 @@ import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInputImage from "../Fields/CmsInputImage";
 import CmsInputFile from "../Fields/CmsInputFile.jsx";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
+import useCmsContent from "../../../../hooks/useCmsContent.js";
+import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms.js";
 
 function SectionHeroForm({ forcedLocale }) {
 
@@ -24,24 +26,31 @@ function SectionHeroForm({ forcedLocale }) {
     const fields = [
         "protocol",
         "protocol_icon",
+
         "media",
+
         "title_main",
         "title_accent",
+
         "tagline_before",
         "tagline_highlight",
         "tagline_after",
+
         "desc1",
         "desc2",
+
         "ctaParticipate",
         "ctaParticipate_signe",
+
         "ctaLearnMore",
         "ctaLearnMore_signe"
+
     ];
     // console.log(fields);
 
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
-    const { values, handleChange } = useForm({
+    const { values, setValues, handleChange } = useForm({
         protocol:"",
         protocol_is_active: 1,
 
@@ -86,6 +95,32 @@ function SectionHeroForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const [initialValues, setInitialValues] = useState({});
+    const [hasHydrated, setHasHydrated] = useState(false);
+    
+    useEffect(() => {
+        if (hasHydrated) return;
+
+        const cmsSection = content?.[section];
+
+        if (!cmsSection) return;
+
+        // construit les valeurs initiales depuis le CMS
+        const built = buildInitialValuesFromCms(fields, cmsSection, {
+            fileFields: ["ctaAgenda_icon", "card1_icon", "card2_icon", "card3_icon"],
+        });
+
+        setValues(built);
+        setInitialValues(built);
+        setHasHydrated(true);
+    }, [content, section, hasHydrated, setValues])
+
+    // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
+    // fait que les données dans les champs sont chargé par raport à la langue
+    useEffect(()=>{
+        setHasHydrated(false);
+    }, [locale]);    
 
     async function handleSubmit(event) {
         // console.log("Fonction handleSubmit OK");
@@ -167,100 +202,158 @@ function SectionHeroForm({ forcedLocale }) {
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
                     {/* Gestion du protocol */}
-                    <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion du protocol
+                            </h4>
+                        </div>
+                        <div>
+                            < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
+                                <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                            />
 
-                        < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
-                            <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
-                        />
-
-                        <CmsInputImage name="protocol_icon" label="Icon du protocol" value={values.protocol_icon} onChange={handleChange} placeholder={t("hero.protocol_icon")} rightSlot={
-                            <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
+                            <CmsInputImage name="protocol_icon" label="Icon du protocol" value={values.protocol_icon} onChange={handleChange} placeholder={t("hero.protocol_icon")} rightSlot={
+                                <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+                        </div>
 
                     </div>
 
                     {/* Gestion de la video ou image */}
-                    <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
-                        <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} onChange={handleChange} />
-                    </div>
+                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                    Gestion du fond
+                                </h4>
+                            </div>
+                            <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
+                                <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} onChange={handleChange} />
+                            </div>                        
+                        </div>
+
 
                     {/* Gestion des Titres */}
-                    <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
-                        {/* Gestion du titre principal en blanc */}
-                        < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
-                            <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
+                    <div  className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion du Titre
+                            </h4>
+                        </div>
+                        <div className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
+                            {/* Gestion du titre principal en blanc */}
+                            < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
+                                <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
 
-                        {/* Gestion du titre accent ou sécondaire en dégradé */}
-                        < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
-                            <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
+                            {/* Gestion du titre accent ou sécondaire en dégradé */}
+                            < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
+                                <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />                            
+                        </div>
+
                     </div>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col md:flex-row p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
+                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion du Slogan
+                            </h4>
+                        </div>                        
+                        <div className="flex flex-wrap p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
+                            < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
+                                <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
 
-                        < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
-                            <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
+                            < CmsInput name="tagline_highlight" label="Slogan (point culminant en dégradé)" value={values.tagline_highlight} onChange={handleChange} placeholder={t("hero.tagline_highlight")} rightSlot={
+                                <CmsHideToggle name="tagline_highlight" value={values.tagline_highlight_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
 
-                        < CmsInput name="tagline_highlight" label="Slogan (point culminant en dégradé)" value={values.tagline_highlight} onChange={handleChange} placeholder={t("hero.tagline_highlight")} rightSlot={
-                            <CmsHideToggle name="tagline_highlight" value={values.tagline_highlight_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
+                            < CmsInput name="tagline_after" label="Slogan (aprés le point culminant en dégradé)" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} rightSlot={
+                                <CmsHideToggle name="tagline_after" value={values.tagline_after_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />                            
+                        </div>
 
-                        < CmsInput name="tagline_after" label="Slogan (aprés le point culminant en dégradé)" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} rightSlot={
-                            <CmsHideToggle name="tagline_after" value={values.tagline_after_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
                         
                     </div>
 
                     {/* Gestion de la Déscription */}
-                    <div className="flex flex-col gap-[50px] w-full">
+                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch w-full">
 
-                        {/* Gestion de la déscription ligne 1 */}
+                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion de la description
+                            </h4>
+                        </div>                       
 
-                        < CmsInput name="desc1" label="Description (ligne 1)" value={values.desc1} onChange={handleChange} placeholder={t("hero.desc1")} rightSlot={
-                            <CmsHideToggle name="desc1" value={values.desc1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />                 
+                        <div className="flex flex-wrap p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
 
-                        {/* Gestion de la déscription ligne 2 */}
+                            {/* Gestion de la déscription ligne 1 */}
 
-                        <CmsInput name="desc2" label="Description (ligne 2)" value={values.desc2} onChange={handleChange} placeholder={t("hero.desc2")} rightSlot={
-                            <CmsHideToggle name="desc2" value={values.desc2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                        />
+                            < CmsInput name="desc1" label="Description (ligne 1)" value={values.desc1} onChange={handleChange} placeholder={t("hero.desc1")} rightSlot={
+                                <CmsHideToggle name="desc1" value={values.desc1_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />                 
+
+                            {/* Gestion de la déscription ligne 2 */}
+
+                            <CmsInput name="desc2" label="Description (ligne 2)" value={values.desc2} onChange={handleChange} placeholder={t("hero.desc2")} rightSlot={
+                                <CmsHideToggle name="desc2" value={values.desc2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+
+                        </div>
 
                     </div>
 
                     {/* Gestion des boutons */}
-                    <div className="flex flex-col md:flex-row justify-around items-center gap-[50px] w-full">
-                        {/* Gestion du premier bouton */}
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
-
-                            <CmsInput name="ctaParticipate" label="Premier bouton" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")} rightSlot={
-                                <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
-
-                            <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
-                                <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
-
-                            <CmsInput name="ctaParticipate_link" label="Lien du bouton" value={values.ctaParticipate_link} onChange={handleChange} placeholder={t("hero.ctaParticipate_link")} />
-
+                    <div>
+                        <div className="pb-[20px]">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion des boutons
+                            </h4>
                         </div>
+                        <div className="flex flex-wrap justify-around items-center gap-[50px] w-full">
+                            {/* Gestion du premier bouton */}
+                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                                <div className="flex justify-between items-center">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                                        Premier Bouton
+                                    </h5>
+                                    <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                </div>
 
-                        {/* Gestion du deuxiéme bouton */}
-                        <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
+                                <div className="flex flex-col gap-[20px]">
+                                    <CmsInput name="ctaParticipate" label="Nom" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")}/>
 
-                            <CmsInput name="ctaLearnMore" label="Deuxiéme bouton" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} rightSlot={
-                                <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
+                                    <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" value={values.ctaParticipate_signe} onChange={handleChange} placeholder={t("hero.ctaParticipate_signe")} rightSlot={
+                                        <CmsHideToggle name="ctaParticipate_signe" value={values.ctaParticipate_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                                    />
 
-                            <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
-                                <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
+                                    <CmsInput name="ctaParticipate_link" label="Lien du bouton" value={values.ctaParticipate_link} onChange={handleChange} placeholder={t("hero.ctaParticipate_link")} />
+                                </div>
+                            </div>
 
-                            <CmsInput name="ctaLearnMore_link" label="Lien du bouton" value={values.ctaLearnMore_link} onChange={handleChange} placeholder={t("hero.ctaLearnMore_link")} />
+                            {/* Gestion du deuxiéme bouton */}
+                            <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
 
+                                <div className="flex justify-between items-center">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                                        Deuxiéme Bouton
+                                    </h5>
+                                    <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                </div>
+                                <div className="flex flex-col gap-[20px]">
+                                    <CmsInput name="ctaLearnMore" label="Nom" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} />
+
+                                    <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" value={values.ctaLearnMore_signe} onChange={handleChange} placeholder={t("hero.ctaLearnMore_signe")} rightSlot={
+                                        <CmsHideToggle name="ctaLearnMore_signe" value={values.ctaLearnMore_signe_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                                    />
+
+                                    <CmsInput name="ctaLearnMore_link" label="Lien du bouton" value={values.ctaLearnMore_link} onChange={handleChange} placeholder={t("hero.ctaLearnMore_link")} />                                    
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
 

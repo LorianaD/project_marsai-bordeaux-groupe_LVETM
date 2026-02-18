@@ -19,7 +19,7 @@ function SectionHero() {
             {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
             {content?.[section]?.media && (
                 content?.[section]?.media.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                    <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-1" autoPlay muted loop playsInline >
+                    <video className="absolute inset-0 h-full w-full object-cover brightness-[0.72] contrast-[1.05] saturate-[1.05] z-0 pointer-events-none" autoPlay muted loop playsInline >
                         <source src={resolveCmsAsset(content?.[section]?.media)} type={content?.[section]?.media.endsWith(".webm") ? "video/webm" : "video/mp4"} />
                     </video>
                 ) : (

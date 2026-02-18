@@ -72,7 +72,7 @@ function SectionEvent() {
             </div>
 
             
-            <div className="flex flex-col md:flex-row gap-8 self-stretch text-left py-[20px]">
+            <div className="flex flex-col md:flex-row gap-8 self-stretch text-left py-[20px] w-full justify-center">
                 {cards
                 .filter((n) => isVisible(content, section, `card${n}_title`))
                 .map((n) => {
