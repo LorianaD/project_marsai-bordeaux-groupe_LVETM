@@ -1,19 +1,24 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function addFaq(data) {
+async function addFaq(payload) {
     const res = await fetch(`${API_URL}/api/faq`,{
         method: "POST",
 		headers: {
 			'Content-Type': 'application/json'
 		},
-        body: JSON.stringify(data)        
+        body: JSON.stringify(payload)        
     });
 
-    if (!res.ok) throw new Error(`Failed to create FAQ ${res.status}`);
-
-    // const data = await res.json();
-    // return data;
+    //récupère la nouvellle FAQ
     const responseData = await res.json();
+
+    if (!res.ok) {
+
+    const error = new Error(`Failed to create FAQ ${res.status}`);
+    error.details = responseData.errors;// erreur Zod dans le back
+    throw error;
+    }
+
     return responseData.data;
 }
 

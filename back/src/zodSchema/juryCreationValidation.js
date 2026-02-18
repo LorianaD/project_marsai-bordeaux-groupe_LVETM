@@ -1,6 +1,15 @@
+import { z } from "zod";
+
 /********************************************* 
  * Schéma pour l'ajout d'un Juré
  *********************************************/
+
+/********************************************
+ * Formats et taille d'image acceptés
+ *********************************************/
+//contrainte de format et taille pour les vidéos et photos
+const pictureFormats = [".jpg", ".jpeg", ".webp", ".png"];
+
 export const createJurySchema = z.object({
 
     firstname: z
