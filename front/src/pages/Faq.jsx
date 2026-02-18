@@ -2,6 +2,8 @@
  ****** FAQ PAGE ********************************
 ************************************************/
 
+// A VOIR AFFICHAGE DES ERREURS SUR L'EDIT
+
 import { useEffect, useState } from "react"
 import getAllFaq from "../services/Faq/getFaqApi"
 import deleteFaq from "../services/Faq/deleteFaqApi";
@@ -23,6 +25,9 @@ function Faq() {
     const [faqs, setFaqs] = useState([]);
     const [error, setError] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
+    //useState pour les erreurs
+    const [formErrorsAdd, setFormErrorsAdd] = useState([]); //zod errors
+    const [formErrorsEdit, setFormErrorsEdit] = useState ({}) //id + zod errors.
     //usestate pour les inputs
     const [loading, setLoading] = useState(false);
     const [faqsEdit, setFaqsEdit] = useState([]);
@@ -61,6 +66,9 @@ function Faq() {
     const handleAdd = async () => {
         try {
             setLoading(true);
+            //remise à zéro des erreurs
+            setFormErrorsAdd([]);
+
             const addedFaq = await addFaq(newFaq);
             //mise à jour des states
             setFaqs((prev => [...prev, addedFaq]));
@@ -68,7 +76,11 @@ function Faq() {
 
             alert("FAQ added !");
         } catch (error) {
+            if (error.details) {
+                setFormErrorsAdd(error.details);
+            }
             console.error(error);
+            
             alert("Error while adding FAQ");
         } finally {
         setNewFaq({
@@ -94,6 +106,7 @@ function Faq() {
             alert("FAQ deleted !");
         }catch(error){
             console.error(error);
+            
             alert("Error while deleting FAQ");
         } finally {
             setLoading(false);
@@ -104,6 +117,8 @@ function Faq() {
     const handleUpdate = async (faq) => {
         try {
             setLoading(true);
+            //remise à zéro des erreurs
+            setFormErrorsEdit(prev => ({ ...prev, [faq.id]: [] })); //test ({})
             const updatedFaq = await updateFaq(faq);
             //mise à jour du state avec le return du backend
             setFaqs(prevFaqs => prevFaqs.map(item => item.id === faq.id ? updatedFaq : item))
@@ -113,6 +128,9 @@ function Faq() {
 
             alert("FAQ updated !")
         } catch (error) {
+            if (error.details) {
+                setFormErrorsEdit(prev => ({ ...prev, [faq.id]: error.details }));;
+            }
             console.error(error);
             alert("Error while updating the FAQ");
         } finally {
@@ -169,6 +187,7 @@ function Faq() {
                         onChange={(id, field, value) => setNewFaq(prev => ({ ...prev, [field]: value }))}
                         onSubmit={handleAdd}
                         loading={loading}
+                        formErrors={formErrorsAdd}
                     />
                 </div>
                 {/* formulaire de modification d'une faq */}
@@ -182,6 +201,7 @@ function Faq() {
                         onDelete={handleDelete}
                         loading={loading}
                         isEdit={true}
+                        formErrors={formErrorsEdit[faq.id] || []} 
                     />
                 ))}
                 </div>

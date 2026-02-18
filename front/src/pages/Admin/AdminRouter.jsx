@@ -38,11 +38,6 @@ export function AdminRouter() {
             <Route path="leaderboard" element={<AdminLeaderboard />} />
             <Route path="messages" element={<AdminMessages />} />
 
-
-            {/* auth/admin */}
-            <Route path="register" element={<AdminRegister />} />
-            <Route path="login" element={<AdminLogin />} />
-
             {/* Newsletter */}
             <Route path="newsletter" element={<AdminNewsletter />} />
             <Route path="newsletters" element={<AdminNewsletters />} />

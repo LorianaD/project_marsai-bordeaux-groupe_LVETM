@@ -1,7 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -45,7 +42,6 @@ function StatusPill({ status }) {
 }
 
 export default function AdminMessages() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +116,7 @@ export default function AdminMessages() {
     return filtered.find((m) => m.id === selectedId) || filtered[0] || null;
   }, [filtered, selectedId]);
 
-  // ✅ Marquer comme lu (si endpoint dispo)
+  // Marquer comme lu (si endpoint dispo)
   async function markRead(id) {
     if (!id) return;
 
@@ -180,7 +176,7 @@ export default function AdminMessages() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur envoi réponse");
 
-      setSendOk("Réponse enregistrée ✅");
+      setSendOk("Réponse enregistrée");
       setReply("");
 
       // update local
@@ -204,45 +200,17 @@ export default function AdminMessages() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="messages"
-      />
+    <div className="">
 
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="mx-auto w-full px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="messages" />
 
           <div className="min-w-0 flex-1">
-            {/* Mobile actions */}
-            <div className="mb-4 flex items-center justify-between lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                Menu
-              </button>
 
-              <button
-                type="button"
-                onClick={loadMessages}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                Rafraîchir
-              </button>
-            </div>
-
-            <AdminHero name="Ocean" />
-
-            <div className="mt-10">
-              <div className="text-[44px] font-extrabold tracking-tight md:text-[56px]">
+            <div className="w-full">
+              <h3 className="w-full text-[44px] font-extrabold tracking-tight md:text-[56px]">
                 MESSAGES
-              </div>
+              </h3>
               <div className="mt-2 max-w-2xl text-black/55 dark:text-white/55">
                 Messages reçus via le formulaire de contact. Réponds directement
                 depuis cette page.
