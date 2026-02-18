@@ -1,23 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import NewsletterCkEditor from "../../components/newsletter/NewsletterCkEditor.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
+// Les blocs qu’on autorise dans l’éditeur
 const blockTemplates = [
   { type: "image", label: "Image" },
   { type: "divider", label: "Divider" },
 ];
 
+// Transforme /uploads/... en URL complète
 function fullUrl(path) {
   if (!path) return "";
   if (path.startsWith("http")) return path;
   return `${API_BASE}${path}`;
 }
 
+// Format pour l’input datetime-local
 function toDatetimeLocal(value) {
   if (!value) return "";
   const d = new Date(value);
@@ -27,6 +27,7 @@ function toDatetimeLocal(value) {
   )}:${pad(d.getMinutes())}`;
 }
 
+// Sécurise le texte injecté dans le preview HTML
 function esc(s = "") {
   return String(s)
     .replaceAll("&", "&amp;")
@@ -38,32 +39,30 @@ function esc(s = "") {
 export default function AdminNewsletterEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Form
   const [subject, setSubject] = useState("");
   const [title, setTitle] = useState("");
   const [background, setBackground] = useState("#ffffff");
+  const [contentHtml, setContentHtml] = useState("");
   const [blocks, setBlocks] = useState([]);
 
-  const [contentHtml, setContentHtml] = useState("");
-
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [msg, setMsg] = useState("");
-  const [error, setError] = useState("");
+  // Envoi / programmation
   const [testTo, setTestTo] = useState("");
-
   const [scheduledAt, setScheduledAt] = useState("");
   const [sendingAll, setSendingAll] = useState(false);
   const [scheduling, setScheduling] = useState(false);
 
+  // Charge la newsletter depuis l’API et remplit le form
   async function load() {
     setLoading(true);
     setError("");
+
     try {
       const res = await fetch(`${API_BASE}/api/admin/newsletters/${id}`, {
         headers: { Accept: "application/json" },
       });
+
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur chargement");
 
@@ -80,7 +79,7 @@ export default function AdminNewsletterEditor() {
           ? JSON.parse(data.content_json)
           : data.content_json;
 
-      // ✅ on garde uniquement image/divider si jamais des vieux blocs existent
+      // on garde uniquement image/divider si jamais des vieux blocs existent
       const onlyAllowed = (parsed?.blocks || []).filter(
         (b) => b?.type === "image" || b?.type === "divider",
       );
@@ -92,9 +91,9 @@ export default function AdminNewsletterEditor() {
     }
   }
 
+  // Dès que l’id change, on recharge
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   function addBlock(type) {
@@ -130,6 +129,7 @@ export default function AdminNewsletterEditor() {
     setMsg("");
   }
 
+  // Upload l’image puis met l’URL dans le bon bloc
   async function uploadImage(file, blockIndex) {
     const form = new FormData();
     form.append("image", file);
@@ -145,6 +145,7 @@ export default function AdminNewsletterEditor() {
     updateBlock(blockIndex, { url: fullUrl(data.file.url) });
   }
 
+  // Sauvegarde en brouillon
   async function save() {
     if (!subject.trim()) {
       setError("Le subject est requis.");
@@ -166,7 +167,7 @@ export default function AdminNewsletterEditor() {
           subject,
           title,
           background_color: background,
-          content_json: { blocks }, // compat
+          content_json: { blocks },
           content_html: contentHtml,
           status: "draft",
           scheduled_at: null,
@@ -176,7 +177,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur sauvegarde");
 
-      setMsg("Sauvegardé ✅");
+      setMsg("Sauvegardé");
     } catch (e) {
       setError(e?.message || "Erreur");
     } finally {
@@ -189,6 +190,7 @@ export default function AdminNewsletterEditor() {
       setError("Ajoute un email pour l’envoi test.");
       return;
     }
+
     setError("");
     setMsg("");
 
@@ -208,7 +210,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur envoi test");
 
-      setMsg("Test envoyé (check Mailtrap) ✅");
+      setMsg("Test envoyé (check Mailtrap)");
     } catch (e) {
       setError(e?.message || "Erreur");
     }
@@ -242,7 +244,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur programmation");
 
-      setMsg("Programmée ✅");
+      setMsg("Programmée");
       await load();
     } catch (e) {
       setError(e?.message || "Erreur");
@@ -268,7 +270,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur annulation");
 
-      setMsg("Programmation annulée ✅");
+      setMsg("Programmation annulée");
       setScheduledAt("");
       await load();
     } catch (e) {
@@ -295,7 +297,7 @@ export default function AdminNewsletterEditor() {
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Erreur envoi");
 
-      setMsg("Envoi terminé ✅ (check Mailtrap)");
+      setMsg("Envoi terminé (check Mailtrap)");
       await load();
     } catch (e) {
       setError(e?.message || "Erreur");
@@ -304,7 +306,7 @@ export default function AdminNewsletterEditor() {
     }
   }
 
-  // ✅ PREVIEW LIVE (sans API)
+  // PREVIEW LIVE (sans API)
   const previewDoc = useMemo(() => {
     const blocksHtml = blocks
       .map((b) => {
@@ -356,28 +358,10 @@ export default function AdminNewsletterEditor() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
-        <AdminSidebarModal
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          active="newsletters-builder"
-        />
-        <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="">
+        <div className="mx-auto w-full px-6 pb-14 pt-10">
           <div className="flex gap-7">
-            <AdminLayoutSidebar active="newsletters-builder" />
             <main className="min-w-0 flex-1">
-              <div className="mb-4 flex lg:hidden">
-                <button
-                  type="button"
-                  onClick={() => setSidebarOpen(true)}
-                  className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-                >
-                  ☰ Menu
-                </button>
-              </div>
-              <div className="mt-5">
-                <AdminHero />
-              </div>
               <div className="mt-10 opacity-70">Chargement…</div>
             </main>
           </div>
@@ -387,33 +371,19 @@ export default function AdminNewsletterEditor() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+    <div className="">
       <AdminSidebarModal
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         active="newsletters-builder"
       />
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
+      <div className="mx-auto w-full px-6 pb-14 pt-10">
         <div className="flex gap-7">
           <AdminLayoutSidebar active="newsletters-builder" />
           <main className="min-w-0 flex-1">
-            <div className="mb-4 flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-            </div>
-            <div className="mt-5">
-              <AdminHero />
-            </div>
 
             <div className="mt-10 flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-black">NEWSLETTER #{id}</h1>
-              </div>
+              <h1 className="text-4xl font-black">NEWSLETTER #{id}</h1>
 
               <button
                 onClick={() => navigate("/admin/newsletters")}
@@ -460,7 +430,6 @@ export default function AdminNewsletterEditor() {
                   />
                 </div>
 
-                {/* CKEditor */}
                 <div className="mt-6">
                   <div className="text-xs font-semibold tracking-widest uppercase opacity-70">
                     Contenu (CKEditor)
@@ -473,7 +442,6 @@ export default function AdminNewsletterEditor() {
                   </div>
                 </div>
 
-                {/* Blocks (image/divider only) */}
                 <div className="mt-6">
                   <div className="text-xs font-semibold tracking-widest uppercase opacity-70">
                     Ajouter
@@ -559,9 +527,10 @@ export default function AdminNewsletterEditor() {
                               onChange={async (e) => {
                                 const file = e.target.files?.[0];
                                 if (!file) return;
+
                                 try {
                                   await uploadImage(file, i);
-                                  setMsg("Image uploadée ✅");
+                                  setMsg("Image uploadée");
                                 } catch (err) {
                                   setError(err?.message || "Erreur upload");
                                 } finally {
@@ -595,7 +564,6 @@ export default function AdminNewsletterEditor() {
                   ) : null}
                 </div>
 
-                {/* Actions */}
                 <div className="mt-6 flex flex-col gap-3">
                   {error ? (
                     <p className="text-sm text-red-700 dark:text-red-400">
@@ -691,7 +659,7 @@ export default function AdminNewsletterEditor() {
                   title="preview"
                   srcDoc={previewDoc}
                   className="h-[820px] w-full bg-white"
-                  sandbox="" // ✅ pas besoin de scripts
+                  sandbox=""
                 />
               </div>
             </div>

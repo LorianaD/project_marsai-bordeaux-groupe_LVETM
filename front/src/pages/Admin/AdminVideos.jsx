@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import StatusPill from "../../components/admin/StatusPill";
 import FeaturedToggle from "../../components/admin/FeaturedToggle";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+
+// ⚠️ IMPORTANT : on n'importe PLUS AdminHero ici (tu avais 2 heroes)
+// import AdminHero from "../../components/admin/AdminHero.jsx";
 
 import {
   getAdminVideos,
@@ -28,7 +28,6 @@ export default function AdminVideos() {
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [error, setError] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   async function refresh() {
     try {
@@ -108,57 +107,26 @@ export default function AdminVideos() {
 
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="gestion-films"
-      />
-
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
-        <div className="flex gap-7">
-          <AdminLayoutSidebar active="gestion-films" />
+        {/* Title */}
+        <div className="mt-8">
+          <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
+            FILMS SOUMIS
+          </div>
+          <div className="mt-1 text-black/50 dark:text-white/50">
+            Gérez l&apos;intégralité des soumissions et gérez les mises en
+            avant.
+          </div>
+        </div>
 
-          {/* CONTENT */}
-          <main className="min-w-0 flex-1">
-            {/* Mobile top actions */}
-            <div className="mb-4 flex items-center justify-between lg:hidden">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-
-              <button
-                onClick={refresh}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                Rafraîchir
-              </button>
-            </div>
-
-            <div className="mt-5 min-w-0">
-              <AdminHero />
-            </div>
-
-            {/* Title */}
-            <div className="mt-8">
-              <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
-                FILMS SOUMIS
-              </div>
-              <div className="mt-1 text-black/50 dark:text-white/50">
-                Gérez l&apos;intégralité des soumissions et gérez les mises en
-                avant.
-              </div>
-            </div>
-
-            {/* ✅ Table Card (FIX DARK) */}
-            <div
-              className="mt-8 overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.08)]
-                         dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]"
-            >
+        {/* ✅ Table Card */}
+        <div
+          className="mt-8 overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.08)]
+                     dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]"
+        >
+          {/* ✅ Scroll zone (Top bar + Table ensemble) */}
+          <div className="overflow-x-auto">
+            <div className="min-w-[1100px]">
               {/* Top bar */}
               <div className="flex flex-col gap-3 px-6 py-5 md:flex-row md:items-center md:justify-between md:gap-4">
                 <div className="flex items-center gap-3">
@@ -177,13 +145,13 @@ export default function AdminVideos() {
                   <button
                     onClick={refresh}
                     className="ml-2 rounded-full border border-black/10 bg-black/5 px-4 py-2 text-xs text-black/70 hover:bg-black/10
-                               dark:border-white/10 dark:bg-white/5 dark:text-white/75 dark:hover:bg-white/8"
+                     dark:border-white/10 dark:bg-white/5 dark:text-white/75 dark:hover:bg-white/8"
                   >
                     Rafraîchir
                   </button>
                 </div>
 
-                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                <div className="flex flex-col gap-3 md:ml-auto md:flex-row md:items-center md:gap-4 md:flex-nowrap">
                   {/* Search */}
                   <div className="relative w-full md:w-[520px]">
                     <input
@@ -191,8 +159,8 @@ export default function AdminVideos() {
                       onChange={(e) => setQ(e.target.value)}
                       placeholder="Rechercher (titre, réal, pays, langue, email)…"
                       className="w-full rounded-full border border-black/10 bg-transparent px-5 py-3 text-sm text-black placeholder:text-black/40 outline-none
-                                 focus:border-black/20
-                                 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-white/35 dark:focus:border-white/20"
+                       focus:border-black/20
+                       dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-white/35 dark:focus:border-white/20"
                     />
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-black/45 dark:text-white/45">
                       <svg
@@ -212,7 +180,7 @@ export default function AdminVideos() {
                   </div>
 
                   {/* Status filter */}
-                  <div className="w-full rounded-full border border-black/10 bg-black/0 px-3 py-2 md:w-auto dark:border-white/10 dark:bg-white/5">
+                  <div className="w-full md:w-auto shrink-0 rounded-full border border-black/10 bg-black/0 px-3 py-2 dark:border-white/10 dark:bg-white/5">
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
@@ -232,141 +200,167 @@ export default function AdminVideos() {
                 </div>
               </div>
 
-              {/* Table header */}
-              <div
-                className="grid grid-cols-[1.4fr_0.8fr_0.45fr_0.7fr_0.45fr_0.6fr] gap-4 border-t border-black/10 px-6 py-3 text-xs font-semibold tracking-wider text-black/55
-                              dark:border-white/10 dark:text-white/55"
-              >
-                <div>FILM</div>
-                <div>RÉALISATEUR</div>
-                <div>DURÉE</div>
-                <div>STATUT</div>
-                <div>FEATURED</div>
-                <div className="text-right">DATE</div>
-              </div>
+              {/* Table */}
+              <div className="border-t border-black/10 dark:border-white/10">
+                <table className="w-full table-fixed">
+                  <colgroup>
+                    <col style={{ width: "31.11%" }} />
+                    <col style={{ width: "17.78%" }} />
+                    <col style={{ width: "10.00%" }} />
+                    <col style={{ width: "15.56%" }} />
+                    <col style={{ width: "10.00%" }} />
+                    <col style={{ width: "15.56%" }} />
+                  </colgroup>
 
-              {/* Body */}
-              <div className="divide-y divide-black/10 dark:divide-white/10">
-                {loading && (
-                  <div className="px-6 py-6 text-sm text-black/60 dark:text-white/60">
-                    Chargement…
-                  </div>
-                )}
+                  <thead>
+                    <tr className="text-xs font-semibold tracking-wider text-black/55 dark:text-white/55">
+                      <th className="pl-6 pr-4 py-3 text-left">FILM</th>
+                      <th className="pr-4 py-3 text-left">RÉALISATEUR</th>
+                      <th className="pr-4 py-3 text-left">DURÉE</th>
+                      <th className="pr-4 py-3 text-left">STATUT</th>
+                      <th className="pr-4 py-3 text-left">FEATURED</th>
+                      <th className="pr-6 py-3 text-right">DATE</th>
+                    </tr>
+                  </thead>
 
-                {!loading && error && (
-                  <div className="px-6 py-6 text-sm text-red-600 dark:text-red-300">
-                    {error}
-                  </div>
-                )}
+                  <tbody>
+                    {loading && (
+                      <tr className="border-t border-black/10 dark:border-white/10">
+                        <td
+                          colSpan={6}
+                          className="px-6 py-6 text-sm text-black/60 dark:text-white/60"
+                        >
+                          Chargement…
+                        </td>
+                      </tr>
+                    )}
 
-                {!loading && !error && filtered.length === 0 && (
-                  <div className="px-6 py-8 text-sm text-black/50 dark:text-white/50">
-                    Aucun film trouvé.
-                  </div>
-                )}
+                    {!loading && error && (
+                      <tr className="border-t border-black/10 dark:border-white/10">
+                        <td
+                          colSpan={6}
+                          className="px-6 py-6 text-sm text-red-600 dark:text-red-300"
+                        >
+                          {error}
+                        </td>
+                      </tr>
+                    )}
 
-                {!loading &&
-                  !error &&
-                  filtered.map((v) => (
-                    <div
-                      key={v.id}
-                      className="grid grid-cols-[1.4fr_0.8fr_0.45fr_0.7fr_0.45fr_0.6fr] gap-4 px-6 py-4"
-                    >
-                      {/* FILM */}
-                      <div className="flex items-center gap-4">
-                        <div className="h-12 w-16 overflow-hidden rounded-xl bg-black/5 ring-1 ring-black/10 dark:bg-white/10 dark:ring-white/10">
-                          <img
-                            src={
-                              v.cover
-                                ? `${import.meta.env.VITE_API_URL || ""}/uploads/covers/${v.cover}`
-                                : ""
-                            }
-                            alt={v.title || ""}
-                            className="h-full w-full object-cover"
-                            onError={(e) =>
-                              (e.currentTarget.style.display = "none")
-                            }
-                          />
-                        </div>
+                    {!loading && !error && filtered.length === 0 && (
+                      <tr className="border-t border-black/10 dark:border-white/10">
+                        <td
+                          colSpan={6}
+                          className="px-6 py-8 text-sm text-black/50 dark:text-white/50"
+                        >
+                          Aucun film trouvé.
+                        </td>
+                      </tr>
+                    )}
 
-                        <div className="min-w-0">
-                          <div className="truncate text-sm font-semibold text-black/90 dark:text-white/90">
-                            {v.title || "Sans titre"}
-                          </div>
-                          <div className="mt-0.5 text-xs text-black/45 dark:text-white/45">
-                            {(v.language || "—") + " • " + (v.country || "—")}
-                          </div>
-                        </div>
-                      </div>
+                    {!loading &&
+                      !error &&
+                      filtered.map((v) => (
+                        <tr
+                          key={v.id}
+                          className="border-t border-black/10 dark:border-white/10"
+                        >
+                          <td className="pl-6 pr-4 py-4 align-middle">
+                            <div className="flex items-center gap-4">
+                              <div className="h-12 w-16 overflow-hidden rounded-xl bg-black/5 ring-1 ring-black/10 dark:bg-white/10 dark:ring-white/10">
+                                <img
+                                  src={
+                                    v.cover
+                                      ? `${import.meta.env.VITE_API_URL || ""}/uploads/covers/${v.cover}`
+                                      : ""
+                                  }
+                                  alt={v.title || ""}
+                                  className="h-full w-full object-cover"
+                                  onError={(e) =>
+                                    (e.currentTarget.style.display = "none")
+                                  }
+                                />
+                              </div>
 
-                      {/* REAL */}
-                      <div className="self-center text-sm text-black/75 dark:text-white/75">
-                        {[v.director_name, v.director_lastname]
-                          .filter(Boolean)
-                          .join(" ") || "—"}
-                      </div>
+                              <div className="min-w-0">
+                                <div className="truncate text-sm font-semibold text-black/90 dark:text-white/90">
+                                  {v.title || "Sans titre"}
+                                </div>
+                                <div className="mt-0.5 text-xs text-black/45 dark:text-white/45">
+                                  {(v.language || "—") +
+                                    " • " +
+                                    (v.country || "—")}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
 
-                      {/* DUREE */}
-                      <div className="self-center text-sm text-black/60 dark:text-white/60">
-                        {formatDuration(v.duration)}
-                      </div>
+                          <td className="pr-4 py-4 align-middle text-sm text-black/75 dark:text-white/75">
+                            {[v.director_name, v.director_lastname]
+                              .filter(Boolean)
+                              .join(" ") || "—"}
+                          </td>
 
-                      {/* STATUT */}
-                      <div className="self-center">
-                        <div className="flex items-center gap-3">
-                          <StatusPill status={v.upload_status} />
+                          <td className="pr-4 py-4 align-middle text-sm text-black/60 dark:text-white/60 whitespace-nowrap">
+                            {formatDuration(v.duration)}
+                          </td>
 
-                          <select
-                            value={v.upload_status || "Pending"}
-                            disabled={busyId === v.id}
-                            onChange={(e) =>
-                              onChangeStatus(v.id, e.target.value)
-                            }
-                            className="rounded-full border border-black/10 bg-black/5 px-3 py-2 text-xs text-black/80 outline-none disabled:opacity-50
-                                       dark:border-white/10 dark:bg-white/5 dark:text-white/80"
-                            title="Changer le statut"
-                          >
-                            {[
-                              "Pending",
-                              "Published",
-                              "Rejected",
-                              "Uploading",
-                              "Processing",
-                              "Failed",
-                            ].map((s) => (
-                              <option
-                                key={s}
-                                value={s}
-                                className="bg-white text-black dark:bg-black dark:text-white"
+                          <td className="pr-4 py-4 align-middle">
+                            <div className="flex flex-wrap items-center gap-3">
+                              <div className="shrink-0">
+                                <StatusPill status={v.upload_status} />
+                              </div>
+
+                              <select
+                                value={v.upload_status || "Pending"}
+                                disabled={busyId === v.id}
+                                onChange={(e) =>
+                                  onChangeStatus(v.id, e.target.value)
+                                }
+                                className="min-w-[140px] shrink-0 rounded-full border border-black/10 bg-black/5 px-3 py-2 text-xs text-black/80 outline-none disabled:opacity-50
+                                 dark:border-white/10 dark:bg-white/5 dark:text-white/80"
+                                title="Changer le statut"
                               >
-                                {s}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
+                                {[
+                                  "Pending",
+                                  "Published",
+                                  "Rejected",
+                                  "Uploading",
+                                  "Processing",
+                                  "Failed",
+                                ].map((s) => (
+                                  <option
+                                    key={s}
+                                    value={s}
+                                    className="bg-white text-black dark:bg-black dark:text-white"
+                                  >
+                                    {s}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </td>
 
-                      {/* FEATURED */}
-                      <div className="self-center">
-                        <FeaturedToggle
-                          value={Number(v.featured) === 1}
-                          disabled={busyId === v.id}
-                          onChange={(next) => onToggleFeatured(v.id, next)}
-                        />
-                      </div>
+                          <td className="pr-4 py-4 align-middle">
+                            <FeaturedToggle
+                              value={Number(v.featured) === 1}
+                              disabled={busyId === v.id}
+                              onChange={(next) => onToggleFeatured(v.id, next)}
+                            />
+                          </td>
 
-                      {/* DATE */}
-                      <div className="self-center text-right text-sm text-black/55 dark:text-white/55">
-                        {formatDate(v.created_at)}
-                      </div>
-                    </div>
-                  ))}
+                          <td className="pr-6 py-4 align-middle text-right text-sm text-black/55 dark:text-white/55 whitespace-nowrap">
+                            {formatDate(v.created_at)}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
               </div>
-
-              {/* ✅ bottom fade (FIX DARK) */}
-              <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
             </div>
-          </main>
+          </div>
+
+          {/* bottom fade */}
+          <div className="pointer-events-none h-14 bg-gradient-to-t from-black/5 to-transparent dark:from-black/55" />
         </div>
       </div>
     </div>
