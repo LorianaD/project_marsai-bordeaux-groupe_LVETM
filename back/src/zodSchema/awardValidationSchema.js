@@ -3,6 +3,14 @@
  *********************************************/
 import { z } from "zod";
 
+/********************************************
+ * Formats et taille de video acceptés
+ *********************************************/
+//contrainte de format et taille pour les vidéos et photos
+const pictureFormats = [".jpg", ".jpeg", ".webp", ".png"];
+
+
+
 export const createAwardSchema = z.object({
     title: z
         .string({ message: "Url must be a string." })

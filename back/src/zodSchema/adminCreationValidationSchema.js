@@ -1,6 +1,8 @@
 /********************************************* 
  * Schéma pour l'ajout d'un admin
  *********************************************/
+import { z } from "zod";
+
 export const createAdminSchema = z.object({
 
     email: z

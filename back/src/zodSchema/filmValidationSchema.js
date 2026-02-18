@@ -174,10 +174,9 @@ export const createFilmSchema = z.object({
         .transform(
             value => value.replace(/\s+/g, "") //suprrime tous les espaces de value
         )
-        .max(20, "Mobile number must not exceed 20 characters.")
         .refine(
-            value => value === "" || /^\+?\d+$/.test(value), //value peut être une chaine vide ou contenir un + optionnel au tout début, suivi uniquement de chiffres
-            { message: "Only digits and + are allowed" }
+            value => value === "" || (/^\+?\d+$/.test(value) && value.length <= 20), //value peut être une chaine vide ou contenir un + optionnel au tout début, suivi uniquement de chiffres
+            { message: "Only digits and + at the beginning are allowed and max 20 characters for mobile number" }
         )
         .or(z.literal(""))
         .optional(),
@@ -188,10 +187,9 @@ export const createFilmSchema = z.object({
         .transform(
             value => value.replace(/\s+/g, "") // supprime tous les espaces
         )
-        .max(20, "Home number must not exceed 20 digits.") // longueur maximale après nettoyage
         .refine(
-            value => value === "" || /^\+?\d+$/.test(value), //value peut être une chaine vide ou contenir un + optionnel au tout début, suivi uniquement de chiffres
-            { message: "Only digits and + at the beginning are allowed for home number" }
+            value => value === "" || (/^\+?\d+$/.test(value) && value.length <= 20), //value peut être une chaine vide ou contenir un + optionnel au tout début, suivi uniquement de chiffres
+            { message: "Only digits and + at the beginning are allowed and max 20 characters for home number" }
         )
         .or(z.literal(""))
         .optional(),
