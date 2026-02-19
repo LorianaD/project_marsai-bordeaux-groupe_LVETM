@@ -10,7 +10,7 @@ function createRegisterController(config) {
       const createUser = await register(data, role);
       res.status(201).json({
         success: true,
-        message: "User created",
+        message: "Utilisateur Crée",
         data: createUser,
       });
     } catch (error) {

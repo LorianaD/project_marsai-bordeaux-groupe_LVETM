@@ -11,7 +11,7 @@ const router = Router();
 // routes en get
 router.get('/', verifyToken, isAdmin, getAllUsersController);
 // router.get("/", profilController);
-;
+
 
 
 // route en post pour chaque role

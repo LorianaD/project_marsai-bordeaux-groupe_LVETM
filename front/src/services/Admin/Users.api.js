@@ -11,7 +11,7 @@ export async function getUsers() {
 
     if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || `Failed to fetch users: ${res.status}`);
+        throw new Error(data.error || `Erreur lors du chargement des utilisateurs : ${res.status}`);
     }
     return res.json();
 }
@@ -28,7 +28,7 @@ export async function updateUserRole(id, role) {
     });
     if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || `Failed to update role: ${res.status}`);
+        throw new Error(data.error || `Erreur lors du changement de rôle : ${res.status}`);
     }
     return res.json();
 }
@@ -44,7 +44,7 @@ export async function deleteUser(id) {
 
     if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || `Failed to delete user: ${res.status}`);
+        throw new Error(data.error || `Erreur lors de la suppression : ${res.status}`);
     }
     return res.json()
 }

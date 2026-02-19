@@ -7,7 +7,7 @@ export async function deleteUserController(req, res, next) {
     await deleteUserService(id);
     res.json({
       success: true,
-      message: "User deleted",
+      message: "Utilisateur supprimé",
     });
   } catch (error) {
     next(error)
