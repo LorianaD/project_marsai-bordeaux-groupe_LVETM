@@ -21,9 +21,9 @@ import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import LearnMore from "./pages/LearnMore.jsx";
 import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 import AdminLogin from "./pages/Login.jsx";
+import VideoFeed from "./pages/VideoFeed.jsx";
 
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
-
 
 export default function App() {
   return (
@@ -31,8 +31,12 @@ export default function App() {
       {/* ROUTES PUBLIQUES */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+
+        {/* ✅ Galerie : feed AVANT details */}
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gallery/feed/:id" element={<VideoFeed />} />
         <Route path="/gallery/:id" element={<VideoDetails />} />
+
         <Route path="/participation" element={<ParticipationUploadPage />} />
         <Route path="/learnMore" element={<LearnMore />} />
         <Route path="/events" element={<Events />} />
@@ -45,20 +49,20 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
-        <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+        <Route
+          path="/newsletter/unsubscribe"
+          element={<NewsletterUnsubscribe />}
+        />
 
         {/* auth/admin */}
         <Route path="register" element={<AdminRegister />} />
         <Route path="login" element={<AdminLogin />} />
-
       </Route>
 
-      {/* ADMIN  */}
+      {/* ADMIN */}
       <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
-
           <Route path="/admin/*" element={<AdminRouter />} />
-
         </Route>
       </Route>
 
