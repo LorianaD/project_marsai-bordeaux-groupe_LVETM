@@ -2,7 +2,7 @@ import { Link } from "react-router"
 import { useTranslation } from "react-i18next";
 
 import useCmsContent from "../../hooks/useCmsContent";
-import isVisible from "../../utils/isVisible";
+import { isVisible } from "../../utils/isVisible";
 import { resolveCmsAsset } from "../../utils/cmsAssets";
 
 function SectionEvent() {

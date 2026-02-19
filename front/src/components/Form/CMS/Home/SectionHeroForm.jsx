@@ -24,6 +24,9 @@ function SectionHeroForm({ forcedLocale }) {
 
     // champs des differents éléments dans la section
     const fields = [
+
+        "section_visibility",
+
         "protocol",
         "protocol_icon",
 
@@ -53,6 +56,10 @@ function SectionHeroForm({ forcedLocale }) {
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
     const { values, setValues, handleChange } = useForm({
+
+        section_visibility:"",
+        section_visibility_is_active: 1,
+
         protocol:"",
         protocol_is_active: 1,
 
@@ -227,6 +234,7 @@ function SectionHeroForm({ forcedLocale }) {
                     <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
                         Gestion de la Section Hero
                     </h3>
+                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
 
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
