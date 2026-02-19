@@ -46,3 +46,21 @@ input:-webkit-autofill:focus {
 .ck.ck-editor__main .ck-content i {
   font-style: italic !important;
 }
+
+/* Dégradé animé bas → haut (texte hero) */
+@keyframes gradient-b-to-t {
+  0% { background-position: 50% 100%; }
+  100% { background-position: 50% 0%; }
+}
+
+.text-gradient-animate-b-to-t {
+  background-size: 100% 200%;
+  animation: gradient-b-to-t 4s ease-in-out infinite alternate;
+  will-change: background-position;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-animate-b-to-t {
+    animation: none;
+  }
+}

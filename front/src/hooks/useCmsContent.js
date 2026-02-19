@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import GetAllContentApi from "../services/CMS/GetAllContentApi";
-import { buildCmsMap } from "../utils/cms";
+import { buildCmsMap } from "../utils/buildCmsMap";
 
-
+// FONCTION QUI VA CHERCHER LE CONTENU EN BDD
 function useCmsContent(locale) {
     // console.log("Fonction useCmsContent OK");
 

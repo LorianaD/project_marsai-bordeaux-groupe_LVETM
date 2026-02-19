@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import GetAllContentApi from "../../services/CMS/GetAllContentApi";
-import { buildCmsMap } from "../../utils/cms";
-import isVisible from "../../utils/isVisible";
+import { buildCmsMap } from "../../utils/buildCmsMap";
+import { isVisible } from "../../utils/isVisible";
 import { resolveCmsAsset } from "../../utils/cmsAssets";
 
 function SectionGoal() {

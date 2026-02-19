@@ -302,38 +302,11 @@ export default function Overview() {
 
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="overview"
-      />
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="overview" />
 
           <div className="min-w-0 flex-1">
-            <div className="mb-4 flex items-center justify-between lg:hidden">
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                Menu
-              </button>
-
-              <button
-                type="button"
-                onClick={loadAll}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                Rafraîchir
-              </button>
-            </div>
-
-            <AdminHero />
 
             <div className="mt-10">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[56px]">

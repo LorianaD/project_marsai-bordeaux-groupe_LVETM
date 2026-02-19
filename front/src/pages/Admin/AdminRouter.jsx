@@ -1,6 +1,10 @@
 import { Navigate, Route, Routes } from "react-router";
+<<<<<<< dashboad_admin_super_admin
 import AdminRegister from "./AdminRegister";
 import AdminLogin from "../../components/login/LoginForm";
+=======
+
+>>>>>>> main
 import Overview from "./Overview";
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
 import AdminNewsletters from "./AdminNewsletters";
@@ -33,11 +37,6 @@ export function AdminRouter() {
             <Route path="settings" element={<AdminSettings />} />
             <Route path="leaderboard" element={<AdminLeaderboard />} />
             <Route path="messages" element={<AdminMessages />} />
-
-
-            {/* auth/admin */}
-            <Route path="register" element={<AdminRegister />} />
-            <Route path="login" element={<AdminLogin />} />
 
             {/* Newsletter */}
             <Route path="newsletter" element={<AdminNewsletter />} />

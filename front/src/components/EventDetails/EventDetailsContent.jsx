@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getEvents } from "../../services/Events/EventsApi.js";
 import BookingModal from "../BookingModal.jsx";
 
 export default function EventDetailsContent() {
   const { id } = useParams();
+  const { t } = useTranslation("event");
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showBooking, setShowBooking] = useState(false);
@@ -22,7 +24,7 @@ export default function EventDetailsContent() {
   if (loading) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-16 text-center">
-        <p className="text-black/60 dark:text-white/60">Chargement…</p>
+        <p className="text-black/60 dark:text-white/60">{t("detailLoading")}</p>
       </div>
     );
   }
@@ -31,16 +33,16 @@ export default function EventDetailsContent() {
     return (
       <div className="mx-auto max-w-3xl px-6 py-16 text-center space-y-4">
         <h1 className="text-xl font-semibold text-black dark:text-white">
-          Événement introuvable
+          {t("detailNotFound")}
         </h1>
         <p className="text-sm text-black/60 dark:text-white/60">
-          Cet atelier n’existe pas ou n’est plus disponible.
+          {t("detailNotFoundHint")}
         </p>
         <Link
           to="/events"
           className="inline-block rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-5 py-2 text-sm font-semibold text-white"
         >
-          Retour aux événements
+          {t("detailBackToEvents")}
         </Link>
       </div>
     );
@@ -57,7 +59,7 @@ export default function EventDetailsContent() {
           to="/events"
           className="mb-6 inline-block text-sm font-medium text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
         >
-          ← Retour aux événements
+          ← {t("detailBackToEvents")}
         </Link>
 
         <article className="rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-6 md:p-8">
@@ -95,13 +97,12 @@ export default function EventDetailsContent() {
           )}
           {event.length != null && Number(event.length) > 0 && (
             <p className="mt-3 text-xs text-black/60 dark:text-white/60">
-              Durée : {event.length} min
+              {t("detailDuration", { count: event.length })}
             </p>
           )}
           {remaining != null && (
             <p className="mt-3 text-sm font-medium text-black/80 dark:text-white/80">
-              {remaining} place{remaining !== 1 ? "s" : ""} restante
-              {remaining !== 1 ? "s" : ""}
+              {t("detailPlaceRemaining", { count: remaining })}
             </p>
           )}
           <button
@@ -109,7 +110,7 @@ export default function EventDetailsContent() {
             onClick={() => setShowBooking(true)}
             className="mt-6 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-fuchsia-500 px-6 py-3 text-sm font-semibold tracking-[0.18em] text-white uppercase"
           >
-            Réserver ma place
+            {t("detailReserveCta")}
           </button>
         </article>
       </div>

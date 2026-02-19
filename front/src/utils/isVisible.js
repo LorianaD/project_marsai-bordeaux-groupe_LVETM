@@ -1,3 +1,4 @@
+// fonctions qui gere l'affichage
 function isVisible(content, section, key) {
     // console.log("fonction isVisible OK");
     // console.log("content:", content);
@@ -33,4 +34,10 @@ function isVisible(content, section, key) {
 
 }
 
-export default isVisible
+function isSectionVisible(content, section) {
+    console.log("fonction isSectionVisible OK");
+    
+    return Number(content?.[section]?.["section_visibility_is_active"] ?? 1) === 1;
+}
+
+export { isVisible, isSectionVisible }

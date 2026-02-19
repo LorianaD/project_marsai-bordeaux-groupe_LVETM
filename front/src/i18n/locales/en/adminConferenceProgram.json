@@ -20,4 +20,5 @@
   "save": "Save",
   "create": "Create",
   "confirmDelete": "Delete « {{title}} »?"
+  
 }
