@@ -107,53 +107,6 @@ export default function AdminVideos() {
 
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-<<<<<<< dashboad_admin_super_admin
-      <AdminSidebarModal
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        active="films"
-      />
-
-      <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
-        <div className="flex gap-7">
-          <AdminLayoutSidebar active="films" />
-
-          {/* CONTENT */}
-          <main className="min-w-0 flex-1">
-            {/* Mobile top actions */}
-            <div className="mb-4 flex items-center justify-between lg:hidden">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                ☰ Menu
-              </button>
-
-              <button
-                onClick={refresh}
-                className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/80 ring-1 ring-black/10 hover:bg-black/10
-                           dark:bg-white/5 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/10"
-              >
-                Rafraîchir
-              </button>
-            </div>
-
-            <div className="mt-5 min-w-0">
-              <AdminHero />
-            </div>
-
-            {/* Title */}
-            <div className="mt-8">
-              <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
-                FILMS SOUMIS
-              </div>
-              <div className="mt-1 text-black/50 dark:text-white/50">
-                Gérez l&apos;intégralité des soumissions et gérez les mises en
-                avant.
-              </div>
-            </div>
-=======
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         {/* Title */}
         <div className="mt-8">
@@ -165,7 +118,6 @@ export default function AdminVideos() {
             avant.
           </div>
         </div>
->>>>>>> main
 
         {/* Card */}
         <div
