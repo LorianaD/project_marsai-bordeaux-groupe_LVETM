@@ -131,7 +131,7 @@ function LoginForm() {
             to="/"
             className="text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white"
           >
-            ← Retour à l&apos;accueil
+            ← Retour à l'accueil
           </Link>
         </div>
       </div>
