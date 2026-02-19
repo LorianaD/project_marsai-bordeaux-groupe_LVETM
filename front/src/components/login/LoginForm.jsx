@@ -55,10 +55,10 @@ function LoginForm() {
             MARS <span className="text-[#F6339A]">AI</span>
           </div>
           <h1 className="mt-4 text-2xl font-bold tracking-tight">
-            Connexion à l&apos;espace admin
+            Connexion à votre espace utilisateur
           </h1>
           <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-            Utilisez vos identifiants pour accéder au back-office.
+            Utilisez vos identifiants pour vous connecter.
           </p>
         </div>
 

@@ -111,12 +111,12 @@ export default function AdminVideos() {
       <AdminSidebarModal
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        active="gestion-films"
+        active="films"
       />
 
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-          <AdminLayoutSidebar active="gestion-films" />
+          <AdminLayoutSidebar active="films" />
 
           {/* CONTENT */}
           <main className="min-w-0 flex-1">
