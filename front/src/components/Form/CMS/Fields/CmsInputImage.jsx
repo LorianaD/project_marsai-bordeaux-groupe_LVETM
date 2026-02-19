@@ -18,7 +18,7 @@ function CmsInputImage({name, label, valueUrl, onChange, placeholder, type = "fi
             onChange(event);
         }
 
-        const file = event.target.file && event.target.files[0];
+        const file = event.target.files && event.target.files[0];
 
         if (!file) {
             setPrevieuwUrl(valueUrl || "");
