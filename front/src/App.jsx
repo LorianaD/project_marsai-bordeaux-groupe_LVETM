@@ -24,6 +24,7 @@ import AdminLogin from "./pages/Login.jsx";
 import VideoFeed from "./pages/VideoFeed.jsx";
 
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
+import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 
 export default function App() {
   return (
@@ -49,10 +50,7 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
-        <Route
-          path="/newsletter/unsubscribe"
-          element={<NewsletterUnsubscribe />}
-        />
+        <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
 
         {/* auth/admin */}
         <Route path="register" element={<AdminRegister />} />
@@ -63,7 +61,12 @@ export default function App() {
       <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin/*" element={<AdminRouter />} />
+          
         </Route>
+      </Route>
+
+      <Route element={<MainLayout />} >
+        <Route path="/selector/videos" element={<AdminVideos />} />
       </Route>
 
       {/* FALLBACK */}
