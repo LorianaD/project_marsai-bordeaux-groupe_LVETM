@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import useCmsContent from "../../hooks/useCmsContent.js";
-import isVisible from "../../utils/isVisible";
+import { isVisible } from "../../utils/isVisible";
 
 function SectionConcept() {
 

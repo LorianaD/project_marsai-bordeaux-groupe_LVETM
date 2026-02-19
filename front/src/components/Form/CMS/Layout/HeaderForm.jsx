@@ -8,6 +8,7 @@ import CmsInputImage from "../Fields/CmsInputImage";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInput from "../Fields/CmsInput";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
+import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
 
 function HeaderForm({ forcedLocale }) {
 
@@ -16,7 +17,7 @@ function HeaderForm({ forcedLocale }) {
 
     const page = "layout";
     const section = "header";
-    console.log("Page:", page, "Section:", section);
+    // console.log("Page:", page, "Section:", section);
 
     const fields = [
 
