@@ -1,10 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
-<<<<<<< dashboad_admin_super_admin
 import AdminRegister from "./AdminRegister";
 import AdminLogin from "../../components/login/LoginForm";
-=======
-
->>>>>>> main
 import Overview from "./Overview";
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
 import AdminNewsletters from "./AdminNewsletters";
@@ -19,34 +15,36 @@ import AdminSettings from "./AdminSettings";
 import AdminLeaderboard from "./AdminLeaderboard";
 import AdminMessages from "./AdminMessages";
 
-
 export function AdminRouter() {
-    return(
-        <Routes>
+  return (
+    <Routes>
+      {/* Admin */}
+      <Route index element={<Overview />} />
+      <Route path="login" element={<AdminLogin />} />
+      <Route path="register" element={<AdminRegister />} />
 
-            {/* Admin */}
-            <Route index element={<Overview />} />
+      {/* Pages admin */}
+      <Route path="overview" element={<Overview />} />
+      <Route path="events" element={<AdminEvents />} />
+      <Route
+        path="events/:eventId/participants"
+        element={<AdminEventParticipants />}
+      />
+      <Route path="conference-program" element={<AdminConferenceProgram />} />
+      <Route path="videos" element={<AdminVideos />} />
+      <Route path="distribution-jury" element={<DistributionJury />} />
+      <Route path="settings" element={<AdminSettings />} />
+      <Route path="leaderboard" element={<AdminLeaderboard />} />
+      <Route path="messages" element={<AdminMessages />} />
 
-            {/* Pages admin */}
-            <Route path="overview" element={<Overview />} />
-            <Route path="events" element={<AdminEvents />} />
-            <Route path="events/:eventId/participants" element={<AdminEventParticipants />} />
-            <Route path="conference-program" element={<AdminConferenceProgram />} />
-            <Route path="videos" element={<AdminVideos />} />
-            <Route path="distribution-jury" element={<DistributionJury />} />
-            <Route path="settings" element={<AdminSettings />} />
-            <Route path="leaderboard" element={<AdminLeaderboard />} />
-            <Route path="messages" element={<AdminMessages />} />
+      {/* Newsletter */}
+      <Route path="newsletter" element={<AdminNewsletter />} />
+      <Route path="newsletters" element={<AdminNewsletters />} />
+      <Route path="newsletters/new" element={<AdminNewsletterNew />} />
+      <Route path="newsletters/:id" element={<AdminNewsletterEditor />} />
 
-            {/* Newsletter */}
-            <Route path="newsletter" element={<AdminNewsletter />} />
-            <Route path="newsletters" element={<AdminNewsletters />} />
-            <Route path="newsletters/new" element={<AdminNewsletterNew />} />
-            <Route path="newsletters/:id" element={<AdminNewsletterEditor />} />
-
-            {/* fallback admin */}
-            <Route path="*" element={<Navigate to="/admin" replace />} />
-
-        </Routes>
-    )
+      {/* fallback admin */}
+      <Route path="*" element={<Navigate to="/admin" replace />} />
+    </Routes>
+  );
 }
