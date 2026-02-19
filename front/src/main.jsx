@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import "./index.css";
 import "./i18n";
+import "react-international-phone/style.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
