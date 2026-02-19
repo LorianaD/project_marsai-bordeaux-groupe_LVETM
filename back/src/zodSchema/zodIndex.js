@@ -16,6 +16,8 @@ export { createEmailSchema } from "./emailValidationSchema.js";
 
 //Validation des ajouts des events.
 export { createEventSchema } from "./eventValidationSchema.js";
+//Validation de la publication d'un event.
+export { publishEventSchema } from "./eventValidationSchema.js"
 
 //Validation des données de la faq.
 export { createFaqSchema } from "./faqValidationSchema.js";
