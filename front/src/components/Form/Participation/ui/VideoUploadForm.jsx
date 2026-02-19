@@ -135,9 +135,19 @@ export default function VideoUploadForm({ formRef }) {
     });
   }
 
-  // Vérifie que tout est rempli avant l'envoi
+  // Vérifie que tout est rempli avant l'envoi + validations (conditions/âge/captcha)
   const canSubmit = useMemo(() => {
     const durationNum = Number(form.duration);
+
+    // 🔒 validations depuis l'étape "ownership" (TeamCompositionForm)
+    let ownership = {};
+    try {
+      ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
+    } catch {}
+
+    const termsOk = !!ownership?.termsAccepted;
+    const ageOk = !!ownership?.ageConfirmed;
+    const robotOk = !!ownership?.notRobot;
 
     return (
       form.title.trim() &&
@@ -163,7 +173,10 @@ export default function VideoUploadForm({ formRef }) {
       files.video &&
       files.cover &&
       files.stills[0] &&
-      files.subtitles.length > 0
+      files.subtitles.length > 0 &&
+      termsOk &&
+      ageOk &&
+      robotOk
     );
   }, [form, files]);
 
@@ -198,6 +211,11 @@ export default function VideoUploadForm({ formRef }) {
       fd.append("contributors", JSON.stringify(contributors));
       fd.append("ownership_certified", ownership?.ownershipCertified ? "1" : "0");
       fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
+
+      // ✅ nouvelles validations
+      fd.append("terms_accepted", ownership?.termsAccepted ? "1" : "0");
+      fd.append("age_confirmed", ownership?.ageConfirmed ? "1" : "0");
+      fd.append("human_verified", ownership?.notRobot ? "1" : "0");
 
       fd.append("video", files.video);
       fd.append("cover", files.cover);
