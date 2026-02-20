@@ -3,7 +3,7 @@
  *********************************************/
 import { z } from "zod";
 
-export const createAdminSchema = z.object({
+export const emailSchema = z.object ({
 
     email: z
         .string({message:"Email must be a string."})
@@ -11,6 +11,10 @@ export const createAdminSchema = z.object({
         .min(1,"Email is required.")
         .max(255, "Email must not exceed 255 characters.")
         .email({ message: "Email format is invalid." }),
+
+});
+
+export const passwordSchema = z.object ({
 
     password: z //Obligatoire: une majuscule, une minuscule, un chiffre, un caractère spéciale.
         .string({message:"Password must be a string."})
@@ -32,9 +36,12 @@ export const createAdminSchema = z.object({
             value => /[!@#$%^&*(),.?":{}|<>]/.test(value),
             { message: "Password must contain at least one special character." }
         ),
+});
+
+export const createAdminSchema = z.object({
 
     role: z
-        .enum(["Admin", "Super_admin", "Selector"]),
+        .enum(["admin", "super_admin", "selector"]),
 
     first_name: z
         .string({message:"Firstname must be a string."})
