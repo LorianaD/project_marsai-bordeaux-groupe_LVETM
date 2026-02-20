@@ -11,4 +11,4 @@ eventsRouter.post("/", validate(createEventSchema), createEvent);
 eventsRouter.put("/:id", validate(createEventSchema), updateEvent);
 eventsRouter.delete("/:id", deleteEvent);
 eventsRouter.patch("/:id/publish", validate(publishEventSchema), patchPublish);//A VERIF
-export default eventsRouter;
+export default eventsRouter; 
