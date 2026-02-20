@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ADMIN_NAV } from "./adminNav.js";
 import { useEffect, useState } from "react";
 import { decodeToken } from "../../utils/decodeToken.js";
+const API_URL = import.meta.env.VITE_API_URL;
 
 /**
  * Sidebar admin commune (Overview, Gestion films, Événements, etc.).
@@ -60,7 +61,7 @@ export default function AdminLayoutSidebar({ active }) {
               <div className="flex items-center gap-3">
                 {/* Icône */}
                 {link.id === "overview" ? (
-                  // ✅ Garde l’icône d’origine pour "Vue d'ensemble"
+                  // Garde l’icône d’origine pour "Vue d'ensemble"
                   <div className="grid h-5 w-5 shrink-0 place-items-center">
                     {/* Si tu avais déjà un autre SVG ici, remplace celui-ci par le tien */}
                     <svg
@@ -78,7 +79,7 @@ export default function AdminLayoutSidebar({ active }) {
                 ) : (
                   link.icon && (
                     <img
-                      src={`/uploads/adminsidebar/${link.icon}`}
+                      src={`${API_URL}/uploads/adminsidebar/${link.icon}`}
                       alt=""
                       className={[
                         "h-5 w-5 shrink-0",

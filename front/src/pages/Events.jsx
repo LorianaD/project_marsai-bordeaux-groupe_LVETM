@@ -56,8 +56,8 @@ function Events() {
   }, []);
 
   return (
-    <main className="bg-white text-black dark:bg-black dark:text-white">
-      <div className="mx-auto max-w-6xl px-6 py-12 space-y-16">
+    <main className="w-full pt-[100px]">
+      <div className="mx-auto px-6 py-12 space-y-16">
         {/* INFOS PRATIQUES */}
         <section id="infos-pratiques" className="space-y-6">
           <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase">

@@ -9,6 +9,7 @@ import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInput from "../Fields/CmsInput";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
+import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
 
 function HeaderForm({ forcedLocale }) {
 
@@ -24,12 +25,50 @@ function HeaderForm({ forcedLocale }) {
         "logo",
 
         "home",
+        "home_link",
+
+        "first",
+        "first_link",
+
+        "seconde",
+        "seconde_link",
+
+        "third",
+        "third_link",
+
+        "btn",
+        "btn_link",
+
+        "icon_country"
 
     ]
 
     const { values, setValues, handleChange } = useForm({
         logo: "",
         logo_is_active: 1,
+
+        home: "",
+        home_link: "",
+        home_is_active: 1,
+
+        first: "",
+        first_link: "",
+        first_is_active: 1,
+
+        seconde: "",
+        seconde_link: "",
+        secode_is_active: 1,
+
+        third: "",
+        third_link: "",
+        third_is_active: 1,
+
+        btn: "",
+        btn_link: "",
+        btn_is_active: 1,
+
+        icon_country: "",
+        icon_country_is_active: 1
     })
 
     const [message, setMessage] = useState("");
@@ -52,7 +91,7 @@ function HeaderForm({ forcedLocale }) {
 
         // construit les valeurs initiales depuis le CMS
         const built = buildInitialValuesFromCms(fields, cmsSection, {
-            fileFields: ["logo"],
+            fileFields: ["logo", "icon_country"],
         });
 
         setValues(built);
@@ -79,9 +118,9 @@ function HeaderForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set(["media", "protocol_icon", "ctaParticipate_signe", "ctaLearnMore_signe"]);
+            const sharedImageKeys = new Set(["logo", "icon_country"]);
 
-            const sharedLinkKeys = new Set(["ctaParticipate_link", "ctaLearnMore_link"]);
+            const sharedLinkKeys = new Set(["home_link", "first_link", "seconde_link", "third_link", "btn_link"]);
 
             const sharedKeys = new Set([...sharedImageKeys, ...sharedLinkKeys]);
 
@@ -145,26 +184,27 @@ function HeaderForm({ forcedLocale }) {
     }
 
     return (
-        <section>
-            <form onSubmit={handleSubmit} className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+        <section className="w-full">
+            <form onSubmit={handleSubmit} className="w-full p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch">
+                <div className="flex items-center gap-[10px] self-stretch w-full">
                     <div>
                         <img src={iconPaintDark} alt="" className="hidden dark:block" />
                         <img src={iconPaint} alt="" className="block dark:hidden" />
                     </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
+                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase w-full">
                         Gestion de l' En-tête
                     </h3>
                 </div>
 
-                <div>
+                <div className="w-full">
 
-                    <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
-                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                    <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
+                        
+                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full w-full">
 
-                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
+                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
                                     Gestion du logo
                                 </h4>
                             </div>
@@ -178,62 +218,99 @@ function HeaderForm({ forcedLocale }) {
 
                     <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
 
-                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
                             <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
                                 Gestion de la navigation
                             </h4>
                         </div>
-                        <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
-
-                            <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
-                                Gestion du lien Home
-                            </h5>
-                            <div>
-                                < CmsInput name="home_link" label="Lien" value={values.home} onChange={handleChange} placeholder={t("home_link")} />
-                            </div>
-
-                        </div>
 
                         <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
-                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                            <div className="flex flex-col md:flex-row pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
                                     Gestion du deuxiéme lien
                                 </h5>
+                                <CmsHideToggle name="first" value={values.first_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                             </div>
-                            <div className="flex flex-col md:flex-row gap-[20px]">
+                            <div className="flex flex-col md:flex-row gap-[20px] w-full">
                                 < CmsInput name="first" label="Nom" value={values.first} onChange={handleChange} placeholder={t("first")} />
-                                < CmsInput name="first_link" label="Lien" value={values.first} onChange={handleChange} placeholder={t("first_link")} />
+                                < CmsInput name="first_link" label="Lien" value={values.first_link} onChange={handleChange} placeholder={t("first_link")} />
                             </div>
                             
                         </div>
 
                         <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
 
-                            <div>
-                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                            <div className="w-full flex flex-col md:flex-row">
+                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
                                     Gestion du troisième lien
                                 </h5>
+                                <CmsHideToggle name="seconde" value={values.seconde_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                             </div>
-                            <div className="flex flex-col md:flex-row gap-[20px]">
+                            <div className="flex flex-col md:flex-row gap-[20px] w-full">
                                 < CmsInput name="seconde" label="Nom" value={values.seconde} onChange={handleChange} placeholder={t("seconde")} />
-                                < CmsInput name="seconde_link" label="Lien" value={values.seconde} onChange={handleChange} placeholder={t("seconde_link")} />
+                                < CmsInput name="seconde_link" label="Lien" value={values.seconde_link} onChange={handleChange} placeholder={t("seconde_link")} />
                             </div>
                             
                         </div>
 
                         <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
 
-                            <div>
-                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
+                            <div className="w-full flex flex-col md:flex-row">
+                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
                                     Gestion du quatriéme lien
                                 </h5>
+                                <CmsHideToggle name="third" value={values.third_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                             </div>
-                            <div className="flex flex-col md:flex-row gap-[20px]">
+                            <div className="flex flex-col md:flex-row gap-[20px] w-full">
                                 < CmsInput name="third" label="Nom" value={values.third} onChange={handleChange} placeholder={t("third")} />
-                                < CmsInput name="third_link" label="Lien" value={values.third} onChange={handleChange} placeholder={t("third_link")} />
+                                < CmsInput name="third_link" label="Lien" value={values.third_link} onChange={handleChange} placeholder={t("third_link")} />
                             </div>
                             
+                        </div>
+
+                    </div>
+
+                    <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
+                        
+                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+
+                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
+                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
+                                    Gestion des boutons
+                                </h4>
+                            </div>
+                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+
+                                <div className="w-full flex flex-col md:flex-row">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
+                                        Gestion du premier bouton
+                                    </h5>
+                                    <CmsHideToggle name="btn" value={values.btn_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                </div>
+
+                                <div className="flex flex-col md:flex-row gap-[20px] w-full">
+                                    < CmsInput name="btn" label="Nom" value={values.btn} onChange={handleChange} placeholder={t("btn")} />
+                                    < CmsInput name="btn_link" label="Lien" value={values.btn_link} onChange={handleChange} placeholder={t("btn_link")} />
+                                </div>
+                                
+                            </div>
+
+                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+
+                                <div className="w-full flex flex-col md:flex-row">
+                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
+                                        Gestion du bouton switch des langues
+                                    </h5>
+                                    <CmsHideToggle name="icon_country" value={values.icon_country_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                </div>
+
+                                {/* <div className="flex flex-col md:flex-row gap-[20px] w-full">
+                                    <CmsInputImage name="icon_country" label="Icon" valueUrl={values.icon_country} onChange={handleChange} page={page} section={section} locale={locale} />
+                                </div> */}
+                                
+                            </div>                            
+
                         </div>
 
                     </div>
