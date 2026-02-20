@@ -43,7 +43,7 @@ function CmsHideToggle({ name, value = 1, values, onChange, page, section, local
     };
 
     return (
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <label className="flex items-center gap-2 text-sm cursor-pointer uppercase">
             <span>Caché</span>
 
             <button type="button" role="switch" aria-checked={!isActive} onClick={toggle}

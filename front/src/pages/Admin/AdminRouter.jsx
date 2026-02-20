@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-import AdminRegister from "./AdminRegister";
-import AdminLogin from "../../components/login/LoginForm";
+
 import Overview from "./Overview";
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
 import AdminNewsletters from "./AdminNewsletters";
@@ -26,10 +25,7 @@ export function AdminRouter() {
       {/* Pages admin */}
       <Route path="overview" element={<Overview />} />
       <Route path="events" element={<AdminEvents />} />
-      <Route
-        path="events/:eventId/participants"
-        element={<AdminEventParticipants />}
-      />
+      <Route path="events/:eventId/participants"element={<AdminEventParticipants />} />
       <Route path="conference-program" element={<AdminConferenceProgram />} />
       <Route path="videos" element={<AdminVideos />} />
       <Route path="distribution-jury" element={<DistributionJury />} />

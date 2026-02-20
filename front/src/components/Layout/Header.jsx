@@ -69,7 +69,7 @@ function Header() {
                 {/* LEFT : LOGO */}
                 {logoSrc ? (
                     <Link to="/">
-                        <div className="w-[100px]">
+                        <div className="h-full max-w-[100px] min-w-[20px]">
                             <img src={logoSrc} alt="Logo" className="w-full" draggable={false}/>
                         </div> 
                     </Link>
