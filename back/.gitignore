@@ -1,6 +1,8 @@
 .env
 node_modules/
-uploads/covers
-uploads/videos
-uploads/stills
-uploads/subtitles
+uploads/covers/*
+uploads/videos/*
+uploads/stills/*
+uploads/subtitles/*
+uploads/images/*
+uploads/logoPartners/*
