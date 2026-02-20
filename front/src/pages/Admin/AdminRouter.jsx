@@ -23,7 +23,7 @@ export function AdminRouter() {
 
       {/* Pages admin */}
       <Route path="overview" element={<Overview />} />
-      <Route path="/users" element={<AdminUsers />}/>
+      <Route path="users" element={<AdminUsers />} />
       <Route path="events" element={<AdminEvents />} />
       <Route path="events/:eventId/participants"element={<AdminEventParticipants />} />
       <Route path="conference-program" element={<AdminConferenceProgram />} />
