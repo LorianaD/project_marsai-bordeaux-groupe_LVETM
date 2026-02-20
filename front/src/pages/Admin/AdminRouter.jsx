@@ -19,8 +19,6 @@ export function AdminRouter() {
     <Routes>
       {/* Admin */}
       <Route index element={<Overview />} />
-      <Route path="login" element={<AdminLogin />} />
-      <Route path="register" element={<AdminRegister />} />
 
       {/* Pages admin */}
       <Route path="overview" element={<Overview />} />
