@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : ven. 20 fév. 2026 à 08:53
+-- Généré le : ven. 20 fév. 2026 à 16:34
 -- Version du serveur : 8.0.40
 -- Version de PHP : 8.3.14
 
@@ -32,7 +32,10 @@ CREATE TABLE `admin_video` (
   `status` enum('Video Accepted','Video Rejected','Video Banned','Featured') DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
-  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change'
+  `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
+  `score` decimal(4,2) DEFAULT NULL,
+  `video_id` int NOT NULL,
+  `admin_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -138,15 +141,15 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (23, 'home', 'hero', 'ctaLearnMore_signe', 'fr', 'image', '/uploads/icons/1771422876669-icons8-plus-96.png', 14, 1, '2026-02-06 09:54:31', '2026-02-18 14:54:36'),
 (25, 'home', 'hero', 'ctaParticipate_signe', 'fr', 'image', '/uploads/icons/1771422952133-arrowRight.svg', 11, 1, '2026-02-09 10:41:35', '2026-02-18 14:55:52'),
 (27, 'home', 'hero', 'protocol_icon', 'fr', 'image', '/uploads/icons/1771423093750-IconStars.svg', 1, 1, '2026-02-10 11:59:41', '2026-02-18 14:58:13'),
-(33, 'home', 'concept', 'title_main', 'fr', 'text', 'Concept du festival MARSAI', 0, 0, '2026-02-10 14:11:53', '2026-02-11 14:08:24'),
-(34, 'home', 'concept', 'card1_title', 'fr', 'text', '1 minute', 1, 1, '2026-02-10 14:11:53', '2026-02-11 14:29:39'),
-(35, 'home', 'concept', 'card1_description', 'fr', 'text', 'Format ultra-court pour un impact maximum.', 2, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
-(36, 'home', 'concept', 'card2_title', 'fr', 'text', 'Gratuité', 3, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
-(37, 'home', 'concept', 'card2_description', 'fr', 'text', 'Conférences et workshops accessibles.', 4, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
-(38, 'home', 'concept', 'card3_title', 'fr', 'text', 'Pour tous', 5, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
-(39, 'home', 'concept', 'card3_description', 'fr', 'text', 'Professionnels, étudiants et curieux.', 6, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
-(40, 'home', 'concept', 'card4_title', 'fr', 'text', 'Expertise', 7, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
-(41, 'home', 'concept', 'card4_description', 'fr', 'text', 'Leaders mondiaux de l’IA générative.', 8, 1, '2026-02-10 14:11:53', '2026-02-10 14:11:53'),
+(33, 'home', 'concept', 'title_main', 'fr', 'text', 'Concept du festival MARSAI', 1, 0, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(34, 'home', 'concept', 'card1_title', 'fr', 'text', '1 minute', 2, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(35, 'home', 'concept', 'card1_description', 'fr', 'text', 'Format ultra-court pour un impact maximum.', 3, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(36, 'home', 'concept', 'card2_title', 'fr', 'text', 'Gratuité', 5, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(37, 'home', 'concept', 'card2_description', 'fr', 'text', 'Conférences et workshops accessibles.', 6, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(38, 'home', 'concept', 'card3_title', 'fr', 'text', 'Pour tous', 8, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(39, 'home', 'concept', 'card3_description', 'fr', 'text', 'Professionnels, étudiants et curieux.', 9, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:31'),
+(40, 'home', 'concept', 'card4_title', 'fr', 'text', 'Expertise', 11, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:32'),
+(41, 'home', 'concept', 'card4_description', 'fr', 'text', 'Leaders mondiaux de l’IA générative.', 12, 1, '2026-02-10 14:11:53', '2026-02-20 13:29:32'),
 (42, 'home', 'concept', 'title_main', 'en', 'text', 'MARSAI Festival Concept', 0, 0, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
 (43, 'home', 'concept', 'card1_title', 'en', 'text', '1 minute', 1, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
 (44, 'home', 'concept', 'card1_description', 'en', 'text', 'Ultra-short format for maximum impact.', 2, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
@@ -156,17 +159,17 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (48, 'home', 'concept', 'card3_description', 'en', 'text', 'Professionals, students, and curious minds.', 6, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
 (49, 'home', 'concept', 'card4_title', 'en', 'text', 'Expertise', 7, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
 (50, 'home', 'concept', 'card4_description', 'en', 'text', 'World leaders in generative AI.', 8, 1, '2026-02-10 14:12:48', '2026-02-10 14:12:48'),
-(51, 'home', 'award', 'eyebrow', 'en', 'text', 'The MARS.AI Project', 0, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
-(52, 'home', 'award', 'title1', 'en', 'text', 'Films in', 1, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
-(53, 'home', 'award', 'title2', 'en', 'text', 'Competition', 2, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
-(54, 'home', 'award', 'description', 'en', 'text', 'Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.', 3, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
-(55, 'home', 'award', 'ctaSeeMore', 'en', 'text', 'View the selection', 4, 1, '2026-02-12 10:34:02', '2026-02-12 10:34:02'),
-(56, 'home', 'award', 'eyebrow', 'fr', 'text', 'le projet MARS.A.I.', 0, 1, '2026-02-12 10:34:16', '2026-02-12 11:06:29'),
-(57, 'home', 'award', 'title1', 'fr', 'text', 'Films en', 1, 1, '2026-02-12 10:34:16', '2026-02-12 10:34:16'),
-(58, 'home', 'award', 'title2', 'fr', 'text', 'Compétition', 2, 1, '2026-02-12 10:34:16', '2026-02-12 10:34:16'),
-(59, 'home', 'award', 'description', 'fr', 'text', 'Découvrez une sélection d’œuvres pionnières explorant de nouvelles frontières de l’imaginaire assisté par IA.', 3, 1, '2026-02-12 10:34:16', '2026-02-12 10:34:16'),
-(60, 'home', 'award', 'ctaSeeMore', 'fr', 'text', 'Voir la sélection', 0, 1, '2026-02-12 10:34:16', '2026-02-12 11:14:03'),
-(61, 'home', 'award', 'ctaSeeMore_link', 'fr', 'text', '/gallery', 5, 1, '2026-02-12 11:31:57', '2026-02-12 11:31:57'),
+(51, 'home', 'award', 'eyebrow', 'en', 'text', 'The MARS.AI Project', 1, 1, '2026-02-12 10:34:02', '2026-02-20 15:05:35'),
+(52, 'home', 'award', 'title1', 'en', 'text', 'Films in', 3, 1, '2026-02-12 10:34:02', '2026-02-20 15:05:35'),
+(53, 'home', 'award', 'title2', 'en', 'text', 'Competition', 4, 1, '2026-02-12 10:34:02', '2026-02-20 15:05:35'),
+(54, 'home', 'award', 'description', 'en', 'text', 'Discover a selection of pioneering works exploring new frontiers of AI-assisted imagination.', 5, 1, '2026-02-12 10:34:02', '2026-02-20 15:05:35'),
+(55, 'home', 'award', 'ctaSeeMore', 'en', 'text', 'View the selection', 6, 1, '2026-02-12 10:34:02', '2026-02-20 15:05:35'),
+(56, 'home', 'award', 'eyebrow', 'fr', 'text', 'le projet MARS.A.I.', 1, 1, '2026-02-12 10:34:16', '2026-02-20 15:05:35'),
+(57, 'home', 'award', 'title1', 'fr', 'text', 'Films en', 3, 1, '2026-02-12 10:34:16', '2026-02-20 15:05:35'),
+(58, 'home', 'award', 'title2', 'fr', 'text', 'Compétition', 4, 1, '2026-02-12 10:34:16', '2026-02-20 15:05:35'),
+(59, 'home', 'award', 'description', 'fr', 'text', 'Découvrez une sélection d’œuvres pionnières explorant de nouvelles frontières de l’imaginaire assisté par IA.', 5, 1, '2026-02-12 10:34:16', '2026-02-20 15:05:35'),
+(60, 'home', 'award', 'ctaSeeMore', 'fr', 'text', 'Voir la sélection', 6, 1, '2026-02-12 10:34:16', '2026-02-20 15:05:35'),
+(61, 'home', 'award', 'ctaSeeMore_link', 'fr', 'text', '/gallery', 7, 1, '2026-02-12 11:31:57', '2026-02-20 15:05:35'),
 (63, 'home', 'goal', 'title_main', 'fr', 'text', 'Objectifs du', 0, 1, '2026-02-12 13:30:45', '2026-02-12 14:40:12'),
 (64, 'home', 'goal', 'title_accent', 'fr', 'text', 'festival', 1, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
 (65, 'home', 'goal', 'card1_title', 'fr', 'text', 'L\'humain au centre', 2, 1, '2026-02-12 13:30:45', '2026-02-12 13:30:45'),
@@ -186,10 +189,10 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (80, 'home', 'goal', 'card2_description', 'en', 'text', 'Challenge creativity with an ultra-short 60s format.', 6, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
 (82, 'home', 'goal', 'card3_title', 'en', 'text', 'Desirable futures', 8, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
 (83, 'home', 'goal', 'card3_description', 'en', 'text', 'Explore desirable futures through emerging technologies.', 9, 1, '2026-02-12 13:31:01', '2026-02-12 13:31:01'),
-(85, 'home', 'concept', 'card1_title_color', 'fr', 'text', '#C27AFF', 3, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
-(86, 'home', 'concept', 'card2_title_color', 'fr', 'text', '#00D492', 6, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
-(87, 'home', 'concept', 'card3_title_color', 'fr', 'text', '#FB64B6', 9, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
-(88, 'home', 'concept', 'card4_title_color', 'fr', 'text', '#2B7FFF', 12, 1, '2026-02-13 10:14:41', '2026-02-13 11:59:11'),
+(85, 'home', 'concept', 'card1_title_color', 'fr', 'text', '#C27AFF', 4, 1, '2026-02-13 10:14:41', '2026-02-20 13:29:31'),
+(86, 'home', 'concept', 'card2_title_color', 'fr', 'text', '#5257ff', 7, 1, '2026-02-13 10:14:41', '2026-02-20 13:29:31'),
+(87, 'home', 'concept', 'card3_title_color', 'fr', 'text', '#FB64B6', 10, 1, '2026-02-13 10:14:41', '2026-02-20 13:29:31'),
+(88, 'home', 'concept', 'card4_title_color', 'fr', 'text', '#2B7FFF', 13, 1, '2026-02-13 10:14:41', '2026-02-20 13:29:32'),
 (89, 'home', 'concept', 'card1_title_color', 'en', 'text', '#A855F7', 100, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52'),
 (90, 'home', 'concept', 'card2_title_color', 'en', 'text', '#10B981', 101, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52'),
 (91, 'home', 'concept', 'card3_title_color', 'en', 'text', '#EC4899', 102, 1, '2026-02-13 10:14:41', '2026-02-13 11:13:52'),
@@ -347,18 +350,10 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (246, 'home', 'partnersSection', 'title_main', 'en', 'text', 'They support ', 1, 1, '2026-02-16 11:13:24', '2026-02-16 11:13:24'),
 (247, 'home', 'partnersSection', 'title_accent', 'en', 'text', 'the future', 2, 1, '2026-02-16 11:13:24', '2026-02-16 11:13:24'),
 (248, 'home', 'partnersSection', 'title_accent_color', 'en', 'text', '#00D3F2', 3, 1, '2026-02-16 11:13:24', '2026-02-16 11:13:24'),
-(249, 'home', 'award', 'eyebrow_color', 'fr', 'text', '#2B7FFF', 6, 1, '2026-02-16 11:28:05', '2026-02-16 11:28:05'),
-(250, 'home', 'award', 'ctaSeeMore_color', 'fr', 'text', 'rgba(194, 122, 255, 0.52)', 7, 1, '2026-02-16 11:28:05', '2026-02-16 11:28:05'),
-(251, 'home', 'award', 'loading', 'fr', 'text', 'Chargement des vidéos...', 8, 1, '2026-02-16 11:28:05', '2026-02-16 11:28:05'),
-(252, 'home', 'award', 'error', 'fr', 'text', 'Impossible de charger les vidéos:', 9, 1, '2026-02-16 11:28:05', '2026-02-16 11:28:05'),
-(253, 'home', 'award', 'notFound', 'fr', 'text', 'Pas encore de vidéos.', 10, 1, '2026-02-16 11:28:05', '2026-02-16 11:28:05'),
-(254, 'home', 'award', 'ariaViewFilm', 'fr', 'text', 'Voir le film : {{title}}', 11, 1, '2026-02-16 11:28:05', '2026-02-16 11:28:05'),
-(255, 'home', 'award', 'eyebrow_color', 'en', 'text', '#2B7FFF', 6, 1, '2026-02-16 11:28:23', '2026-02-16 11:28:23'),
-(256, 'home', 'award', 'ctaSeeMore_color', 'en', 'text', 'rgba(194, 122, 255, 0.52)', 7, 1, '2026-02-16 11:28:23', '2026-02-16 11:28:23'),
-(257, 'home', 'award', 'loading', 'en', 'text', 'Loading videos...', 8, 1, '2026-02-16 11:28:23', '2026-02-16 11:28:23'),
-(258, 'home', 'award', 'error', 'en', 'text', 'Unable to load videos:', 9, 1, '2026-02-16 11:28:23', '2026-02-16 11:28:23'),
-(259, 'home', 'award', 'notFound', 'en', 'text', 'No videos yet.', 10, 1, '2026-02-16 11:28:23', '2026-02-16 11:28:23'),
-(260, 'home', 'award', 'ariaViewFilm', 'en', 'text', 'View film: {{title}}', 11, 1, '2026-02-16 11:28:23', '2026-02-16 11:28:23'),
+(249, 'home', 'award', 'eyebrow_color', 'fr', 'text', '#2B7FFF', 2, 1, '2026-02-16 11:28:05', '2026-02-20 15:05:35'),
+(250, 'home', 'award', 'ctaSeeMore_color', 'fr', 'text', '#E1BDFF', 8, 1, '2026-02-16 11:28:05', '2026-02-20 16:22:41'),
+(255, 'home', 'award', 'eyebrow_color', 'en', 'text', '#2B7FFF', 2, 1, '2026-02-16 11:28:23', '2026-02-20 15:05:35'),
+(256, 'home', 'award', 'ctaSeeMore_color', 'en', 'text', 'rgba(194, 122, 255, 0.52)', 8, 1, '2026-02-16 11:28:23', '2026-02-20 15:05:35'),
 (273, 'home', 'hero', 'ctaLearnMore_signe', 'en', 'image', '/uploads/icons/1771422876680-icons8-plus-96.png', 14, 1, '2026-02-18 14:52:50', '2026-02-18 14:54:36'),
 (301, 'home', 'hero', 'ctaParticipate_signe', 'en', 'image', '/uploads/icons/1771422952146-arrowRight.svg', 11, 1, '2026-02-18 14:55:50', '2026-02-18 14:55:52'),
 (321, 'home', 'hero', 'protocol_icon', 'en', 'image', '/uploads/icons/1771423093762-IconStars.svg', 1, 1, '2026-02-18 14:58:13', '2026-02-18 14:58:13'),
@@ -367,7 +362,7 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (362, 'home', 'hero', 'ctaLearnMore_link', 'en', 'text', '/learnMore', 15, 1, '2026-02-18 15:23:05', '2026-02-18 15:23:05'),
 (363, 'home', 'header', 'section_visibility', 'fr', 'text', '1', 0, 1, '2026-02-19 08:56:35', '2026-02-19 08:56:35'),
 (364, 'home', 'header', 'section_visibility', 'en', 'text', '1', 0, 1, '2026-02-19 08:56:35', '2026-02-19 08:56:35'),
-(365, 'home', 'hero', 'section_visibility', 'fr', 'text', '1', 0, 1, '2026-02-19 09:40:23', '2026-02-19 10:13:28'),
+(365, 'home', 'hero', 'section_visibility', 'fr', 'text', '1', 0, 1, '2026-02-19 09:40:23', '2026-02-20 10:17:23'),
 (366, 'home', 'hero', 'section_visibility', 'en', 'text', '1', 0, 1, '2026-02-19 09:40:23', '2026-02-19 09:40:23'),
 (371, 'layout', 'header', 'logo', 'fr', 'image', '/uploads/medias/1771511243648-300954571.png', 0, 1, '2026-02-19 11:55:50', '2026-02-19 15:27:23'),
 (372, 'layout', 'header', 'home', 'fr', 'text', 'Accueil', 1, 1, '2026-02-19 11:55:50', '2026-02-19 15:27:23'),
@@ -391,7 +386,12 @@ INSERT INTO `cms` (`id`, `page`, `section`, `content_key`, `locale`, `type`, `va
 (391, 'layout', 'header', 'third_link', 'en', 'text', '/jury', 8, 1, '2026-02-19 11:56:07', '2026-02-19 15:27:24'),
 (392, 'layout', 'header', 'btn', 'en', 'text', 'Participate', 9, 1, '2026-02-19 11:56:07', '2026-02-19 11:56:07'),
 (393, 'layout', 'header', 'btn_link', 'en', 'text', '/participation', 10, 1, '2026-02-19 11:56:07', '2026-02-19 15:27:24'),
-(396, 'layout', 'header', 'logo', 'en', 'image', '/uploads/medias/1771511243703-79202520.png', 0, 1, '2026-02-19 13:54:54', '2026-02-19 15:27:23');
+(396, 'layout', 'header', 'logo', 'en', 'image', '/uploads/medias/1771511243703-79202520.png', 0, 1, '2026-02-19 13:54:54', '2026-02-19 15:27:23'),
+(481, 'home', 'concept', 'section_visibility', 'fr', 'text', '1', 0, 1, '2026-02-20 11:50:44', '2026-02-20 13:29:31'),
+(482, 'home', 'concept', 'section_visibility', 'en', 'text', '1', 0, 1, '2026-02-20 11:50:44', '2026-02-20 11:50:44'),
+(499, 'home', 'award', 'section_visibility', 'fr', 'text', '1', 0, 1, '2026-02-20 15:02:49', '2026-02-20 17:18:32'),
+(500, 'home', 'award', 'section_visibility', 'en', 'text', '1', 0, 1, '2026-02-20 15:02:49', '2026-02-20 15:05:35'),
+(501, 'home', 'award', 'ctaSeeMore_link', 'en', 'text', '/gallery', 7, 1, '2026-02-20 15:27:48', '2026-02-20 15:27:48');
 
 -- --------------------------------------------------------
 
@@ -1102,7 +1102,7 @@ ALTER TABLE `video_subtitles`
 -- AUTO_INCREMENT pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `assignment`
@@ -1126,7 +1126,7 @@ ALTER TABLE `bookings`
 -- AUTO_INCREMENT pour la table `cms`
 --
 ALTER TABLE `cms`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=479;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=508;
 
 --
 -- AUTO_INCREMENT pour la table `conference_program`

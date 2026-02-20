@@ -13,8 +13,9 @@ function SectionConcept() {
     const cards = [1, 2, 3, 4];
 
     const { content, loading, message } = useCmsContent(locale);
-
     // console.log("Content :", content, "Loading :", loading, "Message :", message);
+
+    if (loading) return null;
 
     return (
         <>

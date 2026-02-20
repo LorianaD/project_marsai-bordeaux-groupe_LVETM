@@ -1,8 +1,16 @@
 .env
 node_modules/
+
 uploads/covers/*
 uploads/videos/*
 uploads/stills/*
 uploads/subtitles/*
 uploads/images/*
 uploads/logoPartners/*
+
+!uploads/covers/.gitkeep
+!uploads/videos/.gitkeep
+!uploads/stills/.gitkeep
+!uploads/subtitles/.gitkeep
+!uploads/images/.gitkeep
+!uploads/logoPartners/.gitkeep

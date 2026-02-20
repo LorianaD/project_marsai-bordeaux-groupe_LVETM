@@ -15,8 +15,6 @@ function SectionHero() {
     // cherche les données en bdd
     const { content, loading, message } = useCmsContent(locale);
 
-    if (loading) return null;
-
     const protocolIconSrc = resolveCmsAsset(content?.[section]?.protocol_icon);
 
     const ctaParticipate_signeSrc = resolveCmsAsset(content?.[section]?.ctaParticipate_signe);
@@ -25,7 +23,9 @@ function SectionHero() {
 
     // console.log("hero cms:", content?.hero);
     // console.log("visibility:", content?.hero?.section_visibility_is_active);
-
+    
+    if (loading) return null;
+    
     return(
         <>
             {isSectionVisible(content, section) && (

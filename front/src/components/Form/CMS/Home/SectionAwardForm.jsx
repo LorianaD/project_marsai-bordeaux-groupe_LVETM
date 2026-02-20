@@ -10,6 +10,7 @@ import { updateContentApi } from "../../../../services/CMS/UpdateContentApi";
 import CmsInputColor from "../Fields/CmsImputColor";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
 import useCmsContent from "../../../../hooks/useCmsContent";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 
 function SectionAwardForm({ forcedLocale }) {
 
@@ -176,12 +177,14 @@ function SectionAwardForm({ forcedLocale }) {
 
     }
 
+    if (loading) return null;
+
     return(
         <section>
             <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch">
+                <div className="flex items-center justify-between gap-[10px] self-stretch">
                     <div className="flex items-center gap-[10px]">
                         <div>
                             <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
@@ -194,7 +197,7 @@ function SectionAwardForm({ forcedLocale }) {
                     <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
 
-                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
                     {/**** Corp du formulaire : inputs ****/}
                     <div className="w-full flex gap-[20px] items-center">
                         <CmsInput name="eyebrow" label="Titre du projet" value={values.eyebrow} onChange={handleChange} placeholder={t("award.eyebrow")} rightSlot={
@@ -231,9 +234,9 @@ function SectionAwardForm({ forcedLocale }) {
 
                     {/**** Footer du formulaire : bouton de submission ****/}
                     <div className="w-full flex justify-center">
-                        <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                             Mettre à jour
-                        </button>
+                        </BtnSubmitForm>
                     </div>
                 </div>
 
