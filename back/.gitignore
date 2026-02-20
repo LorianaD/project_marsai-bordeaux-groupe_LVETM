@@ -1,3 +1,6 @@
 .env
 node_modules/
-uploads/
+uploads/covers
+uploads/videos
+uploads/stills
+uploads/subtitles

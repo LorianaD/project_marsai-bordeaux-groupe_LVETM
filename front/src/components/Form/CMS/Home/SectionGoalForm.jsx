@@ -145,10 +145,10 @@ function SectionConceptForm() {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch">
+                <div className="flex items-center gap-[10px] self-stretch w-full">
                     <div>
                         <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
                         <img src={ iconPaint } alt="" className="block dark:hidden"/>
