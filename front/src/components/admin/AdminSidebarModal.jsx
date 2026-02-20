@@ -116,7 +116,7 @@ export default function AdminSidebarModal({
 
           <button onClick={() => {
             localStorage.removeItem("token");
-            navigate("/admin/login");
+            navigate("/login");
           }}
           className="mt-4 w-full rounded-xl bg-[#0E1628] py-3 text-sm font-semibold text-white/90 ring-1 ring-white/10 hover:bg-[#111c34]"
           >

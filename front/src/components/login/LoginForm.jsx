@@ -1,7 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
 import { inputLightClasses } from "../../utils/formInputClasses.js";
+
+// function safeDecodeRole(token) {
+//   try {
+//     const payload = JSON.parse(atob(token.split(".")[1]));
+//     return payload?.role || null;
+//   } catch {
+//     return null;
+//   }
+// }
 
 /**
  * Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
@@ -12,10 +21,26 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const timeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (loading) {
+      return;
+    }
+
     setError("");
     setSuccess(false);
 
@@ -25,23 +50,38 @@ function LoginForm() {
     }
 
     setLoading(true);
+
     try {
       const result = await loginUser(email, password);
+
+      if (!result?.token) {
+        throw new Error("Token manquant dans la réponse.");
+      }      
+
       localStorage.setItem("token", result.token);
+
+      if (!isMountedRef.current) return;
+
       setSuccess(true);
 
-      setTimeout(() => {
-        const token = JSON.parse(atob(result.token.split(".")[1]));
-        if (token.role === "selector") {
-          navigate("/selector/videos");
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+      timeoutRef.current = setTimeout(() => {
+        const role = safeDecodeRole(result.token);
+
+        if (role === "selector") {
+          navigate("/selector/videos", { replace: true });
         } else {
-          navigate("/admin/overview");
+          navigate("/admin/overview", { replace: true });
         }
+
       }, 1200);
 
     } catch (err) {
+      if (!isMountedRef.current) return;
       setError(err?.message || "Échec de la connexion.");
     } finally {
+      if (!isMountedRef.current) return;
       setLoading(false);
     }
   };

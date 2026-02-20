@@ -13,6 +13,7 @@ import AdminConferenceProgram from "./AdminConferenceProgram";
 import AdminSettings from "./AdminSettings";
 import AdminLeaderboard from "./AdminLeaderboard";
 import AdminMessages from "./AdminMessages";
+import AdminUsers from "./AdminUsers";
 
 export function AdminRouter() {
   return (
@@ -22,6 +23,7 @@ export function AdminRouter() {
 
       {/* Pages admin */}
       <Route path="overview" element={<Overview />} />
+      <Route path="/users" element={<AdminUsers />}/>
       <Route path="events" element={<AdminEvents />} />
       <Route path="events/:eventId/participants"element={<AdminEventParticipants />} />
       <Route path="conference-program" element={<AdminConferenceProgram />} />

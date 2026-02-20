@@ -55,8 +55,8 @@ export default function App() {
         <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
 
         {/* auth/admin */}
-        <Route path="register" element={<AdminRegister />} />
-        <Route path="login" element={<AdminLogin />} />
+        <Route path="/register" element={<AdminRegister />} />
+        <Route path="/login" element={<AdminLogin />} />
       </Route>
 
       {/* ADMIN */}
