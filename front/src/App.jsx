@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
+import AdminRegister from "./pages/Admin/AdminRegister.jsx";
+import AdminLogin from "./components/login/LoginForm.jsx";
+import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import MainLayout from "./components/Layout/MainLayout.jsx";
 import AdminLayout from "./components/Layout/AdminLayout.jsx";
 
@@ -43,25 +45,17 @@ export default function App() {
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
         <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
-<<<<<<< HEAD
-=======
 
         {/* auth/admin */}
         <Route path="register" element={<AdminRegister />} />
         <Route path="login" element={<AdminLogin />} />
->>>>>>> 57aac94c37703d5afe6ea24eebb89f55c1a4eb01
+
       </Route>
 
       {/* ADMIN  */}
       <Route element={<MainLayout />}>
         <Route element={<AdminLayout />}>
-
           <Route path="/admin/*" element={<AdminRouter />} />
-<<<<<<< HEAD
-
-=======
-          
->>>>>>> 57aac94c37703d5afe6ea24eebb89f55c1a4eb01
         </Route>
       </Route>
 
