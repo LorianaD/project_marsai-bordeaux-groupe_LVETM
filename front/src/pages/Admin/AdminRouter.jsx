@@ -1,10 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-<<<<<<< dashboad_admin_super_admin
-import AdminRegister from "./AdminRegister";
-import AdminLogin from "../../components/login/LoginForm";
-=======
 
->>>>>>> main
 import Overview from "./Overview";
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
 import AdminNewsletters from "./AdminNewsletters";

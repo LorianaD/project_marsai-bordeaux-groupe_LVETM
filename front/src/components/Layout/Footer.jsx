@@ -19,14 +19,13 @@ function Footer() {
   ];
 
   return (
-    <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
+    <footer className="w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white flex-col md:flex-row">
 
-
-      <div className="mx-auto w-full px-[60px] py-[60px]">
+      <div className="mx-auto w-full px-[60px] py-[60px] flex-col md:flex-row">
 
         {/* GRID PRINCIPAL */}
 
-        <div className="grid grid-cols-[340px_1fr_500px] gap-[80px] items-start">
+        <div className="gap-[80px] items-start flex-col md:flex-row">
           {/* LEFT */}
           <div>
             <Link to="/">
@@ -72,7 +71,7 @@ function Footer() {
           </div>
 
           {/* CENTER */}
-          <div className="grid grid-cols-2 gap-x-[100px]">
+          <div className="grid grid-cols-2 gap-x-[100px] flex-col md:flex-row">
             {/* NAVIGATION */}
             <div>
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
@@ -114,7 +113,7 @@ function Footer() {
           </div>
 
           {/* RIGHT - NEWSLETTER */}
-          <div className="justify-self-end">
+          <div className="w-full">
             <Newsletter />
           </div>
         </div>
@@ -123,12 +122,12 @@ function Footer() {
         <div className="mt-[50px] h-px w-full bg-black/20 dark:bg-white/20" />
 
         {/* BOTTOM BAR */}
-        <div className="mt-[30px] flex items-center justify-between opacity-70">
+        <div className="mt-[30px] flex items-center justify-between opacity-70 flex-col md:flex-row">
           <span className="text-[10px] font-bold tracking-[5px] uppercase">
             {t("bottom.copyright")}
           </span>
 
-          <div className="flex items-center gap-[48px]">
+          <div className="flex flex-col items-center gap-[48px]">
             <span className="text-[10px] font-bold tracking-[5px] uppercase">
               {t("designSystem")}
             </span>

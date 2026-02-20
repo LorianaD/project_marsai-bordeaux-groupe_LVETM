@@ -1,9 +1,6 @@
 // src/pages/Admin/Overview.jsx
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 import DashboardUser from "../../components/admin/DashboardUser.jsx";
 import { decodeToken } from "../../utils/decodeToken.js";
 
@@ -88,7 +85,7 @@ function MetricCard({
                 "bg-black/[0.03] ring-black/10 dark:bg-white/5 dark:ring-white/10",
             ].join(" ")}
           >
-            {/* ✅ Ne plus masquer : fallback si l’icône ne charge pas */}
+            {/* Ne plus masquer : fallback si l’icône ne charge pas */}
             <img
               src={iconSrc}
               alt=""

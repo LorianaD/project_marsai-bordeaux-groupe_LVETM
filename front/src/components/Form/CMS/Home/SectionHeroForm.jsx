@@ -223,17 +223,19 @@ function SectionHeroForm({ forcedLocale }) {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch">
-                    <div>
-                        <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                        <img src={ iconPaint } alt="" className="block dark:hidden"/>
+                <div className="flex items-center justify-between gap-[10px] self-stretch">
+                    <div className="flex items-center gap-[10px]">
+                        <div>
+                            <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
+                            <img src={ iconPaint } alt="" className="block dark:hidden"/>
+                        </div>
+                        <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
+                            Gestion de la Section Hero
+                        </h3>                        
                     </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                        Gestion de la Section Hero
-                    </h3>
                     <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
 
@@ -350,7 +352,7 @@ function SectionHeroForm({ forcedLocale }) {
                                 Gestion des boutons
                             </h4>
                         </div>
-                        <div className="flex flex-wrap justify-around items-center gap-[50px] w-full">
+                        <div className="flex flex-wrap justify-around items-center p-[10px] gap-[50px] w-full">
                             {/* Gestion du premier bouton */}
                             <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
                                 <div className="flex justify-between items-center">

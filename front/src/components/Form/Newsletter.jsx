@@ -69,7 +69,7 @@ function Newsletter() {
         <span className="block">{t("title_accent")}</span>
       </h2>
 
-      <div className="flex items-start gap-[10px] self-stretch">
+      <div className="flex flex-col md:flex-row items-start gap-[10px] self-stretch">
         <input
           type="email"
           value={email}
