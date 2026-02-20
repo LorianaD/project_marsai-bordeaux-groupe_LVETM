@@ -21,11 +21,11 @@ function Footer() {
   return (
     <footer className="w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white flex-col md:flex-row">
 
-      <div className="mx-auto w-full px-[60px] py-[60px] flex-col md:flex-row">
+      <div className="mx-auto w-full px-[40px] py-[30px] flex flex-col">
 
         {/* GRID PRINCIPAL */}
 
-        <div className="gap-[80px] items-start flex-col md:flex-row">
+        <div className="flex gap-[80px] items-start flex-col md:flex-row justify-between">
           {/* LEFT */}
           <div>
             <Link to="/">
@@ -71,9 +71,9 @@ function Footer() {
           </div>
 
           {/* CENTER */}
-          <div className="grid grid-cols-2 gap-x-[100px] flex-col md:flex-row">
+          <div className="flex gap-x-[100px] flex-col md:flex-row w-full">
             {/* NAVIGATION */}
-            <div>
+            <div className="w-full">
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
                 {t("sections.navigation")}
               </h3>
@@ -93,7 +93,7 @@ function Footer() {
             </div>
 
             {/* LEGAL */}
-            <div>
+            <div className="w-full">
               <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
                 {t("sections.legal")}
               </h3>
@@ -113,7 +113,7 @@ function Footer() {
           </div>
 
           {/* RIGHT - NEWSLETTER */}
-          <div className="w-full">
+          <div className="max-w-[400px]">
             <Newsletter />
           </div>
         </div>
@@ -122,12 +122,12 @@ function Footer() {
         <div className="mt-[50px] h-px w-full bg-black/20 dark:bg-white/20" />
 
         {/* BOTTOM BAR */}
-        <div className="mt-[30px] flex items-center justify-between opacity-70 flex-col md:flex-row">
-          <span className="text-[10px] font-bold tracking-[5px] uppercase">
+        <div className="mt-[30px] flex items-center justify-between opacity-70 flex-col md:flex-row w-full">
+          <span className="text-[10px] font-bold tracking-[5px] uppercase w-full">
             {t("bottom.copyright")}
           </span>
 
-          <div className="flex flex-col items-center gap-[48px]">
+          <div className="flex flex-col md:flex-row items-center justify-end gap-[48px] w-full">
             <span className="text-[10px] font-bold tracking-[5px] uppercase">
               {t("designSystem")}
             </span>
@@ -140,7 +140,7 @@ function Footer() {
             </Link>
              
                   <Link
-                    to="/admin/login"
+                    to="/login"
                     className="text-[10px] font-bold tracking-[5px] uppercase"
                   >
                     Espace administrateur
