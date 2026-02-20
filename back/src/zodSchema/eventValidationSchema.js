@@ -17,21 +17,28 @@ export const createEventSchema = z.object({
         .or(z.literal(""))
         .optional(),
 
-    date : z
+    date: z
         .string({ message: "Date must be a string" })
         .trim()
         .min(1, "Date is required")
         .refine(value => {
-            const [day, month, year] = value.split("-").map(Number)
-            if (!day || !month || !year) return false
-
-            const dateObject = new Date(year, month - 1, day)
+            const dateObject = new Date(value)
             if (isNaN(dateObject.getTime())) return false
 
             const today = new Date()
             today.setHours(0, 0, 0, 0) // configure l'heure a 0 pour la comparaison
             return dateObject.getTime() >= today.getTime()
-        }, { message: "Date must be today or in the future" }),
+        }, { message: "Date must be today or in the future." }),
+
+    length: z
+        .preprocess(
+            value => Number(value),//transforme string en number
+            z//schéma de validation pour la valeur transformée
+                .number({ message:"Length is required."})
+                .int ({ message: "Length must be an integer."})
+                .nonnegative({ message: "Length cannot be a negative number."})
+        ),
+        
 
     stock: z
         .preprocess(
@@ -39,6 +46,23 @@ export const createEventSchema = z.object({
             z // schéma qui valide la valeur transformée
                 .number({ message: "Stock is required." })
                 .int({ message: "Stock must be an integer." })
-                .nonnegative({ message: "Stock must be 0 or positive." })
-        )
+                .nonnegative({ message: "Stock cannot be a negative number." })
+        ),
+
+    // illustration: z
+
+    location: z
+        .string({ message:"Location must be a string."})
+        .trim()
+        .max(255, "Location must not exceed 255 characters.")
+        .or(z.literal(""))
+        .optional(),
+
+})
+
+export const publishEventSchema = z.object({
+    published: z
+        .boolean({
+            invalid_type_error: "Published must be a boolean",
+            required_error: "Published is required",})
 })
