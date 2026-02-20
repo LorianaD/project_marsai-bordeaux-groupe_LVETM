@@ -13,6 +13,7 @@ import patchVideoFeaturedController from "../controllers/videos/patchVideoFeatur
 import adminLeaderboardController from "../controllers/videos/adminLeaderboard.controller.js";
 
 import upload from "../middlewares/uploadVideoMiddleware.js";
+import verifyRecaptcha from "../middlewares/verifyRecaptcha.js"; 
 
 const router = express.Router();
 
@@ -44,6 +45,7 @@ router.post(
     { name: "stills", maxCount: 10 },
     { name: "subtitles", maxCount: 1 },
   ]),
+  verifyRecaptcha, // AJOUT (après multer car multipart/form-data)
   uploadVideoController,
 );
 

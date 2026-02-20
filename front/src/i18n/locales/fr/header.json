@@ -1,4 +1,7 @@
 {
+
+  "logo": "",
+
   "home": "Accueil",
   "home_link": "/",
 
@@ -12,5 +15,7 @@
   "third_link": "/jury",
 
   "btn": "Participer",
-  "btn_link": "/participate"
+  "btn_link": "/participate",
+
+  "icon_country": ""
 }

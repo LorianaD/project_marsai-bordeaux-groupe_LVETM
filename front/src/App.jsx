@@ -43,6 +43,13 @@ export default function App() {
         <Route path="/partner" element={<PartnersPage />} />
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
         <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+<<<<<<< HEAD
+=======
+
+        {/* auth/admin */}
+        <Route path="register" element={<AdminRegister />} />
+        <Route path="login" element={<AdminLogin />} />
+>>>>>>> 57aac94c37703d5afe6ea24eebb89f55c1a4eb01
       </Route>
 
       {/* ADMIN  */}
@@ -50,8 +57,16 @@ export default function App() {
         <Route element={<AdminLayout />}>
 
           <Route path="/admin/*" element={<AdminRouter />} />
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 57aac94c37703d5afe6ea24eebb89f55c1a4eb01
         </Route>
+      </Route>
+
+      <Route element={<MainLayout />} >
+        <Route path="/selector/videos" element={<AdminVideos />} />
       </Route>
 
       {/* FALLBACK */}

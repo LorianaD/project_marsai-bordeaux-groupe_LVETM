@@ -29,7 +29,7 @@ function SectionHero() {
     return(
         <>
             {isSectionVisible(content, section) && (
-                <section className="relative flex w-full flex-col items-center self-stretch p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
+                <section className="relative flex w-full flex-col items-center self-stretch pt-[100px] p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
 
                     {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
                     {content?.[section]?.media && (
@@ -81,13 +81,12 @@ function SectionHero() {
 
                                 {isVisible(content, section, "tagline_before") && (
                                     <span>
-                                    {content?.[section]?.tagline_before}
+                                        {content?.[section]?.tagline_before}
                                     </span>
                                 )}
 
                                 {isVisible(content, section, "tagline_highlight") && (
-                                    <span className="bg-gradient-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent"
-                                    > {content?.[section]?.tagline_highlight} </span>
+                                    <span className="bg-gradient-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent" > {content?.[section]?.tagline_highlight} </span>
                                 )}
 
                                 {isVisible(content, section, "tagline_after") && (

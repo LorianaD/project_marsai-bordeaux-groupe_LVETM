@@ -25,7 +25,7 @@ function NavMobile({onClose, onToggleLang, OnIsFr}) {
     ];
 
     return(
-        <div className="flex flex-col items-start w-full gap-[20px] p-[10px] rounded-[30px] bg-white dark:bg-black shadow-[0_0_12px_0_rgba(0,0,0,0.25)] text-[#3B82F6] dark:text-[#FFFFFF]">
+        <div className="overscroll-auto flex flex-col items-start w-full h-screen gap-[20px] p-[10px] rounded-[30px] bg-white dark:bg-black shadow-[0_0_12px_0_rgba(0,0,0,0.25)] text-[#3B82F6] dark:text-[#FFFFFF]">
 
             {/* Header */}
             <div className="flex items-center justify-between self-stretch p-[8px] w-full">
