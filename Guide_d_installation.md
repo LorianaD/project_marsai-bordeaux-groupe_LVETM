@@ -5,133 +5,122 @@ Plateforme web dédiée au festival MarsAI, permettant la soumission, la gestion
 👥 Équipe
 
 Projet réalisé par :
-
-Loriana
-
-Vanessa
-
-Edouard
-
-Anthony
-
-Mickael
+    Loriana
+    Vanessa
+    Edouard
+    Anthony
+    Mickael
 
 🏗 Architecture du projet
 
-marsai/
-│
-├── front/        → Application React (Vite)
-├── back/         → API Node.js / Express
-├── db/           → Script SQL d’initialisation
-└── README.md
+    marsai/
+    │
+    ├── front/        → Application React (Vite)
+    ├── back/         → API Node.js / Express
+    ├── db/           → Script SQL d’initialisation
+    └── README.md
 
 ⚙️ Stack technique
 
-Frontend
+    Frontend
 
-React (Vite)
+        React (Vite)
+        React Router
+        Tailwind CSS
+        i18next
 
-React Router
+    Backend
 
-Tailwind CSS
-
-i18next
-
-Backend
-
-Node.js
-
-Express
-
-MySQL
-
-JWT Authentication
+        Node.js
+        Express
+        MySQL
+        JWT Authentication
 
 📥 Installation
 
-1️⃣ Cloner le repository
+    1️⃣ Cloner le repository
 
-git clone git@github.com:LorianaD/project_marsai-bordeaux-groupe_LVETM.git
+        git clone git@github.com:LorianaD/project_marsai-bordeaux-groupe_LVETM.git
 
-cd marsai
+        cd marsai
 
-2️⃣ Installer les dépendances
+    2️⃣ Installer les dépendances
 
-Ouvrir deux terminaux :
+        Ouvrir deux terminaux :
 
-Terminal 1 – Frontend
+            Terminal 1 – Frontend
 
-cd front
-npm install
+                cd front
+                npm install
 
-Terminal 2 – Backend
+            Terminal 2 – Backend
 
-cd back
-npm install
+                cd back
+                npm install
 
-ℹ️ Certaines dépendances peuvent générer des warnings.
-Cela n’empêche pas l’application de fonctionner.
+    ℹ️ Certaines dépendances peuvent générer des warnings.
+    Cela n’empêche pas l’application de fonctionner.
 
 🗄 Base de données
 
-Démarrer votre serveur local (MAMP, Laragon, XAMPP…).
+    Démarrer votre serveur local (MAMP, Laragon, XAMPP…).
 
-Ouvrir phpMyAdmin.
+        Ouvrir phpMyAdmin.
 
-Créer une base de données nommée :
+    Créer une base de données nommée :
 
-projet_marsai
+        projet_marsai
 
-Importer le fichier .sql situé dans le dossier db.
+    Importer le fichier .sql situé dans le dossier db.
 
 🔐 Variables d’environnement
 
-Créer un fichier .env dans le dossier back/.
+    Créer un fichier .env dans le dossier back/.
 
-Vous pouvez vous baser sur le fichier .env.example fourni.
+    Vous pouvez vous baser sur le fichier .env.example.
 
-Exemple .env.example
-# Server
-PORT=5000
+        Exemple .env.example
+        # Server
+        PORT=5000
 
-# Database
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=projet_marsai
-DB_PORT=3306
+        # Database
+        DB_HOST=localhost
+        DB_USER=root
+        DB_PASSWORD=
+        DB_NAME=projet_marsai
+        DB_PORT=3306
 
-# JWT
-JWT_SECRET=your_super_secret_key
-JWT_REFRESH_SECRET=your_refresh_secret_key
+        # JWT
+        JWT_SECRET=your_super_secret_key
+        JWT_REFRESH_SECRET=your_refresh_secret_key
 
-# Front URL (CORS)
-CLIENT_URL=http://localhost:5173
+        # Front URL (CORS)
+        CLIENT_URL=http://localhost:5173
 
-⚠️ Ne jamais commit le fichier .env.
+    ⚠️ Ne jamais commit le fichier .env.
 
 ▶️ Lancer le projet
 
-Dans les deux dossiers (front et back) :
+    Dans les deux dossiers (front et back) :
 
-npm run dev
+        npm run dev
 
-Accéder à l’application :
+    Accéder à l’application :
 
-http://localhost:5173
+        http://localhost:5173
 
-🧪 Environnement de développement
+    🧪 Environnement de développement
 
-Node >= 18 recommandé
+        Node >= 18 recommandé
 
-MySQL 8+
+        MySQL 8+
 
-npm >= 9
+        npm >= 9
 
 📦 Bonnes pratiques
 
-Ne pas modifier directement la base en production.
+    Ne pas modifier directement la base en production.
 
-Ne jamais exposer les variables sensibles.
+    Ne jamais exposer les variables sensibles.
 
-Toujours créer une branche pour les nouvelles fonctionnalités.
+    Toujours créer une branche pour les nouvelles fonctionnalités.
