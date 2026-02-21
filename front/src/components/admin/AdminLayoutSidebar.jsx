@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { ADMIN_NAV } from "./adminNav.js";
 import { useEffect, useState } from "react";
 import { decodeToken } from "../../utils/decodeToken.js";
+import logout from "../../utils/logout.js";
+
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 /**
@@ -127,8 +130,8 @@ export default function AdminLayoutSidebar({ active }) {
         <button
           type="button"
           onClick={() => {
-            localStorage.removeItem("token");
-            navigate("/admin/login");
+            logout();
+            navigate("/login", { replace: true });
           }}
           className="mt-3 w-full rounded-xl bg-black/10 px-3 py-2 text-sm text-black/80 hover:bg-black/15 dark:bg-white/10 dark:text-white/80 dark:hover:bg-white/15"
         >
