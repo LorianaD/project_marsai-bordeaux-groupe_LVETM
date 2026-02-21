@@ -71,7 +71,7 @@ function Footer() {
           </div>
 
           {/* CENTER */}
-          <div className="flex gap-x-[100px] flex-col md:flex-row w-full">
+          <div className="flex gap-x-[100px] flex-col md:flex-row">
             {/* NAVIGATION */}
             <div className="w-full">
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
