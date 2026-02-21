@@ -5,11 +5,11 @@ Plateforme web dédiée au festival MarsAI, permettant la soumission, la gestion
 👥 Équipe
 
 Projet réalisé par :
-    Loriana
-    Vanessa
-    Edouard
-    Anthony
-    Mickael
+    Loriana,
+    Vanessa,
+    Edouard,
+    Anthony,
+    Mickael.
 
 🏗 Architecture du projet
 
