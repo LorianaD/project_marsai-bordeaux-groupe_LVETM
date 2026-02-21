@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./components/Layout/MainLayout.jsx";
-import AdminLayout from "./components/Layout/AdminLayout.jsx";
 
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
@@ -31,8 +30,11 @@ import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 export default function App() {
   return (
     <Routes>
-      {/* ROUTES PUBLIQUES */}
+
       <Route element={<MainLayout />}>
+
+        {/* ROUTES PUBLIQUES */}
+
         <Route path="/" element={<Home />} />
 
         {/* Galerie */}
@@ -51,27 +53,37 @@ export default function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
+
+        {/* Newsletter */}
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
         <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
+
+
 
         {/* auth/admin */}
         <Route path="/register" element={<AdminRegister />} />
         <Route path="/login" element={<AdminLogin />} />
-      </Route>
 
-      {/* ADMIN */}
-      <Route element={<MainLayout />}>
-        <Route element={<AdminLayout />}>
+
+
+        {/* Routes avec obligation de connexion */}
+        <Route element="">
+
+          {/* ADMIN */}
           <Route path="/admin/*" element={<AdminRouter />} />
+
+          {/* SELECTOR */}
+          <Route path="/selector/videos" element={<AdminVideos />} />
+
         </Route>
+
       </Route>
 
-      <Route element={<MainLayout />} >
-        <Route path="/selector/videos" element={<AdminVideos />} />
-      </Route>
+
 
       {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
+
     </Routes>
   );
 }

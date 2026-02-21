@@ -3,14 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
 import { inputLightClasses } from "../../utils/formInputClasses.js";
 
-// function safeDecodeRole(token) {
-//   try {
-//     const payload = JSON.parse(atob(token.split(".")[1]));
-//     return payload?.role || null;
-//   } catch {
-//     return null;
-//   }
-// }
+function safeDecodeRole(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload?.role || null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
