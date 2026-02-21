@@ -1,14 +1,14 @@
-import CmsInput from "../Fields/CmsInput"
+import CmsInput from "../Fields/CmsInput.jsx"
 import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
-import { useForm } from "../../../../hooks/useForm";
+import { useForm } from "../../../../hooks/useForm.js";
 import { useEffect, useState } from "react";
-import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
-import CmsTextarea from "../Fields/CmsTextarea";
-import CmsHideToggle from "../Fields/CmsHideToggle";
-import CmsInputColor from "../Fields/CmsImputColor";
-import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
+import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
+import CmsTextarea from "../Fields/CmsTextarea.jsx";
+import CmsHideToggle from "../Fields/CmsHideToggle.jsx";
+import CmsInputColor from "../Fields/CmsImputColor.jsx";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
 import useCmsContent from "../../../../hooks/useCmsContent.js";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms.js";
 
