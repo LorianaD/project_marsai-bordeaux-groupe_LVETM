@@ -6,12 +6,12 @@ import frenchFlag from "../../assets/imgs/icones/franceFlag.png";
 
 import mobileNavIcon from "../../assets/imgs/icones/mobile-nav.svg";
 
-import NavMobile from "./NavMobile";
+import NavMobile from "./NavMobile.jsx";
 import { useState } from "react";
 
-import { resolveCmsAsset } from "../../utils/cmsAssets";
-import useCmsContent from "../../hooks/useCmsContent";
-import { isVisible } from "../../utils/isVisible";
+import { resolveCmsAsset } from "../../utils/cmsAssets.js";
+import useCmsContent from "../../hooks/useCmsContent.js";
+import { isVisible } from "../../utils/isVisible.js";
 
 function Header() {
     // console.log("function header ok");
