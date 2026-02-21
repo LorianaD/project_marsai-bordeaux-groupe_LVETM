@@ -2,7 +2,6 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:8889
 -- Généré le : ven. 20 fév. 2026 à 16:34
 -- Version du serveur : 8.0.40
 -- Version de PHP : 8.3.14
