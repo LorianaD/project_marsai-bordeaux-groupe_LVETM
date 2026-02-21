@@ -42,7 +42,7 @@ Projet réalisé par :
 
         git clone git@github.com:LorianaD/project_marsai-bordeaux-groupe_LVETM.git
 
-        cd marsai
+        cd project_marsai-bordeaux-groupe_LVETM.git
 
     2️⃣ Installer les dépendances
 
