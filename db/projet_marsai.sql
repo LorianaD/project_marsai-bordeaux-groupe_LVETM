@@ -2,7 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Généré le : ven. 20 fév. 2026 à 16:34
+-- Hôte : localhost:8889
+-- Généré le : dim. 22 fév. 2026 à 13:50
 -- Version du serveur : 8.0.40
 -- Version de PHP : 8.3.14
 
@@ -406,21 +407,29 @@ CREATE TABLE `conference_program` (
   `color` varchar(50) DEFAULT NULL COMMENT 'Classe couleur front (ex. bg-sky-400)',
   `sort_order` int NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `day` enum('Friday','Saturday') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `conference_program`
 --
 
-INSERT INTO `conference_program` (`id`, `time`, `title`, `speaker`, `color`, `sort_order`, `created_at`, `updated_at`) VALUES
-(1, '09:30', 'Accueil & Café Networking', NULL, 'bg-emerald-400', 1, '2026-02-16 15:26:30', '2026-02-16 15:26:30'),
-(2, '10:30', 'Conférence d\'ouverture : L\'IA au service du Cinéma', 'Par : Jean-Luc Godart', 'bg-sky-400', 2, '2026-02-16 15:26:30', '2026-02-16 15:26:30'),
-(3, '13:00', 'Déjeuner Libre', NULL, 'bg-emerald-400', 3, '2026-02-16 15:26:30', '2026-02-16 15:26:30'),
-(4, '14:30', 'Projection Débat/IA Difficile', 'Par : Wim Wenders, Paul Verhoeven', 'bg-sky-400', 4, '2026-02-16 15:26:30', '2026-02-16 15:26:30'),
-(5, '16:30', 'Table Ronde : Futurs Distopiales', NULL, 'bg-emerald-400', 5, '2026-02-16 15:26:30', '2026-02-16 15:26:30'),
-(6, '20:30', 'Grand Prix IA Créative de l\'EDI', NULL, 'bg-sky-400', 6, '2026-02-16 15:26:30', '2026-02-16 15:26:30'),
-(7, '21:30', 'Soirée DJ & VJ : DJ Samantha', NULL, 'bg-emerald-400', 7, '2026-02-16 15:26:30', '2026-02-16 15:26:30');
+INSERT INTO `conference_program` (`id`, `time`, `title`, `speaker`, `color`, `sort_order`, `created_at`, `updated_at`, `day`) VALUES
+(1, '09:30', 'Accueil & Café Networking', NULL, 'bg-sky-400', 1, '2026-02-16 15:26:30', '2026-02-22 14:47:09', 'Friday'),
+(2, '10:30', 'Conférence d\'ouverture : L\'IA au service du Cinéma', 'Par : Jean-Luc Godart', 'bg-sky-400', 2, '2026-02-16 15:26:30', '2026-02-16 15:26:30', 'Friday'),
+(3, '13:00', 'Déjeuner Libre', NULL, 'bg-sky-400', 3, '2026-02-16 15:26:30', '2026-02-22 14:47:09', 'Friday'),
+(4, '14:30', 'Projection Débat/IA Difficile', 'Par : Wim Wenders, Paul Verhoeven', 'bg-sky-400', 4, '2026-02-16 15:26:30', '2026-02-16 15:26:30', 'Friday'),
+(5, '16:30', 'Table Ronde : Futurs Distopiales', NULL, 'bg-sky-400', 5, '2026-02-16 15:26:30', '2026-02-22 14:47:09', 'Friday'),
+(6, '20:30', 'Grand Prix IA Créative de l\'EDI', NULL, 'bg-sky-400', 6, '2026-02-16 15:26:30', '2026-02-22 14:45:19', 'Friday'),
+(7, '21:30', 'Soirée DJ & VJ : DJ Samantha', NULL, 'bg-sky-400', 7, '2026-02-16 15:26:30', '2026-02-22 14:47:09', 'Friday'),
+(8, '10:00', 'Table Ronde : Créateurs & IA', NULL, 'bg-purple-400', 8, '2026-02-22 14:41:37', '2026-02-22 14:41:37', 'Saturday'),
+(9, '12:00', 'Fireside Chat (Membres du Jury)', NULL, 'bg-purple-400', 9, '2026-02-22 14:41:37', '2026-02-22 14:41:37', 'Saturday'),
+(10, '13:00', 'Pause', NULL, 'bg-purple-400', 10, '2026-02-22 14:41:37', '2026-02-22 14:48:09', 'Saturday'),
+(11, '14:00', 'Présentation des Projets Sélectionnés', NULL, 'bg-purple-400', 11, '2026-02-22 14:41:37', '2026-02-22 14:41:37', 'Saturday'),
+(12, '16:00', 'Keynote Partenaire', NULL, 'bg-purple-400', 12, '2026-02-22 14:41:37', '2026-02-22 14:41:37', 'Saturday'),
+(13, '18:00', 'Remise des Prix', NULL, 'bg-purple-400', 13, '2026-02-22 14:41:37', '2026-02-22 14:41:37', 'Saturday'),
+(14, '19:00', 'Soirée de Clôture', NULL, 'bg-purple-400', 14, '2026-02-22 14:41:37', '2026-02-22 14:41:37', 'Saturday');
 
 -- --------------------------------------------------------
 
@@ -482,12 +491,20 @@ CREATE TABLE `events` (
   `date` datetime NOT NULL,
   `length` int NOT NULL,
   `stock` int DEFAULT NULL,
-  `illustration` varchar(255) NOT NULL,
+  `illustration` varchar(255) NOT NULL DEFAULT 'default.jpg',
   `location` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT (now()),
   `updated_at` datetime NOT NULL DEFAULT (now()) COMMENT 'auto-update on row change',
   `published` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `events`
+--
+
+INSERT INTO `events` (`id`, `title`, `description`, `date`, `length`, `stock`, `illustration`, `location`, `created_at`, `updated_at`, `published`) VALUES
+(1, 'Accueil & Café Networking', 'Accueil des participants, café et échanges informels.', '2026-03-27 09:30:00', 60, 999, 'default.jpg', 'La Plateforme', '2026-02-22 14:27:02', '2026-02-22 14:27:02', 1),
+(2, 'Conférence d’ouverture : L’IA au service du Cinéma', 'Keynote d’ouverture autour des usages de l’IA dans le cinéma.', '2026-03-27 10:30:00', 90, 300, 'default.jpg', 'Auditorium', '2026-02-22 14:27:02', '2026-02-22 14:27:02', 1);
 
 -- --------------------------------------------------------
 
@@ -1101,7 +1118,7 @@ ALTER TABLE `video_subtitles`
 -- AUTO_INCREMENT pour la table `admin_video`
 --
 ALTER TABLE `admin_video`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `assignment`
@@ -1131,7 +1148,7 @@ ALTER TABLE `cms`
 -- AUTO_INCREMENT pour la table `conference_program`
 --
 ALTER TABLE `conference_program`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `contact_messages`
@@ -1149,7 +1166,7 @@ ALTER TABLE `contributor`
 -- AUTO_INCREMENT pour la table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `faq`

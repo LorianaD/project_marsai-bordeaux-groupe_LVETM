@@ -252,5 +252,3 @@ VITE_API_URL=http://localhost:3000
 * [ ] Aucune clé Scaleway dans `front/.env`
 * [ ] `SCALEWAY_FOLDER` correspond à votre groupe
 * [ ] La route `POST /api/upload` répond bien avec `{ url, key }`
-
-```
