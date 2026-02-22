@@ -72,7 +72,7 @@ function LoginForm() {
         if (role === "selector") {
           navigate("/selector/videos", { replace: true });
         } else {
-          navigate("/admin/overview", { replace: true });
+          navigate("/admin/", { replace: true });
         }
 
       }, 1200);

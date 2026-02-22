@@ -29,6 +29,7 @@ import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
 
 // Import formulaire CMS LegalPage
 import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
+import FooterForm from "../../Form/CMS/Layout/FooterForm.jsx";
 
 
 function CmsCentralization() {
@@ -38,6 +39,7 @@ function CmsCentralization() {
             label: "Layout",
             sections: [
                 { id: "header", label: "En-tête du site", component: HeaderForm },
+                { id: "footer", label: "Pied du site", component: FooterForm }
             ]
         },
         {
@@ -88,7 +90,6 @@ function CmsCentralization() {
             label: "Contact",
             sections: [
                 { id: "hero", label: "Hero", component: ContactSectionHeroForm },
-
             ],
         },
         {
