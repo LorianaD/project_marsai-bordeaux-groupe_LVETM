@@ -9,6 +9,7 @@ import x from "../../assets/imgs/icones/x.png";
 import Newsletter from "../Form/Newsletter";
 
 import {decodeToken} from "../../utils/decodeToken.js";
+import AdminEntryButton from "./AdminEntryButton.jsx";
 
 function Footer() {
   const { t } = useTranslation("footer");
@@ -21,7 +22,7 @@ function Footer() {
   ];
 
   const user = decodeToken();
-  const isLoggedIn = !!user;
+  const isLoggedIn = user && user.exp * 1000 > Date.now();
 
   return (
     <footer className="w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#FFFFFF]/60 dark:bg-black dark:text-white flex-col md:flex-row">
@@ -137,19 +138,11 @@ function Footer() {
               {t("designSystem")}
             </span>
 
-            <Link
-              to="/legal"
-              className="text-[10px] font-bold tracking-[5px] uppercase"
-            >
+            <Link to="/legal"  className="text-[10px] font-bold tracking-[5px] uppercase" >
               {t("links.legal")}
             </Link>
              
-            <Link
-              to={isLoggedIn ? "/admin" : "/login"}
-              className="text-[10px] font-bold tracking-[5px] uppercase"
-            >
-              Espace administrateur
-            </Link>
+            <AdminEntryButton/>
                 
           </div>
         </div>
