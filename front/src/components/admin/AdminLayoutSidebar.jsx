@@ -26,10 +26,10 @@ export default function AdminLayoutSidebar({ active }) {
   }, []);
 
   return (
-    <aside className="hidden w-[270px] flex shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#F6339A]/60 dark:bg-white/5 md:flex h-full gap-[100px] justify-between">
+    <aside className="hidden w-[270px] flex shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#FFFFFF]/10 dark:bg-white/5 md:flex h-full gap-[100px] justify-between">
       <div>
         {/* Profil */}
-        <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#F6339A]/60 dark:bg-black/30">
+        <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#FFFFFF]/20 dark:bg-black/30">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#F6339A]/15 text-lg">
             👤
           </div>
@@ -112,7 +112,7 @@ export default function AdminLayoutSidebar({ active }) {
 
       </div>
       {/* Bloc Mars AI */}
-      <div className="mt-4 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#F6339A]/60 dark:bg-black/30">
+      <div className="mt-4 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#FFFFFF]/20 dark:bg-black/30">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold text-black dark:text-white">
