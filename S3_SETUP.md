@@ -1,51 +1,50 @@
-# 📦 Configuration du stockage S3 (Scaleway)
+# 📦 Configuration du stockage S3 (Scaleway) — MarsAI
 
-Ce guide explique comment configurer et utiliser le stockage S3 (Scaleway) dans notre projet.
+Ce guide explique comment configurer et utiliser Scaleway S3 dans **notre backend Express**.
 
-L’architecture utilisée est :
+## ✅ Architecture du projet (MarsAI)
+
+- `src/server.js` : démarre le serveur (listen), lance la cron, test DB
+- `src/app.js` : configure Express (CORS, middlewares) + branche `/api`
+- `src/routes/index.js` : centralise les routes (`router.use(...)`)
+
+Le flux d’upload est :
 
 ```
+
 Front (React)
-      ↓
-Backend (Node / Express)
-      ↓
+↓ (POST file)
+Backend (Node/Express)
+↓ (PutObject)
 Scaleway S3
-```
 
-⚠️ Les clés d’accès ne doivent **jamais** être exposées côté front.
+````
+
+⚠️ Les clés Scaleway ne doivent **jamais** être mises dans le front.
 
 ---
 
-# 1️⃣ Préparation
+## 1️⃣ Installer les dépendances (BACK)
 
-## 📌 1.1 Installer les dépendances (dans le dossier `/back`)
+Dans le dossier `/back` :
 
 ```bash
 npm install @aws-sdk/client-s3 multer
-```
+````
 
-* `@aws-sdk/client-s3` → communication avec Scaleway (compatible S3)
-* `multer` → gestion des fichiers envoyés par le front
+* `@aws-sdk/client-s3` : client S3 (compatible Scaleway)
+* `multer` : réception des fichiers envoyés par le front
 
 ---
 
-# 2️⃣ Configuration des variables d’environnement
+## 2️⃣ Variables d’environnement (BACK)
 
-## 📌 2.1 Fichier `back/.env`
-
-Créer (ou compléter) le fichier :
-
-```
-/back/.env
-```
-
-Ajouter :
+Dans `back/.env` :
 
 ```env
 ########################################
 # Scaleway S3 Storage
 ########################################
-
 SCALEWAY_ACCESS_KEY=...
 SCALEWAY_SECRET_KEY=...
 SCALEWAY_ENDPOINT=https://s3.fr-par.scw.cloud
@@ -56,31 +55,28 @@ SCALEWAY_FOLDER=grpX
 
 ### 🔹 Important
 
-* Remplacer `grpX` par le nom de votre groupe (ex : grp4)
-* Ne pas modifier les clés
-* Ne jamais mettre ces variables dans le front
+* Remplacer `grpX` par le nom de votre groupe (ex: `grp4`)
+* Ne jamais mettre ces clés dans le front (`VITE_...` interdit ici)
 
 ---
 
-## 📌 2.2 Vérifier le `.gitignore`
+## 3️⃣ Vérifier le .gitignore
 
-Dans `/back/.gitignore` (ou global) :
+Le `.env` ne doit pas être push.
 
-```
+Dans `/back/.gitignore` (ou `.gitignore` global) :
+
+```gitignore
 .env
 ```
 
-Le fichier `.env` ne doit jamais être versionné.
-
 ---
 
-# 3️⃣ Création du client S3
+## 4️⃣ Créer le client S3 (BACK)
 
-Créer :
+Créer le fichier :
 
-```
-back/src/config/s3.js
-```
+`back/src/config/s3.js`
 
 ```js
 import { S3Client } from "@aws-sdk/client-s3";
@@ -99,48 +95,51 @@ export default s3;
 
 ---
 
-# 4️⃣ Route d’upload
+## 5️⃣ Créer la route d’upload S3 (BACK)
 
-Créer :
+Créer le fichier :
 
-```
-back/src/routes/upload.js
-```
+`back/src/routes/uploadS3.routes.js`
 
 ```js
-import express from "express";
+import { Router } from "express";
 import multer from "multer";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import s3 from "../config/s3.js";
 
-const router = express.Router();
+const router = Router();
 
-const upload = multer({
-  storage: multer.memoryStorage(),
-});
+// Upload en mémoire (buffer)
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post("/", upload.single("file"), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Aucun fichier reçu" });
+    }
+
     const file = req.file;
 
-    const key = `${process.env.SCALEWAY_FOLDER}/${Date.now()}-${file.originalname}`;
+    // Exemple: grp4/1700000000000-image.jpg
+    const safeName = file.originalname.replace(/\s+/g, "-");
+    const key = `${process.env.SCALEWAY_FOLDER}/${Date.now()}-${safeName}`;
 
     const command = new PutObjectCommand({
       Bucket: process.env.SCALEWAY_BUCKET_NAME,
       Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: "public-read",
+      ACL: "public-read", // bucket en lecture publique selon la doc école
     });
 
     await s3.send(command);
 
-    const fileUrl = `${process.env.SCALEWAY_ENDPOINT}/${process.env.SCALEWAY_BUCKET_NAME}/${key}`;
+    const url = `${process.env.SCALEWAY_ENDPOINT}/${process.env.SCALEWAY_BUCKET_NAME}/${key}`;
 
-    res.json({ url: fileUrl });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Upload failed" });
+    return res.json({ url, key });
+  } catch (err) {
+    console.error("S3 upload error:", err);
+    return res.status(500).json({ message: "Upload S3 échoué" });
   }
 });
 
@@ -149,81 +148,109 @@ export default router;
 
 ---
 
-# 5️⃣ Ajouter la route au serveur
+## 6️⃣ Brancher la route dans `src/routes/index.js`
 
-Dans `server.js` :
+⚠️ Chez nous, **on ne touche pas à `server.js`**.
+
+Dans :
+
+`back/src/routes/index.js`
+
+### 6.1 Importer la route
 
 ```js
-import uploadRoute from "./routes/upload.js";
+import uploadS3Routes from "./uploadS3.routes.js";
+```
 
-app.use("/api/upload", uploadRoute);
+### 6.2 Ajouter le `router.use`
+
+Par exemple :
+
+```js
+router.use("/upload", uploadS3Routes);
+```
+
+✅ Résultat : l’endpoint final devient :
+
+```
+POST /api/upload
+```
+
+Car `src/app.js` contient déjà :
+
+```js
+app.use("/api", router);
 ```
 
 ---
 
-# 6️⃣ Utilisation côté Front
+## 7️⃣ Tester l’upload (Postman / Insomnia)
 
-Dans le front :
+### Requête
+
+* Méthode : `POST`
+* URL : `http://localhost:PORT/api/upload`
+* Body : `form-data`
+
+  * clé : `file`
+  * valeur : (choisir un fichier)
+
+### Réponse attendue
+
+```json
+{
+  "url": "https://s3.fr-par.scw.cloud/brdx/grp4/1700000000000-image.jpg",
+  "key": "grp4/1700000000000-image.jpg"
+}
+```
+
+---
+
+## 8️⃣ Côté Front (React)
+
+Dans le front, on envoie le fichier au backend :
 
 ```js
-const handleUpload = async (file) => {
+const uploadToS3 = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/upload`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
+    method: "POST",
+    body: formData,
+  });
 
-  const data = await response.json();
-  return data.url;
+  if (!res.ok) throw new Error("Upload failed");
+
+  const data = await res.json();
+  return data.url; // à stocker en DB
 };
 ```
 
-## 📌 Front `.env`
+Dans `front/.env` :
 
-```
+```env
 VITE_API_URL=http://localhost:3000
 ```
 
-⚠️ Ne jamais mettre les clés S3 dans le front.
+---
+
+## 🧠 Notes importantes
+
+* Les clés Scaleway restent uniquement dans `back/.env`
+* Ne jamais mettre `SCALEWAY_SECRET_KEY` dans le front (pas de `VITE_...`)
+* `SCALEWAY_FOLDER` doit être unique par groupe (sinon fichiers mélangés)
+* Actuellement `app.js` expose `/uploads` en statique (local).
+  Avec S3, on stockera plutôt l’URL S3 en base.
 
 ---
 
-# 7️⃣ Résultat attendu
-
-Lorsqu’un fichier est uploadé :
-
-1. Le front envoie le fichier au backend
-2. Le backend l’envoie à Scaleway
-3. Scaleway retourne une URL publique
-4. Cette URL peut être enregistrée en base de données
-
-Exemple d’URL générée :
-
-```
-https://s3.fr-par.scw.cloud/brdx/grp4/1700000000000-image.jpg
-```
-
----
-
-# 8️⃣ Bonnes pratiques
-
-* Vérifier le type MIME (image/jpeg, video/mp4…)
-* Limiter la taille des fichiers
-* Sécuriser la route (auth admin si nécessaire)
-* Ne jamais exposer `SCALEWAY_SECRET_KEY`
-* Toujours utiliser `SCALEWAY_FOLDER` propre au groupe
-
----
-
-# ✅ Checklist finale
+## ✅ Checklist finale
 
 * [ ] Les variables S3 sont dans `back/.env`
 * [ ] Le `.env` est ignoré par git
-* [ ] Aucun `VITE_SCALEWAY_SECRET_KEY` dans le front
+* [ ] Aucune clé Scaleway dans `front/.env`
 * [ ] `SCALEWAY_FOLDER` correspond à votre groupe
-* [ ] Le serveur redémarre sans erreur
+* [ ] La route `POST /api/upload` répond bien avec `{ url, key }`
+
+```
