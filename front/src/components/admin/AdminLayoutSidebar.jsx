@@ -7,25 +7,37 @@ import logout from "../../utils/logout.js";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-/**
- * Sidebar admin commune (Overview, Gestion films, Événements, etc.).
- * Utilisée avec le même design : profil, nav, spacer invisible, bloc Mars AI.
- *
- * Icônes:
- * - "Vue d'ensemble" garde l'icône inline (comme avant)
- * - Les autres utilisent les SVG dans back/uploads/adminsidebar via <img>
- * - Light: noir (icône normale)
- * - Dark: blanc via dark:invert
- */
 export default function AdminLayoutSidebar({ active }) {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
 
+  /*=======================================================
+    Décodage du token pour récupérer l'utilisateur courant
+  =======================================================*/
   useEffect(() => {
     setCurrentUser(decodeToken());
   }, []);
 
   return (
+<<<<<<< HEAD
+    <aside className="hidden w-[270px] shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#F6339A]/60 dark:bg-white/5 md:flex">
+      {/*======================================================================
+         Profil : affiche avatar nom prénom et email de l'utilisateur connecté
+      =======================================================================*/}
+      <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#F6339A]/60 dark:bg-black/30">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#F6339A]/15 text-lg">
+          👤
+        </div>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold text-black dark:text-white">
+            {currentUser
+              ? `${currentUser.name || ""} ${currentUser.last_name || ""}`
+              : "..."}
+          </p>
+          <p className="truncate text-xs text-black/60 dark:text-white/60">
+            {currentUser?.email || ""}
+          </p>
+=======
     <aside className="hidden w-[270px] flex shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#FFFFFF]/10 dark:bg-white/5 md:flex h-full gap-[100px] justify-between">
       <div>
         {/* Profil */}
@@ -43,6 +55,7 @@ export default function AdminLayoutSidebar({ active }) {
               {currentUser?.email || ""}
             </p>
           </div>
+>>>>>>> main
         </div>
 
         {/* Menu */}

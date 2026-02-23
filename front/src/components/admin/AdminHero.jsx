@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-export default function AdminHero() {
 
+/*=====================================================================================================================
+  Hero du dashboard admin affichant un message de bienvenue pour l'utilisateur connecté avec fond et bouton d'action
+======================================================================================================================*/
+export default function AdminHero() {
   const { t } = useTranslation("adminHero");
   const [currentUser, setCurrentUser] = useState(null);
-
 
   useEffect(() => {
     setCurrentUser(decodeToken());

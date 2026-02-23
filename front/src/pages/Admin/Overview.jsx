@@ -82,7 +82,7 @@ function MetricCard({
             className={[
               "grid h-10 w-10 place-items-center rounded-2xl ring-1",
               iconBgClass ||
-                "bg-black/[0.03] ring-black/10 dark:bg-white/5 dark:ring-white/10",
+              "bg-black/[0.03] ring-black/10 dark:bg-white/5 dark:ring-white/10",
             ].join(" ")}
           >
             {/* Ne plus masquer : fallback si l’icône ne charge pas */}
@@ -200,12 +200,19 @@ export default function Overview() {
   const [currentUser, setCurrentUser] = useState(null)
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const user = decodeToken();
+    /*===================================================
+      Sécu: si pas de token redirection vers admin/login
+    ===================================================*/
     if (!user) {
       navigate("/admin/login");
       return;
     }
+    /*=============================================================================
+      Blocage selectors : pas accès à la Vue d'ensemble, déconnexion + redirection
+    =============================================================================*/
     if (user.role === "selector") {
       alert("Vous n'avez pas l'autorisation d'acceder a cette page.");
       localStorage.removeItem("token");
@@ -318,15 +325,15 @@ export default function Overview() {
 
 
 
-          {/* gestion des roles users */}
-          {currentUser?.role === "superadmin" && (
-            <section
-              className="mt-6 overflow-hidden rounded-[22px] border border-black/10 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.06)]
+            {/* gestion des roles users */}
+            {currentUser?.role === "superadmin" && (
+              <section
+                className="mt-6 overflow-hidden rounded-[22px] border border-black/10 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.06)]
                   dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl
                   dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
-              <DashboardUser />
-            </section>
-          )}
+                <DashboardUser />
+              </section>
+            )}
 
             {/* KPI row */}
             <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">

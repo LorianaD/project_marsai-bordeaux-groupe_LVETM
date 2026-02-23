@@ -4,7 +4,9 @@ import { decodeToken } from "../../utils/decodeToken.js";
 
 const ROLE_OPTIONS = ["Filtrer par rôle", "admin", "selector", "superadmin"];
 
-// Traduction des rôles pour l'affichage
+/*======================================
+   Libellés des rôles pour l'affichage
+======================================*/
 const ROLE_LABELS = {
   "Filtrer par rôle": "Filtrer par rôle",
   admin: "Administrateur",
@@ -21,7 +23,9 @@ function DashboardUser() {
   const [busyId, setBusyId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Charge la liste des users depuis le backend
+  /*============================================ 
+    Charge la liste des users depuis le backend
+  =============================================*/
   async function refresh() {
     try {
       setLoading(true);
@@ -35,7 +39,9 @@ function DashboardUser() {
     }
   }
 
-  // Filtre les users en temps réel selon la recherche et le filtre de rôle
+  /*=====================================================================================
+    Filtre les utilisateurs selon le rôle sélectionné et place le superadmins en premier
+  ====================================================================================*/
   const filtered = useMemo(() => {
     const superadmins = users.filter((user) => user.role === "superadmin");
     const others = users.filter((user) => {
@@ -53,7 +59,9 @@ function DashboardUser() {
     setCurrentUser(decodeToken());
   }, []);
 
-  // Change le rôle d'un utilisateur (fonction superAdmin uniquement)
+  /*==================================
+    Modifie le rôle d'un utilisateur
+  ===================================*/
   async function onChangeRole(userId, newRole) {
     setBusyId(userId);
 
@@ -77,7 +85,9 @@ function DashboardUser() {
     }
   }
 
-  // Delete un user
+  /*=================
+     Delete un user
+  =================*/
   async function onDeleteUser(userId) {
     if (!window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
       return;
@@ -101,7 +111,7 @@ function DashboardUser() {
 
   return (
     <>
-            {error && (
+      {error && (
         <div className="mb-3 rounded-2xl bg-[#FF3D6E]/15 px-5 py-3 text-sm font-semibold text-[#FF3D6E] ring-1 ring-[#FF3D6E]/25">
           {error}
         </div>
@@ -112,9 +122,9 @@ function DashboardUser() {
         </div>
       )}
 
-            <div className="flex flex-col gap-3 pt-2 pb-4 md:flex-row md:items-center md:justify-between md:gap-4">
+      <div className="flex flex-col gap-3 pt-2 pb-4 md:flex-row md:items-center md:justify-between md:gap-4">
         <div className="flex items-center gap-3">
-<span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE9F4] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">            👥
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE9F4] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">            👥
           </span>
           <div className="text-sm font-semibold">Gestion des utilisateurs</div>
         </div>
@@ -138,7 +148,7 @@ function DashboardUser() {
         </div>
       </div>
 
-            <div>
+      <div>
         {loading && (
           <div className="py-8 text-sm text-black/55 dark:text-white/55">
             Chargement...
@@ -149,7 +159,7 @@ function DashboardUser() {
             Aucun utilisateur trouvé.
           </div>
         )}
-                {!loading && filtered.length > 0 && (
+        {!loading && filtered.length > 0 && (
           <>
             {/* Header */}
             <div

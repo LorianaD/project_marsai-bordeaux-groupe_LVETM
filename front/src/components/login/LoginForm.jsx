@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
 import { inputLightClasses } from "../../utils/formInputClasses.js";
 
+/*========================================================================
+  Formulaire de connexion avec gestion du JWT et redirection selon le rôle
+ =======================================================================*/
 function safeDecodeRole(token) {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
@@ -51,12 +54,12 @@ function LoginForm() {
 
     setLoading(true);
 
-    try {
+        try {
       const result = await loginUser(email, password);
 
       if (!result?.token) {
         throw new Error("Token manquant dans la réponse.");
-      }      
+      }
 
       localStorage.setItem("token", result.token);
 
@@ -65,18 +68,18 @@ function LoginForm() {
       setSuccess(true);
 
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
       timeoutRef.current = setTimeout(() => {
+        if (!isMountedRef.current) return;
         const role = safeDecodeRole(result.token);
-
+        /*==========================================================================================================================
+          Redirection selon le rôle utilisateur (contenu dans le JWT) selector /selector/videos | admin/superadmin /admin/overview
+         ==========================================================================================================================*/
         if (role === "selector") {
           navigate("/selector/videos", { replace: true });
         } else {
-          navigate("/admin/", { replace: true });
+          navigate("/admin/overview", { replace: true });
         }
-
       }, 1200);
-
     } catch (err) {
       if (!isMountedRef.current) return;
       setError(err?.message || "Échec de la connexion.");
