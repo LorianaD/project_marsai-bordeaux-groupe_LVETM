@@ -1,11 +1,6 @@
-import { useEffect } from "react";
 import ContactForm from "../components/Form/Contact/ContactForm.jsx";
 
 export default function Contact() {
-  useEffect(() => {
-    console.log("Page Contact montée ✅");
-  }, []);
-
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto w-full max-w-6xl px-6">

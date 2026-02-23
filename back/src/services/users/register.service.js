@@ -1,11 +1,12 @@
 import bcrypt from "bcrypt";
 import { pool } from "../../db/index.js";
 
+/*============================================
+  Service pour enregistrer un utilisateur
+============================================*/
 export async function register(data, role) {
-  // Récupération des données
   const { email, password, firstname, lastname } = data;
 
-  // validation des champs
   if (!email || !password || !firstname || !lastname) {
     const error = new Error(
       "email, password, firstname and lastname are required.",
@@ -16,10 +17,14 @@ export async function register(data, role) {
 
   console.log("tout est passé", email, password, firstname, lastname);
 
-  // Hash du mot de passe
+  /*========================
+     Hash du mot de passe
+  =======================*/
   const passwordHash = await bcrypt.hash(password, 10);
 
-  // Préparation et exécution de la requête SQL
+  /*============================================
+    Préparation et exécution de la requête SQL
+  ============================================*/
   const query = `INSERT INTO users (email, password_hash, role, name, last_name) VALUES (?, ?, ?, ?, ?)`;
 
   const [result] = await pool.execute(query, [
@@ -29,9 +34,11 @@ export async function register(data, role) {
     firstname,
     lastname,
   ]);
-  
 
-  // Retour de l’utilisateur créé
+
+  /*===============================
+     Retour de l’utilisateur créé
+  ================================*/
   return {
     id: result.insertId,
     email,

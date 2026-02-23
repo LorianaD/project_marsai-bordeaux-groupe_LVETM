@@ -1,6 +1,8 @@
 import { register } from "../../services/users/register.service.js";
 
-//registration user avec role fixed directement dans les routes
+/*============================================
+  Controller pour enregistrer un utilisateur
+============================================*/
 function createRegisterController(config) {
   return async function (req, res, next) {
     try {
