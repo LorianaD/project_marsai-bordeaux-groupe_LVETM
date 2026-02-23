@@ -16,7 +16,7 @@ function safeDecodeRole(token) {
 }
 
 /**
- * Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
+  Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
  */
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -35,7 +35,7 @@ function LoginForm() {
       isMountedRef.current = false;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);  
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,7 +54,8 @@ function LoginForm() {
 
     setLoading(true);
 
-        try {
+    try {
+
       const result = await loginUser(email, password);
 
       if (!result?.token) {
@@ -63,10 +64,29 @@ function LoginForm() {
 
       localStorage.setItem("token", result.token);
 
-      if (!isMountedRef.current) return;
+      //bug a cette ligne
+      try {
+  const result = await loginUser(email, password);
 
+  if (!result?.token) throw new Error("Token manquant dans la réponse.");
+
+  localStorage.setItem("token", result.token);
+
+  setSuccess(true);
+
+  // Redirection apres avoir log un user
+  const role = safeDecodeRole(result.token);
+  if (role === "selector") {
+    navigate("/selector/videos", { replace: true });
+  } else {
+    navigate("/admin/overview", { replace: true });
+  }
+} catch (err) {
+  console.error(err);
+}
+      
       setSuccess(true);
-
+      
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
         if (!isMountedRef.current) return;
@@ -84,7 +104,6 @@ function LoginForm() {
       if (!isMountedRef.current) return;
       setError(err?.message || "Échec de la connexion.");
     } finally {
-      if (!isMountedRef.current) return;
       setLoading(false);
     }
   };

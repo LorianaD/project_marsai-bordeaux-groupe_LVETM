@@ -2,7 +2,7 @@ export const ADMIN_NAV = [
   {
     id: "overview",
     label: "Vue d'ensemble",
-    path: "/admin/",
+    path: "/admin",
     icon: "AdminOverview.svg",
   },
   {

@@ -22,7 +22,8 @@ export default function AdminLayoutSidebar({ active }) {
 
     <aside className="hidden w-[270px] flex shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#FFFFFF]/10 dark:bg-white/5 md:flex h-full gap-[100px] justify-between">
       <div>
-      {/*======================================================================
+      
+        {/*====================================================================
          Profil : affiche avatar nom prénom et email de l'utilisateur connecté
       =======================================================================*/}
         <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#FFFFFF]/20 dark:bg-black/30">
