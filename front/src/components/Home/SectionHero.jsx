@@ -29,7 +29,7 @@ function SectionHero() {
     return(
         <>
             {isSectionVisible(content, section) && (
-                <section className="relative w-full h-screen flex flex-col items-center justify-center self-stretch p-[25px] gap-[48px] md:gap-[10px]">
+                <section className="relative w-full h-screen flex flex-col items-center justify-center self-stretch p-[50px] gap-[48px]">
 
                     {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
                     {content?.[section]?.media && (
