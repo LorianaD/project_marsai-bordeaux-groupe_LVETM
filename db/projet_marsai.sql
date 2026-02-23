@@ -411,6 +411,20 @@ CREATE TABLE `conference_program` (
   `day` enum('Friday','Saturday') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ALTER TABLE conference_program
+ADD COLUMN day VARCHAR(20) NOT NULL DEFAULT 'Friday';
+
+UPDATE conference_program
+SET color = 'bg-orange-400'
+WHERE day = 'Friday';
+
+UPDATE conference_program
+SET color = 'bg-purple-400'
+WHERE day = 'Saturday';
+
+ALTER TABLE conference_program
+MODIFY day ENUM('Friday','Saturday') NOT NULL;
+
 --
 -- Déchargement des données de la table `conference_program`
 --
