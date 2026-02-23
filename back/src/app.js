@@ -24,14 +24,14 @@ const FRONT_ORIGIN = process.env.FRONT_ORIGIN || "http://localhost:5173";
 
 app.use(
   cors({
-    origin: FRONT_ORIGIN, // ⚠️ pas "*"
+    origin: FRONT_ORIGIN,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
-// Preflight (⚠️ pas "*" sinon crash path-to-regexp)
+// Preflight (pas "*" sinon crash path-to-regexp)
 app.options(/.*/, cors({ origin: FRONT_ORIGIN, credentials: true }));
 
 // --------------------

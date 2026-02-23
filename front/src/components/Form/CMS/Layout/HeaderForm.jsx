@@ -1,5 +1,5 @@
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
+import iconPaintDark from "../../../../assets/imgs/icones/IconPaintDark.svg";
+import iconPaint from "../../../../assets/imgs/icones/IconPaint.svg";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
@@ -185,7 +185,7 @@ function HeaderForm({ forcedLocale }) {
 
     return (
         <section className="w-full">
-            <form onSubmit={handleSubmit} className="w-full p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={handleSubmit} className="w-full p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 {/***** Titre du formulaire *****/}
                 <div className="flex items-center gap-[10px] self-stretch w-full">
                     <div>
@@ -219,7 +219,7 @@ function HeaderForm({ forcedLocale }) {
                     <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
 
                         <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
                                 Gestion de la navigation
                             </h4>
                         </div>
@@ -318,7 +318,7 @@ function HeaderForm({ forcedLocale }) {
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
                         Mettre à jour
                     </BtnSubmitForm>
                 </div>

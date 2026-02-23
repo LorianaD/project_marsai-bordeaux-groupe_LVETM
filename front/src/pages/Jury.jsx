@@ -55,7 +55,7 @@ export default function Jury() {
   }, [jury]);
 
   return (
-    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
+    <div className="pt-[100px]">
       {/* ================= TOP SECTION ================= */}
       <div className="mx-auto w-full max-w-6xl px-6 pt-16">
         {/* 🔥 TITRE PRINCIPAL (équilibré comme Galerie des films) */}

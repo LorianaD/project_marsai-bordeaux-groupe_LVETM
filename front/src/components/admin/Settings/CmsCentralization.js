@@ -2,14 +2,14 @@
 import HeaderForm from "../../Form/CMS/Layout/HeaderForm";
 
 // Import formulaires CMS HomePage
-import SectionHeroForm from "../../Form/CMS/Home/SectionHeroForm";
-import SectionConceptForm from "../../Form/CMS/Home/SectionConceptForm";
-import SectionAwardForm from "../../Form/CMS/Home/SectionAwardForm";
-import SectionGoalForm from "../../Form/CMS/Home/SectionGoalForm";
-import SectionEventsForm from "../../Form/CMS/Home/SectionEventsForm";
-import SectionClosingEventForm from "../../Form/CMS/Home/SectionClosingEventForm";
-import SectionLocalisationEventForm from "../../Form/CMS/Home/SectionLocalisationEventForm";
-import SectionProjectedStatsForm from "../../Form/CMS/Home/SectionProjectedStatsForm";
+import SectionHeroForm from "../../Form/CMS/Home/SectionHeroForm.jsx";
+import SectionConceptForm from "../../Form/CMS/Home/SectionConceptForm.jsx";
+import SectionAwardForm from "../../Form/CMS/Home/SectionAwardForm.jsx";
+import SectionGoalForm from "../../Form/CMS/Home/SectionGoalForm.jsx";
+import SectionEventsForm from "../../Form/CMS/Home/SectionEventsForm.jsx";
+import SectionClosingEventForm from "../../Form/CMS/Home/SectionClosingEventForm.jsx";
+import SectionLocalisationEventForm from "../../Form/CMS/Home/SectionLocalisationEventForm.jsx";
+import SectionProjectedStatsForm from "../../Form/CMS/Home/SectionProjectedStatsForm.jsx";
 import SectionPartners from "../../Form/CMS/Home/SectionPartners";
 
 // Import formulaire CMS GalleryPage
@@ -29,6 +29,7 @@ import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
 
 // Import formulaire CMS LegalPage
 import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
+import FooterForm from "../../Form/CMS/Layout/FooterForm.jsx";
 
 
 function CmsCentralization() {
@@ -38,6 +39,7 @@ function CmsCentralization() {
             label: "Layout",
             sections: [
                 { id: "header", label: "En-tête du site", component: HeaderForm },
+                { id: "footer", label: "Pied du site", component: FooterForm }
             ]
         },
         {
@@ -88,7 +90,6 @@ function CmsCentralization() {
             label: "Contact",
             sections: [
                 { id: "hero", label: "Hero", component: ContactSectionHeroForm },
-
             ],
         },
         {

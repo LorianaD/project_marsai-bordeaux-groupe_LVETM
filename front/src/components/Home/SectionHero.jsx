@@ -15,8 +15,6 @@ function SectionHero() {
     // cherche les données en bdd
     const { content, loading, message } = useCmsContent(locale);
 
-    if (loading) return null;
-
     const protocolIconSrc = resolveCmsAsset(content?.[section]?.protocol_icon);
 
     const ctaParticipate_signeSrc = resolveCmsAsset(content?.[section]?.ctaParticipate_signe);
@@ -25,11 +23,13 @@ function SectionHero() {
 
     // console.log("hero cms:", content?.hero);
     // console.log("visibility:", content?.hero?.section_visibility_is_active);
-
+    
+    if (loading) return null;
+    
     return(
         <>
             {isSectionVisible(content, section) && (
-                <section className="relative flex w-full flex-col items-center self-stretch pt-[100px] p-[25px] gap-[48px] md:px-[75px] md:gap-[10px]">
+                <section className="relative flex w-full flex-col items-center self-stretch pt-[100px] p-[25px] gap-[48px] md:px-[75px] md:gap-[10px] h-screen justify-center">
 
                     {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
                     {content?.[section]?.media && (

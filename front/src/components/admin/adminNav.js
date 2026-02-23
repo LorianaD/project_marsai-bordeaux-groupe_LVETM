@@ -2,13 +2,13 @@ export const ADMIN_NAV = [
   {
     id: "overview",
     label: "Vue d'ensemble",
-    path: "/admin/overview",
+    path: "/admin/",
     icon: "AdminOverview.svg",
   },
   {
     id: "dashboard",
     label: "Dashboard User",
-    path: "/admin/dashboard",
+    path: "/admin/users",
     icon: "AdminUser.svg",
   },
   {

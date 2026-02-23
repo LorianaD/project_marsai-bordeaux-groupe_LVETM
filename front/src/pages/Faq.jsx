@@ -5,11 +5,11 @@
 // A VOIR AFFICHAGE DES ERREURS SUR L'EDIT
 
 import { useEffect, useState } from "react"
-import getAllFaq from "../services/Faq/getFaqApi"
-import deleteFaq from "../services/Faq/deleteFaqApi";
-import updateFaq from "../services/Faq/updateFaqapi";
-import addFaq from "../services/Faq/addFaqApi";
-import FaqForm from "../components/Form/Faq/faqForm";
+import getAllFaq from "../services/Faq/getFaqApi.js"
+import deleteFaq from "../services/Faq/deleteFaqApi.js";
+import updateFaq from "../services/Faq/updateFaqApi.js";
+import addFaq from "../services/Faq/addFaqApi.js";
+import FaqForm from "../components/Form/Faq/FaqForm.jsx";
 import { useTranslation } from "react-i18next"
 
 function Faq() {

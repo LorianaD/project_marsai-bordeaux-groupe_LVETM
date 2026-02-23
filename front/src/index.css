@@ -17,13 +17,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Structure main */
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    background-color: #ffffff;
+    color: #242424;
+  }
 }
+
+
+
+
+/*****************************************************************************
+*************************** CSS Micka ****************************************
+*****************************************************************************/
 
 /* Force le fond sombre sur les inputs auto-remplis */
 input:-webkit-autofill,
@@ -32,13 +40,6 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px #08080e inset;
   -webkit-text-fill-color: #ffffff;
   transition: background-color 5000s ease-in-out 0s;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    background-color: #ffffff;
-    color: #242424;
-  }
 }
 
 /*  Force italique dans CKEditor */

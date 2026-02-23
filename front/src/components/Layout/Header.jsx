@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link, useLocation } from "react-router"
 import { useTranslation } from "react-i18next";
 
 import englishFlag from "../../assets/imgs/icones/englishFlag.png";
@@ -6,12 +6,12 @@ import frenchFlag from "../../assets/imgs/icones/franceFlag.png";
 
 import mobileNavIcon from "../../assets/imgs/icones/mobile-nav.svg";
 
-import NavMobile from "./NavMobile";
-import { useState } from "react";
+import NavMobile from "./NavMobile.jsx";
+import { useEffect, useState } from "react";
 
-import { resolveCmsAsset } from "../../utils/cmsAssets";
-import useCmsContent from "../../hooks/useCmsContent";
-import { isVisible } from "../../utils/isVisible";
+import { resolveCmsAsset } from "../../utils/cmsAssets.js";
+import useCmsContent from "../../hooks/useCmsContent.js";
+import { isVisible } from "../../utils/isVisible.js";
 
 function Header() {
     // console.log("function header ok");
@@ -43,6 +43,25 @@ function Header() {
 
     const section = "header"
 
+    const { pathname } = useLocation();
+    const isHome = pathname === "/";
+
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+
+            setScrolled(window.scrollY > 80);
+
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+
+    }, []);    
+
     // cherche les données en bdd
     const { content, loading, message } = useCmsContent(locale);
 
@@ -64,12 +83,12 @@ function Header() {
 
     return(
         <>
-            <header className="flex items-center justify-between w-full p-2 my-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 text-[#3B82F6] dark:text-[#FFFFFF] dark:border-[#FFFFFF]/60 dark:text-white fixed">
+            <header className={`flex items-center justify-between w-full p-2 my-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 ${isHome && !scrolled ? "text-white" : "text-[#3B82F6]"} dark:text-[#FFFFFF] dark:border-[#FFFFFF]/60 dark:text-white fixed`}>
                 
                 {/* LEFT : LOGO */}
                 {logoSrc ? (
                     <Link to="/">
-                        <div className="w-[100px]">
+                        <div className="h-full max-w-[100px] min-w-[20px]">
                             <img src={logoSrc} alt="Logo" className="w-full" draggable={false}/>
                         </div> 
                     </Link>
