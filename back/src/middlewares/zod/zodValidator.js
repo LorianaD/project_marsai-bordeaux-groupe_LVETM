@@ -20,7 +20,7 @@ import { ZodError } from "zod";
 
 
 /********************************************* 
- * Middleware de validation des films
+ * Middleware de validation des données
  * Fusionne plusieurs schémas Zod pour la validation
  *********************************************/
 export function validate(schemas, options = {}) {
@@ -62,8 +62,8 @@ export function validate(schemas, options = {}) {
         		});
       		}	
 
-      // Autres erreurs
-      next(error);
+        // Autres erreurs
+        next(error);
     	}
   	};
 }

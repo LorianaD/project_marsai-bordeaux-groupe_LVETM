@@ -32,6 +32,9 @@ import adminEventParticipantsEN from "./locales/en/adminEventParticipants.json";
 import adminHeroFR from "./locales/fr/adminHero.json";
 import adminHeroEN from "./locales/en/adminHero.json";
 
+import zodFR from "./locales/fr/zod.json";
+import zodEN from "./locales/en/zod.json";
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -54,6 +57,7 @@ i18n
         adminEvents: adminEventsFR,
         adminEventParticipants: adminEventParticipantsFR,
         adminHero: adminHeroFR,
+        zodErrors: zodFR,
       },
       en: {
         header: headerEN,
@@ -67,6 +71,7 @@ i18n
         adminEvents: adminEventsEN,
         adminEventParticipants: adminEventParticipantsEN,
         adminHero: adminHeroEN,
+        zodErrors: zodEN,
       },
     },
 
