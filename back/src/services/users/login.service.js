@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../../db/index.js'
 import { env } from '../../config/env.js';
 
-// service qui verifie si l'user existe et verifie ses données d'authentification
+/*================================================================================
+  Service qui verifie si l'user existe et verifie ses données d'authentification
+================================================================================*/
 export async function login(email, password) {
     if(!email || !password) {
         const error = new Error ('L’adresse e-mail ou le mot de passe est invalide');

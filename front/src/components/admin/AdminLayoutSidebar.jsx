@@ -4,27 +4,22 @@ import { useEffect, useState } from "react";
 import { decodeToken } from "../../utils/decodeToken.js";
 const API_URL = import.meta.env.VITE_API_URL;
 
-/**
- * Sidebar admin commune (Overview, Gestion films, Événements, etc.).
- * Utilisée avec le même design : profil, nav, spacer invisible, bloc Mars AI.
- *
- * Icônes:
- * - "Vue d'ensemble" garde l'icône inline (comme avant)
- * - Les autres utilisent les SVG dans back/uploads/adminsidebar via <img>
- * - Light: noir (icône normale)
- * - Dark: blanc via dark:invert
- */
 export default function AdminLayoutSidebar({ active }) {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
 
+  /*=======================================================
+    Décodage du token pour récupérer l'utilisateur courant
+  =======================================================*/
   useEffect(() => {
     setCurrentUser(decodeToken());
   }, []);
 
   return (
     <aside className="hidden w-[270px] shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#F6339A]/60 dark:bg-white/5 md:flex">
-      {/* Profil */}
+      {/*======================================================================
+         Profil : affiche avatar nom prénom et email de l'utilisateur connecté
+      =======================================================================*/}
       <div className="flex items-center gap-3 rounded-2xl border border-black/10 bg-black/10 p-3 dark:border-[#F6339A]/60 dark:bg-black/30">
         <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#F6339A]/15 text-lg">
           👤

@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
 import { inputLightClasses } from "../../utils/formInputClasses.js";
 
-/**
- * Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
- */
+/*========================================================================
+  Formulaire de connexion avec gestion du JWT et redirection selon le rôle
+ =======================================================================*/
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +32,9 @@ function LoginForm() {
 
       setTimeout(() => {
         const token = JSON.parse(atob(result.token.split(".")[1]));
+        /*============================================================
+         Redirection selon le rôle utilisateur (contenu dans le JWT)
+         ============================================================*/
         if (token.role === "selector") {
           navigate("/selector/videos");
         } else {

@@ -1,6 +1,8 @@
 const API = import.meta.env.VITE_API_URL || "";
 
-// Lister tout les users
+/*========================
+  Lister tout les users
+=========================*/
 export async function getUsers() {
     const res = await fetch(`${API}/api/users`, {
         method: "GET",
@@ -16,7 +18,9 @@ export async function getUsers() {
     return res.json();
 }
 
-// changer le role d'un user
+/*============================
+  changer le role d'un user
+=============================*/
 export async function updateUserRole(id, role) {
     const res = await fetch(`${API}/api/users/${id}/role`, {
         method: "PUT",
@@ -33,7 +37,9 @@ export async function updateUserRole(id, role) {
     return res.json();
 }
 
-// Supprimer un user
+/*====================
+  Supprimer un user
+=====================*/
 export async function deleteUser(id) {
     const res = await fetch(`${API}/api/users/${id}`,{
         method: "DELETE",

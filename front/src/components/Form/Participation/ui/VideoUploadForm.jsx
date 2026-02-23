@@ -196,6 +196,8 @@ export default function VideoUploadForm({ formRef }) {
       localStorage.setItem("video_tags", JSON.stringify(safeTags));
       fd.append("tags", JSON.stringify(safeTags));
 
+      
+
       let contributors = [];
       let ownership = {};
 

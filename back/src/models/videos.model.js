@@ -238,7 +238,7 @@ async function findOneVideoByIdAdmin(id) {
   return rows[0] || null;
 }
 
-// Leaderboard admin : vidéos qui ont une note
+// Leaderboard admin : vidéos publiées, triées par featured puis date
 async function findLeaderboardVideos() {
   const sql = `
     SELECT
@@ -251,12 +251,11 @@ async function findLeaderboardVideos() {
       v.director_name,
       v.director_lastname,
       v.ai_tech,
-      av.score,
+      v.featured,
       v.created_at
-    FROM admin_video av
-    JOIN videos v ON v.id = av.video_id
-    WHERE av.score IS NOT NULL
-    ORDER BY av.score DESC, v.created_at DESC
+    FROM videos v
+    WHERE v.upload_status = 'Published'
+    ORDER BY v.featured DESC, v.created_at DESC
   `;
 
   const [rows] = await pool.execute(sql);

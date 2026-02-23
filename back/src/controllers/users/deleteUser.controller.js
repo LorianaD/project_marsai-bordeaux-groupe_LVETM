@@ -1,6 +1,8 @@
 import { deleteUserService } from "../../services/users/deleteUser.service.js";
 
-// supprimer un utilisateur
+/*===========================
+  Controller pour supprimer un utilisateur
+============================*/
 export async function deleteUserController(req, res, next) {
   try {
     const { id } = req.params;
