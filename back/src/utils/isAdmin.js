@@ -5,7 +5,7 @@ function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Missing token" });
+    return res.status(401).json({ error: "Token manquant" });
   }
 
   const token = authHeader.split(" ")[1];
@@ -14,20 +14,20 @@ function verifyToken(req, res, next) {
     req.user = jwt.verify(token, env.jwtSecret);
     next();
   } catch (err) {
-    return res.status(401).json({ error: "Invalid token" });
+    return res.status(401).json({ error: "Token invalide" });
   }
 }
 
 function isAdmin(req, res, next) {
   if (req.user.role !== "admin" && req.user.role !== "superadmin") {
-    return res.status(403).json({ error: "Unauthorized access" });
+    return res.status(403).json({ error: "Accès non autorisé" });
   }
   next();
 }
 
 function isSuperAdmin(req, res, next) {
   if (req.user.role !== "superadmin") {
-    return res.status(403).json({ error: "Unauthorized access" });
+    return res.status(403).json({ error: "Accès non autorisé" });
   }
   next();
 }

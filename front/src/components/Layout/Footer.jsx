@@ -8,6 +8,9 @@ import x from "../../assets/imgs/icones/x.png";
 
 import Newsletter from "../Form/Newsletter";
 
+import {decodeToken} from "../../utils/decodeToken.js";
+import AdminEntryButton from "./AdminEntryButton.jsx";
+
 function Footer() {
   const { t } = useTranslation("footer");
 
@@ -18,15 +21,17 @@ function Footer() {
     { src: x, alt: "X" },
   ];
 
+  const user = decodeToken();
+  const isLoggedIn = user && user.exp * 1000 > Date.now();
+
   return (
-    <footer className="hidden md:block w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#F6339A]/60 dark:bg-black dark:text-white">
+    <footer className="w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#FFFFFF]/60 dark:bg-black dark:text-white flex-col md:flex-row">
 
-
-      <div className="mx-auto w-full px-[60px] py-[60px]">
+      <div className="mx-auto w-full px-[40px] py-[30px] flex flex-col">
 
         {/* GRID PRINCIPAL */}
 
-        <div className="grid grid-cols-[340px_1fr_500px] gap-[80px] items-start">
+        <div className="flex gap-[80px] items-start flex-col md:flex-row justify-between">
           {/* LEFT */}
           <div>
             <Link to="/">
@@ -51,8 +56,8 @@ function Footer() {
                     flex items-center justify-center
                     w-[48px] h-[48px]
                     rounded-full
-                    border border-black/15 dark:border-[#F6339A]/60
-                    bg-[#ECECEC] dark:bg-white/5
+                    border border-black/15 dark:border-[#FFFFFF]/60
+                    bg-[#ECECEC] dark:bg-[#FFFFFF]/5
                     transition
                     hover:scale-105
                   "
@@ -72,9 +77,9 @@ function Footer() {
           </div>
 
           {/* CENTER */}
-          <div className="grid grid-cols-2 gap-x-[100px]">
+          <div className="flex gap-x-[100px] flex-col md:flex-row">
             {/* NAVIGATION */}
-            <div>
+            <div className="w-full">
               <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
                 {t("sections.navigation")}
               </h3>
@@ -94,7 +99,7 @@ function Footer() {
             </div>
 
             {/* LEGAL */}
-            <div>
+            <div className="w-full">
               <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
                 {t("sections.legal")}
               </h3>
@@ -114,38 +119,30 @@ function Footer() {
           </div>
 
           {/* RIGHT - NEWSLETTER */}
-          <div className="justify-self-end">
+          <div className="max-w-[400px]">
             <Newsletter />
           </div>
         </div>
 
         {/* SEPARATOR */}
-        <div className="mt-[50px] h-px w-full bg-black/20 dark:bg-white/20" />
+        <div className="mt-[50px] h-px w-full bg-black/20 dark:bg-[#FFFFFF]/20" />
 
         {/* BOTTOM BAR */}
-        <div className="mt-[30px] flex items-center justify-between opacity-70">
-          <span className="text-[10px] font-bold tracking-[5px] uppercase">
+        <div className="mt-[30px] flex items-center justify-between opacity-70 flex-col md:flex-row w-full">
+          <span className="text-[10px] font-bold tracking-[5px] uppercase w-full">
             {t("bottom.copyright")}
           </span>
 
-          <div className="flex items-center gap-[48px]">
+          <div className="flex flex-col md:flex-row items-center justify-end gap-[48px] w-full">
             <span className="text-[10px] font-bold tracking-[5px] uppercase">
               {t("designSystem")}
             </span>
 
-            <Link
-              to="/legal"
-              className="text-[10px] font-bold tracking-[5px] uppercase"
-            >
+            <Link to="/legal"  className="text-[10px] font-bold tracking-[5px] uppercase" >
               {t("links.legal")}
             </Link>
              
-                  <Link
-                    to="/admin/login"
-                    className="text-[10px] font-bold tracking-[5px] uppercase"
-                  >
-                    Espace administrateur
-                  </Link>
+            <AdminEntryButton/>
                 
           </div>
         </div>

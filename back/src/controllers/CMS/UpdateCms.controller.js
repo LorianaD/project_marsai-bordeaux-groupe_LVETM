@@ -25,7 +25,7 @@ async function UpdateCms(req, res, next) {
 
         if (file) {
 
-            const isMedia = content_key === "media";
+            const isMedia = content_key === "media" || content_key === "logo";
 
             payload.value = isMedia ? `/uploads/medias/${file.filename}` : `/uploads/icons/${file.filename}`;
             payload.type = "image";

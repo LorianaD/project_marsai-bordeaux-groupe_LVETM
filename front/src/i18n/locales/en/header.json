@@ -1,7 +1,21 @@
 {
+  "logo": "",
+
   "home": "Home",
-  "gallery": "Gallery",
-  "program": "Schedule & info",
-  "jury": "Jury",
-  "participate": "Participate"
+  "home_link": "/",
+
+  "first": "Gallery",
+  "first_link": "/gallery",
+
+  "seconde": "Schedule & info",
+  "seconde_link": "/events",
+
+  "third": "Jury",
+  "third_link": "/jury",
+
+  "btn": "Participate",
+  "btn_link": "/participate",
+
+  "icon_country": ""
+
 }

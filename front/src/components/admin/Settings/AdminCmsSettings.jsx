@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import CmsCentralization from "./CMSCentralization";
+import CmsCentralization from "./CmsCentralization.js";
 
 import CmsHeader from "./CmsHeader";
 import CmsPanel from "./CmsPanel";

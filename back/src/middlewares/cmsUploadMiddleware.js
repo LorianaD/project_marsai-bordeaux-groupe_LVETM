@@ -15,12 +15,18 @@ function cmsUploadMiddleware(req, res, next) {
         return run(uploadMedia.single("file"))(req, res, next);
     }
 
+    if (content_key === "logo") {
+        return run(uploadMedia.single("file"))(req, res, next);
+    }    
+
     // icônes (png/svg)
     const isIcon = content_key.includes("icon") || content_key.includes("signe");
 
     if (isIcon) {
         return run(uploadIcon.single("file"))(req, res, next);
     }
+
+
 
     return next();
 }
