@@ -1,0 +1,29 @@
+{
+    "faq": {
+        "rank": {
+            "required": "Le rang est requis.",
+            "integer": "Le rang doit être un entier.",
+            "nonnegative": "Le rang doit être 0 ou positif."
+        },
+        "question_fr": {
+            "string": "La question doit être une chaîne de caractères.",
+            "required": "La question est requise.",
+            "max": "La question ne doit pas dépasser 500 caractères."
+        },
+        "question_en": {
+            "string": "La question doit être une chaîne de caractères.",
+            "required": "La question est requise.",
+            "max": "La question ne doit pas dépasser 500 caractères."
+        },
+        "answer_fr": {
+            "string": "La réponse doit être une chaîne de caractères.",
+            "required": "La réponse est requise.",
+            "max": "La réponse ne doit pas dépasser 500 caractères."
+        },
+        "answer_en": {
+            "string": "La réponse doit être une chaîne de caractères.",
+            "required": "La réponse est requise.",
+            "max": "La réponse ne doit pas dépasser 500 caractères."
+        }
+    }
+}
