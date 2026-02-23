@@ -1,7 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
-
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import VideoDetails from "./pages/VideoDetails.jsx";
@@ -19,12 +17,9 @@ import NewsletterConfirm from "./pages/NewsletterConfirm";
 import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import LearnMore from "./pages/LearnMore.jsx";
 import VideoFeed from "./pages/VideoFeed.jsx";
-
 import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 import AdminLogin from "./pages/Login.jsx";
-
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
-
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 
 
@@ -69,7 +64,7 @@ export default function App() {
 
 
         {/* Routes avec obligation de connexion */}
-        <Route element="">
+        <Route element={<Outlet />}>
 
           {/* ADMIN */}
           <Route path="/admin/*" element={<AdminRouter />} />
