@@ -62,7 +62,9 @@ export default function VideoUploadForm({ formRef }) {
         setCountriesLoading(true);
         setCountriesErr("");
 
-        const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
+        const res = await fetch(
+          "https://restcountries.com/v3.1/all?fields=name",
+        );
         const data = await res.json();
 
         const list = Array.isArray(data)
@@ -139,7 +141,6 @@ export default function VideoUploadForm({ formRef }) {
   const canSubmit = useMemo(() => {
     const durationNum = Number(form.duration);
 
-    // 🔒 validations depuis l'étape "ownership" (TeamCompositionForm)
     let ownership = {};
     try {
       ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
@@ -147,7 +148,7 @@ export default function VideoUploadForm({ formRef }) {
 
     const termsOk = !!ownership?.termsAccepted;
     const ageOk = !!ownership?.ageConfirmed;
-    const robotOk = !!ownership?.notRobot;
+    const robotOk = !!ownership?.recaptchaToken; // token captcha
 
     return (
       form.title.trim() &&
@@ -183,7 +184,48 @@ export default function VideoUploadForm({ formRef }) {
   // Envoie les données au backend
   async function submit(e) {
     e.preventDefault();
-    if (!canSubmit) return;
+
+    // ✅ recalcul "fresh" (évite canSubmit stale)
+    let ownershipFresh = {};
+    try {
+      ownershipFresh = JSON.parse(localStorage.getItem("ownership") || "{}");
+    } catch {}
+
+    const durationNum = Number(form.duration);
+    const termsOk = !!ownershipFresh?.termsAccepted;
+    const ageOk = !!ownershipFresh?.ageConfirmed;
+    const robotOk = !!ownershipFresh?.recaptchaToken;
+
+    const canSubmitNow =
+      form.title.trim() &&
+      form.title_en.trim() &&
+      form.synopsis.trim() &&
+      form.synopsis_en.trim() &&
+      form.language.trim() &&
+      form.country.trim() &&
+      Number.isFinite(durationNum) &&
+      durationNum > 0 &&
+      form.tech_resume.trim() &&
+      form.ai_tech.trim() &&
+      form.creative_resume.trim() &&
+      form.email.trim() &&
+      form.director_name.trim() &&
+      form.director_lastname.trim() &&
+      (form.director_gender === "Mr" || form.director_gender === "Mrs") &&
+      form.birthday.trim() &&
+      form.address.trim() &&
+      form.director_country.trim() &&
+      form.discovery_source.trim() &&
+      form.mobile_number.trim() &&
+      files.video &&
+      files.cover &&
+      files.stills[0] &&
+      files.subtitles.length > 0 &&
+      termsOk &&
+      ageOk &&
+      robotOk;
+
+    if (!canSubmitNow) return;
 
     try {
       const fd = new FormData();
@@ -199,25 +241,25 @@ export default function VideoUploadForm({ formRef }) {
       
 
       let contributors = [];
-      let ownership = {};
-
       try {
         const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
         contributors = Array.isArray(saved) ? saved : [];
       } catch {}
 
-      try {
-        ownership = JSON.parse(localStorage.getItem("ownership") || "{}");
-      } catch {}
-
       fd.append("contributors", JSON.stringify(contributors));
-      fd.append("ownership_certified", ownership?.ownershipCertified ? "1" : "0");
-      fd.append("promo_consent", ownership?.promoConsent ? "1" : "0");
+      fd.append(
+        "ownership_certified",
+        ownershipFresh?.ownershipCertified ? "1" : "0",
+      );
+      fd.append("promo_consent", ownershipFresh?.promoConsent ? "1" : "0");
 
-      // ✅ nouvelles validations
-      fd.append("terms_accepted", ownership?.termsAccepted ? "1" : "0");
-      fd.append("age_confirmed", ownership?.ageConfirmed ? "1" : "0");
-      fd.append("human_verified", ownership?.notRobot ? "1" : "0");
+      fd.append("terms_accepted", ownershipFresh?.termsAccepted ? "1" : "0");
+      fd.append("age_confirmed", ownershipFresh?.ageConfirmed ? "1" : "0");
+
+      // ✅ IMPORTANT: ton backend lit req.body.recaptcha_token
+      const recaptchaToken = ownershipFresh?.recaptchaToken || "";
+      if (!recaptchaToken) throw new Error("Captcha manquant");
+      fd.append("recaptcha_token", recaptchaToken);
 
       fd.append("video", files.video);
       fd.append("cover", files.cover);
@@ -316,10 +358,9 @@ export default function VideoUploadForm({ formRef }) {
                   {countriesLoading
                     ? "Chargement des pays…"
                     : countriesErr
-                    ? "Erreur de chargement"
-                    : "Choisir un pays"}
+                      ? "Erreur de chargement"
+                      : "Choisir un pays"}
                 </option>
-
                 {countries.map((c) => (
                   <option key={c} value={c}>
                     {c}

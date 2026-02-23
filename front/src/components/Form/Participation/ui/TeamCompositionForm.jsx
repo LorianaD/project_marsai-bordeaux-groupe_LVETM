@@ -32,10 +32,10 @@ export default function TeamCompositionForm({ onPrev }) {
     }
   });
 
-  //  Token captcha Google
+  // Token captcha Google
   const [captchaToken, setCaptchaToken] = useState("");
 
-  //  Modal conditions d'utilisation
+  // Modal conditions d'utilisation
   const [termsOpen, setTermsOpen] = useState(false);
 
   function updateCurrent(e) {
@@ -67,16 +67,25 @@ export default function TeamCompositionForm({ onPrev }) {
 
   // Active ou désactive les certificats / validations
   function toggleOwnership(key) {
-    const next = { ...ownership, [key]: !ownership?.[key] };
-    setOwnership(next);
-    localStorage.setItem("ownership", JSON.stringify(next));
+    setOwnership((prev) => {
+      const next = { ...prev, [key]: !prev?.[key] };
+      localStorage.setItem("ownership", JSON.stringify(next));
+      return next;
+    });
   }
 
-  // Enregistre le token captcha dans le même objet ownership (utile pour upload)
+  // ✅ Enregistre le token captcha dans ownership (utile pour upload)
+  // ✅ IMPORTANT : on utilise setState fonctionnel pour éviter un ownership "stale"
   function setCaptchaOk(token) {
-    const next = { ...ownership, recaptchaToken: token || "" };
-    setOwnership(next);
-    localStorage.setItem("ownership", JSON.stringify(next));
+    setOwnership((prev) => {
+      const next = {
+        ...prev,
+        recaptchaToken: token || "",
+        notRobot: !!token, // garde la compat avec l'ancien champ si utilisé ailleurs
+      };
+      localStorage.setItem("ownership", JSON.stringify(next));
+      return next;
+    });
   }
 
   // Vérifie si la validation finale est possible
@@ -86,9 +95,9 @@ export default function TeamCompositionForm({ onPrev }) {
       !!ownership?.promoConsent &&
       !!ownership?.termsAccepted &&
       !!ownership?.ageConfirmed &&
-      !!captchaToken
+      !!ownership?.recaptchaToken
     );
-  }, [ownership, captchaToken]);
+  }, [ownership]);
 
   return (
     <div className="w-full">
