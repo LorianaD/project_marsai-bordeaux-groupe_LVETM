@@ -35,7 +35,7 @@ function LoginForm() {
       isMountedRef.current = false;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);  
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,7 +54,7 @@ function LoginForm() {
 
     setLoading(true);
 
-        try {
+    try {
       const result = await loginUser(email, password);
 
       if (!result?.token) {
