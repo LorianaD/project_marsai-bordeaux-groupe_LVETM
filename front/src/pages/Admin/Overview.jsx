@@ -1,7 +1,6 @@
 // src/pages/Admin/Overview.jsx
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { decodeToken } from "../../utils/decodeToken.js";
+import { Link } from "react-router-dom";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const TOP_FILMS_ENDPOINT = "/api/videos/admin/leaderboard";
@@ -196,26 +195,6 @@ export default function Overview() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const user = decodeToken();
-    /*===================================================
-      Sécu: si pas de token redirection vers admin/login
-    ===================================================*/
-    if (!user) {
-      navigate("/admin/login");
-      return;
-    }
-    /*=============================================================================
-      Blocage selectors : pas accès à la Vue d'ensemble, déconnexion + redirection
-    =============================================================================*/
-    if (user.role === "selector") {
-      alert("Vous n'avez pas l'autorisation d'acceder a cette page.");
-      localStorage.removeItem("token");
-      navigate("/admin/login");
-    }
-  }, []);
 
   async function loadAll() {
     try {

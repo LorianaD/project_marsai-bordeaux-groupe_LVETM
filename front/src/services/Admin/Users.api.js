@@ -1,3 +1,5 @@
+import { getAuthHeaders } from "../../utils/authHeaders.js";
+
 const API = import.meta.env.VITE_API_URL || "";
 
 /*========================
@@ -6,9 +8,7 @@ const API = import.meta.env.VITE_API_URL || "";
 export async function getUsers() {
     const res = await fetch(`${API}/api/users`, {
         method: "GET",
-        headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders(),
     });
 
     if (!res.ok) {
@@ -24,10 +24,7 @@ export async function getUsers() {
 export async function updateUserRole(id, role) {
     const res = await fetch(`${API}/api/users/${id}/role`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization : `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ role }),
     });
     if (!res.ok) {
@@ -43,9 +40,7 @@ export async function updateUserRole(id, role) {
 export async function deleteUser(id) {
     const res = await fetch(`${API}/api/users/${id}`,{
         method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders(),
     });
 
     if (!res.ok) {
