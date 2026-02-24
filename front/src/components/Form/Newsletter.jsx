@@ -62,7 +62,7 @@ function Newsletter() {
   return (
     <form
       onSubmit={submit}
-      className="w-full max-w-[360px] box-border overflow-hidden flex flex-col items-center justify-center gap-[6px] md:gap-[12px] lg:gap-[25px] p-[10px] md:p-[20px] lg:p-[41px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] bg-[rgba(0,0,0,0.05)]"
+      className="w-full max-w-[360px] box-border overflow-hidden flex flex-col items-center justify-center gap-[6px] md:gap-[12px] lg:gap-[25px] p-[10px] md:p-[20px] lg:p-[41px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] bg-[rgba(0,0,0,0.05)] dark:bg-white/20"
     >
       <h2 className="text-[16px] lg:text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full flex flex-row lg:flex-col gap-[5px]">
         <span>{t("title_main")}</span>
@@ -75,7 +75,7 @@ function Newsletter() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={t("email_placeholder")}
-          className="flex h-[13.5px] md:h-[27px] lg:h-[54px] flex-1 items-center px-[6px] md:px-[12px] lg:px-[24px] py-[3px] md:py-[6px] lg:py-[16px] rounded-[4px] md:rounded-[8px] lg:rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[10px] lg:placeholder:text-[14px] placeholder:font-normal"
+          className="flex h-[13.5px] md:h-[27px] lg:h-[54px] flex-1 items-center px-[6px] md:px-[12px] lg:px-[24px] py-[3px] md:py-[6px] lg:py-[16px] rounded-[4px] md:rounded-[8px] lg:rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[10px] lg:placeholder:text-[14px] placeholder:font-normal dark:bg-white/20"
         />
 
         <button
