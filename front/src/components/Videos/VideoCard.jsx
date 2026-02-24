@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toMediaUrl } from "../../utils/mediaUrl";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() => {
@@ -38,8 +39,9 @@ export default function VideoCard({ video, apiBase }) {
 
   const country = video.country || video.director_country || "Pays";
 
+  // ✅ S3 + fallback local automatique
   const coverUrl = video.cover
-    ? `${apiBase}/uploads/covers/${video.cover}`
+    ? toMediaUrl(video.cover, "covers", apiBase)
     : "https://via.placeholder.com/800x450?text=Cover";
 
   // ✅ mobile => feed, desktop => details
@@ -48,7 +50,11 @@ export default function VideoCard({ video, apiBase }) {
   return (
     <article className="w-full">
       <div className="relative overflow-hidden rounded-2xl group">
-        <Link to={to} className="relative z-10 block" aria-label={`Voir le film ${title}`}>
+        <Link
+          to={to}
+          className="relative z-10 block"
+          aria-label={`Voir le film ${title}`}
+        >
           <img
             src={coverUrl}
             alt={title}
