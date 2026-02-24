@@ -63,7 +63,7 @@ function SectionHero() {
 
                             </div>
                             
-                            <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[72px] ml:leading-[192px] tracking-[-2.4px] md:tracking-[-3.6] ml:tracking-[-9.6px] uppercase text-[48px] md:text-[72px] ml:text-[192px] text-center">
+                            <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[72px] ml:leading-[192px] tracking-[-2.4px] md:tracking-[-3.6] ml:tracking-[-9.6px] uppercase text-[48px] md:text-[100px] ml:text-[192px] text-center">
                                 {isVisible(content, section, "title_main") && (
                                     <span>
                                         {content?.[section]?.title_main || t("hero.title_main")}
