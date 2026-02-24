@@ -40,7 +40,6 @@ export default function AdminLayoutSidebar({ active }) {
               {currentUser?.email || ""}
             </p>
           </div>
-
         </div>
 
         {/* Menu */}
