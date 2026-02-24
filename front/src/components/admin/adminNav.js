@@ -7,7 +7,7 @@ export const ADMIN_NAV = [
   },
   {
     id: "dashboard",
-    label: "Dashboard User",
+    label: "Gestion des utilisateurs",
     path: "/admin/users",
     icon: "AdminUser.svg",
   },
