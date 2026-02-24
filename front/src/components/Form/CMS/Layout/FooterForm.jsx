@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CmsInput from "../Fields/CmsInput";
-import CmsTextarea from"../Fields/CmsTextarea";
+import CmsTextarea from "../Fields/CmsTextarea";
 import CmsInputImage from "../Fields/CmsInputImage";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import useCmsContent from "../../../../hooks/useCmsContent";
@@ -130,7 +130,10 @@ function FooterForm({ forcedLocale }) {
         bottom_designSystem: "",
         bottom_designSystem_is_active: 1,
 
+
         // Social
+        social_is_active: 1,
+
         social_facebook_label: "",
         social_facebook_label_is_active: 1,
         social_facebook_href: "",
@@ -154,6 +157,8 @@ function FooterForm({ forcedLocale }) {
         // Aria
         aria_openSocial: "",
         aria_openSocial_is_active: 1,
+
+        newsletter_is_active: 1
     })
 
     const [message, setMessage] = useState("");
@@ -176,8 +181,17 @@ function FooterForm({ forcedLocale }) {
 
         // construit les valeurs initiales depuis le CMS
         const built = buildInitialValuesFromCms(fields, cmsSection, {
-            fileFields: ["logo", "icon_country"],
+            fileFields: [
+                "brand_logo", 
+                "social_facebook_icon", 
+                "social_instagram_icon", 
+                "social_youtube_icon", 
+                "social_x_icon"
+            ],
         });
+
+        built.social_is_active = Number(cmsSection?.social_is_active ?? 1);
+        built.newsletter_is_active = Number(cmsSection?.newsletter_is_active ?? 1);
 
         setValues(built);
 
@@ -203,18 +217,58 @@ function FooterForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set(["logo"]);
+            const sharedImageKeys = new Set([
+                "brand_logo",
+                "social_facebook_icon",
+                "social_instagram_icon",
+                "social_youtube_icon",
+                "social_x_icon"
+            ]);
 
-            const sharedLinkKeys = new Set([""]);
+            const sharedLinkKeys = new Set([
+                "links_gallery_href",
+                "links_program_href",
+                "links_tickets_href",
+                "links_partners_href",
+                "links_faq_href",
+                "links_contact_href",
+                "links_legal_href",
+                "social_facebook_href",
+                "social_instagram_href",
+                "social_youtube_href",
+                "social_x_href"
+            ]);
 
             const sharedKeys = new Set([...sharedImageKeys, ...sharedLinkKeys]);
 
             const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
 
+            for (const loc of ["fr", "en"]) {
+                await updateContentApi({
+                    page,
+                    section,
+                    locale: loc,
+                    content_key: "social_is_active",
+                    value: String(values.social_is_active),
+                    order_index: 999,
+                    is_active: 1,
+                });
+
+                await updateContentApi({
+                    page,
+                    section,
+                    locale: loc,
+                    content_key: "newsletter_is_active",
+                    value: String(values.newsletter_is_active),
+                    order_index: 1000,
+                    is_active: 1,
+                });
+            }
+            
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
                 const val = values[key];
-                const is_active = values[`${key}_is_active`];
+                const is_active = typeof values[`${key}_is_active`] === "number" ? values[`${key}_is_active`] : 1;
 
                 const targetLocales = localesToSave(key);
 
@@ -255,7 +309,7 @@ function FooterForm({ forcedLocale }) {
 
             }
 
-            setMessage("Header mis à jour");
+            setMessage("Footer mis à jour");
 
         } catch (error) {
 
@@ -268,7 +322,7 @@ function FooterForm({ forcedLocale }) {
 
     }
 
-    return(
+    return (
         <>
             <section className="w-full">
                 <form onSubmit={handleSubmit} className="w-full p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
@@ -285,9 +339,9 @@ function FooterForm({ forcedLocale }) {
 
                     <div className="w-full">
 
-                        <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
-                            
-                            <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full w-full">
+                        <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full border-t-2 border-gray-600 pt-[20px]">
+
+                            <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
 
                                 <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
                                     <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
@@ -295,41 +349,89 @@ function FooterForm({ forcedLocale }) {
                                     </h4>
                                 </div>
                                 <div>
-                                    <CmsInputImage name="logo" label="Logo" valueUrl={values.logo} onChange={handleChange} page={page} section={section} locale={locale} />
+                                    <CmsInputImage name="brand_logo" label="Logo" valueUrl={values.brand_logo} onChange={handleChange} page={page} section={section} locale={locale} />
                                 </div>
 
                             </div>
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full w-full">
+                            <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
                                 <div>
-                                    <CmsTextarea name="quote" label="Citation" value={values.quote} onChange={handleChange} rightSlot={
-                                        <CmsHideToggle name="quote" value={values.quote_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale}/>}
+                                    <CmsTextarea name="brand_quote" label="Citation" value={values.brand_quote} onChange={handleChange} rightSlot={
+                                        <CmsHideToggle name="brand_quote" value={values.brand_quote_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full w-full">
+                            <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full border-t-2 border-gray-300 pt-[20px]">
                                 <div className="flex items-center">
                                     <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">Gestion des liens sociaux</h5>
-                                    <CmsHideToggle name="social" value={values.social_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale}/>
+                                    <CmsHideToggle name="social" value={values.social_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                 </div>
-                                <div >
-                                    <div>
+                                <div className="flex flex-col gap-[20px] border-t border-gray-300 pt-[20px]">
+                                    <div className="flex">
                                         <h6 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
                                             Facebook
                                         </h6>
+                                        <CmsHideToggle name="social_facebook_label" value={values.social_facebook_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
-                                    <div className="flex gap-[20px]">
+                                    <div className="flex flex-col gap-[20px]">
                                         <CmsInputImage name="social_facebook_icon" label="Icon" valueUrl={values.social_facebook_icon} onChange={handleChange} page={page} section={section} locale={locale} />
-                                        <CmsInput name="social_facebook_label" label="Nom" value={values.social_facebook_label} onChange={handleChange} placeholder={t("social.facebook")}/>
-                                        <CmsInput name="social_facebook_href" label="Nom" value={values.social_facebook_href} onChange={handleChange} placeholder={"https://facebook.com"}/>
+                                        <div className="flex flex-col md:flex-row gap-[20px]">
+                                            <CmsInput name="social_facebook_label" label="Nom" value={values.social_facebook_label} onChange={handleChange} placeholder={t("social.facebook")} />
+                                            <CmsInput name="social_facebook_href" label="Lien" value={values.social_facebook_href} onChange={handleChange} placeholder={"https://www.facebook.com"} />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>                            
+                                <div className="flex flex-col gap-[20px] border-t border-gray-300 pt-[20px]">
+                                    <div className="flex">
+                                        <h6 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
+                                            Instagram
+                                        </h6>
+                                        <CmsHideToggle name="social_instagram_label" value={values.social_instagram_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                    </div>
+                                    <div className="flex flex-col gap-[20px]">
+                                        <CmsInputImage name="social_instagram_icon" label="Icon" valueUrl={values.social_instagram_icon} onChange={handleChange} page={page} section={section} locale={locale} />
+                                        <div className="flex flex-col md:flex-row gap-[20px]">
+                                            <CmsInput name="social_instagram_label" label="Nom" value={values.social_instagram_label} onChange={handleChange} placeholder={t("social.instagram")} />
+                                            <CmsInput name="social_instagram_href" label="Lien" value={values.social_instagram_href} onChange={handleChange} placeholder={"https://www.instagram.com"} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-[20px] border-t border-gray-300 pt-[20px]">
+                                    <div className="flex">
+                                        <h6 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
+                                            Youtube
+                                        </h6>
+                                        <CmsHideToggle name="social_youtube_label" value={values.social_youtube_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                    </div>
+                                    <div className="flex flex-col gap-[20px]">
+                                        <CmsInputImage name="social_youtube_icon" label="Icon" valueUrl={values.social_youtube_icon} onChange={handleChange} page={page} section={section} locale={locale} />
+                                        <div className="flex flex-col md:flex-row gap-[20px]">
+                                            <CmsInput name="social_youtube_label" label="Nom" value={values.social_youtube_label} onChange={handleChange} placeholder={t("social.youtube")} />
+                                            <CmsInput name="social_youtube_href" label="Lien" value={values.social_youtube_href} onChange={handleChange} placeholder={"https://www.youtube.com"} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-[20px] border-t border-gray-300 pt-[20px]">
+                                    <div>
+                                        <h6 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
+                                            X
+                                        </h6>
+                                        <CmsHideToggle name="social_x_label" value={values.social_x_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                                    </div>
+                                    <div className="flex flex-col gap-[20px]">
+                                        <CmsInputImage name="social_x_icon" label="Icon" valueUrl={values.social_x_icon} onChange={handleChange} page={page} section={section} locale={locale} />
+                                        <div className="flex flex-col md:flex-row gap-[20px]">
+                                            <CmsInput name="social_x_label" label="Nom" value={values.social_x_label} onChange={handleChange} placeholder={t("social.x")} />
+                                            <CmsInput name="social_x_href" label="Lien" value={values.social_x_href} onChange={handleChange} placeholder={"https://x.com"} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
-                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full border-t-2 border-gray-600 pt-[20px]">
 
                             <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
                                 <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
@@ -337,7 +439,7 @@ function FooterForm({ forcedLocale }) {
                                 </h4>
                             </div>
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full border-t-2 border-gray-300 pt-[20px]">
 
                                 <div className="flex flex-col md:flex-row pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
                                     <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
@@ -346,10 +448,10 @@ function FooterForm({ forcedLocale }) {
                                     <CmsHideToggle name="sections_navigation" value={values.sections_navigation_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                 </div>
                                 <div>
-                                    < CmsInput name="sections_navigation" label="Titre de section" value={values.sections_navigation} onChange={handleChange} placeholder={t("sections.navigation")}/>
-                                </div>                                
-                                <div className="flex flex-col gap-[20px] w-full">
-                                    <div className="flex item-center">
+                                    < CmsInput name="sections_navigation" label="Titre de section" value={values.sections_navigation} onChange={handleChange} placeholder={t("sections.navigation")} />
+                                </div>
+                                <div className="flex flex-col gap-[20px] w-full border-t border-gray-300 pt-[20px]">
+                                    <div className="flex items-center">
                                         <h5 className="text-[12px] md:text-[14px] font-bold tracking-[3.2px] uppercase w-full">Gestion du premier lien</h5>
                                         < CmsHideToggle name="links_gallery_label" value={values.links_gallery_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
@@ -358,8 +460,8 @@ function FooterForm({ forcedLocale }) {
                                         < CmsInput name="links_gallery_href" label="Lien" value={values.links_gallery_href} onChange={handleChange} placeholder={"/gallery"} />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[20px] w-full">
-                                    <div className="flex item-center">
+                                <div className="flex flex-col gap-[20px] w-full border-t border-gray-300 pt-[20px]">
+                                    <div className="flex items-center">
                                         <h5 className="text-[12px] md:text-[14px] font-bold tracking-[3.2px] uppercase w-full">Gestion du deuxième lien</h5>
                                         < CmsHideToggle name="links_program_label" value={values.links_program_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
@@ -368,8 +470,8 @@ function FooterForm({ forcedLocale }) {
                                         < CmsInput name="links_program_href" label="Lien" value={values.links_program_href} onChange={handleChange} placeholder={"/program"} />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[20px] w-full">
-                                    <div className="flex item-center">
+                                <div className="flex flex-col gap-[20px] w-full border-t border-gray-300 pt-[20px]">
+                                    <div className="flex items-center">
                                         <h5 className="text-[12px] md:text-[14px] font-bold tracking-[3.2px] uppercase w-full">Gestion du troisième lien</h5>
                                         < CmsHideToggle name="links_tickets_label" value={values.links_tickets_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
@@ -377,11 +479,11 @@ function FooterForm({ forcedLocale }) {
                                         < CmsInput name="links_tickets_label" label="Nom" value={values.links_tickets_label} onChange={handleChange} placeholder={t("links.tickets")} />
                                         < CmsInput name="links_tickets_href" label="Lien" value={values.links_tickets_href} onChange={handleChange} placeholder={"/tickets"} />
                                     </div>
-                                </div>                          
-                                
+                                </div>
+
                             </div>
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full border-t-2 border-gray-300 pt-[20px]">
 
                                 <div className="flex flex-col md:flex-row pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
                                     <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
@@ -390,10 +492,10 @@ function FooterForm({ forcedLocale }) {
                                     <CmsHideToggle name="sections_legal" value={values.sections_legal_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                 </div>
                                 <div>
-                                    < CmsInput name="sections_legal" label="Titre de section" value={values.sections_legal} onChange={handleChange} placeholder={t("sections.legal")}/>
-                                </div>                                
-                                <div className="flex flex-col gap-[20px] w-full">
-                                    <div className="flex item-center">
+                                    < CmsInput name="sections_legal" label="Titre de section" value={values.sections_legal} onChange={handleChange} placeholder={t("sections.legal")} />
+                                </div>
+                                <div className="flex flex-col gap-[20px] w-full border-t border-gray-300 pt-[20px]">
+                                    <div className="flex items-center">
                                         <h5 className="text-[12px] md:text-[14px] font-bold tracking-[3.2px] uppercase w-full">Gestion du premier lien</h5>
                                         < CmsHideToggle name="links_partners_label" value={values.links_partners_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
@@ -402,8 +504,8 @@ function FooterForm({ forcedLocale }) {
                                         < CmsInput name="links_partners_href" label="Lien" value={values.links_partners_href} onChange={handleChange} placeholder={"/partners"} />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[20px] w-full">
-                                    <div className="flex item-center">
+                                <div className="flex flex-col gap-[20px] w-full border-t border-gray-300 pt-[20px]">
+                                    <div className="flex items-center">
                                         <h5 className="text-[12px] md:text-[14px] font-bold tracking-[3.2px] uppercase w-full">Gestion du deuxième lien</h5>
                                         < CmsHideToggle name="links_faq_label" value={values.links_faq_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
@@ -412,8 +514,8 @@ function FooterForm({ forcedLocale }) {
                                         < CmsInput name="links_faq_href" label="Lien" value={values.links_faq_href} onChange={handleChange} placeholder={"/faq"} />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[20px] w-full">
-                                    <div className="flex item-center">
+                                <div className="flex flex-col gap-[20px] w-full border-t border-gray-300 pt-[20px]">
+                                    <div className="flex items-center">
                                         <h5 className="text-[12px] md:text-[14px] font-bold tracking-[3.2px] uppercase w-full">Gestion du troisième lien</h5>
                                         < CmsHideToggle name="links_contact_label" value={values.links_contact_label_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                                     </div>
@@ -421,25 +523,26 @@ function FooterForm({ forcedLocale }) {
                                         < CmsInput name="links_contact_label" label="Nom" value={values.links_contact_label} onChange={handleChange} placeholder={t("links.contact")} />
                                         < CmsInput name="links_contact_href" label="Lien" value={values.links_contact_href} onChange={handleChange} placeholder={"/contact"} />
                                     </div>
-                                </div>                          
-                                
+                                </div>
+
                             </div>
 
                         </div>
 
-                        <div className="flex items-center">
+                        <div className="flex items-center border-t-2 border-gray-600 pt-[20px]">
                             <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
                                 Gestion de la newsletter
                             </h4>
-                            < CmsHideToggle name="newsletters" value={values.newsletter_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
+                            < CmsHideToggle name="newsletter" value={values.newsletter_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                         </div>
 
                     </div>
 
-                    <div className="w-full flex justify-center">
+                    <div className="w-full flex flex-col justify-center">
                         <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
                             Mettre à jour
                         </BtnSubmitForm>
+                        {message && <p className="text-sm">{message}</p>}
                     </div>
 
                 </form>
