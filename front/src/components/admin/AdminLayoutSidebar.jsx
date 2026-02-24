@@ -19,7 +19,6 @@ export default function AdminLayoutSidebar({ active }) {
   }, []);
 
   return (
-
     <aside className="hidden w-[270px] flex shrink-0 flex-col rounded-3xl border border-black/10 bg-black/5 p-4 dark:border-[#FFFFFF]/10 dark:bg-white/5 md:flex h-full gap-[100px] justify-between">
       <div>
       
