@@ -13,7 +13,33 @@ export function validate(schemas, formData, options = {}) {
                 dataToValidate[field] = options.files[field];
             });
         }
+
+        // Fusion des schémas
+        let combinedSchema = schemaArray[0];
+        for (let i = 1; i < schemaArray.length; i++) {
+            combinedSchema = combinedSchema.merge(schemaArray[i]);
+        }
+
+        // Validation des données
+        const validatedData = combinedSchema.parse(dataToValidate);
+
+        return {
+            success: true,
+            message: "Data validation done",
+            data: validatedData
+        };
+
     } catch (error) {
-        
+        if (error instanceof ZodError) {
+            return {
+                success:false,
+                message:"Validation error",
+                errors: error.issues.map(issue =>({
+                    field: issue.path.join("."),
+                    message: issue.message
+                }))
+            };
+        }
+        throw error;
     }
 }

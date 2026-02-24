@@ -15,18 +15,19 @@ export async function loginUser(email, password) {
 
     body: JSON.stringify({ email, password }),
   });
-
+  
   if (!res.ok) {
     const text = await res.text();
+    
     try {
       const data = JSON.parse(text);
-      throw new Error(data.error || `Login Failed ${res.status}`);
+      throw new Error(data.details || data.error || `Erreur ${res.status}`);
     } catch (error) {
-      throw new Error(`Login Failed ${res.status}: ${text}`);
+      throw new Error(`Erreur ${res.status}: ${text}`);
 
     }
   }
-
+  
   return res.json()
 
 }
