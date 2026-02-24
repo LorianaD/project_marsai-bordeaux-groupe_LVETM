@@ -5,10 +5,10 @@ function SectionClosingEvent() {
     const { t } = useTranslation("home");
 
     return(
-        <section className="flex flex-col md:flex-row items-center gap-[30px] justify-between px-[20px] md:px-[150px] self-stretch text-black dark:text-white">
+        <section className="flex flex-col md:flex-row items-center gap-[30px] justify-between px-[20px] md:px-[100px] self-stretch text-black dark:text-white w-full">
             
             {/* Div left */}
-            <div className="flex flex-col items-start justify-center gap-[32px] md:gap-8 flex-1 md:py-[2.5px] md:px-[100px]">
+            <div className="flex flex-col items-start justify-center gap-[32px] md:gap-8 flex-1 md:py-[2.5px] w-full">
 
                 {/* Eyebrowbox */}
                 <div className="flex h-[23px] items-center justify-center rounded-[4px] px-[12px] py-[4px] bg-[rgba(173,70,255,0.2)]">

@@ -62,26 +62,26 @@ function Newsletter() {
   return (
     <form
       onSubmit={submit}
-      className="flex flex-1 flex-col items-center justify-center gap-[25px] p-[41px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)]"
+      className="flex flex-1 flex-col items-center justify-center gap-[6px] md:gap-[12px] ml:gap-[25px] p-10px md:p-[20px] ml:p-[41px] rounded-[10px] md:rounded-[20px] ml:rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)]"
     >
-      <h2 className="text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full">
+      <h2 className="text-[16px] ml:text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full flex flex-row ml:flex-col gap-[5px]">
         <span>{t("title_main")}</span>
         <span className="block">{t("title_accent")}</span>
       </h2>
 
-      <div className="flex flex-col md:flex-row items-start gap-[10px] self-stretch">
+      <div className="flex flex-col md:flex-row items-start gap-[2.5px] md:gap-[5px] ml:gap-[10px] self-stretch">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={t("email_placeholder")}
-          className="flex h-[54px] flex-1 items-center px-[24px] py-[16px] rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[14px] placeholder:font-normal"
+          className="flex h-[13.5px] md:h-[27px] ml:h-[54px] flex-1 items-center px-[6px] md:px-[12px] ml:px-[24px] py-[3px] md:py-[6px] ml:py-[16px] rounded-[4px] md:rounded-[8px] ml:rounded-[16px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.05)] placeholder:text-[rgba(0,0,0,0.50)] dark:placeholder:text-[rgba(255,255,255,0.50)] placeholder:text-[10px] ml:placeholder:text-[14px] placeholder:font-normal"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="flex w-[68.406px] h-[54px] items-center justify-center rounded-[16px] bg-[linear-gradient(270deg,#3B82F6_-0.39%,#C27AFF_100.48%)] text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase text-white disabled:opacity-60"
+          className="flex px-[10px] py-[5px] ml:w-[68px] ml:h-[54px] items-center justify-center rounded-[16px] bg-[linear-gradient(270deg,#3B82F6_-0.39%,#C27AFF_100.48%)] text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase text-white disabled:opacity-60"
         >
           {loading ? "..." : "OK"}
         </button>
@@ -102,7 +102,7 @@ function Newsletter() {
 
       {/* Affiche message succès */}
       {msg ? (
-        <p className="w-full text-left text-xs text-green-700 dark:text-green-400">
+        <p className="w-full text-left text-[10px] ml:text-[12px] text-green-700 dark:text-green-400">
           {msg}
         </p>
       ) : null}

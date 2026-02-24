@@ -83,12 +83,12 @@ function Header() {
 
     return(
         <>
-            <header className={`flex items-center justify-between w-full p-2 my-[20px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] md:px-[40px] md:py-[30px] md:m-0 ${isHome && !scrolled ? "text-white" : "text-[#3B82F6] md:bg-white dark:md:bg-transparent"} ${isHome ? "fixed absolute md:top-0 md:left-0" : "static"} dark:text-[#FFFFFF] dark:border-[#FFFFFF]/60 dark:text-white`}>
+            <header className={`flex items-center justify-between w-full p-2 my-[10px] md:m-[0] ml:m-[0] md:px-[40px] ml:px-[40px] md:py-[20px] ml:py-[30px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] ${isHome && !scrolled ? "text-white" : "text-[#3B82F6] md:bg-white dark:md:bg-transparent"} ${isHome ? "fixed absolute md:top-0 md:left-0" : "static"} dark:text-[#FFFFFF] dark:border-[#FFFFFF]/60 dark:text-white`}>
                 
                 {/* LEFT : LOGO */}
                 {logoSrc ? (
                     <Link to="/">
-                        <div className="h-full max-w-[100px] min-w-[20px]">
+                        <div className="max-w-[100px] min-w-[20px]">
                             <img src={logoSrc} alt="Logo" className="w-full" draggable={false}/>
                         </div> 
                     </Link>
@@ -96,7 +96,7 @@ function Header() {
 
                 {/* CENTER : NAVIGATEUR */}
                 <nav className="hidden md:block">
-                    <ul className="flex items-center justify-center gap-[41px] text-[16px] font-bold leading-[15px] tracking-[3px] uppercase">
+                    <ul className="flex items-center justify-center gap-[41px] text-[12px] ml:text-[16px] font-bold leading-[12px] ml:leading-[15px] tracking-[3px] uppercase">
                         
                         <li><Link to={content?.[section]?.home_link  || "/"}>{content?.[section]?.home || t("home")}</Link></li>
                         
@@ -130,9 +130,9 @@ function Header() {
                 </nav>
 
                 {/* RIGHT : BTN & LANGUE */}
-                <div className="hidden md:flex items-center justify-center gap-[34px]">
+                <div className="hidden md:flex items-center justify-center gap-[20px] ml:gap-[34px]">
                     {isVisible(content, section, "btn") && btnLabel && btnLink && (
-                        <Link to={btnLink} className="flex items-center justify-center gap-[10px] px-[40px] py-[10px] rounded-[20px] bg-[linear-gradient(90deg,#2B7FFF_0%,#9810FA_100%)] text-white text-center text-[16px] font-bold leading-[16px] uppercase">
+                        <Link to={btnLink} className="flex items-center justify-center gap-[10px] px-[40px] py-[10px] rounded-[20px] bg-[linear-gradient(90deg,#2B7FFF_0%,#9810FA_100%)] text-white text-center text-[12px] ml:text-[16px] font-bold leading-[12px] ml:leading-[16px] uppercase">
                             {btnLabel}
                         </Link>
                     )}
@@ -142,7 +142,7 @@ function Header() {
                         <button
                             type="button"
                             onClick={toggleLang}
-                            className="h-[46px] cursor-pointer flex items-center justify-center rounded-lg dark:bg-white/10 dark:p-0.5"
+                            className="h-[25px] ml:h-[46px] cursor-pointer flex items-center justify-center rounded-lg dark:bg-white/10 dark:p-0.5"
                             aria-label={isFr ? "Switch to English" : "Passer en français"}
                             title={isFr ? "English" : "Français"}
                         >
