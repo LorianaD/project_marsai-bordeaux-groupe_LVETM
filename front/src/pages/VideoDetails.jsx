@@ -15,7 +15,7 @@ function normalizeToken(t) {
   return String(t)
     .trim()
     .replace(/^"(.+)"$/, "$1") // enlève guillemets si "token"
-    .replace(/\s+/g, "");      // enlève espaces / \r\n
+    .replace(/\s+/g, ""); // enlève espaces / \r\n
 }
 
 function getToken() {
@@ -42,7 +42,11 @@ function getToken() {
     try {
       const u = JSON.parse(userStr);
       const tok = normalizeToken(
-        u?.token || u?.jwt || u?.accessToken || u?.data?.token || u?.user?.token
+        u?.token ||
+          u?.jwt ||
+          u?.accessToken ||
+          u?.data?.token ||
+          u?.user?.token,
       );
       if (tok) return tok;
     } catch {}
@@ -61,7 +65,9 @@ function isSelectorFromToken() {
     const rawRole =
       payload?.role || payload?.user?.role || payload?.status || payload?.type;
 
-    const role = String(rawRole || "").trim().toLowerCase();
+    const role = String(rawRole || "")
+      .trim()
+      .toLowerCase();
 
     return role === "selector" || role === "selectionneur";
   } catch {
@@ -284,12 +290,17 @@ export default function VideoDetails() {
    * Langue “vue” pour choisir title/synopsis FR vs EN
    * useMemo => recalcul uniquement si video change
    */
-  const viewLang = useMemo(() => (video?.language || "fr").toLowerCase(), [video]);
+  const viewLang = useMemo(
+    () => (video?.language || "fr").toLowerCase(),
+    [video],
+  );
 
   // Titre (FR/EN)
   const title = useMemo(() => {
     if (!video) return "";
-    return viewLang === "en" ? video.title_en || video.title : video.title || video.title_en;
+    return viewLang === "en"
+      ? video.title_en || video.title
+      : video.title || video.title_en;
   }, [video, viewLang]);
 
   // Synopsis (FR/EN)
@@ -409,7 +420,12 @@ export default function VideoDetails() {
           {/* Réalisateur */}
           <div className="flex items-start gap-4">
             <PillIcon>
-              <IconImg src={icons.user} alt={tl("director")} className="!h-9 !w-9" scale={2.35} />
+              <IconImg
+                src={icons.user}
+                alt={tl("director")}
+                className="!h-9 !w-9"
+                scale={2.35}
+              />
             </PillIcon>
 
             <div className="flex flex-col gap-1 leading-none">
@@ -425,7 +441,12 @@ export default function VideoDetails() {
           {/* Origine */}
           <div className="flex items-start gap-4">
             <PillIcon>
-              <IconImg src={icons.globe} alt={tl("origin")} className="!h-9 !w-9" scale={2.35} />
+              <IconImg
+                src={icons.globe}
+                alt={tl("origin")}
+                className="!h-9 !w-9"
+                scale={2.35}
+              />
             </PillIcon>
 
             <div className="flex flex-col gap-1 leading-none">
@@ -434,20 +455,32 @@ export default function VideoDetails() {
               </div>
 
               <div className="flex items-center gap-2">
-                <IconImg src={icons.globe} alt="" className="block !h-6 !w-6" scale={1} />
+                <IconImg
+                  src={icons.globe}
+                  alt=""
+                  className="block !h-6 !w-6"
+                  scale={1}
+                />
                 <div className="text-sm font-semibold text-neutral-900 dark:text-white">
                   {country}
                 </div>
               </div>
 
               {/* ✅ BOUTON NOTER */}
+              {/* ✅ BOUTON NOTER — style identique à Copier */}
               {isSelector && (
                 <button
                   type="button"
                   onClick={() => setReviewOpen(true)}
-                  className="mt-3 inline-flex items-center gap-2 rounded-xl bg-[#9810FA] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-sm hover:opacity-90"
+                  className="mt-3 inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-2 text-[11px] font-semibold text-white shadow-sm transition hover:opacity-90 dark:bg-white/10 dark:text-white dark:ring-1 dark:ring-white/10"
                 >
-                  ⭐ Noter
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 17l-5.878 3.09 1.122-6.545L2.49 8.91l6.566-.955L12 2l2.944 5.955 6.566.955-4.755 4.635 1.122 6.545L12 17z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Noter
                 </button>
               )}
             </div>
@@ -457,7 +490,11 @@ export default function VideoDetails() {
         {/* Réseaux sociaux + lien direct */}
         <div className="mt-10 flex flex-wrap items-end gap-8">
           <div className="flex flex-wrap gap-5">
-            <SocialItem label={social?.x?.label} icon={social?.x?.icon} href="https://x.com" />
+            <SocialItem
+              label={social?.x?.label}
+              icon={social?.x?.icon}
+              href="https://x.com"
+            />
             <SocialItem
               label={social?.linkedin?.label}
               icon={social?.linkedin?.icon}
@@ -504,7 +541,12 @@ export default function VideoDetails() {
         {/* Bloc Synopsis + Tech AI */}
         <div className="mt-10 rounded-3xl border border-neutral-200 bg-white p-10 shadow-sm dark:border-white/10 dark:bg-white/5">
           <div className="flex items-center gap-3 text-[#EF4444]">
-            <IconImg src={icons.book} alt={tl("synopsis")} className="!h-9 !w-9" scale={2.2} />
+            <IconImg
+              src={icons.book}
+              alt={tl("synopsis")}
+              className="!h-9 !w-9"
+              scale={2.2}
+            />
             <h2 className="text-xs font-extrabold uppercase tracking-[0.22em]">
               {tl("synopsis")}
             </h2>
@@ -515,7 +557,12 @@ export default function VideoDetails() {
           </p>
 
           <div className="mt-8 flex items-center gap-3 text-[#3B82F6]">
-            <IconImg src={icons.chip} alt={tl("techStackAi")} className="!h-9 !w-9" scale={2.2} />
+            <IconImg
+              src={icons.chip}
+              alt={tl("techStackAi")}
+              className="!h-9 !w-9"
+              scale={2.2}
+            />
             <h3 className="text-xs font-extrabold uppercase tracking-[0.22em]">
               {tl("techStackAi")}
             </h3>
@@ -532,7 +579,9 @@ export default function VideoDetails() {
                 </span>
               ))
             ) : (
-              <span className="text-sm text-neutral-500 dark:text-white/60">—</span>
+              <span className="text-sm text-neutral-500 dark:text-white/60">
+                —
+              </span>
             )}
           </div>
         </div>
@@ -576,7 +625,9 @@ export default function VideoDetails() {
                   onChange={(e) => setMyRating(e.target.value)}
                   className="w-full"
                 />
-                <span className="w-10 text-center text-lg font-extrabold">{myRating}</span>
+                <span className="w-10 text-center text-lg font-extrabold">
+                  {myRating}
+                </span>
               </div>
 
               <label className="mt-6 block text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-white/50">
