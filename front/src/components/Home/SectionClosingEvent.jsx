@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router";
 
 function SectionClosingEvent() {
 
@@ -45,9 +46,9 @@ function SectionClosingEvent() {
                         {t("closingEvent.card.hour")} • {t("closingEvent.card.localisation")}
                     </p>
                 </div>
-                <button className="inline-flex items-center justify-center rounded-[16px] bg-[#CBCBCB] dark:bg-[#FFFFFF] py-[20px] px-[49.5px] text-[16px] font-bold leading-[24px] tracking-[1.6px] uppercase dark:text-[#000000]">
+                <Link to="/events" className="inline-flex items-center justify-center rounded-[16px] bg-[#CBCBCB] dark:bg-[#FFFFFF] py-[20px] px-[49.5px] text-[16px] font-bold leading-[24px] tracking-[1.6px] uppercase dark:text-[#000000]">
                     {t("closingEvent.card.ctaBooking")}
-                </button>                
+                </Link>                
             </div>
         </section>
     )

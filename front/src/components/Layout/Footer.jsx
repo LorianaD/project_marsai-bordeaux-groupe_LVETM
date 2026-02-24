@@ -31,9 +31,9 @@ function Footer() {
 
         {/* GRID PRINCIPAL */}
 
-        <div className="flex gap-[80px] items-start flex-col md:flex-row justify-between">
+        <div className="grid items-start gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {/* LEFT */}
-          <div>
+          <div className="min-w-0 lg:col-span-1">
             <Link to="/">
               <h2 className="text-3xl font-semibold tracking-tight">
                 {t("brand.logo1")}
@@ -77,51 +77,60 @@ function Footer() {
           </div>
 
           {/* CENTER */}
-          <div className="flex gap-x-[100px] flex-col md:flex-row">
-            {/* NAVIGATION */}
-            <div className="w-full">
-              <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
-                {t("sections.navigation")}
-              </h3>
+          <div className="min-w-0 md:col-span-1 lg:col-span-2">
 
-              <ul className="mt-8 space-y-6 text-sm">
-                <li>
-                  <Link to="/gallery">{t("links.gallery")}</Link>
-                </li>
-                <li>
-                  <Link to="/events">{t("links.program")}</Link>
-                </li>
-                <li>
-                  <Link to="/events">{t("links.tickets")}</Link>
-                </li>
-               
-              </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10">
+
+              {/* NAVIGATION */}
+              <div className="min-w-0">
+                <h3 className="text-xs font-semibold tracking-[0.25em] text-violet-500 uppercase">
+                  {t("sections.navigation")}
+                </h3>
+
+                <ul className="mt-8 space-y-6 text-sm">
+                  <li>
+                    <Link to="/gallery">{t("links.gallery")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/events">{t("links.program")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/events">{t("links.tickets")}</Link>
+                  </li>
+                
+                </ul>
+              </div>
+            
+              {/* LEGAL */}
+              <div className="min-w-0">
+                <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
+                  {t("sections.legal")}
+                </h3>
+
+                <ul className="mt-8 space-y-6 text-sm">
+                  <li>
+                    <Link to="/partner">{t("links.partners")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/faq">{t("links.faq")}</Link>
+                  </li>
+                  <li>
+                    <Link to="/contact">{t("links.contact")}</Link>
+                  </li>
+                </ul>
+              </div>
+
             </div>
 
-            {/* LEGAL */}
-            <div className="w-full">
-              <h3 className="text-xs font-semibold tracking-[0.25em] text-pink-500 uppercase">
-                {t("sections.legal")}
-              </h3>
-
-              <ul className="mt-8 space-y-6 text-sm">
-                <li>
-                  <Link to="/partner">{t("links.partners")}</Link>
-                </li>
-                <li>
-                  <Link to="/faq">{t("links.faq")}</Link>
-                </li>
-                <li>
-                  <Link to="/contact">{t("links.contact")}</Link>
-                </li>
-              </ul>
-            </div>
           </div>
 
           {/* RIGHT - NEWSLETTER */}
-          <div className="w-full lg:w-auto flex lg:justify-end">
-            <Newsletter />
+          <div className="min-w-0 md:col-span-2 lg:col-span-1 flex md:justify-start lg:justify-end">
+            <div className="w-full max-w-[420px] lg:max-w-[360px]">
+              <Newsletter />
+            </div>
           </div>
+
         </div>
 
         {/* SEPARATOR */}
