@@ -1,14 +1,6 @@
-import fs from "fs";
-import path from "path";
 import videosModel from "../../models/videos.model.js";
+import { getObjectFromS3 } from "../../services/scalewayS3.service.js";
 
-// Retourne le dossier de stockage des vidéos
-function getVideoBaseDir() {
-  if (process.env.VIDEO_DIR) return process.env.VIDEO_DIR;
-  return path.join(process.cwd(), "uploads", "videos");
-}
-
-// Stream une vidéo avec support Range
 async function streamVideoController(req, res) {
   try {
     const { id } = req.params;
@@ -20,65 +12,42 @@ async function streamVideoController(req, res) {
       return res.status(404).json({ error: "Vidéo introuvable" });
     }
 
-    if (video.upload_status && video.upload_status !== "Published") {
+    if (video.upload_status !== "Published") {
       return res.status(403).json({ error: "Vidéo non disponible" });
     }
 
-    const videoPath = path.join(getVideoBaseDir(), video.video_file_name);
+    const key = video.video_file_name;
 
-    let stat;
-    try {
-      stat = fs.statSync(videoPath);
-    } catch {
-      return res
-        .status(404)
-        .json({ error: "Fichier vidéo introuvable sur le serveur" });
-    }
-
-    const fileSize = stat.size;
-
+    // IMPORTANT : HTML video exige Range
     if (!range) {
-      res.writeHead(200, {
-        "Content-Length": fileSize,
-        "Content-Type": "video/mp4",
-        "Accept-Ranges": "bytes",
+      return res.status(416).json({
+        error: "Range header requis",
       });
-
-      fs.createReadStream(videoPath).pipe(res);
-      return;
     }
 
-    const match = String(range).match(/bytes=(\d+)-(\d*)/);
-
-    if (!match) {
-      return res.status(416).json({ error: "Range invalide" });
-    }
-
-    const start = Number(match[1]);
-    const requestedEnd = match[2] ? Number(match[2]) : null;
-    const CHUNK_SIZE = 10 ** 6;
-
-    const end = Math.min(requestedEnd ?? start + CHUNK_SIZE - 1, fileSize - 1);
-
-    if (start >= fileSize || end < start) {
-      return res.status(416).set("Content-Range", `bytes */${fileSize}`).end();
-    }
-
-    const stream = fs.createReadStream(videoPath, { start, end });
-
-    res.writeHead(206, {
-      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-      "Accept-Ranges": "bytes",
-      "Content-Length": end - start + 1,
-      "Content-Type": "video/mp4",
+    // Exemple: bytes=0-
+    const s3Object = await getObjectFromS3({
+      key,
+      range,
     });
 
-    stream.pipe(res);
+    const contentRange = s3Object.ContentRange;
+    const contentLength = s3Object.ContentLength;
+    const contentType = s3Object.ContentType || "video/mp4";
+
+    res.writeHead(206, {
+      "Content-Range": contentRange,
+      "Accept-Ranges": "bytes",
+      "Content-Length": contentLength,
+      "Content-Type": contentType,
+    });
+
+    s3Object.Body.pipe(res);
   } catch (error) {
-    // Erreur serveur
     console.error("streamVideoController error:", error);
+
     res.status(500).json({
-      error: "Erreur serveur",
+      error: "Erreur streaming",
       details: error.message,
     });
   }
