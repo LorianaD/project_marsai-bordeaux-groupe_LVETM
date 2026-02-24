@@ -8,6 +8,7 @@ import {
   patchAdminVideoStatus,
 } from "../../services/Videos/adminVideosApi";
 import BtnLogout from "../../components/Buttons/BtnLogout";
+import { decodeToken } from "../../utils/decodeToken";
 
 const STATUS_OPTIONS = [
   "All",
@@ -20,6 +21,8 @@ const STATUS_OPTIONS = [
 ];
 
 export default function AdminVideos() {
+  const user = decodeToken();
+  const isSelector = user?.role === "selector";
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState(null);
@@ -120,7 +123,7 @@ export default function AdminVideos() {
               avant.
             </p>
           </div>
-          <BtnLogout/>
+          { isSelector && <BtnLogout/> }
         </div>
 
         {/* Card */}
