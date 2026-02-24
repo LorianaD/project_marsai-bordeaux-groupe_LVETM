@@ -29,7 +29,7 @@ function SectionHero() {
     return(
         <>
             {isSectionVisible(content, section) && (
-                <section className="relative w-full h-screen flex flex-col items-center justify-center md:gap-[20px] ml:gap-[48px]">
+                <section className="relative w-full h-screen flex flex-col items-center justify-center">
 
                     {/* BACKGROUND DE LA SECTION : VIDEO OU IMAGE */}
                     {content?.[section]?.media && (
@@ -43,7 +43,7 @@ function SectionHero() {
                     )}
 
                     {/* LOGO, TITRE, ECT. */}
-                    <div className="flex py-[24px] flex-col justify-center items-center gap-[15px] md:gap-[20px] ml:gap-[50px] self-stretch z-20">
+                    <div className="flex py-[24px] flex-col justify-center items-center gap-[clamp(1rem,2vw,3rem)] self-stretch z-20">
 
                         <div className="flex flex-col justify-center items-center gap-[10px] self-stretch">
                             
@@ -63,7 +63,7 @@ function SectionHero() {
 
                             </div>
                             
-                            <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold leading-[40px] md:leading-[72px] ml:leading-[192px] tracking-[-2.4px] md:tracking-[-3.6] ml:tracking-[-9.6px] uppercase text-[48px] md:text-[100px] ml:text-[192px] text-center">
+                            <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold text-center uppercase text-[clamp(48px,6vw,192px)] tracking-[clamp(-2.4px,-0.5vw,-9.6px)] leading-[clamp(48px,6vw,192px)]">
                                 {isVisible(content, section, "title_main") && (
                                     <span>
                                         {content?.[section]?.title_main || t("hero.title_main")}
@@ -77,7 +77,7 @@ function SectionHero() {
                                 )}
                             </h1>
 
-                            <p className="text-[#FFFFFF] text-[16px] md:text-[20px] ml:text-[35px] font-bold tracking-[0.5px] uppercase text-center">
+                            <p className="text-[#FFFFFF] text-[clamp(16px,2.2vw,35px)] font-bold tracking-[0.5px] uppercase text-center">
 
                                 {isVisible(content, section, "tagline_before") && (
                                     <span>
@@ -86,7 +86,9 @@ function SectionHero() {
                                 )}
 
                                 {isVisible(content, section, "tagline_highlight") && (
-                                    <span className="bg-gradient-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent" > {content?.[section]?.tagline_highlight || t("hero.tagline_highlight")} </span>
+                                    <span className="bg-gradient-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent" >
+                                        {" "}{content?.[section]?.tagline_highlight || t("hero.tagline_highlight")}{" "}
+                                    </span>
                                 )}
 
                                 {isVisible(content, section, "tagline_after") && (
@@ -98,7 +100,7 @@ function SectionHero() {
                             </p>
                         </div>
 
-                        <div className="flex flex-col items-center justify-center gap-[3px] md:gap-[4px] ml:gap-[6px] px-1 self-stretch text-white/40 text-center text-[18px] md:text-[24px] font-normal leading-[29px] md:leading-[39px]">
+                        <div className="flex flex-col items-center justify-center gap-2 md:gap-1.5 px-1 self-stretch text-white/40 text-center text-[18px] md:text-[24px] font-normal leading-[1.625]">
                             
                             {isVisible(content, section, "desc1") && (
                                 <p>{content?.[section]?.desc1 || t("hero.desc1")}</p>
