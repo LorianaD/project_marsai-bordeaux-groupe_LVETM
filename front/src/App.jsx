@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/Layout/MainLayout.jsx";
 import Home from "./pages/Home.jsx";
 import Gallery from "./pages/Gallery.jsx";
@@ -21,6 +21,7 @@ import AdminRegister from "./pages/Admin/AdminRegister.jsx";
 import AdminLogin from "./pages/Login.jsx";
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
+import RequireAuth from "./routes/RequireAuth.jsx";
 
 
 
@@ -64,7 +65,7 @@ export default function App() {
 
 
         {/* Routes avec obligation de connexion */}
-        <Route element={<Outlet />}>
+        <Route element={<RequireAuth />}>
 
           {/* ADMIN */}
           <Route path="/admin/*" element={<AdminRouter />} />

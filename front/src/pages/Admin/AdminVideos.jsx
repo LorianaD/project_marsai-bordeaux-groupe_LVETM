@@ -7,6 +7,7 @@ import {
   patchAdminVideoFeatured,
   patchAdminVideoStatus,
 } from "../../services/Videos/adminVideosApi";
+import BtnLogout from "../../components/Buttons/BtnLogout";
 
 const STATUS_OPTIONS = [
   "All",
@@ -109,14 +110,17 @@ export default function AdminVideos() {
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         {/* Title */}
-        <div className="mt-8">
-          <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
-            FILMS SOUMIS
+        <div className="flex justify-between items-center">
+          <div className="mt-8">
+            <h2 className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
+              FILMS SOUMIS
+            </h2>
+            <p className="mt-1 text-black/50 dark:text-white/50">
+              Gérez l&apos;intégralité des soumissions et gérez les mises en
+              avant.
+            </p>
           </div>
-          <div className="mt-1 text-black/50 dark:text-white/50">
-            Gérez l&apos;intégralité des soumissions et gérez les mises en
-            avant.
-          </div>
+          <BtnLogout/>
         </div>
 
         {/* Card */}
