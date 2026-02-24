@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { getUsers, updateUserRole, deleteUser } from "../../services/Admin/Users.api.js";
 import { decodeToken } from "../../utils/decodeToken.js";
+import RegisterForm from "./RegisterForm.jsx";
+import AdminSelect from "./AdminSelect.jsx";
 
 const ROLE_OPTIONS = ["Filtrer par rôle", "admin", "selector", "superadmin"];
 
@@ -22,6 +24,7 @@ function DashboardUser() {
   const [roleFilter, setRoleFilter] = useState("Filtrer par rôle");
   const [busyId, setBusyId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   /*============================================ 
     Charge la liste des users depuis le backend
@@ -109,6 +112,11 @@ function DashboardUser() {
     }
   }
 
+
+
+  const cardClass =
+    "overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]";
+
   return (
     <>
       {error && (
@@ -122,45 +130,87 @@ function DashboardUser() {
         </div>
       )}
 
-      <div className="flex flex-col gap-3 pt-2 pb-4 md:flex-row md:items-center md:justify-between md:gap-4">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE9F4] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">            👥
-          </span>
-          <div className="text-sm font-semibold">Gestion des utilisateurs</div>
-        </div>
-
-        <div className="w-full rounded-full border border-black/10 bg-black/0 px-3 py-2 md:w-auto dark:border-white/10 dark:bg-white/5">
-          <select
-            value={roleFilter}
-            onChange={(event) => setRoleFilter(event.target.value)}
-            className="w-full bg-transparent text-sm text-black/70 outline-none md:w-auto dark:text-white/80"
+      {/* Volet dépliable : carte accordéon pour l'ajout */}
+      <div className={`${cardClass} mb-6`}>
+        <button
+          type="button"
+          onClick={() => setShowAddForm((prev) => !prev)}
+          className="flex w-full cursor-pointer items-center justify-between px-6 py-4 text-left transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+        >
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#E8F4FF] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">
+              ➕
+            </span>
+            <span className="text-sm font-semibold text-black/90 dark:text-white/90">
+              Ajouter un admin / sélectionneur
+            </span>
+          </div>
+          <span
+            className={`inline-block text-xs text-black/60 transition-transform duration-300 ease-in-out dark:text-white/60 ${showAddForm ? "rotate-180" : ""}`}
+            aria-hidden
           >
-            {ROLE_OPTIONS.filter((role) => role !== "superadmin").map((role) => (
-              <option
-                key={role}
-                value={role}
-                className="bg-white text-black dark:bg-black dark:text-white"
-              >
-                {ROLE_LABELS[role] || role}
-              </option>
-            ))}
-          </select>
+            ▼
+          </span>
+        </button>
+
+        <div
+          className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+          style={{ gridTemplateRows: showAddForm ? "1fr" : "0fr" }}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="border-t border-black/10 px-6 py-5 dark:border-white/10">
+              <RegisterForm
+                variant="dashboard"
+                selectableRole={true}
+                onSuccess={() => {
+                  setShowAddForm(false);
+                  refresh();
+                  setSuccess("Utilisateur créé avec succès.");
+                  setTimeout(() => setSuccess(""), 3000);
+                }}
+                onCancel={() => setShowAddForm(false)}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        {loading && (
-          <div className="py-8 text-sm text-black/55 dark:text-white/55">
-            Chargement...
+      {/* Gestion des utilisateurs */}
+      <div className={cardClass}>
+        <div className="px-6 py-5">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE9F4] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">
+                👥
+              </span>
+              <div className="text-sm font-semibold">Gestion des utilisateurs</div>
+            </div>
+
+            <AdminSelect
+              value={roleFilter}
+              onChange={setRoleFilter}
+              options={ROLE_OPTIONS.filter((role) => role !== "superadmin").map((role) => ({
+                value: role,
+                label: ROLE_LABELS[role] || role,
+              }))}
+              className="w-full md:w-auto"
+            />
           </div>
-        )}
+        </div>
+
+        <div className="border-t border-black/10 px-6 dark:border-white/10">
+          {loading && (
+            <div className="py-8 text-sm text-black/55 dark:text-white/55">
+              Chargement...
+            </div>
+          )}
         {!loading && filtered.length === 0 && (
           <div className="py-8 text-sm text-black/55 dark:text-white/55">
             Aucun utilisateur trouvé.
           </div>
         )}
-        {!loading && filtered.length > 0 && (
-          <>
+          {!loading && filtered.length > 0 && (
+            <>
             {/* Header */}
             <div
               className="grid grid-cols-[1fr_1fr_1.5fr_0.8fr_0.8fr_0.6fr] gap-4 border-t border-black/10 py-3 text-xs font-semibold tracking-wider text-black/55
@@ -216,25 +266,19 @@ function DashboardUser() {
                   {currentUser?.role === "superadmin" && (
                     <div>
                       {user.role !== "superadmin" ? (
-                        <div className="w-full rounded-full border border-black/10 bg-black/0 px-3 py-2 dark:border-white/10 dark:bg-white/5">
-                          <select
-                            value=""
-                            disabled={busyId === user.id}
-                            onChange={(event) => onChangeRole(user.id, event.target.value)}
-                            className="w-full bg-transparent text-sm text-black/70 outline-none dark:text-white/80"
-                          >
-                            <option value="" disabled className="bg-white text-black dark:bg-black dark:text-white">
-                              Modifier rôle
-                            </option>
-                            {ROLE_OPTIONS.filter(
-                              (role) => role !== "Filtrer par rôle" && role !== "superadmin",
-                            ).map((role) => (
-                              <option key={role} value={role} className="bg-white text-black dark:bg-black dark:text-white">
-                                {ROLE_LABELS[role] || role}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                        <AdminSelect
+                          value=""
+                          onChange={(val) => val && onChangeRole(user.id, val)}
+                          placeholder="Modifier rôle"
+                          placeholderAsOption={false}
+                          disabled={busyId === user.id}
+                          options={ROLE_OPTIONS.filter(
+                            (role) => role !== "Filtrer par rôle" && role !== "superadmin",
+                          ).map((role) => ({
+                            value: role,
+                            label: ROLE_LABELS[role] || role,
+                          }))}
+                        />
                       ) : (
                         ""
                       )}
@@ -259,8 +303,9 @@ function DashboardUser() {
                 </div>
               ))}
             </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

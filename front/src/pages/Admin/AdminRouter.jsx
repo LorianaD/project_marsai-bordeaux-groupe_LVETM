@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router";
 
 import AdminLayout from "../../components/Layout/AdminLayout";
+import AdminGuard from "../../components/admin/AdminGuard";
 
 import Overview from "./Overview";
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
@@ -21,7 +22,7 @@ import AdminUsers from "./AdminUsers";
 export function AdminRouter() {
   return (
     <Routes>
-      <Route  element={<AdminLayout />} >
+      <Route element={<AdminGuard><AdminLayout /></AdminGuard>}>
 
         {/* Admin */}
         <Route index element={<Overview />} />

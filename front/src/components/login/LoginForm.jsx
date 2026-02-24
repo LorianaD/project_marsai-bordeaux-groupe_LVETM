@@ -1,19 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
+import { decodeToken } from "../../utils/decodeToken.js";
 import { inputLightClasses } from "../../utils/formInputClasses.js";
-
-/*========================================================================
-  Formulaire de connexion avec gestion du JWT et redirection selon le rôle
- =======================================================================*/
-function safeDecodeRole(token) {
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload?.role || null;
-  } catch {
-    return null;
-  }
-}
 
 /**
   Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
@@ -55,7 +44,6 @@ function LoginForm() {
     setLoading(true);
 
     try {
-
       const result = await loginUser(email, password);
 
       if (!result?.token) {
@@ -63,43 +51,15 @@ function LoginForm() {
       }
 
       localStorage.setItem("token", result.token);
-
-      //bug a cette ligne
-      try {
-  const result = await loginUser(email, password);
-
-  if (!result?.token) throw new Error("Token manquant dans la réponse.");
-
-  localStorage.setItem("token", result.token);
-
-  setSuccess(true);
-
-  // Redirection apres avoir log un user
-  const role = safeDecodeRole(result.token);
-  if (role === "selector") {
-    navigate("/selector/videos", { replace: true });
-  } else {
-    navigate("/admin/overview", { replace: true });
-  }
-} catch (err) {
-  console.error(err);
-}
-      
       setSuccess(true);
-      
+
+      const user = decodeToken();
+      const target = user?.role === "selector" ? "/selector/videos" : "/admin/overview";
+
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
-        if (!isMountedRef.current) return;
-        const role = safeDecodeRole(result.token);
-        /*==========================================================================================================================
-          Redirection selon le rôle utilisateur (contenu dans le JWT) selector /selector/videos | admin/superadmin /admin/overview
-         ==========================================================================================================================*/
-        if (role === "selector") {
-          navigate("/selector/videos", { replace: true });
-        } else {
-          navigate("/admin/overview", { replace: true });
-        }
-      }, 1200);
+        navigate(target, { replace: true });
+      }, 500);
     } catch (err) {
       if (!isMountedRef.current) return;
       setError(err?.message || "Échec de la connexion.");
