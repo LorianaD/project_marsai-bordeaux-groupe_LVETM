@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { getUsers, updateUserRole, deleteUser } from "../../services/Admin/Users.api.js";
 import { decodeToken } from "../../utils/decodeToken.js";
+import RegisterForm from "./RegisterForm.jsx";
 
 const ROLE_OPTIONS = ["Filtrer par rôle", "admin", "selector", "superadmin"];
 
@@ -22,6 +23,7 @@ function DashboardUser() {
   const [roleFilter, setRoleFilter] = useState("Filtrer par rôle");
   const [busyId, setBusyId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   /*============================================ 
     Charge la liste des users depuis le backend
@@ -109,6 +111,8 @@ function DashboardUser() {
     }
   }
 
+
+
   return (
     <>
       {error && (
@@ -122,11 +126,33 @@ function DashboardUser() {
         </div>
       )}
 
+      {showAddForm && (
+        <div className="mb-6">
+          <RegisterForm
+            selectableRole={true}
+            onSuccess={() => {
+              setShowAddForm(false);
+              refresh();
+              setSuccess("Utilisateur créé avec succès.");
+              setTimeout(() => setSuccess(""), 3000);
+            }}
+            onCancel={() => setShowAddForm(false)}
+          />
+        </div>
+      )}
+
       <div className="flex flex-col gap-3 pt-2 pb-4 md:flex-row md:items-center md:justify-between md:gap-4">
         <div className="flex items-center gap-3">
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE9F4] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">            👥
           </span>
           <div className="text-sm font-semibold">Gestion des utilisateurs</div>
+          <button
+            type="button"
+            onClick={() => setShowAddForm(true)}
+            className="rounded-full border border-black/10 bg-black/5 px-4 py-2 text-xs font-semibold text-black/70 hover:bg-black/10 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10"
+          >
+            Ajouter un admin / sélectionneur
+          </button>
         </div>
 
         <div className="w-full rounded-full border border-black/10 bg-black/0 px-3 py-2 md:w-auto dark:border-white/10 dark:bg-white/5">

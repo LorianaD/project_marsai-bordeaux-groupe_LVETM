@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { registerUser } from "../../services/Auth/RegisterApi.js";
 
-function RegisterForm() {
+function RegisterForm({
+  role = "admin",
+  selectableRole = false,
+  onSuccess,
+  onCancel,
+}) {
   /* ======================================================================
   state pour stocker et changer les valeur grace au champ vide usestate("")
   ====================================================================== */
@@ -12,7 +17,7 @@ function RegisterForm() {
   const [verifyPassword, setVerifyPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  // const [role, setRole] = useState("Admin");
+  const [selectedRole, setSelectedRole] = useState(role);
 
   /* =================================================
   fonction pour verifier le formulaire a sa soumission
@@ -83,6 +88,7 @@ function RegisterForm() {
     }
 
     try {
+      const roleToUse = selectableRole ? selectedRole : role;
       await registerUser(
         {
           email: email.trim(),
@@ -90,10 +96,15 @@ function RegisterForm() {
           lastname: lastName.trim(),
           password,
         },
-        "admin",
+        roleToUse,
       );
 
-      setSuccess("User created successfully !");
+      setSuccess(
+        onSuccess
+          ? "Utilisateur créé avec succès !"
+          : "User created successfully !",
+      );
+      if (onSuccess) onSuccess();
     } catch (err) {
       setError(err.message);
     }
@@ -104,7 +115,6 @@ function RegisterForm() {
       onSubmit={handleSubmit}
       className="bg-transparent border border-[#2a2a3a] rounded-2xl p-8 w-full max-w-md flex flex-col items-center gap-6"
     >
-      
       <div className="flex flex-col items-center gap-2">
         <h2 className="text-2xl font-bold uppercase tracking-widest text-transparent bg-clip-text bg-linear-to-t from-[#7c2cfb] to-[#2e7afe]">
           Create an Account
@@ -114,7 +124,6 @@ function RegisterForm() {
         </p>
       </div>
 
-      
       <div className="w-full flex gap-4">
         <div className="flex-1 flex flex-col gap-1">
           <label className="text-xs uppercase tracking-wider text-gray-400">
@@ -142,7 +151,6 @@ function RegisterForm() {
         </div>
       </div>
 
-
       <div className="w-full flex flex-col gap-1">
         <label className="text-xs uppercase tracking-wider text-gray-400">
           E-mail address *
@@ -156,11 +164,26 @@ function RegisterForm() {
         />
       </div>
 
-  
+      {selectableRole && (
+        <div className="w-full flex flex-col gap-1">
+          <label className="text-xs uppercase tracking-wider text-gray-400">
+            Role *
+          </label>
+          <select
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            className="w-full bg-[#08080e] border border-[#2a2a3a] rounded-full px-4 py-3 text-white focus:outline-none focus:border-purple-500"
+          >
+            <option value="admin">Administrateur</option>
+            <option value="selector">Sélectionneur</option>
+          </select>
+        </div>
+      )}
+
       <div className="w-full flex gap-4">
         <div className="flex-1 flex flex-col gap-1">
           <label className="text-xs uppercase tracking-wider text-gray-400">
-            Password *
+            Mot de passe *
           </label>
           <input
             type="password"
@@ -184,17 +207,29 @@ function RegisterForm() {
         </div>
       </div>
 
-      
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+      {success && (
+        <p className="text-green-500 text-sm text-center">{success}</p>
+      )}
 
       
-      <button
-        type="submit"
-        className="w-full bg-[#0d0d14] border border-[#2a2a3a] rounded-full py-3 text-white uppercase tracking-wider text-sm hover:border-purple-500 transition-colors cursor-pointer"
-      >
-        Register
-      </button>
+            <div className="w-full flex gap-3">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex-1 rounded-full border border-[#2a2a3a] py-3 text-sm uppercase tracking-wider hover:border-purple-500 transition-colors cursor-pointer"
+          >
+            Annuler
+          </button>
+        )}
+        <button
+          type="submit"
+          className="flex-1 w-full bg-[#0d0d14] border border-[#2a2a3a] rounded-full py-3 text-white uppercase tracking-wider text-sm hover:border-purple-500 transition-colors cursor-pointer"
+        >
+          {onCancel ? "Créer" : "Register"}
+        </button>
+      </div>
     </form>
   );
 }
