@@ -119,7 +119,7 @@ function Footer() {
           </div>
 
           {/* RIGHT - NEWSLETTER */}
-          <div className="max-w-[400px]">
+          <div className="w-full lg:w-auto flex lg:justify-end">
             <Newsletter />
           </div>
         </div>
