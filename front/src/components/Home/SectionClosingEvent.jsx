@@ -18,7 +18,7 @@ function SectionClosingEvent() {
                 </div>
 
                 {/* Title */}
-                <h2 className="text-[48px] md:text-[90px] font-bold leading-[48px] md:leading-[90px] tracking-[-2.4px] md:tracking-[-4.5px] uppercase text-left">
+                <h2 className="text-[48px] md:text-[90px] font-bold leading-[48px] md:leading-[90px] tracking-[-2.4px] md:tracking-[-4.5px] uppercase text-left w-full">
                     {t("closingEvent.title_main")}
                     <span className="block text-[#F6339A] italic">
                         {t("closingEvent.title_accent")}
@@ -26,7 +26,7 @@ function SectionClosingEvent() {
                 </h2>
 
                 {/* Paragraphe */}
-                <p className="text-[18px] font-normal leading-[29.25px]">
+                <p className="text-[18px] font-normal leading-[29.25px] w-full">
                     {t("closingEvent.description.ligne1")}<br/>
                     {t("closingEvent.description.ligne2")}
                 </p>
