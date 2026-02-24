@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 // import { buildCmsMap } from "../../utils/buildCmsMap";
 import { isSectionVisible, isVisible } from "../../utils/isVisible";
 import useCmsContent from "../../hooks/useCmsContent";
+import { toMediaUrl } from "../../utils/mediaUrl";
 
 import arrowSrc from "../../assets/imgs/icones/arrowRightWhite.svg";
 
@@ -148,7 +149,7 @@ function SectionAward() {
                   "Unknown director";
 
                 const coverUrl = video?.cover
-                  ? `${API_BASE}/uploads/covers/${video.cover}`
+                  ? toMediaUrl(video.cover, "covers", API_BASE)
                   : "";
 
                 return (
