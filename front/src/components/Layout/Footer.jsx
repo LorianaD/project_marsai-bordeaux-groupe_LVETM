@@ -137,12 +137,12 @@ function Footer() {
         <div className="mt-[50px] h-px w-full bg-black/20 dark:bg-[#FFFFFF]/20" />
 
         {/* BOTTOM BAR */}
-        <div className="mt-[30px] flex items-center justify-between opacity-70 flex-col md:flex-row w-full">
-          <span className="text-[10px] font-bold tracking-[5px] uppercase w-full">
+        <div className="mt-[30px] flex items-center justify-between opacity-70 flex-col md:flex-row w-full gap-[20px]">
+          <span className="text-[10px] font-bold tracking-[5px] uppercase w-full text-center md:text-left">
             {t("bottom.copyright")}
           </span>
 
-          <div className="flex flex-col md:flex-row items-center justify-end gap-[48px] w-full">
+          <div className="flex flex-col md:flex-row items-center justify-end gap-[20px] w-full md:gap-[48px]">
             <span className="text-[10px] font-bold tracking-[5px] uppercase">
               {t("designSystem")}
             </span>

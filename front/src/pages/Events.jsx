@@ -56,7 +56,7 @@ function Events() {
   }, []);
 
   return (
-    <main className="w-full pt-[100px]">
+    <main className="w-full p-[25px] md:px-[100px] md:py-[50px]">
       <div className="mx-auto px-6 py-12 space-y-16">
         {/* INFOS PRATIQUES */}
         <section id="infos-pratiques" className="space-y-6">
@@ -205,18 +205,14 @@ function Events() {
             </article>
           </div>
 
-          <div className="mt-6 overflow-hidden rounded-3xl border border-dashed border-black/20 bg-black/5 dark:border-white/20 dark:bg-white/5 flex justify-center
-          ">
+          <div className="mt-6 overflow-hidden rounded-3xl border border-dashed border-black/20 bg-black/5 dark:border-white/20 dark:bg-white/5 flex justify-center">
             <iframe
               src="https://www.google.com/maps?q=%C3%89cole+de+la+Plateforme+12+Rue+d%27Uzes+13002+Marseille&output=embed"
-              width={622}
-              height={349}
-              style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title={t("mapTitle")}
-              className="max-w-full"
+              className="flex w-full md:w-[974px] md:h-[547px] p-[10px] items-start gap-[10px] aspect-[276/155] rounded-[40px]"
             />
           </div>
         </section>
