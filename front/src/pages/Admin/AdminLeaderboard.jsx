@@ -4,7 +4,6 @@ import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
 
-
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function AdminLeaderboard() {
@@ -14,7 +13,7 @@ export default function AdminLeaderboard() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
-  const [q, setQ] = useState(""); // recherche
+  const [q, setQ] = useState("");
 
   async function loadLeaderboard() {
     try {
@@ -49,7 +48,19 @@ export default function AdminLeaderboard() {
 
   const top = useMemo(() => {
     const arr = Array.isArray(items) ? [...items] : [];
-    return arr.sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0));
+    return arr.sort((a, b) => {
+      const sa = a?.score == null ? -1 : Number(a.score);
+      const sb = b?.score == null ? -1 : Number(b.score);
+      if (sb !== sa) return sb - sa;
+
+      const ca = a?.reviews_count == null ? 0 : Number(a.reviews_count);
+      const cb = b?.reviews_count == null ? 0 : Number(b.reviews_count);
+      if (cb !== ca) return cb - ca;
+
+      return (
+        Number(b?.video_id ?? b?.id ?? 0) - Number(a?.video_id ?? a?.id ?? 0)
+      );
+    });
   }, [items]);
 
   const filtered = useMemo(() => {
@@ -74,16 +85,15 @@ export default function AdminLeaderboard() {
     });
   }, [top, q]);
 
-  const best = filtered[0] || top[0];
+  const best = useMemo(() => {
+    return top.find((v) => v?.score != null) || null;
+  }, [top]);
 
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-
       <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-10">
         <div className="flex gap-7">
-
           <main className="flex-1">
-
             <div className="mt-8">
               <div className="text-[44px] font-extrabold tracking-tight md:text-[46px]">
                 LEADERBOARD OFFICIEL
@@ -115,6 +125,12 @@ export default function AdminLeaderboard() {
                     <div className="mt-1 text-xs font-semibold uppercase tracking-widest text-black/45 dark:text-white/45">
                       Meilleure note
                     </div>
+                    {best?.reviews_count != null && (
+                      <div className="mt-1 text-[11px] font-semibold text-black/45 dark:text-white/45">
+                        {Number(best.reviews_count)} vote
+                        {Number(best.reviews_count) > 1 ? "s" : ""}
+                      </div>
+                    )}
                   </div>
 
                   <div className="ml-6 hidden md:block">
@@ -142,7 +158,6 @@ export default function AdminLeaderboard() {
                 </button>
               </div>
 
-              {/* Search */}
               <div className="px-6 pb-6">
                 <input
                   value={q}
@@ -233,8 +248,19 @@ export default function AdminLeaderboard() {
                           {country}
                         </div>
 
-                        <div className="self-center text-sm font-semibold text-black/80 dark:text-white/80">
-                          {v.score != null ? Number(v.score).toFixed(1) : "—"}
+                        <div className="self-center">
+                          <div className="text-sm font-semibold text-black/80 dark:text-white/80">
+                            {v.score != null ? Number(v.score).toFixed(1) : "—"}
+                            <span className="text-xs font-semibold text-black/45 dark:text-white/45">
+                              /10
+                            </span>
+                          </div>
+                          {v.reviews_count != null && (
+                            <div className="mt-1 text-[11px] font-semibold text-black/45 dark:text-white/45">
+                              {Number(v.reviews_count)} vote
+                              {Number(v.reviews_count) > 1 ? "s" : ""}
+                            </div>
+                          )}
                         </div>
 
                         <div className="self-center text-right">
