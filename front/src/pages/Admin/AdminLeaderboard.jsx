@@ -208,7 +208,9 @@ export default function AdminLeaderboard() {
                     const country = v.country || v.director_country || "—";
 
                     const coverUrl = v.cover
-                      ? `${API_BASE}/uploads/covers/${v.cover}`
+                      ? v.cover.startsWith("http")
+                        ? v.cover
+                        : `${API_BASE}/uploads/covers/${v.cover}`
                       : "";
 
                     return (
