@@ -1,0 +1,22 @@
+{
+  "titleLine1": "LES MEMBRES",
+  "titleLine2": "DU JURY",
+
+  "loading": "Chargement…",
+  "errorLoading": "Erreur lors du chargement du jury.",
+  "noPresidentDefined": "Aucun président du jury défini.",
+
+  "president": {
+    "defaultRole": "PRÉSIDENT DU JURY",
+    "sectionTitle": "UN JURY D'EXCEPTION",
+    "sectionTitleAccent": "POUR LE FUTUR",
+    "professionFallback": "—",
+    "bioFallback": "…",
+    "filmographyCta": "VOIR SA FILMOGRAPHIE"
+  },
+
+  "members": {
+    "title": "LES MEMBRES",
+    "description": "Experts IA, cinéastes et visionnaires réunis pour délibérer sur la sélection officielle."
+  }
+}

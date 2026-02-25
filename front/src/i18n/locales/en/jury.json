@@ -1,0 +1,22 @@
+{
+  "titleLine1": "JURY",
+  "titleLine2": "MEMBERS",
+
+  "loading": "Loading…",
+  "errorLoading": "Error loading jury.",
+  "noPresidentDefined": "No jury president defined.",
+
+  "president": {
+    "defaultRole": "JURY PRESIDENT",
+    "sectionTitle": "AN EXCEPTIONAL JURY",
+    "sectionTitleAccent": "FOR THE FUTURE",
+    "professionFallback": "—",
+    "bioFallback": "…",
+    "filmographyCta": "SEE FILMOGRAPHY"
+  },
+
+  "members": {
+    "title": "MEMBERS",
+    "description": "AI experts, filmmakers and visionaries gathered to deliberate on the official selection."
+  }
+}
