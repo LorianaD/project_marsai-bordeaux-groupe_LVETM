@@ -9,8 +9,8 @@ function SectionProjected() {
     })
 
     return(
-        <section className="flex flex-col md:flex-row items-center justify-center gap-[48px] px-[20px] md:px-[34px] self-stretch w-full">
-            <div className="flex w-full md:w-[300px] h-[160px] flex-col items-start gap-[24px] text-center md:text-left">
+        <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-[20px] px-[20px] md:px-[100px] self-stretch w-full">
+            <div className="flex w-full md:w-[300px] h-[160px] flex-col items-start gap-[24px] text-left">
                 <h2 className="w-full text-[36px] md:text-[60px] font-bold leading-[36px] md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase">
                     {t("projectedStats.heading.title_main")}
                     <span className="text-[#F6339A] block">
@@ -22,16 +22,18 @@ function SectionProjected() {
                 </p>
             </div>
 
-            {stats.map((stat, i) => (
-                <div key={i} className="flex w-[294px] h-[193px] flex-col items-center gap-[8px] py-[48px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(255,255,255,0.05)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
-                    <p className="text-center text-[72px] font-bold leading-[72px] tracking-[-3.6px]">
-                        {stat.value}
-                    </p>
-                    <p className="text-[#AD46FF] text-center text-[10px] font-bold leading-[15px] tracking-[4px] uppercase" style={{ color: stat.color }}>
-                        {stat.label}
-                    </p>
-                </div>
-            ))}
+            <div className="flex flex-col md:flex-row gap-[48px] px-[20px] md:px-[34px]">
+                {stats.map((stat, i) => (
+                    <div key={i} className="flex w-[294px] h-[193px] flex-col items-center gap-[8px] py-[48px] rounded-[40px] border border-[rgba(0,0,0,0.10)] bg-[rgba(255,255,255,0.05)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
+                        <p className="text-center text-[72px] font-bold leading-[72px] tracking-[-3.6px]">
+                            {stat.value}
+                        </p>
+                        <p className="text-[#AD46FF] text-center text-[10px] font-bold leading-[15px] tracking-[4px] uppercase" style={{ color: stat.color }}>
+                            {stat.label}
+                        </p>
+                    </div>
+                ))}
+            </div>
         </section>
     )
 }

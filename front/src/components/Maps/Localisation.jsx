@@ -5,7 +5,7 @@ function Localisation() {
     const { t } = useTranslation("home");
 
     return(
-        <div className="">
+        <div className="flex justify-center">
             <iframe
                 title="Google Map"
                 className="flex w-full md:w-[974px] md:h-[547px] p-[10px] items-start gap-[10px] aspect-[276/155] rounded-[40px]"

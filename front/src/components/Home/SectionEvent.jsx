@@ -72,7 +72,7 @@ function SectionEvent() {
             </div>
 
             
-            <div className="flex flex-col md:flex-row gap-8 self-stretch text-left py-[20px] w-full justify-center">
+            <div className="flex flex-col md:flex-row gap-8 self-stretch text-left py-[20px] w-full justify-center w-full">
                 {cards
                 .filter((n) => isVisible(content, section, `card${n}_title`))
                 .map((n) => {
@@ -80,7 +80,7 @@ function SectionEvent() {
                     const cardsIconSrc = getCardIconSrc(n);
 
                     return (
-                        <div key={n} className="max-w-[350px] max-h-[260px] self-stretch row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px] hover:border-[#F1F1F1] hover:bg-[#F1F1F1] hover:text-black">
+                        <div key={n} className="max-w-[350px] max-h-[260px] self-stretch row-start-1 row-span-1 col-start-1 col-span-1 justify-self-stretch rounded-[40px] border border-black/10 bg-[rgba(217,217,217,0.05)] p-[40px] flex flex-col gap-[30px] hover:border-[#F1F1F1] hover:bg-[#F1F1F1] hover:text-black w-full">
                             <div className="h-[40px] w-[40px]">
                                 {cardsIconSrc ? (
                                     <img src={cardsIconSrc} alt={content?.[section]?.[`card${n}_title`]} />

@@ -11,7 +11,7 @@ function SectionLocalisation() {
     });
 
     return(
-        <section className="flex flex-col items-center gap-[30px] p-[20px] md:py-[100px] md:px-[75px] self-stretch text-[#000000] dark:text-[#FFFFFF] ">
+        <section className="flex flex-col justify-center items-center gap-[30px] p-[20px] md:py-[100px] md:px-[75px] self-stretch text-[#000000] dark:text-[#FFFFFF] w-full">
             
             <div className="flex items-start w-full">
                 {/* eyebrow */}
@@ -26,15 +26,15 @@ function SectionLocalisation() {
             </div>
 
             {/*  */}
-            <div className="flex flex-col items-start md:items-center md:justify-center gap-[80px] md:px-6 self-stretch">
-                <div className="flex flex-col items-start justify-between gap-[20px] md:gap-[50px]">
-                    <h2 className="text-left text-[48px] md:text-[128px] font-bold leading-[48px] md:leading-[128px] tracking-[-2.4px] md:tracking-[-6.4px] capitalize">
+            <div className="flex flex-col md:items-center justify-center gap-[80px] md:px-6 self-stretch w-full">
+                <div className="flex flex-col items-start justify-between gap-[20px] md:gap-[50px] w-full">
+                    <h2 className="text-left text-[48px] md:text-[128px] font-bold leading-[48px] md:leading-[128px] tracking-[-2.4px] md:tracking-[-6.4px] capitalize w-full">
                         {t("localisationEvent.venue.namePart1")}
                         <span className="block md:inline text-[#51A2FF] [-webkit-text-stroke-width:3px] [-webkit-text-stroke-color:#51A2FF] dark:[-webkit-text-stroke-width:3px] dark:[-webkit-text-stroke-color:#51A2FF]">
                             {t("localisationEvent.venue.namePart2")}
                         </span>
                     </h2>
-                    <div className="flex flex-col md:flex-row md:items-center gap-[24px] md:gap-[30px] self-stretch">
+                    <div className="flex flex-col md:flex-row md:items-center gap-[24px] md:gap-[30px] self-stretch w-full">
                         <p className="text-[#51A2FF] text-left md:text-center text-[10px] font-bold leading-[15px] tracking-[4px] uppercase">
                             {t("localisationEvent.venue.cityTagline")}
                         </p>
