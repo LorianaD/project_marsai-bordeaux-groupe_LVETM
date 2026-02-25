@@ -5,9 +5,12 @@
 ===================================================================================*/
 const API = import.meta.env.VITE_API_URL || "";
 
+
+/* ========================================================================================
+  URL de base de l'API. Vide = requêtes relatives, le proxy Vite redirige vers le backend 
+=========================================================================================*/
 function getApiBase() {
-  if (API && API.trim() !== "") return API.trim().replace(/\/$/, "");
-  return ""; // Vide = URL relative, utilise le proxy Vite (/api -> backend)
+  return (API || "").trim().replace(/\/$/, "");
 }
 
 export async function loginUser(email, password) {
@@ -26,11 +29,7 @@ export async function loginUser(email, password) {
 
   const text = await res.text();
 
-  
-  return res.json()
   if (!res.ok) {
-  
-  return res.json()
     let message = `Erreur ${res.status}`;
     try {
       const data = JSON.parse(text);
