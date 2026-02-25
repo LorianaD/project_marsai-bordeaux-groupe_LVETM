@@ -238,11 +238,11 @@ async function findOneVideoByIdAdmin(id) {
   return rows[0] || null;
 }
 
-// Leaderboard admin : vidéos publiées, triées par featured puis date
+// Leaderboard admin : vidéos publiées + moyenne des reviews /10
 async function findLeaderboardVideos() {
   const sql = `
     SELECT
-      v.id,
+      v.id AS video_id,
       v.title,
       v.title_en,
       v.cover,
@@ -250,18 +250,30 @@ async function findLeaderboardVideos() {
       v.language,
       v.director_name,
       v.director_lastname,
+      v.director_country,
       v.ai_tech,
       v.featured,
-      v.created_at
+      v.created_at,
+      ROUND(AVG(vr.rating), 1) AS score,
+      COUNT(vr.id) AS reviews_count
     FROM videos v
+    LEFT JOIN video_review vr ON vr.video_id = v.id
     WHERE v.upload_status = 'Published'
-    ORDER BY v.featured DESC, v.created_at DESC
+    GROUP BY
+      v.id, v.title, v.title_en, v.cover, v.country, v.language,
+      v.director_name, v.director_lastname, v.director_country,
+      v.ai_tech, v.featured, v.created_at
+    ORDER BY
+      (score IS NULL) ASC,
+      score DESC,
+      reviews_count DESC,
+      v.featured DESC,
+      v.created_at DESC
   `;
 
   const [rows] = await pool.execute(sql);
   return rows;
 }
-
 
 export default {
   findPublishedVideos,

@@ -11,6 +11,7 @@ import adminOneVideoController from "../controllers/videos/adminOneVideo.control
 import patchVideoStatusController from "../controllers/videos/patchVideoStatus.controller.js";
 import patchVideoFeaturedController from "../controllers/videos/patchVideoFeatured.controller.js";
 import adminLeaderboardController from "../controllers/videos/adminLeaderboard.controller.js";
+import adminVideoReviewsController from "../controllers/videos/adminVideoReviews.controller.js";
 
 import getMyReviewController from "../controllers/videos/getMyReview.controller.js";
 import upsertMyReviewController from "../controllers/videos/upsertMyReview.controller.js";
@@ -18,12 +19,9 @@ import upsertMyReviewController from "../controllers/videos/upsertMyReview.contr
 import upload from "../middlewares/uploadVideoMiddleware.js";
 import verifyRecaptcha from "../middlewares/verifyRecaptcha.js";
 
-
 import { verifyToken, isSelector } from "../utils/isAdmin.js";
 
 const router = express.Router();
-
-
 
 // Route de test
 router.get("/test", testController);
@@ -31,6 +29,7 @@ router.get("/test", testController);
 // Routes admin
 router.get("/admin", adminVideosListController);
 router.get("/admin/leaderboard", adminLeaderboardController);
+router.get("/admin/:id/reviews", adminVideoReviewsController);
 router.get("/admin/:id", adminOneVideoController);
 router.patch("/admin/:id/status", patchVideoStatusController);
 router.patch("/admin/:id/featured", patchVideoFeaturedController);
