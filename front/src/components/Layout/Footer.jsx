@@ -126,7 +126,7 @@ function Footer() {
 
           {/* RIGHT - NEWSLETTER */}
           <div className="min-w-0 md:col-span-2 lg:col-span-1 flex md:justify-start lg:justify-end">
-            <div className="w-full max-w-[420px] lg:max-w-[360px]">
+            <div className="max-w-[420px] md:max-w-[600px]">
               <Newsletter />
             </div>
           </div>

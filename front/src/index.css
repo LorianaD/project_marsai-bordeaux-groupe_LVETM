@@ -17,6 +17,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* html, body {
+  height: 100%;
+  overflow-y: auto;
+  touch-action: pan-y;
+} */
+
+
+/* body {
+  -webkit-user-select: none;
+  user-select: none;
+} */
 
 
 @media (prefers-color-scheme: light) {

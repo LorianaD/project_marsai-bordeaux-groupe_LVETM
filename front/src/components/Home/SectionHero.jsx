@@ -129,7 +129,7 @@ function SectionHero() {
 
                             </Link>
 
-                            <Link to={content?.[section]?.ctaLearnMore_link || t(hero.ctaLearnMore_link)} className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
+                            <Link to={content?.[section]?.ctaLearnMore_link || t("hero.ctaLearnMore_link")} className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
                                 
                                 {isVisible(content, section, "ctaLearnMore") && (
                                     <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
