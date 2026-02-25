@@ -62,14 +62,14 @@ function Newsletter() {
   return (
     <form
       onSubmit={submit}
-      className="w-full max-w-[360px] box-border overflow-hidden flex flex-col items-center justify-center gap-[6px] md:gap-[12px] lg:gap-[25px] p-[10px] md:p-[20px] lg:p-[41px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] bg-[rgba(0,0,0,0.05)] dark:bg-white/20"
+      className="w-full box-border overflow-hidden flex flex-col items-center justify-center gap-[6px] md:gap-[12px] lg:gap-[25px] p-[10px] md:p-[20px] lg:p-[41px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] rounded-[10px] md:rounded-[20px] lg:rounded-[40px] bg-[rgba(0,0,0,0.05)] dark:bg-white/20"
     >
       <h2 className="text-[16px] lg:text-[24px] font-bold leading-[24px] tracking-[-1.2px] uppercase text-left w-full flex flex-row lg:flex-col gap-[5px]">
         <span>{t("title_main")}</span>
         <span className="block">{t("title_accent")}</span>
       </h2>
 
-      <div className="flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 self-stretch">
+      <div className="flex flex-col md:flex-row lg:flex-row items-start md:items-center gap-2 self-stretch">
         <input
           type="email"
           value={email}
