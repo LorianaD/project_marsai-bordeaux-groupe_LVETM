@@ -5,7 +5,9 @@ import ReCAPTCHA from "react-google-recaptcha";
 const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 export default function TeamCompositionForm({ onPrev }) {
-  // Etat du collaborateur en cours de saisie
+  const help = "mt-2 text-xs italic text-neutral-500 dark:text-neutral-300";
+
+  // Collaborateur en cours
   const [current, setCurrent] = useState({
     gender: "Mr",
     full_name: "",
@@ -13,7 +15,7 @@ export default function TeamCompositionForm({ onPrev }) {
     email: "",
   });
 
-  // Liste des contributeurs sauvegardée en localStorage
+  // Contributeurs
   const [contributors, setContributors] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
@@ -23,7 +25,7 @@ export default function TeamCompositionForm({ onPrev }) {
     }
   });
 
-  // Etat des certificats + validations finales
+  // Validations
   const [ownership, setOwnership] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("ownership") || "{}");
@@ -32,10 +34,7 @@ export default function TeamCompositionForm({ onPrev }) {
     }
   });
 
-  // Token captcha Google
-  const [captchaToken, setCaptchaToken] = useState("");
-
-  // Modal conditions d'utilisation
+  // Modal conditions
   const [termsOpen, setTermsOpen] = useState(false);
 
   function updateCurrent(e) {
@@ -43,7 +42,6 @@ export default function TeamCompositionForm({ onPrev }) {
     setCurrent((c) => ({ ...c, [name]: value }));
   }
 
-  // Ajoute un contributeur dans la liste
   function addContributor() {
     const ok =
       current.full_name.trim() &&
@@ -58,14 +56,12 @@ export default function TeamCompositionForm({ onPrev }) {
     setCurrent({ gender: "Mr", full_name: "", profession: "", email: "" });
   }
 
-  // Supprime un contributeur
   function removeContributor(i) {
     const next = contributors.filter((_, idx) => idx !== i);
     setContributors(next);
     localStorage.setItem("contributors", JSON.stringify(next));
   }
 
-  // Active ou désactive les certificats / validations
   function toggleOwnership(key) {
     setOwnership((prev) => {
       const next = { ...prev, [key]: !prev?.[key] };
@@ -74,21 +70,18 @@ export default function TeamCompositionForm({ onPrev }) {
     });
   }
 
-  // ✅ Enregistre le token captcha dans ownership (utile pour upload)
-  // ✅ IMPORTANT : on utilise setState fonctionnel pour éviter un ownership "stale"
   function setCaptchaOk(token) {
     setOwnership((prev) => {
       const next = {
         ...prev,
         recaptchaToken: token || "",
-        notRobot: !!token, // garde la compat avec l'ancien champ si utilisé ailleurs
+        notRobot: !!token,
       };
       localStorage.setItem("ownership", JSON.stringify(next));
       return next;
     });
   }
 
-  // Vérifie si la validation finale est possible
   const canFinish = useMemo(() => {
     return (
       !!ownership?.ownershipCertified &&
@@ -101,7 +94,7 @@ export default function TeamCompositionForm({ onPrev }) {
 
   return (
     <div className="w-full">
-      {/*  MODALE CONDITIONS */}
+      {/* MODALE CONDITIONS */}
       {termsOpen ? (
         <div className="fixed inset-0 z-[99999]">
           <button
@@ -125,9 +118,7 @@ export default function TeamCompositionForm({ onPrev }) {
             </div>
 
             <div className="max-h-[70vh] overflow-auto p-6 text-sm leading-7 text-neutral-700">
-              <h3 className="text-base font-extrabold text-neutral-900">
-                1) Objet
-              </h3>
+              <h3 className="text-base font-extrabold text-neutral-900">1) Objet</h3>
               <p className="mt-2">
                 MarsAI est un festival amateur international de courts métrages
                 réalisés avec l’aide d’outils d’intelligence artificielle. Les
@@ -205,12 +196,14 @@ export default function TeamCompositionForm({ onPrev }) {
         </div>
       ) : null}
 
-      <div className="rounded-2xl bg-white p-8">
+      {/* ✅ DARK MODE FIX: card */}
+      <div className="rounded-2xl bg-white p-8 text-neutral-900 dark:bg-black dark:text-white">
         <h2 className="text-center text-2xl font-semibold text-purple-500">
           04. COMPOSITION DE L’ÉQUIPE
         </h2>
 
-        <div className="mt-8 rounded-2xl bg-neutral-100 p-6">
+        {/* ✅ DARK MODE FIX */}
+        <div className="mt-8 rounded-2xl bg-neutral-100 p-6 dark:bg-neutral-900">
           <div className="mb-4 flex justify-end">
             <button
               type="button"
@@ -227,11 +220,12 @@ export default function TeamCompositionForm({ onPrev }) {
                 name="gender"
                 value={current.gender}
                 onChange={updateCurrent}
-                className="bg-white text-neutral-900"
+                className="bg-white text-neutral-900 dark:bg-neutral-800 dark:text-white"
               >
                 <option value="Mr">M.</option>
                 <option value="Mrs">Mme</option>
               </Select>
+              <div className={help}>Civilité du collaborateur.</div>
             </Field>
 
             <Field label="Prénom et nom" required>
@@ -239,9 +233,10 @@ export default function TeamCompositionForm({ onPrev }) {
                 name="full_name"
                 value={current.full_name}
                 onChange={updateCurrent}
-                placeholder="EX: JEAN DUPOND"
-                className="bg-white text-neutral-900 placeholder:text-neutral-400"
+                placeholder="Ex : Jean Dupont"
+                className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
+              <div className={help}>Nom complet tel qu’il apparaîtra au générique.</div>
             </Field>
 
             <Field label="Profession" required>
@@ -249,8 +244,10 @@ export default function TeamCompositionForm({ onPrev }) {
                 name="profession"
                 value={current.profession}
                 onChange={updateCurrent}
-                className="bg-white text-neutral-900 placeholder:text-neutral-400"
+                placeholder="Ex : Monteur / Compositeur / Voix-off"
+                className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
+              <div className={help}>Rôle exact dans le projet.</div>
             </Field>
 
             <Field label="Email" required>
@@ -259,8 +256,9 @@ export default function TeamCompositionForm({ onPrev }) {
                 value={current.email}
                 onChange={updateCurrent}
                 placeholder="email@exemple.com"
-                className="bg-white text-neutral-900 placeholder:text-neutral-400"
+                className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
+              <div className={help}>Email du collaborateur (si nécessaire).</div>
             </Field>
           </div>
 
@@ -269,11 +267,11 @@ export default function TeamCompositionForm({ onPrev }) {
               {contributors.map((c, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-xl bg-white p-3 text-sm"
+                  className="flex items-center justify-between rounded-xl bg-white p-3 text-sm text-neutral-800 dark:bg-neutral-800 dark:text-white"
                 >
-                  <div className="text-neutral-800">
-                    <span className="font-semibold">{c.full_name}</span> —{" "}
-                    {c.profession} — {c.email}
+                  <div>
+                    <span className="font-semibold">{c.full_name}</span> — {c.profession} —{" "}
+                    {c.email}
                   </div>
                   <button
                     type="button"
@@ -286,19 +284,19 @@ export default function TeamCompositionForm({ onPrev }) {
               ))}
             </div>
           ) : (
-            <div className="mt-6 text-sm text-neutral-500">
+            <div className="mt-6 text-sm text-neutral-500 dark:text-neutral-300">
               Aucun contributeur ajouté pour l’instant.
             </div>
           )}
         </div>
 
-        <div className="mt-8 rounded-2xl bg-neutral-300 p-6 text-neutral-700">
+        {/* ✅ DARK MODE FIX */}
+        <div className="mt-8 rounded-2xl bg-neutral-300 p-6 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
           <div className="mb-3 font-semibold">CERTIFICAT DE PROPRIÉTÉ</div>
           <p className="text-xs leading-relaxed">
             En soumettant ce dossier, vous certifiez sur l'honneur être l'auteur
-            original de l'œuvre et détenir l'intégralité des droits de
-            diffusion. Vous acceptez que MARS.AI utilise ces éléments pour la
-            promotion du festival.
+            original de l'œuvre et détenir l'intégralité des droits de diffusion.
+            Vous acceptez que MARS.AI utilise ces éléments pour la promotion du festival.
           </p>
 
           <div className="mt-4 space-y-2 text-sm">
@@ -322,13 +320,13 @@ export default function TeamCompositionForm({ onPrev }) {
           </div>
         </div>
 
-        {/* ✅ VALIDATION FINALE */}
-        <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6">
-          <div className="mb-4 text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900">
+        {/* ✅ DARK MODE FIX */}
+        <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-black">
+          <div className="mb-4 text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900 dark:text-white">
             Validation finale
           </div>
 
-          <div className="space-y-3 text-sm text-neutral-800">
+          <div className="space-y-3 text-sm text-neutral-800 dark:text-neutral-200">
             <label className="flex items-start gap-3">
               <input
                 type="checkbox"
@@ -360,27 +358,19 @@ export default function TeamCompositionForm({ onPrev }) {
             </label>
           </div>
 
-          {/* ✅ Google reCAPTCHA v2 */}
           <div className="mt-6">
             <ReCAPTCHA
               sitekey={SITE_KEY}
-              onChange={(token) => {
-                const t = token || "";
-                setCaptchaToken(t);
-                setCaptchaOk(t);
-              }}
-              onExpired={() => {
-                setCaptchaToken("");
-                setCaptchaOk("");
-              }}
+              onChange={(token) => setCaptchaOk(token || "")}
+              onExpired={() => setCaptchaOk("")}
             />
-            <div className="mt-2 text-xs text-neutral-500">
+            <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-300">
               Coche le captcha pour finaliser la soumission.
             </div>
           </div>
 
           {!canFinish ? (
-            <div className="mt-5 text-sm text-red-600">
+            <div className="mt-5 text-sm text-red-600 dark:text-red-300">
               Pour valider, coche les cases + captcha.
             </div>
           ) : (

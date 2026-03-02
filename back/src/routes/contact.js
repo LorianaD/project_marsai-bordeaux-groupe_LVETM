@@ -8,8 +8,8 @@ router.post("/", async (req, res, next) => {
   try {
     const { name, last_name, subject, email, message } = req.body || {};
 
-    // ✅ Debug : voir les données reçues
-    console.log("📩 Nouveau message contact reçu :", {
+    //  Debug : voir les données reçues
+    console.log(" Nouveau message contact reçu :", {
       name,
       last_name,
       subject,
@@ -18,7 +18,7 @@ router.post("/", async (req, res, next) => {
     });
 
     if (!name || !last_name || !subject || !email || !message) {
-      console.log("⚠️ Champs manquants");
+      console.log(" Champs manquants");
       return res.status(400).json({ error: "Champs manquants" });
     }
 
@@ -30,11 +30,11 @@ router.post("/", async (req, res, next) => {
       message,
     });
 
-    console.log("✅ Message enregistré avec ID :", id);
+    console.log(" Message enregistré avec ID :", id);
 
     res.status(201).json({ ok: true, id });
   } catch (err) {
-    console.error("❌ Erreur création message contact :", err);
+    console.error( "Erreur création message contact :", err);
     next(err);
   }
 });

@@ -5,7 +5,7 @@ import {
   unsubscribeByToken,
 } from "../models/newsletter.model.js";
 import { sendConfirmNewsletterEmail } from "../services/newsletterEmail.service.js";
-import { getSubscriberLocale } from "../utils/subscriberLocale.js"; // ✅ NEW
+import { getSubscriberLocale } from "../utils/subscriberLocale.js"; 
 
 function isValidEmail(email) {
   const e = String(email || "").trim().toLowerCase();
@@ -22,7 +22,7 @@ export async function subscribe(req, res) {
       return res.status(400).json({ error: "Email invalide" });
     if (!consent) return res.status(400).json({ error: "Consentement requis" });
 
-    // ✅ Detect country/locale (FR => fr, else en)
+    //Detect country/locale (FR => fr, else en)
     const { country, locale } = getSubscriberLocale(req);
 
     const confirmToken = makeToken(32);
@@ -38,8 +38,8 @@ export async function subscribe(req, res) {
       confirmToken,
       confirmExpiresAt: expires,
       unsubscribeToken,
-      country, // ✅ NEW
-      locale, // ✅ NEW
+      country, 
+      locale, 
     });
 
     const APP_URL = process.env.APP_URL || "http://localhost:5173";
@@ -51,7 +51,7 @@ export async function subscribe(req, res) {
       unsubscribeToken,
     )}`;
 
-    // ✅ Pass locale to send FR/EN confirmation email
+    //Pass locale to send FR/EN confirmation email
     await sendConfirmNewsletterEmail({
       to: email,
       confirmUrl,

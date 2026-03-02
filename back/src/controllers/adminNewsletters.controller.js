@@ -163,9 +163,7 @@ export async function adminCancelSchedule(req, res) {
   return res.json({ message: "Programmation annulée " });
 }
 
-/**
- *  Envoyer maintenant à tous les abonnés actifs
- */
+/* Envoyer maintenant à tous les abonnés actifs */
 export async function adminSendNow(req, res) {
   const id = Number(req.params.id);
 
@@ -178,5 +176,5 @@ export async function adminSendNow(req, res) {
   await sendNewsletterToAllActive(id);
   await markNewsletterSent(id);
 
-  return res.json({ message: "Envoi terminé ✅" });
+  return res.json({ message: "Envoi terminé" });
 }
