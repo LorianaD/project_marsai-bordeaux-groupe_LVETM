@@ -43,12 +43,24 @@ function CmsInputColor({name, label, value, onChange, placeholder, type = "color
                 {rightSlot}
             </div>
 
-            <input type={type} name={name} value={safeValue} onChange={onChange} placeholder={placeholder}
+            {type === "color" ? (
+                <div className="w-[30px] h-[30px] relative">
+                    <div
+                        className="w-full h-full rounded-[6px] ring-1 ring-black/20 dark:ring-white/30 shadow-sm"
+                        style={{ backgroundColor: safeValue }}
+                    />
+                
+                    <input id={name} type={type} name={name} value={safeValue} onChange={onChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                </div>
+            ) : (
+                <input type={type} name={name} value={safeValue} onChange={onChange} placeholder={placeholder} className="flex py-[11px] px-[21px] items-center justify-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]" />
+            )}
+            {/* <input type={type} name={name} value={safeValue} onChange={onChange} placeholder={placeholder}
                 style={
                     type === "color" ? { background: safeValue, color: isLightColor(safeValue) ? "#000" : "#fff" } : underfined
                 }
                 className="flex py-[11px] px-[21px] items-center justify-center self-stretch gap-[10px] rounded-[5px] border border-[rgba(0,0,0,0.10)] bg-[rgba(0,0,0,0.07)] dark:border-[rgba(255,255,255,0.10)] dark:bg-[rgba(255,255,255,0.07)] backdrop-blur-[2.4px]"
-            />
+            /> */}
             
         </div>
     )
