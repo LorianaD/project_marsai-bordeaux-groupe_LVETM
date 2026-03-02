@@ -346,7 +346,7 @@ function SectionHeroForm({ forcedLocale }) {
                     </div>
 
                     {/* Gestion des boutons */}
-                    <div>
+                    <div className="w-full">
                         <div className="pb-[20px]">
                             <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
                                 Gestion des boutons
