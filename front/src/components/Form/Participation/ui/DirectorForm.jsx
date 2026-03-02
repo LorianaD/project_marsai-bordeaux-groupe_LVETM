@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Field, TextInput, Select } from "./Field";
 
-/* URL drapeau (fiable sur tous OS/navigateurs) */
+/* URL drapeau */
 function flagUrl(code, size = 24) {
   const c = String(code || "").toLowerCase();
   return `https://flagcdn.com/${size}x${Math.round(size * 0.75)}/${c}.png`;
@@ -17,7 +17,6 @@ function buildDialCode(idd) {
 
 function CountryPickerModal({ open, onClose, countries, onPick }) {
   const [q, setQ] = useState("");
-  
 
   useEffect(() => {
     if (!open) setQ("");
@@ -103,8 +102,42 @@ function CountryPickerModal({ open, onClose, countries, onPick }) {
   );
 }
 
+function calcAge(birthdayISO) {
+  if (!birthdayISO) return null;
+  const d = new Date(birthdayISO);
+  if (Number.isNaN(d.getTime())) return null;
+
+  const now = new Date();
+  let age = now.getFullYear() - d.getFullYear();
+  const m = now.getMonth() - d.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+  return age;
+}
+
 export default function DirectorForm({ onNext }) {
-  // Etat du formulaire réalisateur
+  const DRAFT_KEY = "directorFormDraft";
+
+  // ✅ FIX: force aussi le focus en dark (évite le champ blanc au clic)
+  const inputClass =
+    "bg-neutral-100 text-neutral-900 placeholder:text-neutral-400 " +
+    "focus:bg-neutral-100 focus:text-neutral-900 " +
+    "dark:bg-neutral-900 dark:text-white dark:placeholder:text-neutral-400 " +
+    "dark:focus:bg-neutral-900 dark:focus:text-white " +
+    // force autofill (chrome) - utile si tu n'as pas le CSS global
+    "[&:-webkit-autofill]:shadow-[0_0_0px_1000px_rgb(245,245,245)_inset] " +
+    "[&:-webkit-autofill]:[-webkit-text-fill-color:rgb(17,24,39)] " +
+    "dark:[&:-webkit-autofill]:shadow-[0_0_0px_1000px_rgb(11,11,15)_inset] " +
+    "dark:[&:-webkit-autofill]:[-webkit-text-fill-color:rgb(255,255,255)]";
+
+  // ✅ FIX: idem pour les selects
+  const selectClass =
+    "bg-neutral-100 text-neutral-900 " +
+    "focus:bg-neutral-100 focus:text-neutral-900 " +
+    "dark:bg-neutral-900 dark:text-white " +
+    "dark:focus:bg-neutral-900 dark:focus:text-white";
+
+  const help = "mt-2 text-xs italic text-neutral-500 dark:text-neutral-300";
+
   const [form, setForm] = useState({
     name: "",
     last_name: "",
@@ -119,13 +152,11 @@ export default function DirectorForm({ onNext }) {
     home_number: "",
   });
 
-  // Chargement de la liste des pays (select) + pays téléphone (code + dial)
   const [countries, setCountries] = useState([]);
   const [phoneCountries, setPhoneCountries] = useState([]);
   const [countriesLoading, setCountriesLoading] = useState(true);
   const [countriesErr, setCountriesErr] = useState("");
 
-  // Téléphone : modal + pays sélectionné + numéro local
   const [phoneOpen, setPhoneOpen] = useState(false);
   const [phoneCountry, setPhoneCountry] = useState({
     code: "FR",
@@ -134,7 +165,29 @@ export default function DirectorForm({ onNext }) {
   });
   const [phoneLocal, setPhoneLocal] = useState("");
 
-  // ✅ Chargement des pays
+  const [ageError, setAgeError] = useState("");
+
+  useEffect(() => {
+    const draft = localStorage.getItem(DRAFT_KEY);
+    if (!draft) return;
+
+    try {
+      const d = JSON.parse(draft);
+      if (d?.form) setForm((f) => ({ ...f, ...d.form }));
+      if (d?.phoneLocal != null) setPhoneLocal(String(d.phoneLocal || ""));
+      if (d?.phoneCountry?.dial && d?.phoneCountry?.code) {
+        setPhoneCountry(d.phoneCountry);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify({ form, phoneLocal, phoneCountry }),
+    );
+  }, [form, phoneLocal, phoneCountry]);
+
   useEffect(() => {
     let alive = true;
 
@@ -143,12 +196,10 @@ export default function DirectorForm({ onNext }) {
         setCountriesLoading(true);
         setCountriesErr("");
 
-        // ✅ On récupère aussi idd + cca2 pour le téléphone
         const res = await fetch(
           "https://restcountries.com/v3.1/all?fields=name,cca2,idd",
         );
         const data = await res.json();
-
         const list = Array.isArray(data) ? data : [];
 
         const namesOnly = list
@@ -173,7 +224,7 @@ export default function DirectorForm({ onNext }) {
         setPhoneCountries(phoneList);
 
         const fr = phoneList.find((x) => x.code === "FR");
-        if (fr) setPhoneCountry(fr);
+        if (fr && !localStorage.getItem(DRAFT_KEY)) setPhoneCountry(fr);
       } catch {
         if (alive) setCountriesErr("Impossible de charger la liste des pays.");
       } finally {
@@ -187,18 +238,29 @@ export default function DirectorForm({ onNext }) {
     };
   }, []);
 
-  // Synchronise form.mobile_number avec dial + local (utilisé par ton submit)
   useEffect(() => {
     const full = `${phoneCountry.dial} ${phoneLocal}`.trim();
     setForm((f) => ({ ...f, mobile_number: full }));
   }, [phoneCountry, phoneLocal]);
+
+  useEffect(() => {
+    const age = calcAge(form.birthday);
+    if (age == null) {
+      setAgeError("");
+      return;
+    }
+    if (age < 18) {
+      setAgeError("Attention : il faut avoir plus de 18 ans pour participer.");
+    } else {
+      setAgeError("");
+    }
+  }, [form.birthday]);
 
   function update(e) {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   }
 
-  // Vérifie si les champs requis sont remplis
   const canSubmit = useMemo(() => {
     return (
       form.name.trim() &&
@@ -207,14 +269,14 @@ export default function DirectorForm({ onNext }) {
       (form.gender === "Mr" || form.gender === "Mrs") &&
       form.production_role.trim() &&
       form.birthday.trim() &&
+      !ageError &&
       form.director_country.trim() &&
       form.address.trim() &&
       form.discovery_source.trim() &&
       form.mobile_number.trim()
     );
-  }, [form]);
+  }, [form, ageError]);
 
-  // Sauvegarde du profil en localStorage puis passage à l'étape suivante
   function submit(e) {
     e.preventDefault();
     if (!canSubmit) return;
@@ -251,7 +313,7 @@ export default function DirectorForm({ onNext }) {
         }}
       />
 
-      <div className="rounded-2xl border border-neutral-200 bg-white p-8">
+      <div className="rounded-2xl border border-neutral-200 bg-white p-8 dark:bg-black dark:border-neutral-800">
         <h2 className="text-center text-2xl font-semibold text-blue-600">
           MON PROFIL RÉALISATEUR
         </h2>
@@ -262,9 +324,11 @@ export default function DirectorForm({ onNext }) {
               name="name"
               value={form.name}
               onChange={update}
-              placeholder="PRÉNOM"
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Ex : Vanessa"
+              className={inputClass}
+              autoComplete="given-name"
             />
+            <div className={help}>Ton prénom tel qu’il apparaîtra.</div>
           </Field>
 
           <Field label="Nom" required>
@@ -272,9 +336,13 @@ export default function DirectorForm({ onNext }) {
               name="last_name"
               value={form.last_name}
               onChange={update}
-              placeholder="NOM"
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Ex : Biamonti"
+              className={inputClass}
+              autoComplete="family-name"
             />
+            <div className={help}>
+              Ton nom (ou nom d’artiste si tu préfères).
+            </div>
           </Field>
 
           <Field label="Civilité" required>
@@ -282,11 +350,12 @@ export default function DirectorForm({ onNext }) {
               name="gender"
               value={form.gender}
               onChange={update}
-              className="bg-neutral-100 text-neutral-800"
+              className={selectClass}
             >
               <option value="Mr">Mr</option>
               <option value="Mrs">Mrs</option>
             </Select>
+            <div className={help}>Sélectionne la civilité affichée.</div>
           </Field>
 
           <Field label="Adresse e-mail" required>
@@ -294,10 +363,14 @@ export default function DirectorForm({ onNext }) {
               name="email"
               value={form.email}
               onChange={update}
-              placeholder="EMAIL@EXEMPLE.COM"
+              placeholder="email@exemple.com"
               type="email"
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              className={inputClass}
+              autoComplete="email"
             />
+            <div className={help}>
+              On l’utilise pour te contacter (confirmation, etc.).
+            </div>
           </Field>
 
           <Field label="Date de naissance" required>
@@ -306,8 +379,15 @@ export default function DirectorForm({ onNext }) {
               type="date"
               value={form.birthday}
               onChange={update}
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              className={inputClass}
+              autoComplete="bday"
             />
+            <div className={help}>
+              Format calendrier. Il faut avoir +18 ans.
+            </div>
+            {ageError ? (
+              <div className="mt-2 text-sm text-red-600">{ageError}</div>
+            ) : null}
           </Field>
 
           <Field label="Pays réalisateur" required>
@@ -316,7 +396,7 @@ export default function DirectorForm({ onNext }) {
               value={form.director_country}
               onChange={update}
               disabled={countriesLoading || !!countriesErr}
-              className="bg-neutral-100 text-neutral-800"
+              className={selectClass}
             >
               <option value="">
                 {countriesLoading
@@ -336,6 +416,10 @@ export default function DirectorForm({ onNext }) {
             {countriesErr ? (
               <div className="mt-2 text-xs text-red-500">{countriesErr}</div>
             ) : null}
+
+            <div className={help}>
+              Le pays où tu résides / ton pays principal.
+            </div>
           </Field>
 
           <Field label="Découverte" required>
@@ -343,9 +427,11 @@ export default function DirectorForm({ onNext }) {
               name="discovery_source"
               value={form.discovery_source}
               onChange={update}
-              placeholder="Instagram / Ami / Google..."
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Ex : Google / Instagram / Ami..."
+              className={inputClass}
+              autoComplete="off"
             />
+            <div className={help}>Comment as-tu découvert le festival ?</div>
           </Field>
 
           <Field label="Adresse" required>
@@ -353,18 +439,19 @@ export default function DirectorForm({ onNext }) {
               name="address"
               value={form.address}
               onChange={update}
-              placeholder="Adresse complète"
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Ex : 20 rue Exemple, Paris"
+              className={inputClass}
+              autoComplete="street-address"
             />
+            <div className={help}>Adresse complète (utile si besoin).</div>
           </Field>
 
-          {/* Téléphone (desktop + mobile) : drapeau + dial + recherche */}
           <Field label="Mobile" required>
-            <div className="flex w-full items-center gap-3 rounded-2xl bg-neutral-100 px-5 py-4 ring-1 ring-black/5 focus-within:ring-2 focus-within:ring-blue-500/30">
+            <div className="flex w-full items-center gap-3 rounded-2xl bg-neutral-100 px-5 py-4 ring-1 ring-black/5 focus-within:ring-2 focus-within:ring-blue-500/30 dark:bg-neutral-900 dark:ring-white/10">
               <button
                 type="button"
                 onClick={() => setPhoneOpen(true)}
-                className="flex items-center gap-2 rounded-xl bg-white/60 px-3 py-2 text-sm font-semibold text-neutral-800 ring-1 ring-black/5 hover:bg-white"
+                className="flex items-center gap-2 rounded-xl bg-white/60 px-3 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-black/5 hover:bg-white dark:bg-white/10 dark:text-white dark:ring-white/10"
                 aria-label="Choisir un pays"
               >
                 <img
@@ -381,14 +468,20 @@ export default function DirectorForm({ onNext }) {
               <input
                 value={phoneLocal}
                 onChange={(e) => setPhoneLocal(e.target.value)}
-                placeholder="Votre numéro"
+                placeholder="Ex : 06 12 34 56 78"
                 inputMode="tel"
-                className="w-full bg-transparent text-sm outline-none"
+                className={
+                  "w-full bg-transparent text-sm outline-none " +
+                  "text-neutral-900 placeholder:text-neutral-500 " +
+                  "dark:text-white dark:placeholder:text-neutral-400"
+                }
+                autoComplete="tel"
               />
             </div>
 
-            <div className="mt-2 text-[11px] text-neutral-500">
-              Exemple : {phoneCountry.dial} 6 12 34 56 78
+            <div className={help}>
+              Exemple : {phoneCountry.dial} 6 12 34 56 78 — (clique sur le
+              drapeau pour changer d’indicatif).
             </div>
           </Field>
 
@@ -397,9 +490,10 @@ export default function DirectorForm({ onNext }) {
               name="home_number"
               value={form.home_number}
               onChange={update}
-              placeholder="01..."
-              className="bg-neutral-100 text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Ex : 01 23 45 67 89"
+              className={inputClass}
             />
+            <div className={help}>Si tu as un numéro fixe (facultatif).</div>
           </Field>
         </div>
 

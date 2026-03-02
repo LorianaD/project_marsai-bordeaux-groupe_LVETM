@@ -15,7 +15,7 @@ export default function requireSelector(req, res, next) {
   const allowedRoles = ["selector", "selectionneur", "sélectionneur"];
 
   if (!allowedRoles.includes(role)) {
-    console.log("❌ ACCESS REFUSED ROLE:", role);
+    console.log(" ACCESS REFUSED ROLE:", role);
     return res.status(403).json({ error: "Accès réservé aux sélectionneurs" });
   }
 

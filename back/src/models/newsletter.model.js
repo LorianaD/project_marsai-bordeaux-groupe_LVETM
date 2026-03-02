@@ -1,9 +1,7 @@
 import { pool } from "../db/index.js";
 
-/**
- * Create / update a subscriber as pending (double opt-in)
- * Stores country + locale (FR => fr, else en) when provided by the controller.
- */
+/*** Create / update une souscription comme "en attente (double opt-in)
+ * Stores country + locale (FR => fr, else en) when provided by the controller*/
 export async function upsertPendingSubscriber({
   email,
   consentAt,
