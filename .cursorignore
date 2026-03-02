@@ -4,7 +4,7 @@ front/src/components/Home/**
 front/src/components/Form/CMS/**
 front/src/components/Buttons/**
 
-# BACK (si besoin)
+# BACK
 back/src/app.js
 back/src/server.js
 back/src/controllers/**

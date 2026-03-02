@@ -3,16 +3,18 @@ import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
 import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
 import CmsTextarea from "../Fields/CmsTextarea";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInputImage from "../Fields/CmsInputImage";
+import useCmsContent from "../../../../hooks/useCmsContent";
+import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
 
-function SectionConceptForm() {
+function SectionGoalForm({ forcedLocale }) {
 
     const { t, i18n } = useTranslation("home");
-    const locale = i18n.language.startsWith("fr") ? "fr" : "en";
+    const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
 
     // Page et section
     const page = "home";
@@ -22,6 +24,8 @@ function SectionConceptForm() {
     // champs des differents éléments dans la section
     const fields = [
 
+        "section_visibility",
+        
         "title_main",
         "title_accent",
 
@@ -42,8 +46,11 @@ function SectionConceptForm() {
 
     const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
-    const { values, handleChange } = useForm({
+    const { values, setValues, handleChange } = useForm({
 
+        section_visibility:"",
+        section_visibility_is_active: 1,
+        
         title_main:"",
         title_main_is_active: 1,
 
@@ -68,6 +75,33 @@ function SectionConceptForm() {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const [initialValues, setInitialValues] = useState({});
+    const [hasHydrated, setHasHydrated] = useState(false);
+
+    useEffect(()=>{
+        if (cmsLoading) {
+            return;
+        }
+
+        if (hasHydrated) return;
+
+        const cmsSection = content?.[section];
+
+        if (!cmsSection) return;
+
+        // construit les valeurs initiales depuis le CMS
+        const built = buildInitialValuesFromCms(fields, cmsSection, {
+            fileFields: ["media", "protocol_icon", "ctaParticipate_signe", "ctaLearnMore_signe"],
+        });
+
+        setValues(built);
+
+        setInitialValues(built);
+
+        setHasHydrated(true);
+
+    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
 
     async function handleSubmit(event) {
         // console.log("Fonction handleSubmit OK");
@@ -150,12 +184,15 @@ function SectionConceptForm() {
                 {/***** Titre du formulaire *****/}
                 <div className="flex items-center gap-[10px] self-stretch w-full">
                     <div>
-                        <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                        <img src={ iconPaint } alt="" className="block dark:hidden"/>
+                        <div>
+                            <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
+                            <img src={ iconPaint } alt="" className="block dark:hidden"/>
+                        </div>
+                        <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
+                            Gestion de la Section des objectifs
+                        </h3>
                     </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                        Gestion de la Section des objectifs
-                    </h3>
+                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
 
                 <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
@@ -168,7 +205,7 @@ function SectionConceptForm() {
                     />
                 </div>
 
-                <div className="w-full flex flex-col md:flex-row md:justify-around gap-[30px]">
+                <div className="w-full flex flex-col md:flex-wrap md:justify-around gap-[30px]">
                     <div className="w-full flex flex-col gap-[20px]">
                         <div className="w-full flex justify-between">
                             <h4 className="text-[20px] font-semibold tracking-[2.24px]">
@@ -224,4 +261,4 @@ function SectionConceptForm() {
     )
 }
 
-export default SectionConceptForm
+export default SectionGoalForm

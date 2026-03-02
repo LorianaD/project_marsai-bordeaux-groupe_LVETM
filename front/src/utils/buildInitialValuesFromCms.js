@@ -3,7 +3,7 @@ function buildInitialValuesFromCms(fields, cmsSection, options = {}) {
     const { fileFields = [], defaults = {} } = options;
 
     const obj = {};
-    console.log(obj);
+    // console.log(obj);
 
     for (const key of fields) {
         // valeur

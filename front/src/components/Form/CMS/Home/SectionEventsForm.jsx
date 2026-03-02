@@ -31,6 +31,9 @@ function SectionEventsForm({ forcedLocale }) {
 
     // champs des differents éléments dans la section
     const fields = [
+
+        "section_visibility",
+        
         "title_main",
         "title_main_color",
         "title_accent",
@@ -65,6 +68,10 @@ function SectionEventsForm({ forcedLocale }) {
     // console.log(fields);
 
     const { values, setValues, handleChange } = useForm({
+        
+        section_visibility:"",
+        section_visibility_is_active: 1,
+        
         title_main:"",
         title_main_color:"",
         title_main_is_active: 1,
@@ -144,43 +151,56 @@ function SectionEventsForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
+            const sharedImageKeys = new Set([ "ctaAgenda_icon", "card1_icon", "card2_icon", "card3_icon" ]);
+
+            const sharedLinkKeys = new Set([ "ctaAgenda_link", "card1_link", "card2_link", "card3_link" ]);
+
+            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
+
+            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
+
             for (let i = 0; i < fields.length; i++) {
                 const key = fields[i];
                 const val = values[key];
                 const is_active = Number(values[`${key}_is_active`] ?? 1);
 
-                // IMAGE
-                if (val instanceof File) {
-                    await updateImageApi({
+                const targetLocales = localesToSave(key);
+
+                for (const loc of targetLocales) {
+
+                    // IMAGE
+                    if (val instanceof File) {
+                        await updateImageApi({
+                            page,
+                            section,
+                            locale: loc,
+                            content_key: key,
+                            value: val,
+                            order_index: i,
+                            is_active,
+                        });
+                        continue;
+                    }
+
+                    // TEXTE VIDE
+                    const valueChanged = val !== initialValues[key];
+
+                    const activeChanged = is_active !== initialValues[`${key}_is_active`];
+
+                    if (!valueChanged && !activeChanged) continue;
+
+                    // TEXTE NON VIDE
+                    await updateContentApi({
                         page,
                         section,
-                        locale,
+                        locale: loc,
                         content_key: key,
                         value: val,
                         order_index: i,
-                        is_active,
-                    });
-                    continue;
+                        is_active,    
+                    })
+                    
                 }
-
-                // TEXTE VIDE
-                const valueChanged = val !== initialValues[key];
-
-                const activeChanged = is_active !== initialValues[`${key}_is_active`];
-
-                if (!valueChanged && !activeChanged) continue;
-
-                // TEXTE NON VIDE
-                await updateContentApi({
-                    page,
-                    section,
-                    locale,
-                    content_key: key,
-                    value: val,
-                    order_index: i,
-                    is_active,    
-                })
-                
 
             }
 
@@ -200,34 +220,42 @@ function SectionEventsForm({ forcedLocale }) {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-auto md:px-auto md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
-                <div className="flex items-center gap-[10px] self-stretch">
-                    <div>
-                        <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                        <img src={ iconPaint } alt="" className="block dark:hidden"/>
+            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <div className="flex items-center justify-between gap-[10px] self-stretch">
+                    <div className="flex items-center gap-[10px]">
+                        <div>
+                            <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
+                            <img src={ iconPaint } alt="" className="block dark:hidden"/>
+                        </div>
+                        <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
+                            Gestion de la Section Programme
+                        </h3>
                     </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                        Gestion de la Section Programme
-                    </h3>
+                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
                     
                     {/* GESTION DU TITRE */}
-                    <div className="flex flex-col md:flex-row md:justify-between w-full">
-                        <div className="flex items-center gap-[10px] w-full">
-                            < CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("events.title_main")} rightSlot={
-                                <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
-                            <CmsInputColor name="title_main_color" label="" value={values.title_main_color} onChange={handleChange} />
+                    <div className="w-full">
+                        <div className="pb-[20px]">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion du titre de la section
+                            </h4>
                         </div>
-                        <div className="flex items-center gap-[10px] w-full">
-                            < CmsInput name="title_accent" label="Titre accent coloré" value={values.title_accent} onChange={handleChange} placeholder={t("events.title_accent")} rightSlot={
-                                <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
-                            <CmsInputColor name="title_accent_color" label="" value={values.title_accent_color} onChange={handleChange} />
+                        <div className="flex flex-col gap-[50px] md:flex-wrap md:justify-between w-full">
+                            <div className="flex items-center gap-[10px] w-full">
+                                < CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("events.title_main")} rightSlot={
+                                    <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                                />
+                            </div>
+                            <div className="flex items-center gap-[10px] w-full">
+                                < CmsInput name="title_accent" label="Titre accent coloré" value={values.title_accent} onChange={handleChange} placeholder={t("events.title_accent")} rightSlot={
+                                    <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                                />
+                                <CmsInputColor name="title_accent_color" label="" value={values.title_accent_color} onChange={handleChange} />
+                            </div>
                         </div>
                     </div>
-
                     {/* GESTION DE LA LISTE */}
                     <div className="w-full">
                         <div className="pb-[20px]">
@@ -235,7 +263,7 @@ function SectionEventsForm({ forcedLocale }) {
                                 Gestion de la liste
                             </h4>
                         </div>
-                        <div className="flex flex-col md:flex-row md:justify-between gap-[10px] w-full">
+                        <div className="flex flex-col md:flex-wrap md:justify-between gap-[10px] w-full">
                             {listFields.map((f) => (
                                 < CmsInput key={f.name} name={f.name} label={f.label} value={values[f.name]} onChange={handleChange} placeholder={t(f.placeholderKey)} rightSlot={
                                     <CmsHideToggle name={f.name} value={values[`${f.name}_is_active`]} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -249,7 +277,7 @@ function SectionEventsForm({ forcedLocale }) {
                         <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
                             Gestion du bouton
                         </h4>                        
-                        <div className="flex flex-col md:flex-row w-full gap-[10px]">
+                        <div className="flex flex-col md:flex-wrap w-full gap-[10px]">
                             <CmsInput name="ctaAgenda" label="Intitulé du bouton" value={values.ctaAgenda} onChange={handleChange} placeholder={t("events.ctaAgenda")}/>
                             <CmsInput name="ctaAgenda_link" label="Lien du bouton" value={values.ctaAgenda_link} onChange={handleChange} placeholder={t("events.ctaAgenda_link")}/>
                             <CmsInputImage name="ctaAgenda_icon" label="Icon du bouton" value={values.ctaAgenda_icon} onChange={handleChange} placeholder={t("events.ctaAgenda_icon")}/>
@@ -264,7 +292,7 @@ function SectionEventsForm({ forcedLocale }) {
                         </h4>
 
                         {/* Cards 1 & 2 */}
-                        <div className="flex flex-col md:flex-row gap-[20px]">
+                        <div className="flex flex-col md:flex-wrap gap-[20px]">
 
                             {/* Gestion card 1 */}
                             <div className="flex flex-col w-full gap-[20px] md:gap-[30px]">
