@@ -36,9 +36,9 @@ async function main() {
   // Si pas de "/", c'est un simple nom de fichier → on préfixe avec SCALEWAY_FOLDER
   const key = input.includes('/') ? input : (folder ? `${folder}/${input}` : input);
 
-  console.log('Bucket:', bucket);
-  console.log('Clé à supprimer:', key);
-  console.log('Suppression...');
+  // console.log('Bucket:', bucket);
+  // console.log('Clé à supprimer:', key);
+  // console.log('Suppression...');
 
   await client.send(
     new DeleteObjectCommand({
