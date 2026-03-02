@@ -19,8 +19,7 @@ function Faq() {
     const { t, i18n } = useTranslation("faq");
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
-    //vérifie si la langue du client est "fr".
-    // const userLang = navigator.language || navigator.userLanguage;
+    //vérifie si la langue active d'i18n est "fr".
     const isFrench = i18n.language.startsWith("fr");
 
     //usestate pour le fetch
