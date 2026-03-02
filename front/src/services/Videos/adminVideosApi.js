@@ -1,4 +1,6 @@
 // URL de l'API (définie dans .env)
+import { getAuthHeaders } from "../../utils/authHeaders.js";
+
 const API = import.meta.env.VITE_API_URL || "";
 
 /**
@@ -6,7 +8,7 @@ const API = import.meta.env.VITE_API_URL || "";
  */
 export async function getAdminVideos() {
   const r = await fetch(`${API}/api/videos/admin`, {
-    headers: { Accept: "application/json" },
+    headers: getAuthHeaders({ Accept: "application/json" }),
   });
 
   // Si la requête échoue → on stoppe avec une erreur explicite
@@ -24,10 +26,10 @@ export async function getAdminVideos() {
 export async function patchAdminVideoStatus(id, upload_status) {
   const r = await fetch(`${API}/api/videos/admin/${id}/status`, {
     method: "PATCH",
-    headers: {
+    headers: getAuthHeaders({
       "Content-Type": "application/json",
       Accept: "application/json",
-    },
+    }),
     // Envoi du nouveau statut au backend
     body: JSON.stringify({ upload_status }),
   });
@@ -45,10 +47,10 @@ export async function patchAdminVideoStatus(id, upload_status) {
 export async function patchAdminVideoFeatured(id, featured) {
   const r = await fetch(`${API}/api/videos/admin/${id}/featured`, {
     method: "PATCH",
-    headers: {
+    headers: getAuthHeaders({
       "Content-Type": "application/json",
       Accept: "application/json",
-    },
+    }),
     // Envoi du flag true / false
     body: JSON.stringify({ featured }),
   });

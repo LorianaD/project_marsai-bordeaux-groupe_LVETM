@@ -70,7 +70,7 @@ function RegisterForm({
       !password.trim() ||
       !verifyPassword.trim()
     ) {
-      setError("Please fill in all fields");
+      setError("Veuillez remplir tous les champs.");
       return;
     }
 
@@ -79,18 +79,18 @@ function RegisterForm({
     ===============================================================================*/
 
     if (lastName.length < 1) {
-      setError("Lastname must be at least 1 character");
+      setError("Le nom doit contenir au moins 1 caractère.");
       return;
     } else if (lastName.length > 100) {
-      setError("Lastname must be no more than 100 characters");
+      setError("Le nom ne doit pas dépasser 100 caractères.");
       return;
     }
 
     if (firstName.length < 1) {
-      setError("Firstname must be at least 1 character");
+      setError("Le prénom doit contenir au moins 1 caractère.");
       return;
     } else if (firstName.length > 100) {
-      setError("Firstname must be no more than 100 characters");
+      setError("Le prénom ne doit pas dépasser 100 caractères.");
       return;
     }
 
@@ -103,13 +103,13 @@ function RegisterForm({
       )
     ) {
       setError(
-        "Password must be at least 12 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (!?#$^&*@)",
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial (!?#$^&*@).",
       );
       return;
     }
 
     if (password != verifyPassword) {
-      setError("Password and confirmation password do not match.");
+      setError("Le mot de passe et la confirmation ne correspondent pas.");
       return;
     }
 

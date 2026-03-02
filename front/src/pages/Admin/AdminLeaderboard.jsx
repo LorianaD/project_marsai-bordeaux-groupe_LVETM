@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import AdminHero from "../../components/admin/AdminHero.jsx";
 import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
 import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
+import { getAuthHeaders } from "../../utils/authHeaders.js";
+
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -21,7 +23,7 @@ export default function AdminLeaderboard() {
       setErr("");
 
       const res = await fetch(`${API_BASE}/api/videos/admin/leaderboard`, {
-        headers: { Accept: "application/json" },
+        headers: getAuthHeaders({ Accept: "application/json" }),
       });
 
       const data = await res.json().catch(() => null);

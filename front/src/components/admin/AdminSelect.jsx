@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 /**
- * Select personnalisé pour l'admin : le menu déroulant est stylé
- * (le select natif ne permet pas de styler les options).
+ * Select personnalisé pour l'admin : le menu déroulant est stylé.
+ * Utilise un portail pour éviter d'être coupé par overflow-hidden des parents.
  */
 function AdminSelect({
   value,
@@ -14,6 +15,7 @@ function AdminSelect({
   className = "",
 }) {
   const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState({ top: 0, left: 0, width: 0 });
   const ref = useRef(null);
   const selectedLabel = options.find((o) => o.value === value)?.label ?? placeholder;
 
@@ -25,10 +27,60 @@ function AdminSelect({
     return () => document.removeEventListener("click", handleClickOutside);
   }, [open]);
 
+  useEffect(() => {
+    if (open && ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      setPos({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+      });
+    }
+  }, [open]);
+
   function handleSelect(val) {
     onChange?.(val);
     setOpen(false);
   }
+
+  const menu = open && (
+    <ul
+      className="fixed z-[9999] min-w-[140px] rounded-2xl border border-black/10 bg-white p-1 shadow-lg dark:border-white/10 dark:bg-[#0B0F1A] dark:shadow-xl"
+      style={{
+        listStyle: "none",
+        top: pos.top,
+        left: pos.left,
+        width: Math.max(pos.width, 140),
+      }}
+    >
+      {placeholder && placeholderAsOption && (
+        <li>
+          <button
+            type="button"
+            onClick={() => handleSelect("")}
+            className="w-full rounded-xl px-3 py-2 text-left text-sm text-black/55 hover:bg-black/5 dark:text-white/55 dark:hover:bg-white/5"
+          >
+            {placeholder}
+          </button>
+        </li>
+      )}
+      {options.map((opt) => (
+        <li key={opt.value}>
+          <button
+            type="button"
+            onClick={() => handleSelect(opt.value)}
+            className={`w-full rounded-xl px-3 py-2 text-left text-sm ${
+              value === opt.value
+                ? "bg-black/10 font-semibold dark:bg-white/10"
+                : "text-black/80 hover:bg-black/5 dark:text-white/80 dark:hover:bg-white/5"
+            }`}
+          >
+            {opt.label}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <div ref={ref} className={`relative ${className}`}>
@@ -42,39 +94,7 @@ function AdminSelect({
         <span className={`text-[10px] opacity-60 transition-transform ${open ? "rotate-180" : ""}`}>▼</span>
       </button>
 
-      {open && (
-        <ul
-          className="menu absolute top-full left-0 z-20 mt-1 min-w-[140px] rounded-2xl border border-black/10 bg-white p-1 shadow-lg dark:border-white/10 dark:bg-[#0B0F1A] dark:shadow-xl"
-          style={{ listStyle: "none" }}
-        >
-          {placeholder && placeholderAsOption && (
-            <li>
-              <button
-                type="button"
-                onClick={() => handleSelect("")}
-                className="w-full rounded-xl px-3 py-2 text-left text-sm text-black/55 hover:bg-black/5 dark:text-white/55 dark:hover:bg-white/5"
-              >
-                {placeholder}
-              </button>
-            </li>
-          )}
-          {options.map((opt) => (
-            <li key={opt.value}>
-              <button
-                type="button"
-                onClick={() => handleSelect(opt.value)}
-                className={`w-full rounded-xl px-3 py-2 text-left text-sm ${
-                  value === opt.value
-                    ? "bg-black/10 font-semibold dark:bg-white/10"
-                    : "text-black/80 hover:bg-black/5 dark:text-white/80 dark:hover:bg-white/5"
-                }`}
-              >
-                {opt.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      {menu && createPortal(menu, document.body)}
     </div>
   );
 }

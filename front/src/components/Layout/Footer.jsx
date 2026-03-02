@@ -8,7 +8,6 @@ import x from "../../assets/imgs/icones/x.png";
 
 import Newsletter from "../Form/Newsletter";
 
-import {decodeToken} from "../../utils/decodeToken.js";
 import AdminEntryButton from "./AdminEntryButton.jsx";
 
 function Footer() {
@@ -20,9 +19,6 @@ function Footer() {
     { src: youtube, alt: "YouTube" },
     { src: x, alt: "X" },
   ];
-
-  const user = decodeToken();
-  const isLoggedIn = user && user.exp * 1000 > Date.now();
 
   return (
     <footer className="w-full border-t border-black/10 bg-[#F5F6F8] text-black dark:border-[#FFFFFF]/60 dark:bg-black dark:text-white flex-col md:flex-row">

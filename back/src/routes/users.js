@@ -8,22 +8,27 @@ import { deleteUserController } from "../controllers/users/deleteUser.controller
 
 const router = Router();
 
-// routes en get
+/* ================
+   Routes GET
+================ */
 router.get('/', verifyToken, isAdmin, getAllUsersController);
-// router.get("/", profilController);
 
-
-
-// route en post pour chaque role
+/* ================================
+   Routes POST (register par rôle)
+=============================== */
 router.post('/superAdmin/register', verifyToken, isSuperAdmin, createRegisterController({ fixedRole:'superadmin'}));
 router.post('/admin/register', verifyToken, isSuperAdmin, createRegisterController({ fixedRole:'admin'}));
 router.post('/selector/register', verifyToken, isAdmin, createRegisterController({ fixedRole:'selector'}));
 router.post('/login', loginController);
 
-// route en PUT role
+/* ==================
+   Route PUT role
+================== */
 router.put('/:id/role', verifyToken, isSuperAdmin, updateUserRoleController);
 
-// route delete user
+/* ==================
+   Route DELETE user
+================== */
 router.delete('/:id', verifyToken, isSuperAdmin, deleteUserController)
 
 
