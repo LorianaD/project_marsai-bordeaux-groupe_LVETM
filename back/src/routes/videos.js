@@ -18,7 +18,7 @@ import upsertMyReviewController from "../controllers/videos/upsertMyReview.contr
 
 import upload from "../middlewares/uploadVideoMiddleware.js";
 import verifyRecaptcha from "../middlewares/verifyRecaptcha.js";
-import { verifyToken, isSelector } from "../utils/isAdmin.js";
+import { verifyToken, isSelector, isAdminOrSelector, isAdmin } from "../utils/isAdmin.js";
 
 
 const router = express.Router();
@@ -27,12 +27,12 @@ const router = express.Router();
 router.get("/test", testController);
 
 // Routes admin
-router.get("/admin", adminVideosListController);
-router.get("/admin/leaderboard", adminLeaderboardController);
-router.get("/admin/:id/reviews", adminVideoReviewsController);
-router.get("/admin/:id", adminOneVideoController);
-router.patch("/admin/:id/status", patchVideoStatusController);
-router.patch("/admin/:id/featured", patchVideoFeaturedController);
+router.get("/admin", verifyToken, isAdminOrSelector, adminVideosListController);
+router.get("/admin/leaderboard", verifyToken, isAdminOrSelector, adminLeaderboardController);
+router.get("/admin/:id/reviews", verifyToken, isAdminOrSelector, adminVideoReviewsController);
+router.get("/admin/:id", verifyToken, isAdminOrSelector, adminOneVideoController);
+router.patch("/admin/:id/status", verifyToken, isAdminOrSelector, patchVideoStatusController);
+router.patch("/admin/:id/featured", verifyToken, isAdminOrSelector, patchVideoFeaturedController);
 
 
 /* =====================================================
