@@ -83,7 +83,7 @@ function Header() {
 
     return(
         <>
-            <header className={`flex items-center justify-between w-full p-2 my-[10px] md:m-0 md:px-[40px] md:py-[20px] lg:py-[30px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] ${isHome && !scrolled ? "text-white" : "text-[#3B82F6] md:bg-white dark:md:bg-transparent"} ${isHome ? "fixed md:top-0 md:left-0" : "static"} dark:text-[#FFFFFF] dark:border-[#FFFFFF]/60 dark:text-white`}>
+            <header className={`flex items-center justify-between w-full p-2 my-[10px] md:m-0 md:px-[40px] md:py-[20px] lg:py-[30px] rounded-full border border-[rgba(255,255,255,0.10)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.40)] z-50 md:rounded-none md:bg-transparent md:shadow-none md:border-0 md:border-b md:border-[rgba(0,0,0,0.20)] ${isHome && !scrolled ? "text-white" : "text-[#3B82F6] md:bg-white dark:md:bg-black/70"} ${isHome ? "fixed md:top-0 md:left-0" : "static"} dark:text-[#FFFFFF] dark:border-[#FFFFFF]/20 dark:text-white`}>
                 
                 {/* LEFT : LOGO */}
                 {logoSrc ? (
