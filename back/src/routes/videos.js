@@ -18,8 +18,8 @@ import upsertMyReviewController from "../controllers/videos/upsertMyReview.contr
 
 import upload from "../middlewares/uploadVideoMiddleware.js";
 import verifyRecaptcha from "../middlewares/verifyRecaptcha.js";
-
 import { verifyToken, isSelector } from "../utils/isAdmin.js";
+
 
 const router = express.Router();
 
@@ -33,6 +33,7 @@ router.get("/admin/:id/reviews", adminVideoReviewsController);
 router.get("/admin/:id", adminOneVideoController);
 router.patch("/admin/:id/status", patchVideoStatusController);
 router.patch("/admin/:id/featured", patchVideoFeaturedController);
+
 
 /* =====================================================
     REVIEW SELECTIONNEUR

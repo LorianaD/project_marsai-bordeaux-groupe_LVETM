@@ -3,8 +3,9 @@
  */
 export function getAuthHeaders(extra = {}) {
   const token = localStorage.getItem("token");
-  return {
-    ...extra,
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
+  const headers = Object.assign({}, extra);
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  return headers;
 }

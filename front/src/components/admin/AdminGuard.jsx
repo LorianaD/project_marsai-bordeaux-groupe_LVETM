@@ -1,10 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-/**
- * Bloque l'accès aux routes /admin/* pour les selectors et les utilisateurs non connectés.
- * Les selectors sont redirigés vers /selector/videos.
- */
+/*============================================================================================================
+   Bloque l'accès aux routes /admin/* pour les selectors et les utilisateurs non connectés ou qui n'exist pas
+ ===========================================================================================================*/
 export default function AdminGuard({ children }) {
   const user = decodeToken();
 
@@ -12,7 +11,7 @@ export default function AdminGuard({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.role === "selector") {
+  if (user?.role === "selector") {
     return <Navigate to="/selector/videos" replace />;
   }
 
