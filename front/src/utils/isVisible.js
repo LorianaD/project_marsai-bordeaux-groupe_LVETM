@@ -35,7 +35,7 @@ function isVisible(content, section, key) {
 }
 
 function isSectionVisible(content, section) {
-    console.log("fonction isSectionVisible OK");
+    // console.log("fonction isSectionVisible OK");
     
     return Number(content?.[section]?.["section_visibility_is_active"] ?? 1) === 1;
 }
