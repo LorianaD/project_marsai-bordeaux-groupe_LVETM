@@ -4,7 +4,7 @@
       "mars": "Mars",
       "ai": "AI"
     },
-    "message": "Le Festival sera en ligne entre le {{startDay}} et le {{endFullDate}}, Vous retrouverez les courts-métrages dans cette page à cette date!",
+    "message": "Le Festival sera en ligne entre le {{startDay}} et le {{endFullDate}}. Vous retrouverez les courts-métrages dans cette page à cette date !",
     "badge": {
       "before": "Ouverture du festival dans",
       "during": "Clôture du festival dans",
@@ -26,7 +26,7 @@
   },
 
   "search": {
-    "placeholder": "Hinted search text"
+    "placeholder": "Rechercher films, réalisateurs, pays..."
   },
 
   "states": {
@@ -38,5 +38,20 @@
     "previous": "Précédent",
     "next": "Suivant",
     "summary": "PAGE {{page}} SUR {{totalPages}} — {{total}} FILMS TROUVÉS"
+  },
+
+  "card": {
+    "labels": {
+      "director": "RÉALISATEUR",
+      "origin": "ORIGINE"
+    },
+    "aria": {
+      "viewFilm": "Voir le film {{title}}"
+    },
+    "fallbacks": {
+      "title": "NEURAL ODYSSEY",
+      "director": "Nom du réalisateur",
+      "country": "Pays"
+    }
   }
 }
