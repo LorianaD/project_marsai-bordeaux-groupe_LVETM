@@ -5,7 +5,7 @@ import RegisterForm from "../../components/admin/RegisterForm.jsx";
 // ==================================
 
 function AdminRegister() {
-  //ta logique code
+  
   return (
     
       <div className="min-h-screen flex items-center justify-center">

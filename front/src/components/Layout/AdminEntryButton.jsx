@@ -5,8 +5,16 @@ function AdminEntryButton() {
     const navigate = useNavigate();
 
     const handleGo = () => {
-        const user = decodeToken(); // relu maintenant
-        navigate(user ? "/admin" : "/login");
+        const user = decodeToken();
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+        if (user.role === "selector") {
+            navigate("/selector/videos");
+        } else {
+            navigate("/admin");
+        }
     };
 
     return (

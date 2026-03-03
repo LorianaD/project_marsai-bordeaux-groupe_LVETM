@@ -26,9 +26,6 @@ export function AdminRouter() {
 
         {/* Admin */}
         <Route index element={<Overview />} />
-
-        {/* Pages admin */}
-        <Route path="" element={<Overview />} />
         <Route path="users" element={<AdminUsers />}/>
         <Route path="events" element={<AdminEvents />} />
         <Route path="events/:eventId/participants"element={<AdminEventParticipants />} />
