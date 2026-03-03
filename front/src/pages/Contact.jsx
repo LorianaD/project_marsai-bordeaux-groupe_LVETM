@@ -14,7 +14,7 @@ export default function Contact() {
         {/* Texte d'information */}
         <div className="mt-10 flex justify-center">
           <p className="w-full max-w-[820px] text-center text-[11px] leading-relaxed text-black/70 dark:text-white/70">
-            ...
+            
           </p>
         </div>
 
