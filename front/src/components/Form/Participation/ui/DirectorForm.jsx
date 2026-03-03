@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Field, TextInput, Select } from "./Field";
 
 /* URL drapeau */
@@ -16,6 +17,7 @@ function buildDialCode(idd) {
 }
 
 function CountryPickerModal({ open, onClose, countries, onPick }) {
+  const { t } = useTranslation("participation");
   const [q, setQ] = useState("");
 
   useEffect(() => {
@@ -42,20 +44,20 @@ function CountryPickerModal({ open, onClose, countries, onPick }) {
         type="button"
         className="absolute inset-0 bg-black/60"
         onClick={onClose}
-        aria-label="Fermer"
+        aria-label={t("countryPicker.closeAria")}
       />
 
       <div className="absolute left-1/2 top-1/2 w-[min(92vw,520px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-black/10">
         <div className="flex items-center gap-3 border-b border-neutral-200 px-5 py-4">
           <div className="text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900">
-            Choisir un pays
+            {t("countryPicker.title")}
           </div>
           <button
             type="button"
             onClick={onClose}
             className="ml-auto rounded-xl bg-neutral-900 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
           >
-            Fermer
+            {t("countryPicker.close")}
           </button>
         </div>
 
@@ -63,7 +65,7 @@ function CountryPickerModal({ open, onClose, countries, onPick }) {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Rechercher : France, +33, US..."
+            placeholder={t("countryPicker.searchPlaceholder")}
             className="w-full rounded-2xl bg-neutral-100 px-5 py-3 text-sm outline-none ring-1 ring-black/5 focus:ring-2 focus:ring-blue-500/30"
           />
 
@@ -92,7 +94,7 @@ function CountryPickerModal({ open, onClose, countries, onPick }) {
             ))}
             {!filtered.length ? (
               <div className="px-4 py-6 text-center text-sm text-neutral-500">
-                Aucun résultat.
+                {t("countryPicker.noResults")}
               </div>
             ) : null}
           </div>
@@ -126,6 +128,7 @@ function splitMobile(mobileStr) {
 }
 
 export default function DirectorForm({ onNext }) {
+  const { t, i18n } = useTranslation("participation");
   const DRAFT_KEY = "directorFormDraft";
 
   const inputClass =
@@ -177,7 +180,6 @@ export default function DirectorForm({ onNext }) {
 
   // ✅ Restore draft + pré-remplissage depuis directorProfile
   useEffect(() => {
-    // 1) draft en priorité
     const draft = localStorage.getItem(DRAFT_KEY);
     if (draft) {
       try {
@@ -190,7 +192,6 @@ export default function DirectorForm({ onNext }) {
       } catch {}
     }
 
-    // 2) directorProfile en fallback (ne remplace pas ce que tu as déjà tapé)
     const saved = localStorage.getItem("directorProfile");
     if (!saved) return;
 
@@ -210,11 +211,9 @@ export default function DirectorForm({ onNext }) {
         address: prev.address || p.address || "",
         discovery_source: prev.discovery_source || p.discovery_source || "",
         home_number: prev.home_number || p.home_number || "",
-        // mobile_number sera recalculé par l'effet dial+local
         mobile_number: prev.mobile_number || p.mobile_number || "",
       }));
 
-      // pré-remplissage phoneLocal / dial si possible
       const { dial, local } = splitMobile(p.mobile_number);
       if (local && !phoneLocal) setPhoneLocal(local);
       if (dial && (!phoneCountry?.dial || phoneCountry.dial === "+33")) {
@@ -249,7 +248,7 @@ export default function DirectorForm({ onNext }) {
         const namesOnly = list
           .map((c) => c?.name?.common)
           .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b, "fr"));
+          .sort((a, b) => a.localeCompare(b, i18n.language));
 
         const phoneList = list
           .map((c) => {
@@ -260,7 +259,7 @@ export default function DirectorForm({ onNext }) {
             return { code, name, dial };
           })
           .filter(Boolean)
-          .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+          .sort((a, b) => a.name.localeCompare(b.name, i18n.language));
 
         if (!alive) return;
 
@@ -270,7 +269,8 @@ export default function DirectorForm({ onNext }) {
         const fr = phoneList.find((x) => x.code === "FR");
         if (fr && !localStorage.getItem(DRAFT_KEY)) setPhoneCountry(fr);
       } catch {
-        if (alive) setCountriesErr("Impossible de charger la liste des pays.");
+        if (alive)
+          setCountriesErr(t("director.fields.directorCountry.errorMsg"));
       } finally {
         if (alive) setCountriesLoading(false);
       }
@@ -280,7 +280,7 @@ export default function DirectorForm({ onNext }) {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [i18n.language, t]);
 
   useEffect(() => {
     const full = `${phoneCountry.dial} ${phoneLocal}`.trim();
@@ -293,12 +293,9 @@ export default function DirectorForm({ onNext }) {
       setAgeError("");
       return;
     }
-    if (age < 18) {
-      setAgeError("Attention : il faut avoir plus de 18 ans pour participer.");
-    } else {
-      setAgeError("");
-    }
-  }, [form.birthday]);
+    if (age < 18) setAgeError(t("director.ageError"));
+    else setAgeError("");
+  }, [form.birthday, t]);
 
   function update(e) {
     const { name, value } = e.target;
@@ -359,65 +356,61 @@ export default function DirectorForm({ onNext }) {
 
       <div className="rounded-2xl border border-neutral-200 bg-white p-8 dark:bg-black dark:border-neutral-800">
         <h2 className="text-center text-2xl font-semibold text-blue-600">
-          MON PROFIL RÉALISATEUR
+          {t("director.title")}
         </h2>
 
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <Field label="Prénom" required>
+          <Field label={t("director.fields.firstName.label")} required>
             <TextInput
               name="name"
               value={form.name}
               onChange={update}
-              placeholder="Ex : Carla"
+              placeholder={t("director.fields.firstName.placeholder")}
               className={inputClass}
               autoComplete="given-name"
             />
-            <div className={help}>Ton prénom tel qu’il apparaîtra.</div>
+            <div className={help}>{t("director.fields.firstName.help")}</div>
           </Field>
 
-          <Field label="Nom" required>
+          <Field label={t("director.fields.lastName.label")} required>
             <TextInput
               name="last_name"
               value={form.last_name}
               onChange={update}
-              placeholder="Ex : Dupont"
+              placeholder={t("director.fields.lastName.placeholder")}
               className={inputClass}
               autoComplete="family-name"
             />
-            <div className={help}>
-              Ton nom (ou nom d’artiste si tu préfères).
-            </div>
+            <div className={help}>{t("director.fields.lastName.help")}</div>
           </Field>
 
-          <Field label="Civilité" required>
+          <Field label={t("director.fields.civility.label")} required>
             <Select
               name="gender"
               value={form.gender}
               onChange={update}
               className={selectClass}
             >
-              <option value="Mr">Mr</option>
-              <option value="Mrs">Mrs</option>
+              <option value="Mr">{t("director.fields.civility.mr")}</option>
+              <option value="Mrs">{t("director.fields.civility.mrs")}</option>
             </Select>
-            <div className={help}>Sélectionne la civilité affichée.</div>
+            <div className={help}>{t("director.fields.civility.help")}</div>
           </Field>
 
-          <Field label="Adresse e-mail" required>
+          <Field label={t("director.fields.email.label")} required>
             <TextInput
               name="email"
               value={form.email}
               onChange={update}
-              placeholder="email@exemple.com"
+              placeholder={t("director.fields.email.placeholder")}
               type="email"
               className={inputClass}
               autoComplete="email"
             />
-            <div className={help}>
-              On l’utilise pour te contacter (confirmation, etc.).
-            </div>
+            <div className={help}>{t("director.fields.email.help")}</div>
           </Field>
 
-          <Field label="Date de naissance" required>
+          <Field label={t("director.fields.birthday.label")} required>
             <TextInput
               name="birthday"
               type="date"
@@ -426,15 +419,13 @@ export default function DirectorForm({ onNext }) {
               className={inputClass}
               autoComplete="bday"
             />
-            <div className={help}>
-              Format calendrier. Il faut avoir +18 ans.
-            </div>
+            <div className={help}>{t("director.fields.birthday.help")}</div>
             {ageError ? (
               <div className="mt-2 text-sm text-red-600">{ageError}</div>
             ) : null}
           </Field>
 
-          <Field label="Pays réalisateur" required>
+          <Field label={t("director.fields.directorCountry.label")} required>
             <Select
               name="director_country"
               value={form.director_country}
@@ -444,10 +435,10 @@ export default function DirectorForm({ onNext }) {
             >
               <option value="">
                 {countriesLoading
-                  ? "Chargement des pays…"
+                  ? t("director.fields.directorCountry.loading")
                   : countriesErr
-                    ? "Erreur de chargement"
-                    : "Choisir un pays"}
+                    ? t("director.fields.directorCountry.error")
+                    : t("director.fields.directorCountry.choose")}
               </option>
 
               {countries.map((c) => (
@@ -462,41 +453,41 @@ export default function DirectorForm({ onNext }) {
             ) : null}
 
             <div className={help}>
-              Le pays où tu résides / ton pays principal.
+              {t("director.fields.directorCountry.help")}
             </div>
           </Field>
 
-          <Field label="Découverte" required>
+          <Field label={t("director.fields.discovery.label")} required>
             <TextInput
               name="discovery_source"
               value={form.discovery_source}
               onChange={update}
-              placeholder="Ex : Google / Instagram / Ami..."
+              placeholder={t("director.fields.discovery.placeholder")}
               className={inputClass}
               autoComplete="off"
             />
-            <div className={help}>Comment as-tu découvert le festival ?</div>
+            <div className={help}>{t("director.fields.discovery.help")}</div>
           </Field>
 
-          <Field label="Adresse" required>
+          <Field label={t("director.fields.address.label")} required>
             <TextInput
               name="address"
               value={form.address}
               onChange={update}
-              placeholder="Ex : 20 rue Exemple, Paris"
+              placeholder={t("director.fields.address.placeholder")}
               className={inputClass}
               autoComplete="street-address"
             />
-            <div className={help}>Adresse complète (utile si besoin).</div>
+            <div className={help}>{t("director.fields.address.help")}</div>
           </Field>
 
-          <Field label="Mobile" required>
+          <Field label={t("director.fields.mobile.label")} required>
             <div className="flex w-full items-center gap-3 rounded-2xl bg-neutral-100 px-5 py-4 ring-1 ring-black/5 focus-within:ring-2 focus-within:ring-blue-500/30 dark:bg-neutral-900 dark:ring-white/10">
               <button
                 type="button"
                 onClick={() => setPhoneOpen(true)}
                 className="flex items-center gap-2 rounded-xl bg-white/60 px-3 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-black/5 hover:bg-white dark:bg-white/10 dark:text-white dark:ring-white/10"
-                aria-label="Choisir un pays"
+                aria-label={t("director.fields.mobile.ariaPickCountry")}
               >
                 <img
                   src={flagUrl(phoneCountry.code, 24)}
@@ -512,7 +503,7 @@ export default function DirectorForm({ onNext }) {
               <input
                 value={phoneLocal}
                 onChange={(e) => setPhoneLocal(e.target.value)}
-                placeholder="Ex : 06 12 34 56 78"
+                placeholder={t("director.fields.mobile.placeholder")}
                 inputMode="tel"
                 className={
                   "w-full bg-transparent text-sm outline-none " +
@@ -524,20 +515,19 @@ export default function DirectorForm({ onNext }) {
             </div>
 
             <div className={help}>
-              Exemple : {phoneCountry.dial} 6 12 34 56 78 — (clique sur le
-              drapeau pour changer d’indicatif).
+              {t("director.fields.mobile.help", { dial: phoneCountry.dial })}
             </div>
           </Field>
 
-          <Field label="Fixe (optionnel)">
+          <Field label={t("director.fields.home.label")}>
             <TextInput
               name="home_number"
               value={form.home_number}
               onChange={update}
-              placeholder="Ex : 01 23 45 67 89"
+              placeholder={t("director.fields.home.placeholder")}
               className={inputClass}
             />
-            <div className={help}>Si tu as un numéro fixe (facultatif).</div>
+            <div className={help}>{t("director.fields.home.help")}</div>
           </Field>
         </div>
 
@@ -547,7 +537,7 @@ export default function DirectorForm({ onNext }) {
             disabled={!canSubmit}
             className="inline-flex items-center gap-3 rounded-xl bg-[#7C3AED] px-10 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
           >
-            NEXT <span aria-hidden>→</span>
+            {t("director.next")} <span aria-hidden>→</span>
           </button>
         </div>
       </div>

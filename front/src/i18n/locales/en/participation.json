@@ -1,0 +1,162 @@
+{
+  "page": {
+    "title": "PARTICIPATION FORM",
+    "steps": {
+      "1": "1. Director",
+      "2": "2. Video upload",
+      "3": "3. Team & certificate"
+    },
+    "prev": "PREVIOUS",
+    "next": "NEXT →",
+    "send": "SEND",
+    "nextDisabledHint": "Complete all required fields + files in step 2",
+    "sendDisabledHint": "Validate ownership + promo + terms + age + captcha to send",
+    "sendHint": "Submit participation",
+    "sendDisabledText": "To enable SEND: check the boxes + captcha in “Final validation”."
+  },
+
+  "director": {
+    "title": "MY DIRECTOR PROFILE",
+    "fields": {
+      "firstName": { "label": "First name", "placeholder": "e.g. Carla", "help": "Your first name as it will appear." },
+      "lastName": { "label": "Last name", "placeholder": "e.g. Dupont", "help": "Your last name (or stage name)." },
+      "civility": { "label": "Title", "help": "Select the displayed title.", "mr": "Mr", "mrs": "Mrs" },
+      "email": { "label": "Email address", "placeholder": "email@example.com", "help": "We use it to contact you (confirmation, etc.)." },
+      "birthday": { "label": "Date of birth", "help": "Calendar format. You must be 18+." },
+      "directorCountry": {
+        "label": "Director country",
+        "help": "Your main country of residence.",
+        "loading": "Loading countries…",
+        "error": "Loading error",
+        "choose": "Choose a country",
+        "errorMsg": "Unable to load the countries list."
+      },
+      "discovery": { "label": "How did you hear about us?", "placeholder": "e.g. Google / Instagram / Friend…", "help": "How did you discover the festival?" },
+      "address": { "label": "Address", "placeholder": "e.g. 20 Example street, Paris", "help": "Full address (useful if needed)." },
+      "mobile": {
+        "label": "Mobile",
+        "ariaPickCountry": "Choose a country",
+        "placeholder": "e.g. 06 12 34 56 78",
+        "help": "Example: {{dial}} 6 12 34 56 78 — (click the flag to change dialing code)."
+      },
+      "home": { "label": "Landline (optional)", "placeholder": "e.g. 01 23 45 67 89", "help": "If you have a landline (optional)." }
+    },
+    "ageError": "Warning: you must be over 18 to participate.",
+    "next": "NEXT →"
+  },
+
+  "countryPicker": {
+    "closeAria": "Close",
+    "title": "Choose a country",
+    "close": "Close",
+    "searchPlaceholder": "Search: France, +33, US...",
+    "noResults": "No results."
+  },
+
+  "team": {
+    "title": "04. TEAM COMPOSITION",
+    "addCollaborator": "+ Add collaborator",
+    "fields": {
+      "civility": { "label": "Title", "help": "Collaborator title.", "mr": "Mr", "mrs": "Mrs" },
+      "fullName": { "label": "First and last name", "placeholder": "e.g. John Doe", "help": "Full name as it will appear in credits." },
+      "profession": { "label": "Profession", "placeholder": "e.g. Editor / Composer / Voice-over", "help": "Exact role on the project." },
+      "email": { "label": "Email", "placeholder": "email@example.com", "help": "Collaborator email (if needed)." }
+    },
+    "empty": "No contributors added yet.",
+    "remove": "Delete",
+
+    "certificate": {
+      "title": "OWNERSHIP CERTIFICATE",
+      "text": "By submitting this file, you certify on your honor that you are the original author of the work and hold all distribution rights. You accept that MARS.AI may use these elements to promote the festival.",
+      "checks": {
+        "ownershipCertified": "I certify I am the original author and hold the rights.",
+        "promoConsent": "I agree to its use for festival promotion."
+      }
+    },
+
+    "final": {
+      "title": "Final validation",
+      "terms": "I accept the festival",
+      "termsLink": "terms of use",
+      "age": "I confirm I am over 18.",
+      "captchaHelp": "Check the captcha to finalize the submission.",
+      "missing": "To validate, check the boxes + captcha.",
+      "ok": "✅ Validation OK",
+      "modalTitle": "Terms of use — MarsAI",
+      "close": "Close"
+    }
+  },
+
+  "upload": {
+    "confirm": {
+      "title": "Do you confirm sending?",
+      "text": "Do you confirm sending your video?",
+      "hint": "Once upload starts, do not close the page until it finishes.",
+      "cancel": "Cancel",
+      "yes": "Yes, send",
+      "sending": "Sending..."
+    },
+    "success": {
+      "title": "Upload finished",
+      "hint": "Click OK to return to home.",
+      "ok": "OK"
+    },
+    "missingValidations": "Some fields or validations are missing (checkboxes + captcha).",
+    "uploadOk": "Upload OK (videoId: {{id}})",
+    "uploadOkFallback": "Upload OK",
+    "uploadError": "Upload error",
+
+    "title": "MY VIDEO",
+    "sections": {
+      "identity": "01. FILM IDENTITY",
+      "ai": "02. AI USAGE DECLARATION",
+      "files": "04. FILES"
+    },
+    "fields": {
+      "title": { "label": "Short film title", "help": "Original title (film language)." },
+      "titleEn": { "label": "English translation", "help": "English title (required)." },
+      "language": {
+        "label": "Language",
+        "help": "Main dialogue / narration language.",
+        "choose": "Choose a language",
+        "options": {
+          "fr": "French",
+          "en": "English",
+          "es": "Spanish",
+          "it": "Italian",
+          "de": "German",
+          "pt": "Portuguese",
+          "ar": "Arabic",
+          "nl": "Dutch",
+          "ru": "Russian",
+          "zh": "Chinese",
+          "ja": "Japanese",
+          "ko": "Korean"
+        }
+      },
+      "country": {
+        "label": "Country",
+        "help": "Production country (or main project country).",
+        "loading": "Loading countries…",
+        "error": "Loading error",
+        "choose": "Choose a country",
+        "errorMsg": "Unable to load the countries list."
+      },
+      "duration": { "label": "Duration (seconds)", "placeholder": "60", "help": "e.g. 60 (in seconds)." },
+      "youtube": { "label": "YouTube link (optional)", "help": "Optional (YouTube link)." },
+      "tags": { "label": "Tags (optional)", "help": "e.g. Sci-fi, AI, Drama… (helps search)." },
+      "synopsis": { "label": "Synopsis (original)", "help": "Clear summary, ideally 2–6 sentences." },
+      "synopsisEn": { "label": "Synopsis (English)", "help": "English version required." },
+      "techResume": { "label": "Technical summary", "help": "How AI was used technically." },
+      "creativeResume": { "label": "Creative methodology", "help": "Your creative process (steps, workflow, intent)." },
+      "aiTech": { "label": "AI tools used", "help": "List AI tools (comma separated)." },
+
+      "video": { "label": "Video", "help": "Final video file (mp4 recommended)." },
+      "cover": { "label": "Cover", "help": "Main thumbnail (jpg/png)." },
+      "still1": { "label": "Still 1", "help": "Required still image." },
+      "still2": { "label": "Still 2 (optional)", "help": "Optional." },
+      "still3": { "label": "Still 3 (optional)", "help": "Optional." },
+      "subtitles": { "label": "Subtitles (.srt)", "help": "Add at least one .srt." }
+    }
+  }
+}

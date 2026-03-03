@@ -1,0 +1,162 @@
+{
+  "page": {
+    "title": "FORMULAIRE DE PARTICIPATION",
+    "steps": {
+      "1": "1. Réalisateur",
+      "2": "2. Upload vidéo",
+      "3": "3. Équipe & certificat"
+    },
+    "prev": "PRÉCÉDENT",
+    "next": "SUIVANT →",
+    "send": "ENVOYER",
+    "nextDisabledHint": "Complète tous les champs obligatoires + fichiers du step 2",
+    "sendDisabledHint": "Valide la propriété + promo + conditions + âge + captcha pour envoyer",
+    "sendHint": "Envoyer la participation",
+    "sendDisabledText": "Pour activer ENVOYER : coche les cases + captcha dans “Validation finale”."
+  },
+
+  "director": {
+    "title": "MON PROFIL RÉALISATEUR",
+    "fields": {
+      "firstName": { "label": "Prénom", "placeholder": "Ex : Carla", "help": "Ton prénom tel qu’il apparaîtra." },
+      "lastName": { "label": "Nom", "placeholder": "Ex : Dupont", "help": "Ton nom (ou nom d’artiste si tu préfères)." },
+      "civility": { "label": "Civilité", "help": "Sélectionne la civilité affichée.", "mr": "Mr", "mrs": "Mrs" },
+      "email": { "label": "Adresse e-mail", "placeholder": "email@exemple.com", "help": "On l’utilise pour te contacter (confirmation, etc.)." },
+      "birthday": { "label": "Date de naissance", "help": "Format calendrier. Il faut avoir +18 ans." },
+      "directorCountry": {
+        "label": "Pays réalisateur",
+        "help": "Le pays où tu résides / ton pays principal.",
+        "loading": "Chargement des pays…",
+        "error": "Erreur de chargement",
+        "choose": "Choisir un pays",
+        "errorMsg": "Impossible de charger la liste des pays."
+      },
+      "discovery": { "label": "Découverte", "placeholder": "Ex : Google / Instagram / Ami...", "help": "Comment as-tu découvert le festival ?" },
+      "address": { "label": "Adresse", "placeholder": "Ex : 20 rue Exemple, Paris", "help": "Adresse complète (utile si besoin)." },
+      "mobile": {
+        "label": "Mobile",
+        "ariaPickCountry": "Choisir un pays",
+        "placeholder": "Ex : 06 12 34 56 78",
+        "help": "Exemple : {{dial}} 6 12 34 56 78 — (clique sur le drapeau pour changer d’indicatif)."
+      },
+      "home": { "label": "Fixe (optionnel)", "placeholder": "Ex : 01 23 45 67 89", "help": "Si tu as un numéro fixe (facultatif)." }
+    },
+    "ageError": "Attention : il faut avoir plus de 18 ans pour participer.",
+    "next": "NEXT →"
+  },
+
+  "countryPicker": {
+    "closeAria": "Fermer",
+    "title": "Choisir un pays",
+    "close": "Fermer",
+    "searchPlaceholder": "Rechercher : France, +33, US...",
+    "noResults": "Aucun résultat."
+  },
+
+  "team": {
+    "title": "04. COMPOSITION DE L’ÉQUIPE",
+    "addCollaborator": "+ Ajouter collaborateur",
+    "fields": {
+      "civility": { "label": "Civilité", "help": "Civilité du collaborateur.", "mr": "M.", "mrs": "Mme" },
+      "fullName": { "label": "Prénom et nom", "placeholder": "Ex : Jean Dupont", "help": "Nom complet tel qu’il apparaîtra au générique." },
+      "profession": { "label": "Profession", "placeholder": "Ex : Monteur / Compositeur / Voix-off", "help": "Rôle exact dans le projet." },
+      "email": { "label": "Email", "placeholder": "email@exemple.com", "help": "Email du collaborateur (si nécessaire)." }
+    },
+    "empty": "Aucun contributeur ajouté pour l’instant.",
+    "remove": "Supprimer",
+
+    "certificate": {
+      "title": "CERTIFICAT DE PROPRIÉTÉ",
+      "text": "En soumettant ce dossier, vous certifiez sur l'honneur être l'auteur original de l'œuvre et détenir l'intégralité des droits de diffusion. Vous acceptez que MARS.AI utilise ces éléments pour la promotion du festival.",
+      "checks": {
+        "ownershipCertified": "Je certifie être l’auteur original et détenir les droits.",
+        "promoConsent": "J’accepte l’utilisation pour la promotion du festival."
+      }
+    },
+
+    "final": {
+      "title": "Validation finale",
+      "terms": "J’accepte les",
+      "termsLink": "conditions d’utilisation",
+      "age": "Je confirme avoir plus de 18 ans.",
+      "captchaHelp": "Coche le captcha pour finaliser la soumission.",
+      "missing": "Pour valider, coche les cases + captcha.",
+      "ok": "✅ Validation OK",
+      "modalTitle": "Conditions d’utilisation — MarsAI",
+      "close": "Fermer"
+    }
+  },
+
+  "upload": {
+    "confirm": {
+      "title": "Confirmez-vous l’envoi ?",
+      "text": "Confirmez-vous l’envoi de votre vidéo ?",
+      "hint": "Une fois l’upload lancé, ne fermez pas la page jusqu’à la fin.",
+      "cancel": "Annuler",
+      "yes": "Oui, envoyer",
+      "sending": "Envoi..."
+    },
+    "success": {
+      "title": "Upload terminé",
+      "hint": "Cliquez sur OK pour revenir à l’accueil.",
+      "ok": "OK"
+    },
+    "missingValidations": "Il manque des champs ou des validations (cases + captcha).",
+    "uploadOk": "Upload OK (videoId: {{id}})",
+    "uploadOkFallback": "Upload OK",
+    "uploadError": "Erreur upload",
+
+    "title": "MA VIDÉO",
+    "sections": {
+      "identity": "01. IDENTITÉ DU FILM",
+      "ai": "02. DÉCLARATION USAGE IA",
+      "files": "04. FICHIERS"
+    },
+    "fields": {
+      "title": { "label": "Titre du court métrage", "help": "Titre original (langue du film)." },
+      "titleEn": { "label": "Traduction anglaise", "help": "Titre en anglais (obligatoire)." },
+      "language": {
+        "label": "Langue",
+        "help": "Langue principale des dialogues / narration.",
+        "choose": "Choisir une langue",
+        "options": {
+          "fr": "Français",
+          "en": "Anglais",
+          "es": "Espagnol",
+          "it": "Italien",
+          "de": "Allemand",
+          "pt": "Portugais",
+          "ar": "Arabe",
+          "nl": "Néerlandais",
+          "ru": "Russe",
+          "zh": "Chinois",
+          "ja": "Japonais",
+          "ko": "Coréen"
+        }
+      },
+      "country": {
+        "label": "Pays",
+        "help": "Pays de production (ou pays principal du projet).",
+        "loading": "Chargement des pays…",
+        "error": "Erreur de chargement",
+        "choose": "Choisir un pays",
+        "errorMsg": "Impossible de charger la liste des pays."
+      },
+      "duration": { "label": "Durée (en secondes)", "placeholder": "60", "help": "Ex : 60 (en secondes)." },
+      "youtube": { "label": "Lien YouTube (optionnel)", "help": "Optionnel (lien YouTube)." },
+      "tags": { "label": "Tags (optionnel)", "help": "Ex : Sci-fi, AI, Drama… (aide à la recherche)." },
+      "synopsis": { "label": "Synopsis (original)", "help": "Résumé clair, 2–6 phrases idéalement." },
+      "synopsisEn": { "label": "Synopsis (anglais)", "help": "Version anglaise obligatoire." },
+      "techResume": { "label": "Résumé technique", "help": "Comment l’IA a été utilisée techniquement." },
+      "creativeResume": { "label": "Méthodologie créative", "help": "Ton processus créatif (étapes, workflow, intention)." },
+      "aiTech": { "label": "Outils IA utilisés", "help": "Liste des outils IA (virgules)." },
+
+      "video": { "label": "Vidéo", "help": "Fichier vidéo final (mp4 conseillé)." },
+      "cover": { "label": "Cover", "help": "Vignette principale (jpg/png)." },
+      "still1": { "label": "Still 1", "help": "Image fixe obligatoire." },
+      "still2": { "label": "Still 2 (optionnel)", "help": "Optionnel." },
+      "still3": { "label": "Still 3 (optionnel)", "help": "Optionnel." },
+      "subtitles": { "label": "Sous-titres (.srt)", "help": "Ajoute au moins un .srt." }
+    }
+  }
+}
