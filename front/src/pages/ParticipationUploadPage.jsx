@@ -9,35 +9,18 @@ export default function ParticipationUploadPage() {
   // Step courant (1: réalisateur, 2: upload, 3: équipe + certificat)
   const [step, setStep] = useState(1);
 
+  // ✅ NEW: bloque Step2 -> Step3 tant que Step2 n'est pas complet
+  const [canGoStep3, setCanGoStep3] = useState(false);
+
   // Ref vers l’API exposée par VideoUploadForm: { openConfirm(), requestSubmit() }
   const videoFormRef = useRef(null);
 
   // On garde tout l'objet ownership (pas juste ownershipCertified)
   const [ownership, setOwnership] = useState({});
 
-  // Au montage: si profil réalisateur complet => step 2
-  useEffect(() => {
-    const saved = localStorage.getItem("directorProfile");
-    if (!saved) return;
-
-    try {
-      const p = JSON.parse(saved);
-
-      const isComplete =
-        p.email &&
-        p.firstName &&
-        p.lastName &&
-        p.gender &&
-        p.birthday &&
-        p.address &&
-        p.director_country &&
-        p.discovery_source;
-
-      if (isComplete) setStep(2);
-    } catch {
-      // ignore
-    }
-  }, []);
+  // IMPORTANT: on supprime l'auto-jump vers step 2
+  // On arrive toujours au step 1.
+  // (Le step 1 se pré-remplit depuis directorProfile dans DirectorForm)
 
   // Sync ownership depuis localStorage (+ écoute storage)
   useEffect(() => {
@@ -78,7 +61,7 @@ export default function ParticipationUploadPage() {
   function submitVideoFromStep3() {
     if (!canSend) return;
 
-    // ✅ nouveau flow: ouvre la popup de confirmation (puis doUpload dans VideoUploadForm)
+ 
     if (videoFormRef.current?.openConfirm) {
       videoFormRef.current.openConfirm();
       return;
@@ -138,7 +121,10 @@ export default function ParticipationUploadPage() {
             }
           >
             <div className="rounded-2xl bg-white p-6 text-neutral-900 md:p-10 dark:bg-black dark:text-white">
-              <VideoUploadForm formRef={videoFormRef} />
+              <VideoUploadForm
+                formRef={videoFormRef}
+                onCanProceedChange={setCanGoStep3} 
+              />
 
               {/* Nav step 2 */}
               <div className="mt-10 flex items-center justify-center gap-4">
@@ -153,7 +139,18 @@ export default function ParticipationUploadPage() {
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="rounded-xl bg-purple-600 px-12 py-3 font-semibold text-white"
+                  disabled={!canGoStep3}
+                  className={[
+                    "rounded-xl px-12 py-3 font-semibold text-white transition",
+                    canGoStep3
+                      ? "bg-purple-600 hover:bg-purple-700"
+                      : "cursor-not-allowed bg-purple-300 opacity-60",
+                  ].join(" ")}
+                  title={
+                    canGoStep3
+                      ? "Continuer"
+                      : "Complète tous les champs obligatoires + fichiers du step 2"
+                  }
                 >
                   SUIVANT →
                 </button>

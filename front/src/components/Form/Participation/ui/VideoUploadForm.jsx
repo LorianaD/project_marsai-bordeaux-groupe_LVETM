@@ -34,11 +34,11 @@ function ModalShell({ open, title, children, onClose }) {
   );
 }
 
-export default function VideoUploadForm({ formRef }) {
+export default function VideoUploadForm({ formRef, onCanProceedChange }) {
   const navigate = useNavigate();
   const DRAFT_KEY = "videoUploadDraft";
 
-  // ✅ ref interne vers le vrai <form>
+  // ref interne vers le vrai <form>
   const internalFormRef = useRef(null);
 
   const [files, setFiles] = useState({
@@ -94,6 +94,9 @@ export default function VideoUploadForm({ formRef }) {
   // anti double ouverture / double clic
   const submitRequestedRef = useRef(false);
 
+  // évite d’écraser le draft par un état vide au montage
+  const restoredRef = useRef(false);
+
   useEffect(() => {
     let alive = true;
 
@@ -131,17 +134,19 @@ export default function VideoUploadForm({ formRef }) {
   // restore draft
   useEffect(() => {
     const savedDraft = localStorage.getItem(DRAFT_KEY);
-    if (!savedDraft) return;
-
-    try {
-      const d = JSON.parse(savedDraft);
-      if (d?.form) setForm((f) => ({ ...f, ...d.form }));
-      if (Array.isArray(d?.tags)) setTags(d.tags);
-    } catch {}
+    if (savedDraft) {
+      try {
+        const d = JSON.parse(savedDraft);
+        if (d?.form) setForm((f) => ({ ...f, ...d.form }));
+        if (Array.isArray(d?.tags)) setTags(d.tags);
+      } catch {}
+    }
+    restoredRef.current = true;
   }, []);
 
-  // autosave draft
+  // autosave draft (après restore)
   useEffect(() => {
+    if (!restoredRef.current) return;
     localStorage.setItem(DRAFT_KEY, JSON.stringify({ form, tags }));
   }, [form, tags]);
 
@@ -201,13 +206,9 @@ export default function VideoUploadForm({ formRef }) {
     }
   }
 
-  // ✅ IMPORTANT: calcule canSubmit avec ownership fresh à chaque render
-  function computeCanSubmit(ownershipObj) {
+  // ✅ step 2 uniquement (pour autoriser Step2 -> Step3)
+  function computeCanProceedStep3() {
     const durationNum = Number(form.duration);
-
-    const termsOk = !!ownershipObj?.termsAccepted;
-    const ageOk = !!ownershipObj?.ageConfirmed;
-    const robotOk = !!ownershipObj?.recaptchaToken;
 
     return (
       form.title.trim() &&
@@ -233,11 +234,25 @@ export default function VideoUploadForm({ formRef }) {
       files.video &&
       files.cover &&
       files.stills[0] &&
-      files.subtitles.length > 0 &&
-      termsOk &&
-      ageOk &&
-      robotOk
+      files.subtitles.length > 0
     );
+  }
+
+  // ✅ Informe le parent pour activer/désactiver le bouton "SUIVANT →"
+  useEffect(() => {
+    onCanProceedChange?.(!!computeCanProceedStep3());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, files, tags, onCanProceedChange]);
+
+  // ✅ calcule canSubmit (final) avec ownership fresh à chaque render
+  function computeCanSubmit(ownershipObj) {
+    const durationNum = Number(form.duration);
+
+    const termsOk = !!ownershipObj?.termsAccepted;
+    const ageOk = !!ownershipObj?.ageConfirmed;
+    const robotOk = !!ownershipObj?.recaptchaToken;
+
+    return computeCanProceedStep3() && termsOk && ageOk && robotOk;
   }
 
   const canSubmit = computeCanSubmit(getFreshOwnership());

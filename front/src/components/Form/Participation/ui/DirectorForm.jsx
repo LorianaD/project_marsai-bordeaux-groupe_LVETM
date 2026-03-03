@@ -114,22 +114,30 @@ function calcAge(birthdayISO) {
   return age;
 }
 
+// Petit parse pour récupérer dial + local depuis une string type "+33 6 12 34..."
+function splitMobile(mobileStr) {
+  const s = String(mobileStr || "").trim();
+  if (!s) return { dial: "", local: "" };
+
+  const m = s.match(/^(\+\d+)\s*(.*)$/);
+  if (m) return { dial: m[1], local: (m[2] || "").trim() };
+
+  return { dial: "", local: s };
+}
+
 export default function DirectorForm({ onNext }) {
   const DRAFT_KEY = "directorFormDraft";
 
-  // ✅ FIX: force aussi le focus en dark (évite le champ blanc au clic)
   const inputClass =
     "bg-neutral-100 text-neutral-900 placeholder:text-neutral-400 " +
     "focus:bg-neutral-100 focus:text-neutral-900 " +
     "dark:bg-neutral-900 dark:text-white dark:placeholder:text-neutral-400 " +
     "dark:focus:bg-neutral-900 dark:focus:text-white " +
-    // force autofill (chrome) - utile si tu n'as pas le CSS global
     "[&:-webkit-autofill]:shadow-[0_0_0px_1000px_rgb(245,245,245)_inset] " +
     "[&:-webkit-autofill]:[-webkit-text-fill-color:rgb(17,24,39)] " +
     "dark:[&:-webkit-autofill]:shadow-[0_0_0px_1000px_rgb(11,11,15)_inset] " +
     "dark:[&:-webkit-autofill]:[-webkit-text-fill-color:rgb(255,255,255)]";
 
-  // ✅ FIX: idem pour les selects
   const selectClass =
     "bg-neutral-100 text-neutral-900 " +
     "focus:bg-neutral-100 focus:text-neutral-900 " +
@@ -167,20 +175,56 @@ export default function DirectorForm({ onNext }) {
 
   const [ageError, setAgeError] = useState("");
 
+  // ✅ Restore draft + pré-remplissage depuis directorProfile
   useEffect(() => {
+    // 1) draft en priorité
     const draft = localStorage.getItem(DRAFT_KEY);
-    if (!draft) return;
+    if (draft) {
+      try {
+        const d = JSON.parse(draft);
+        if (d?.form) setForm((f) => ({ ...f, ...d.form }));
+        if (d?.phoneLocal != null) setPhoneLocal(String(d.phoneLocal || ""));
+        if (d?.phoneCountry?.dial && d?.phoneCountry?.code) {
+          setPhoneCountry(d.phoneCountry);
+        }
+      } catch {}
+    }
+
+    // 2) directorProfile en fallback (ne remplace pas ce que tu as déjà tapé)
+    const saved = localStorage.getItem("directorProfile");
+    if (!saved) return;
 
     try {
-      const d = JSON.parse(draft);
-      if (d?.form) setForm((f) => ({ ...f, ...d.form }));
-      if (d?.phoneLocal != null) setPhoneLocal(String(d.phoneLocal || ""));
-      if (d?.phoneCountry?.dial && d?.phoneCountry?.code) {
-        setPhoneCountry(d.phoneCountry);
+      const p = JSON.parse(saved);
+
+      setForm((prev) => ({
+        ...prev,
+        name: prev.name || p.firstName || "",
+        last_name: prev.last_name || p.lastName || "",
+        email: prev.email || p.email || "",
+        gender: prev.gender || p.gender || "Mr",
+        production_role:
+          prev.production_role || p.production_role || "Réalisateur",
+        birthday: prev.birthday || p.birthday || "",
+        director_country: prev.director_country || p.director_country || "",
+        address: prev.address || p.address || "",
+        discovery_source: prev.discovery_source || p.discovery_source || "",
+        home_number: prev.home_number || p.home_number || "",
+        // mobile_number sera recalculé par l'effet dial+local
+        mobile_number: prev.mobile_number || p.mobile_number || "",
+      }));
+
+      // pré-remplissage phoneLocal / dial si possible
+      const { dial, local } = splitMobile(p.mobile_number);
+      if (local && !phoneLocal) setPhoneLocal(local);
+      if (dial && (!phoneCountry?.dial || phoneCountry.dial === "+33")) {
+        setPhoneCountry((pc) => ({ ...pc, dial }));
       }
     } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // autosave draft
   useEffect(() => {
     localStorage.setItem(
       DRAFT_KEY,
@@ -324,7 +368,7 @@ export default function DirectorForm({ onNext }) {
               name="name"
               value={form.name}
               onChange={update}
-              placeholder="Ex : Vanessa"
+              placeholder="Ex : Carla"
               className={inputClass}
               autoComplete="given-name"
             />
@@ -336,7 +380,7 @@ export default function DirectorForm({ onNext }) {
               name="last_name"
               value={form.last_name}
               onChange={update}
-              placeholder="Ex : Biamonti"
+              placeholder="Ex : Dupont"
               className={inputClass}
               autoComplete="family-name"
             />

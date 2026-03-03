@@ -8,13 +8,14 @@ import { sendMail } from "./mailer.service.js";
 
 const APP_URL = process.env.APP_URL || "http://localhost:5173";
 
-// IMPORTANT: adapte si besoin
 const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
 
-// Tuning
+// ex: sur 1000 mails , on les decoupe en lots de 200 mail,
+// pas tout d'un  coup pour éviter de surcharger le serveur ou de se faire bloquer.
 const BATCH_LIMIT = 200;
-const CONCURRENCY = 5; // 3-10 selon ton provider / serveur
+const CONCURRENCY = 5; //dans le lot de 200, on en envoie 5 en même temps.
 
+// gère la langue fr-eng
 function normalizeLocale(locale) {
   const l = String(locale || "")
     .trim()
@@ -61,16 +62,16 @@ function tryExtractUploadsPath(src) {
   return null;
 }
 
-/**
- * Crée une fonction qui inline les images /uploads en base64,
- * avec cache en mémoire pour ne lire chaque fichier qu’une seule fois.
- */
+/*** Créer une fonction qui récupère une image dans /uploads,
+ * l’intègre directement dans le code sous forme de texte, et la garde en mémoire pour ne pas la recharger plusieurs fois.*/
 function makeUploadsInliner({ uploadsDir }) {
   /** @type {Map<string, Promise<string|null>>} */
   const dataUrlCache = new Map();
 
+  //On utilise cette fonction pour pouvoir intégrer directement les images dans le code (par exemple dans une newsletter)
+  //sans dépendre d’un fichier externe, éviter des problèmes de chargement d’images,
+  //et améliorer les performances grâce au cache qui empêche de relire le fichier plusieurs fois.
   async function fileToDataUrl(filePath) {
-    // Cache sur le chemin absolu
     if (dataUrlCache.has(filePath)) return dataUrlCache.get(filePath);
 
     const p = (async () => {
@@ -78,11 +79,11 @@ function makeUploadsInliner({ uploadsDir }) {
         const ext = path.extname(filePath) || ".jpg";
         const mime = guessMimeFromExt(ext);
 
-        const buf = await fs.readFile(filePath); // async (non bloquant)
+        const buf = await fs.readFile(filePath);
         const b64 = buf.toString("base64");
         return `data:${mime};base64,${b64}`;
       } catch {
-        return null; // introuvable / erreur lecture
+        return null;
       }
     })();
 
@@ -90,7 +91,7 @@ function makeUploadsInliner({ uploadsDir }) {
     return p;
   }
 
-  // Remplacement async (on évite readFileSync)
+  // transforme l'imag een string pour l'integrer à la newsletter
   async function inlineUploadsAsBase64(html) {
     if (!html) return html;
 
@@ -131,7 +132,7 @@ function makeUploadsInliner({ uploadsDir }) {
       }),
     );
 
-    // Reconstruit la string (sans faire des replace en cascade)
+    // Reconstruit la string
     let out = "";
     let last = 0;
 
@@ -151,9 +152,7 @@ function makeUploadsInliner({ uploadsDir }) {
   return { inlineUploadsAsBase64 };
 }
 
-/**
- * Petite util: exécute des tâches avec une concurrence limitée.
- */
+/**Petite util: exécute des tâches avec une concurrence limitée*/
 async function runWithConcurrency(items, concurrency, worker) {
   const results = [];
   let idx = 0;
@@ -227,7 +226,8 @@ export async function sendNewsletterToAllActive(newsletterId) {
         renderedByLocale.set(locale, cached);
       }
 
-      // Remplace juste l’unsubscribe (rapide)
+      // Remplace juste l’unsubscribe,Le contenu de la newsletter est le même pour tout le monde
+      //Mais le lien de désinscription est unique pour chaque personne
       const html = cached.html.replace("__UNSUB_PLACEHOLDER__", unsubscribeUrl);
 
       try {
