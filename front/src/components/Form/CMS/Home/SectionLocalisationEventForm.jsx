@@ -211,7 +211,7 @@ function SectionLocalisationEventForm({ forcedLocale }) {
             setLoading(false);
         }
 
-    }    
+    }
 
     return(
         <section>
