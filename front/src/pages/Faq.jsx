@@ -4,8 +4,8 @@
 
 // A VOIR AFFICHAGE DES ERREURS SUR L'EDIT
 
-import { useEffect, useState } from "react"
-import getAllFaq from "../services/Faq/getFaqApi.js"
+import { useEffect, useState } from "react";
+import getAllFaq from "../services/Faq/getFaqApi.js";
 import deleteFaq from "../services/Faq/deleteFaqApi.js";
 import updateFaq from "../services/Faq/updateFaqApi.js";
 import addFaq from "../services/Faq/addFaqApi.js";

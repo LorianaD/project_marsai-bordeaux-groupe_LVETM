@@ -1,6 +1,6 @@
 import { Field, TextInput, TextArea } from "../Participation/ui/Field";
 import BtnSubmitForm from "../../Buttons/BtnSubmitForm";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
 
 function FaqForm({ faq, onChange, onSubmit, onDelete, loading, isEdit = false, formErrors=[] }) {
     //paramétre i18n
