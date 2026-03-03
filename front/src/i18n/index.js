@@ -36,6 +36,8 @@ import zodFR from "./locales/fr/zod.json";
 import zodEN from "./locales/en/zod.json";
 import juryEN from "./locales/en/jury.json";
 import juryFR from "./locales/fr/jury.json";
+import galleryFR from "./locales/fr/gallery.json";
+import galleryEN from "./locales/en/gallery.json";
 
 i18n
   .use(LanguageDetector)
@@ -61,6 +63,7 @@ i18n
         adminHero: adminHeroFR,
         zodErrors: zodFR,
         jury: juryFR,
+        gallery: galleryFR,
       },
       en: {
         header: headerEN,
@@ -76,10 +79,11 @@ i18n
         adminHero: adminHeroEN,
         zodErrors: zodEN,
         jury: juryEN,
+        gallery: galleryEN,
       },
     },
 
-    ns: ["header", "footer", "home", "detailvideo","jury","newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero", "zodErrors"],
+    ns: ["header", "footer", "home","gallery", "detailvideo","jury","newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero", "zodErrors"],
     defaultNS: "home",
 
     detection: {

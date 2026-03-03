@@ -95,7 +95,7 @@ function Footer() {
                     <Link to="/events">{t("links.program")}</Link>
                   </li>
                   <li>
-                    <Link to="/events">{t("links.tickets")}</Link>
+                    <Link to="/jury">{t("jury")}</Link>
                   </li>
                 
                 </ul>
