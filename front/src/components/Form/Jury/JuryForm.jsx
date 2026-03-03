@@ -29,9 +29,7 @@ export default function JuryForm({
     if (initialValues) setForm((prev) => ({ ...prev, ...initialValues }));
   }, [initialValues]);
 
-  const fileName = useMemo(() => {
-    return form.imgFile?.name || "";
-  }, [form.imgFile]);
+  const fileName = useMemo(() => form.imgFile?.name || "", [form.imgFile]);
 
   if (!open) return null;
 
@@ -42,12 +40,10 @@ export default function JuryForm({
       setForm((f) => ({ ...f, [name]: checked ? 1 : 0 }));
       return;
     }
-
     if (type === "file") {
       setForm((f) => ({ ...f, imgFile: files?.[0] || null }));
       return;
     }
-
     setForm((f) => ({ ...f, [name]: value }));
   }
 
@@ -72,9 +68,9 @@ export default function JuryForm({
 
           <button
             onClick={onClose}
-            className="grid h-10 w-10 place-items-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
-            aria-label={t("form.actions.close")}
             type="button"
+            aria-label={t("form.actions.close")}
+            className="grid h-10 w-10 place-items-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
           >
             ✕
           </button>
@@ -91,11 +87,7 @@ export default function JuryForm({
           <form onSubmit={handleSubmit} className="grid gap-5">
             {/* Row 1 */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <Field
-                label={t("form.labels.firstName")}
-                required
-                hint={t("form.hints.firstName")}
-              >
+              <Field label={t("form.labels.firstName")} required>
                 <Input
                   name="first_name"
                   value={form.first_name}
@@ -104,11 +96,7 @@ export default function JuryForm({
                 />
               </Field>
 
-              <Field
-                label={t("form.labels.lastName")}
-                required
-                hint={t("form.hints.lastName")}
-              >
+              <Field label={t("form.labels.lastName")} required>
                 <Input
                   name="name"
                   value={form.name}
@@ -120,11 +108,7 @@ export default function JuryForm({
 
             {/* Row 2 */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <Field
-                label={t("form.labels.role")}
-                required
-                hint={t("form.hints.role")}
-              >
+              <Field label={t("form.labels.role")} required>
                 <Input
                   name="role_label"
                   value={form.role_label}
@@ -133,10 +117,7 @@ export default function JuryForm({
                 />
               </Field>
 
-              <Field
-                label={t("form.labels.profession")}
-                hint={t("form.hints.profession")}
-              >
+              <Field label={t("form.labels.profession")}>
                 <Input
                   name="profession"
                   value={form.profession}
@@ -147,7 +128,7 @@ export default function JuryForm({
             </div>
 
             {/* Bio */}
-            <Field label={t("form.labels.bio")} hint={t("form.hints.bio")}>
+            <Field label={t("form.labels.bio")}>
               <Textarea
                 name="bio"
                 value={form.bio}
@@ -157,10 +138,7 @@ export default function JuryForm({
             </Field>
 
             {/* Filmography */}
-            <Field
-              label={t("form.labels.filmography")}
-              hint={t("form.hints.filmography")}
-            >
+            <Field label={t("form.labels.filmography")}>
               <Input
                 name="filmography_url"
                 value={form.filmography_url}
@@ -171,10 +149,7 @@ export default function JuryForm({
 
             {/* Order + president */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <Field
-                label={t("form.labels.sortOrder")}
-                hint={t("form.hints.sortOrder")}
-              >
+              <Field label={t("form.labels.sortOrder")}>
                 <Input
                   type="number"
                   name="sort_order"
@@ -202,6 +177,7 @@ export default function JuryForm({
               <div className="text-sm font-semibold text-neutral-800 dark:text-white/85">
                 {t("form.labels.photo")}
               </div>
+
               <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm text-neutral-600 dark:text-white/60">
                   {fileName ? (
@@ -216,16 +192,17 @@ export default function JuryForm({
                   )}
                 </div>
 
-                {/* Hidden native input */}
+                {/* input natif caché */}
                 <input
                   id={fileInputId}
                   type="file"
                   accept="image/*"
+                  name="img"
                   onChange={handleChange}
                   className="hidden"
                 />
 
-                {/* Custom button */}
+                {/* bouton custom traduit */}
                 <label
                   htmlFor={fileInputId}
                   className="inline-flex cursor-pointer items-center justify-center rounded-full border border-neutral-200 bg-white px-5 py-2 text-sm font-bold text-neutral-800 hover:bg-neutral-50 dark:border-white/10 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10"
@@ -268,20 +245,12 @@ export default function JuryForm({
   );
 }
 
-/** UI helpers (pure tailwind, no logic) */
-
-function Field({ label, required, hint, children }) {
+/* Helpers UI */
+function Field({ label, required, children }) {
   return (
     <div>
-      <div className="flex items-baseline justify-between">
-        <div className="text-sm font-semibold text-neutral-800 dark:text-white/85">
-          {label} {required ? <span className="text-pink-500">*</span> : null}
-        </div>
-        {hint ? (
-          <div className="text-xs text-neutral-500 dark:text-white/45">
-            {hint}
-          </div>
-        ) : null}
+      <div className="text-sm font-semibold text-neutral-800 dark:text-white/85">
+        {label} {required ? <span className="text-pink-500">*</span> : null}
       </div>
       <div className="mt-2">{children}</div>
     </div>
