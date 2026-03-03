@@ -18,5 +18,60 @@
   "members": {
     "title": "LES MEMBRES",
     "description": "Experts IA, cinéastes et visionnaires réunis pour délibérer sur la sélection officielle."
+  },
+
+  "admin": {
+    "title": "DISTRIBUTION & JURY",
+    "subtitle": "Ajoute, modifie ou supprime les membres du jury.",
+    "addButton": "+ Ajouter jury",
+
+    "states": {
+      "loading": "Chargement…"
+    },
+
+    "badges": {
+      "president": "Président"
+    },
+
+    "actions": {
+      "filmography": "Voir la filmographie",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+
+    "confirmDelete": "Supprimer {{first_name}} {{name}} ?",
+
+    "errors": {
+      "load": "Erreur chargement jury",
+      "save": "Erreur sauvegarde",
+      "delete": "Erreur suppression",
+      "generic": "Erreur",
+      "requiredName": "Prénom et nom sont obligatoires.",
+      "requiredRole": "Le rôle (role_label) est obligatoire."
+    }
+  },
+  
+  "form": {
+  "titleCreate": "Ajouter un membre du jury",
+  "titleEdit": "Modifier le membre",
+
+  "fields": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "profession": "Profession",
+    "role": "Rôle affiché",
+    "bio": "Biographie",
+    "filmography": "Lien filmographie",
+    "sortOrder": "Ordre d'affichage",
+    "isPresident": "Président du jury"
+  },
+
+  "actions": {
+    "cancel": "Annuler",
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "saving": "Enregistrement…"
   }
 }
+}
+

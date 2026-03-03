@@ -1,9 +1,9 @@
 {
-  "titleLine1": "JURY",
-  "titleLine2": "MEMBERS",
+  "titleLine1": "THE MEMBERS",
+  "titleLine2": "OF THE JURY",
 
   "loading": "Loading…",
-  "errorLoading": "Error loading jury.",
+  "errorLoading": "Error while loading the jury.",
   "noPresidentDefined": "No jury president defined.",
 
   "president": {
@@ -12,11 +12,64 @@
     "sectionTitleAccent": "FOR THE FUTURE",
     "professionFallback": "—",
     "bioFallback": "…",
-    "filmographyCta": "SEE FILMOGRAPHY"
+    "filmographyCta": "VIEW FILMOGRAPHY"
   },
 
   "members": {
-    "title": "MEMBERS",
+    "title": "THE MEMBERS",
     "description": "AI experts, filmmakers and visionaries gathered to deliberate on the official selection."
+  },
+
+  "admin": {
+    "title": "CAST & JURY",
+    "subtitle": "Add, edit or delete jury members.",
+    "addButton": "+ Add jury member",
+
+    "states": {
+      "loading": "Loading…"
+    },
+
+    "badges": {
+      "president": "President"
+    },
+
+    "actions": {
+      "filmography": "View filmography",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+
+    "confirmDelete": "Delete {{first_name}} {{name}}?",
+
+    "errors": {
+      "load": "Failed to load jury",
+      "save": "Save failed",
+      "delete": "Delete failed",
+      "generic": "Error",
+      "requiredName": "First name and last name are required.",
+      "requiredRole": "Role (role_label) is required."
+    }
+  },
+  "form": {
+  "titleCreate": "Add jury member",
+  "titleEdit": "Edit jury member",
+
+  "fields": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "profession": "Profession",
+    "role": "Displayed role",
+    "bio": "Biography",
+    "filmography": "Filmography link",
+    "sortOrder": "Display order",
+    "isPresident": "Jury president"
+  },
+
+  "actions": {
+    "cancel": "Cancel",
+    "create": "Create",
+    "update": "Update",
+    "saving": "Saving…"
   }
+}
 }
