@@ -50,28 +50,57 @@
       "requiredRole": "Le rôle (role_label) est obligatoire."
     }
   },
-  
+
   "form": {
-  "titleCreate": "Ajouter un membre du jury",
-  "titleEdit": "Modifier le membre",
+    "titleCreate": "Ajouter un membre du jury",
+    "titleEdit": "Modifier le membre",
+    "helper": "Champs obligatoires : prénom, nom, rôle.",
 
-  "fields": {
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "profession": "Profession",
-    "role": "Rôle affiché",
-    "bio": "Biographie",
-    "filmography": "Lien filmographie",
-    "sortOrder": "Ordre d'affichage",
-    "isPresident": "Président du jury"
-  },
+    "labels": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "role": "Rôle (role_label)",
+      "profession": "Profession",
+      "bio": "Biographie",
+      "filmography": "URL filmographie",
+      "sortOrder": "Ordre d'affichage",
+      "isPresident": "Président du jury",
+      "photo": "Photo"
+    },
 
-  "actions": {
-    "cancel": "Annuler",
-    "create": "Créer",
-    "update": "Mettre à jour",
-    "saving": "Enregistrement…"
+    "placeholders": {
+      "firstName": "Ex : Vanessa",
+      "lastName": "Ex : Biamonti",
+      "role": "Ex : RÉALISATRICE",
+      "profession": "Ex : Réalisatrice",
+      "bio": "Ex : Réalisatrice spécialisée en cinéma expérimental…",
+      "filmography": "Ex : https://www.imdb.com/...",
+      "sortOrder": "Ex : 1"
+    },
+
+    "hints": {
+      "firstName": "",
+      "lastName": "",
+      "role": "",
+      "profession": "",
+      "bio": "",
+      "filmography": "",
+      "sortOrder": "",
+      "photo": "Formats acceptés : JPG, PNG, WEBP"
+    },
+
+    "file": {
+      "none": "Aucun fichier sélectionné",
+      "selected": "Fichier"
+    },
+
+    "actions": {
+      "close": "Fermer",
+      "addPhoto": "Ajouter une photo",
+      "cancel": "Annuler",
+      "create": "Créer",
+      "update": "Mettre à jour",
+      "saving": "Enregistrement…"
+    }
   }
 }
-}
-
