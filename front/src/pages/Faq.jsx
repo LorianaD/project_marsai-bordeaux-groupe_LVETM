@@ -10,7 +10,7 @@ import deleteFaq from "../services/Faq/deleteFaqApi.js";
 import updateFaq from "../services/Faq/updateFaqApi.js";
 import addFaq from "../services/Faq/addFaqApi.js";
 import FaqForm from "../components/Form/Faq/FaqForm.jsx";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
 import { validate } from "../utils/zod/zodValidator.js";
 import { createFaqSchema } from "../utils/zod/zodSchema/zodIndex.js";
 
