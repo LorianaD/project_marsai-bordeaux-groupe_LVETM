@@ -11,6 +11,11 @@ import CmsInputColor from "../Fields/CmsImputColor.jsx";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
 import useCmsContent from "../../../../hooks/useCmsContent.js";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms.js";
+import CmsFormHeader from "../Titles/CmsFormHeader.jsx";
+import CmsBlock from "../Titles/CmsBlock.jsx";
+import CmsTitleBlock from "../Titles/CmsTitleBlock.jsx";
+import CmsFieldsBlock from "../Titles/CmsFieldsBlock.jsx";
+import CmsFieldsRow from "../Titles/CmsFieldsRow.jsx";
 
 function SectionConceptForm({ forcedLocale }) {
 
@@ -203,92 +208,77 @@ function SectionConceptForm({ forcedLocale }) {
         <section>
             <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
-                {/***** Titre du formulaire *****/}
-                <div className="flex items-center justify-between gap-[10px] self-stretch w-full">
-                    <div className="flex items-center gap-[10px]">
-                        <div>
-                            <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                            <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                        </div>
-                        <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                            Gestion de la Section Concept
-                        </h3>                        
-                    </div>
-                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                </div>
+                {/***** Titre du formulaire : Gestion de la Section Concept *****/}
+                <CmsFormHeader  title="Gestion de la Section Concept" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
 
-                <div className="w-full">
+                <CmsBlock>
                     <CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("concept.title_main")} rightSlot={
                         <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                     />
-                </div>
+                </CmsBlock>
 
-                <div className="w-full flex flex-wrap md:justify-around gap-[30px]">
-                    <div className="w-full flex flex-col gap-[20px]">
-                        <div className="w-full flex justify-between">
-                            <h4 className="text-[20px] font-semibold tracking-[2.24px]">
-                                Carte 1
-                            </h4>
-                            <CmsHideToggle name="card1_title" value={values.card1_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                        </div>
-                        <div className="w-full flex flex-col gap-[16px]">
-                            <div className="w-full flex items-center justify-between gap-[16px]">
+                <CmsBlock>
+
+                    <CmsBlock>
+
+                        {/* Gestion de la card 1 */}
+                        <CmsTitleBlock title="Gestion de la carte 1" toggleName="card1_title_is_active" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                        
+                        <CmsFieldsBlock>
+                            <CmsFieldsRow>
                                 <CmsInput name="card1_title" label="Titre" value={values.card1_title} onChange={handleChange} placeholder={t("concept.card1.title")} />
                                 <CmsInputColor name="card1_title_color" label="" value={values.card1_title_color} onChange={handleChange} />
-                            </div>
+                            </CmsFieldsRow>
                             <CmsTextarea name="card1_description" label="Description" value={values.card1_description} onChange={handleChange} placeholder={t("concept.card1.description")}/>
-                        </div>
-                    </div>
+                        </CmsFieldsBlock>
 
-                    <div className="w-full flex flex-col gap-[20px]">
-                        <div className="w-full flex justify-between">
-                            <h4 className="text-[20px] font-semibold tracking-[2.24px]">
-                                Carte 2
-                            </h4>
-                            <CmsHideToggle name="card2_title" value={values.card2_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                        </div>
-                        <div className="w-full flex flex-col gap-[16px]">
-                            <div className="w-full flex items-center justify-between gap-[16px]">
+                    </CmsBlock>
+
+                    <CmsBlock>
+                        
+                        {/* Gestion de la card 2 */}
+                        <CmsTitleBlock title="Gestion de la carte 2" toggleName="card2_title_is_active" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                        
+                        <CmsFieldsBlock>
+                            <CmsFieldsRow>
                                 <CmsInput name="card2_title" label="Titre" value={values.card2_title} onChange={handleChange} placeholder={t("concept.card2.title")} />
                                 <CmsInputColor name="card2_title_color" label="" value={values.card2_title_color} onChange={handleChange} />
-                            </div>
+                            </CmsFieldsRow>
                             <CmsTextarea name="card2_description" label="Description" value={values.card2_description} onChange={handleChange} placeholder={t("concept.card2.description")}/>
-                        </div>
-                    </div>
+                        </CmsFieldsBlock>
 
-                    <div className="w-full flex flex-col gap-[20px]">
-                        <div className="w-full flex justify-between">
-                            <h4 className="text-[20px] font-semibold tracking-[2.24px]">
-                                Carte 3
-                            </h4>
-                            <CmsHideToggle name="card3_title" value={values.card3_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                        </div>
-                        <div className="w-full flex flex-col gap-[16px]">
-                            <div className="w-full flex items-center justify-between gap-[16px]">
+                    </CmsBlock>
+
+                    <CmsBlock>
+
+                        {/* Gestion de la card 3 */}
+                        <CmsTitleBlock title="Gestion de la carte 3" toggleName="card3_title_is_active" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                        
+                        <CmsFieldsBlock>
+                            <CmsFieldsRow>
                                 <CmsInput name="card3_title" label="Titre" value={values.card3_title} onChange={handleChange} placeholder={t("concept.card3.title")} />
                                 <CmsInputColor name="card3_title_color" label="" value={values.card3_title_color} onChange={handleChange} />
-                            </div>
+                            </CmsFieldsRow>
                             <CmsTextarea name="card3_description" label="Description" value={values.card3_description} onChange={handleChange} placeholder={t("concept.card3.description")}/>
-                        </div>                        
-                    </div>
+                        </CmsFieldsBlock>
 
-                    <div className="w-full flex flex-col gap-[20px]">
-                        <div className="w-full flex justify-between">
-                            <h4 className="text-[20px] font-semibold tracking-[2.24px]">
-                                Carte 4
-                            </h4>
-                            <CmsHideToggle name="card4_title" value={values.card4_title_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                        </div>
-                        <div className="w-full flex flex-col gap-[16px]">
-                            <div className="w-full flex items-center gap-[16px]">
+                    </CmsBlock>
+
+                    <CmsBlock>
+
+                        <CmsTitleBlock title="Gestion de la carte 4" toggleName="card4_title_is_active" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                        
+                        <CmsFieldsBlock>
+                            <CmsFieldsRow>
                                 <CmsInput name="card4_title" label="Titre" value={values.card4_title} onChange={handleChange} placeholder={t("concept.card4.title")} />
                                 <CmsInputColor name="card4_title_color" label="" value={values.card4_title_color} onChange={handleChange} />
-                            </div>
+                            </CmsFieldsRow>
                             <CmsTextarea name="card4_description" label="Description" value={values.card4_description} onChange={handleChange} placeholder={t("concept.card4.description")}/>
-                        </div>                        
-                    </div>                    
+                        </CmsFieldsBlock>
 
-                </div>
+                    </CmsBlock>                    
+
+                </CmsBlock>
 
                 <div className="w-full flex justify-center">
                     <BtnSubmitForm loading={loading}>

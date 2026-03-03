@@ -1,7 +1,5 @@
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInput from "../Fields/CmsInput";
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
 import { useEffect, useState } from "react";
@@ -11,6 +9,8 @@ import CmsInputColor from "../Fields/CmsImputColor";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
 import useCmsContent from "../../../../hooks/useCmsContent";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
+import CmsFormHeader from "../Titles/CmsFormHeader";
+import CmsBlock from "../Titles/CmsBlock";
 
 function SectionAwardForm({ forcedLocale }) {
 
@@ -183,21 +183,10 @@ function SectionAwardForm({ forcedLocale }) {
         <section>
             <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
-                {/***** Titre du formulaire *****/}
-                <div className="flex items-center justify-between gap-[10px] self-stretch">
-                    <div className="flex items-center gap-[10px]">
-                        <div>
-                            <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                            <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                        </div>
-                        <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                            Gestion de la Section Palmares
-                        </h3>                        
-                    </div>
-                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                </div>
+                {/***** Titre du formulaire : Gestion de la Section Palmares *****/}
+                <CmsFormHeader title="Gestion de la Section Palmares" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
 
-                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
+                <CmsBlock>
                     {/**** Corp du formulaire : inputs ****/}
                     <div className="w-full flex gap-[20px] items-center">
                         <CmsInput name="eyebrow" label="Titre du projet" value={values.eyebrow} onChange={handleChange} placeholder={t("award.eyebrow")} rightSlot={
@@ -238,7 +227,7 @@ function SectionAwardForm({ forcedLocale }) {
                             Mettre à jour
                         </BtnSubmitForm>
                     </div>
-                </div>
+                </CmsBlock>
 
             </form>
         </section>
