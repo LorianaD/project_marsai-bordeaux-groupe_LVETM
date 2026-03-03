@@ -38,5 +38,20 @@
     "previous": "Previous",
     "next": "Next",
     "summary": "PAGE {{page}} OF {{totalPages}} — {{total}} FILMS FOUND"
+  },
+
+  "card": {
+    "labels": {
+      "director": "DIRECTOR",
+      "origin": "ORIGIN"
+    },
+    "aria": {
+      "viewFilm": "View film {{title}}"
+    },
+    "fallbacks": {
+      "title": "NEURAL ODYSSEY",
+      "director": "Director name",
+      "country": "Country"
+    }
   }
 }

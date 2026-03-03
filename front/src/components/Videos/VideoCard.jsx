@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toMediaUrl } from "../../utils/mediaUrl";
 
 function useIsMobile() {
@@ -10,7 +11,6 @@ function useIsMobile() {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 639px)");
-
     const onChange = (e) => setIsMobile(e.matches);
 
     // Safari < 14 fallback
@@ -29,15 +29,22 @@ function useIsMobile() {
 }
 
 export default function VideoCard({ video, apiBase }) {
+  const { t } = useTranslation("gallery");
   const isMobile = useIsMobile();
 
-  const title = video.title || video.title_en || "NEURAL ODYSSEY";
+  const title =
+    video.title ||
+    video.title_en ||
+    t("card.fallbacks.title", "NEURAL ODYSSEY");
 
   const director =
     `${video.director_name || ""} ${video.director_lastname || ""}`.trim() ||
-    "Nom du réalisateur";
+    t("card.fallbacks.director", "Director");
 
-  const country = video.country || video.director_country || "Pays";
+  const country =
+    video.country ||
+    video.director_country ||
+    t("card.fallbacks.country", "Country");
 
   // ✅ S3 + fallback local automatique
   const coverUrl = video.cover
@@ -53,7 +60,7 @@ export default function VideoCard({ video, apiBase }) {
         <Link
           to={to}
           className="relative z-10 block"
-          aria-label={`Voir le film ${title}`}
+          aria-label={t("card.aria.viewFilm", { title })}
         >
           <img
             src={coverUrl}
@@ -88,14 +95,18 @@ export default function VideoCard({ video, apiBase }) {
 
         <div className="grid grid-cols-2 gap-x-10 text-[10px] uppercase tracking-wide text-neutral-500 dark:text-white/50">
           <div>
-            <div className="font-semibold leading-none">RÉALISATEUR</div>
+            <div className="font-semibold leading-none">
+              {t("card.labels.director")}
+            </div>
             <div className="mt-3 text-[11px] font-semibold normal-case text-neutral-800 dark:text-white/80 leading-none">
               {director}
             </div>
           </div>
 
           <div className="ml-auto text-right">
-            <div className="font-semibold leading-none">ORIGINE</div>
+            <div className="font-semibold leading-none">
+              {t("card.labels.origin")}
+            </div>
 
             <div className="flex items-center justify-end">
               <span className="grid h-13 w-13 place-items-center">
