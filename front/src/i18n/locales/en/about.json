@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "badge": "International Festival — MarsAI 2026",
+    "title1": "About",
+    "title2": "Mars",
+    "title3": "AI",
+    "description": "MarsAI is the digital platform of the international festival dedicated to short films (60 seconds max) created using generative AI tools. In 2026, our theme is “Imagining Desirable Futures”: stories that open possibilities and inspire positive trajectories.",
+    "ctaGallery": "Explore the gallery",
+    "ctaSubmit": "Submit a film"
+  },
+
+  "stats": {
+    "films": "films centralized",
+    "countries": "countries represented",
+    "visitors": "visitors in Marseille",
+    "bilingual": "bilingual interface"
+  },
+
+  "vision": {
+    "title": "Our vision",
+    "p1": "MarsAI is an international festival dedicated to short films (60 seconds max) created with generative AI tools.",
+    "p2": "Each film must declare the AI tools used to ensure transparency and clarity of the creative process.",
+    "p3": "The festival is hybrid: an online platform + a physical event in Marseille."
+  },
+
+  "workflow": {
+    "title": "How it works",
+    "step1": "Online submission",
+    "step2": "Moderation & validation",
+    "step3": "Publication / selection",
+    "step4": "Confidential jury evaluation"
+  },
+
+  "quality": {
+    "title": "Quality, security & performance",
+    "security": "Server validation, role-based permissions and strong security.",
+    "i18n": "100% bilingual interface (FR/EN).",
+    "performance": "Media optimization, lazy loading and API caching."
+  },
+
+  "footer": {
+    "contact": "Contact us",
+    "newsletter": "Subscribe to newsletter"
+  }
+}
