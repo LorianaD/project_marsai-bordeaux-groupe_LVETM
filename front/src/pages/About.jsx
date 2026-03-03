@@ -185,9 +185,6 @@ export default function About() {
           <Link to="/contact" className="underline underline-offset-4">
             {t("footer.contact")}
           </Link>
-          <Link to="/newsletter" className="underline underline-offset-4">
-            {t("footer.newsletter")}
-          </Link>
         </div>
       </div>
     </div>
