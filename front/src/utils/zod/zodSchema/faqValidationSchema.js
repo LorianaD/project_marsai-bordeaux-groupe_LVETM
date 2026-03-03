@@ -8,7 +8,7 @@ export const createFaqSchema = z.object({
         .preprocess(
             value => Number(value),// transforme string -> number
             z // schéma qui valide la valeur transformée
-                .number({ message: "faq.rank.require" })
+                .number({ message: "faq.rank.required" })
                 .int({ message: "faq.rank.integer" })
                 .nonnegative({ message: "faq.rank.nonnegative" })
         ),

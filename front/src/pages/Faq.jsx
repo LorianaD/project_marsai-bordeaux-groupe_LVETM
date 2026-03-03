@@ -1,24 +1,25 @@
- /************************************************
+  /************************************************
  ****** FAQ PAGE ********************************
 ************************************************/
 
 // A VOIR AFFICHAGE DES ERREURS SUR L'EDIT
 
-import { useEffect, useState } from "react"
-import getAllFaq from "../services/Faq/getFaqApi.js"
+import { useEffect, useState } from "react";
+import getAllFaq from "../services/Faq/getFaqApi.js";
 import deleteFaq from "../services/Faq/deleteFaqApi.js";
 import updateFaq from "../services/Faq/updateFaqApi.js";
 import addFaq from "../services/Faq/addFaqApi.js";
 import FaqForm from "../components/Form/Faq/FaqForm.jsx";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
+import { validate } from "../utils/zod/zodValidator.js";
+import { createFaqSchema } from "../utils/zod/zodSchema/zodIndex.js";
 
 function Faq() {
     //paramétre i18n
     const { t, i18n } = useTranslation("faq");
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
-    //vérifie si la langue du client est "fr".
-    // const userLang = navigator.language || navigator.userLanguage;
+    //vérifie si la langue active d'i18n est "fr".
     const isFrench = i18n.language.startsWith("fr");
 
     //usestate pour le fetch
@@ -64,39 +65,45 @@ function Faq() {
 
     //fonction d'ajout d'une faq
     const handleAdd = async () => {
-        try {
+        try{
             setLoading(true);
             //remise à zéro des erreurs
             setFormErrorsAdd([]);
+            //zod front
+            const validation = validate(createFaqSchema, newFaq);
 
-            const addedFaq = await addFaq(newFaq);
+            if (!validation.success) {
+                setFormErrorsAdd(validation.errors);
+                setLoading(false);
+                return;
+            }
+            const addedFaq = await addFaq(validation.data);
             //mise à jour des states
             setFaqs((prev => [...prev, addedFaq]));
-            setFaqsEdit(prev => [...prev, addedFaq]);//prev
+            setFaqsEdit(prev => [...prev, addedFaq]);
 
             alert("FAQ added !");
-        } catch (error) {
+        }catch (error){
             if (error.details) {
                 setFormErrorsAdd(error.details);
             }
             console.error(error);
-            
             alert("Error while adding FAQ");
         } finally {
-        setNewFaq({
-            rank: 1,
-            question_fr: "",
-            question_en: "",
-            answer_fr: "",
-            answer_en: ""
-        });
-        setLoading(false);
+            setNewFaq({
+                rank: 1,
+                question_fr: "",
+                question_en: "",
+                answer_fr: "",
+                answer_en: ""
+            });
+            setLoading(false);
         }
-    }
+    };
 
     //fonction de suppresion d'une faq
     const handleDelete = async (id) => {
-        try {
+        try{
             setLoading(true);
             await deleteFaq(id);
             //mise à jour des states
@@ -108,35 +115,48 @@ function Faq() {
             console.error(error);
             
             alert("Error while deleting FAQ");
-        } finally {
+        }finally{
             setLoading(false);
         }
-    }
+    };
 
     //fonction de mise a jour d'un faq
     const handleUpdate = async (faq) => {
-        try {
+        try{
             setLoading(true);
             //remise à zéro des erreurs
-            setFormErrorsEdit(prev => ({ ...prev, [faq.id]: [] })); //test ({})
-            const updatedFaq = await updateFaq(faq);
-            //mise à jour du state avec le return du backend
-            setFaqs(prevFaqs => prevFaqs.map(item => item.id === faq.id ? updatedFaq : item))
-            //mise à jour du state pour les inputs
-            setFaqsEdit(prevFaqs => prevFaqs.map(item => item.id === faq.id ? updatedFaq : item))
+            setFormErrorsEdit(prev => ({ ...prev, [faq.id]: [] }));
 
+            //zod front
+            const validation = validate(createFaqSchema, faq);
+
+            if (!validation.success) {
+                setFormErrorsEdit(prev =>  ({
+                    ...prev,
+                    [faq.id]: validation.errors
+                }));
+                setLoading(false);
+                return;
+            }
+
+            const dataToUpdate = { ...validation.data, id: faq.id };
+            const updatedFaq = await updateFaq(dataToUpdate);
+            //mise à jour du state avec le return du backend
+            setFaqs(prevFaqs => prevFaqs.map(item => item.id === faq.id ? updatedFaq : item))//verif pour prevfaq
+            //mise à jour du state pour les inputs
+            setFaqsEdit(prevFaqs => prevFaqs.map(item => item.id === faq.id ? updatedFaq : item))//verif pour prevfaq
 
             alert("FAQ updated !")
-        } catch (error) {
+        }catch (error){
             if (error.details) {
                 setFormErrorsEdit(prev => ({ ...prev, [faq.id]: error.details }));;
             }
             console.error(error);
             alert("Error while updating the FAQ");
-        } finally {
+        }finally{
             setLoading(false);
         }
-    }
+    };
 
     //fonction pour mettre à jour un champ spécifique d'une FAQ dans le state faqsEdit
     const handleEditChange = (id, field, value) => {
@@ -165,13 +185,13 @@ function Faq() {
 						faqs.map((faq) => (
 							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
                                 <button onClick={() => toggleFaq(faq.id)}   className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">                                    
-                                    <span>Question: {isFrench ? faq.question_fr : faq.question_en}</span>
+                                    <span>{isFrench ? faq.question_fr : faq.question_en}</span>
                                     {/* Flèche d’ouverture de la réponse  */}                                 
                                     <span className={`font-bold transition-transform duration-300 ${openFaq === faq.id ? "rotate-90" : "rotate-0"}`}>&gt;</span>
                                 </button>
                                 
                                 {openFaq === faq.id && ( //si openFaq = faq.id affiche la réponse
-								    <p className="text-left">Réponse: {isFrench ? faq.answer_fr : faq.answer_en}</p>
+								    <p className="text-left">{isFrench ? faq.answer_fr : faq.answer_en}</p>
                                 )}
 							</article>
 						))

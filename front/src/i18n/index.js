@@ -79,7 +79,7 @@ i18n
       },
     },
 
-    ns: ["header", "footer", "home", "detailvideo","jury","newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero"],
+    ns: ["header", "footer", "home", "detailvideo","jury","newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero", "zodErrors"],
     defaultNS: "home",
 
     detection: {
