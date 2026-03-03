@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "badge": "Festival international — MarsAI 2026",
+    "title1": "À propos de",
+    "title2": "Mars",
+    "title3": "AI",
+    "description": "MarsAI est la plateforme du festival international dédié aux courts-métrages (60 secondes max) réalisés avec l’aide d’outils d’intelligence artificielle générative. En 2026, notre thème est « Imaginer des futurs souhaitables » : des récits qui ouvrent des possibles et inspirent des trajectoires positives.",
+    "ctaGallery": "Découvrir la galerie",
+    "ctaSubmit": "Soumettre un film"
+  },
+
+  "stats": {
+    "films": "films centralisés",
+    "countries": "pays représentés",
+    "visitors": "visiteurs à Marseille",
+    "bilingual": "interface bilingue"
+  },
+
+  "vision": {
+    "title": "Notre vision",
+    "p1": "MarsAI est un festival international de courts-métrages (60 secondes max) réalisés avec des outils d’IA générative.",
+    "p2": "Chaque film doit déclarer les outils IA utilisés afin de garantir transparence et compréhension des démarches créatives.",
+    "p3": "Le festival est hybride : plateforme en ligne + événement physique à Marseille."
+  },
+
+  "workflow": {
+    "title": "Comment ça marche",
+    "step1": "Soumission en ligne",
+    "step2": "Modération & validation",
+    "step3": "Publication / sélection",
+    "step4": "Évaluation confidentielle du jury"
+  },
+
+  "quality": {
+    "title": "Qualité, sécurité & performance",
+    "security": "Validation serveur, permissions par rôle et sécurité renforcée.",
+    "i18n": "Interface 100% bilingue (FR/EN).",
+    "performance": "Optimisation des médias, lazy loading et cache API."
+  },
+
+  "footer": {
+    "contact": "Nous contacter",
+    "newsletter": "S’inscrire à la newsletter"
+  }
+}

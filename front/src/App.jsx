@@ -22,6 +22,7 @@ import AdminLogin from "./pages/Login.jsx";
 import { AdminRouter } from "./pages/Admin/AdminRouter.jsx";
 import AdminVideos from "./pages/Admin/AdminVideos.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
+import About from "./pages/About.jsx";
 
 
 
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/partner" element={<PartnersPage />} />
+        <Route path="/about" element={<About />} />
 
         {/* Newsletter */}
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />

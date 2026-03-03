@@ -40,7 +40,8 @@ import galleryFR from "./locales/fr/gallery.json";
 import galleryEN from "./locales/en/gallery.json";
 import participationFR from "./locales/fr/participation.json";
 import participationEN from "./locales/en/participation.json";
-
+import aboutFR from "./locales/fr/about.json";
+import aboutEN from "./locales/en/about.json";
 
 i18n
   .use(LanguageDetector)
@@ -68,6 +69,7 @@ i18n
         jury: juryFR,
         gallery: galleryFR,
         participation: participationFR,
+        about: aboutFR,
       },
       en: {
         header: headerEN,
@@ -85,10 +87,27 @@ i18n
         jury: juryEN,
         gallery: galleryEN,
         participation: participationEN,
+        about: aboutEN,
       },
     },
 
-    ns: ["header", "footer", "home","gallery", "detailvideo","jury","newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero", "zodErrors"],
+    ns: [
+      "header",
+      "footer",
+      "about",
+      "home",
+      "gallery",
+      "detailvideo",
+      "jury",
+      "newsletters",
+      "faq",
+      "event",
+      "adminConferenceProgram",
+      "adminEvents",
+      "adminEventParticipants",
+      "adminHero",
+      "zodErrors",
+    ],
     defaultNS: "home",
 
     detection: {
