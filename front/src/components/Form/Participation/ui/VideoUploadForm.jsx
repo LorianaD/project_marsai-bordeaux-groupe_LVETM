@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Field, TextInput, TextArea, Select } from "./Field";
 import TagInput from "./TagInput";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-function ModalShell({ open, title, children, onClose }) {
+function ModalShell({ open, title, children, onClose, closeAriaLabel }) {
+  const { t } = useTranslation("participation");
   if (!open) return null;
+
   return (
     <div className="fixed inset-0 z-[99999]">
       <button
         type="button"
         className="absolute inset-0 bg-black/60"
         onClick={onClose}
-        aria-label="Fermer"
+        aria-label={closeAriaLabel || t("countryPicker.closeAria")}
       />
       <div className="absolute left-1/2 top-1/2 w-[min(92vw,560px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-black/10">
         <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-6 py-4">
@@ -25,7 +28,7 @@ function ModalShell({ open, title, children, onClose }) {
             onClick={onClose}
             className="rounded-xl bg-neutral-900 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
           >
-            Fermer
+            {t("countryPicker.close")}
           </button>
         </div>
         <div className="p-6">{children}</div>
@@ -35,6 +38,7 @@ function ModalShell({ open, title, children, onClose }) {
 }
 
 export default function VideoUploadForm({ formRef, onCanProceedChange }) {
+  const { t, i18n } = useTranslation("participation");
   const navigate = useNavigate();
   const DRAFT_KEY = "videoUploadDraft";
 
@@ -114,12 +118,12 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
           ? data
               .map((c) => c?.name?.common)
               .filter(Boolean)
-              .sort((a, b) => a.localeCompare(b, "fr"))
+              .sort((a, b) => a.localeCompare(b, i18n.language))
           : [];
 
         if (alive) setCountries(list);
       } catch {
-        if (alive) setCountriesErr("Impossible de charger la liste des pays.");
+        if (alive) setCountriesErr(t("upload.fields.country.errorMsg"));
       } finally {
         if (alive) setCountriesLoading(false);
       }
@@ -129,7 +133,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [i18n.language, t]);
 
   // restore draft
   useEffect(() => {
@@ -206,7 +210,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
     }
   }
 
-  // ✅ step 2 uniquement (pour autoriser Step2 -> Step3)
+  //  step 2 uniquement (pour autoriser Step2 -> Step3)
   function computeCanProceedStep3() {
     const durationNum = Number(form.duration);
 
@@ -238,16 +242,14 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
     );
   }
 
-  // ✅ Informe le parent pour activer/désactiver le bouton "SUIVANT →"
+  //  Informe le parent pour activer/désactiver le bouton "SUIVANT →"
   useEffect(() => {
     onCanProceedChange?.(!!computeCanProceedStep3());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, files, tags, onCanProceedChange]);
 
-  // ✅ calcule canSubmit (final) avec ownership fresh à chaque render
+  //  calcule canSubmit (final) avec ownership fresh à chaque render
   function computeCanSubmit(ownershipObj) {
-    const durationNum = Number(form.duration);
-
     const termsOk = !!ownershipObj?.termsAccepted;
     const ageOk = !!ownershipObj?.ageConfirmed;
     const robotOk = !!ownershipObj?.recaptchaToken;
@@ -257,7 +259,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
   const canSubmit = computeCanSubmit(getFreshOwnership());
 
-  // ✅ expose API au parent (step 3)
+  //  expose API au parent (step 3)
   useEffect(() => {
     if (!formRef) return;
 
@@ -268,9 +270,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
         const okNow = computeCanSubmit(getFreshOwnership());
         if (!okNow) {
-          setErrorMsg(
-            "Il manque des champs ou des validations (cases + captcha).",
-          );
+          setErrorMsg(t("upload.missingValidations"));
           return;
         }
 
@@ -280,7 +280,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
       requestSubmit: () => internalFormRef.current?.requestSubmit?.(),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formRef, uploading, form, files]);
+  }, [formRef, uploading, form, files, t]);
 
   const inputClass =
     "bg-[#E9E9EA] text-neutral-900 placeholder:text-neutral-500 " +
@@ -297,7 +297,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
     const canSubmitNow = computeCanSubmit(ownershipFresh);
 
     if (!canSubmitNow) {
-      setErrorMsg("Il manque des champs ou des validations (cases + captcha).");
+      setErrorMsg(t("upload.missingValidations"));
       submitRequestedRef.current = false;
       return;
     }
@@ -332,7 +332,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
       fd.append("age_confirmed", ownershipFresh?.ageConfirmed ? "1" : "0");
 
       const recaptchaToken = ownershipFresh?.recaptchaToken || "";
-      if (!recaptchaToken) throw new Error("Captcha manquant");
+      if (!recaptchaToken) throw new Error("Captcha missing");
       fd.append("recaptcha_token", recaptchaToken);
 
       fd.append("video", files.video);
@@ -344,7 +344,6 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
       files.subtitles.forEach((f) => fd.append("subtitles", f));
 
-      // ✅ IMPORTANT: pas de header custom => pas de CORS bloquant
       const res = await fetch(`${API_URL}/api/videos`, {
         method: "POST",
         body: fd,
@@ -354,15 +353,17 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
       if (!res.ok) {
         throw new Error(
-          data?.details || data?.error || `Erreur upload (${res.status})`,
+          data?.details ||
+            data?.error ||
+            `${t("upload.uploadError")} (${res.status})`,
         );
       }
 
-      setSuccessInfo(`Upload OK (videoId: ${data?.videoId || "—"})`);
+      setSuccessInfo(t("upload.uploadOk", { id: data?.videoId || "—" }));
       setSuccessOpen(true);
     } catch (err) {
       console.error(err);
-      setErrorMsg(err?.message || "Erreur upload");
+      setErrorMsg(err?.message || t("upload.uploadError"));
       submitRequestedRef.current = false;
     } finally {
       setUploading(false);
@@ -377,7 +378,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
     const okNow = computeCanSubmit(getFreshOwnership());
     if (!okNow) {
-      setErrorMsg("Il manque des champs ou des validations (cases + captcha).");
+      setErrorMsg(t("upload.missingValidations"));
       return;
     }
 
@@ -389,7 +390,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
     <>
       <ModalShell
         open={confirmOpen}
-        title="Confirmez-vous l’envoi ?"
+        title={t("upload.confirm.title")}
         onClose={() => {
           if (uploading) return;
           setConfirmOpen(false);
@@ -397,10 +398,8 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
         }}
       >
         <div className="space-y-4 text-sm text-neutral-800">
-          <p>Confirmez-vous l’envoi de votre vidéo ?</p>
-          <p className="text-xs text-neutral-500">
-            Une fois l’upload lancé, ne fermez pas la page jusqu’à la fin.
-          </p>
+          <p>{t("upload.confirm.text")}</p>
+          <p className="text-xs text-neutral-500">{t("upload.confirm.hint")}</p>
 
           {errorMsg ? (
             <div className="rounded-xl bg-red-50 p-3 text-sm text-red-700 ring-1 ring-red-100">
@@ -419,7 +418,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
               className="rounded-xl border border-neutral-300 px-5 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-50"
               disabled={uploading}
             >
-              Annuler
+              {t("upload.confirm.cancel")}
             </button>
             <button
               type="button"
@@ -430,7 +429,9 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
               className="rounded-xl bg-[#7C3AED] px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
               disabled={uploading}
             >
-              {uploading ? "Envoi..." : "Oui, envoyer"}
+              {uploading
+                ? t("upload.confirm.sending")
+                : t("upload.confirm.yes")}
             </button>
           </div>
         </div>
@@ -438,7 +439,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
       <ModalShell
         open={successOpen}
-        title="Upload terminé"
+        title={t("upload.success.title")}
         onClose={() => {
           setSuccessOpen(false);
           navigate("/", { replace: true });
@@ -446,11 +447,9 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
       >
         <div className="space-y-4 text-sm text-neutral-800">
           <div className="rounded-xl bg-green-50 p-3 text-green-700 ring-1 ring-green-100">
-            ✅ {successInfo || "Upload OK"}
+             {successInfo || t("upload.uploadOkFallback")}
           </div>
-          <p className="text-xs text-neutral-500">
-            Cliquez sur OK pour revenir à l’accueil.
-          </p>
+          <p className="text-xs text-neutral-500">{t("upload.success.hint")}</p>
           <div className="flex justify-end pt-2">
             <button
               type="button"
@@ -460,7 +459,7 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
               }}
               className="rounded-xl bg-neutral-900 px-5 py-2 text-sm font-semibold text-white"
             >
-              OK
+              {t("upload.success.ok")}
             </button>
           </div>
         </div>
@@ -468,61 +467,67 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
 
       <form ref={internalFormRef} onSubmit={submit} className="w-full">
         <div className="space-y-12 text-neutral-900 dark:text-white">
-          <h2 className="text-center text-2xl font-semibold">MA VIDÉO</h2>
+          <h2 className="text-center text-2xl font-semibold">
+            {t("upload.title")}
+          </h2>
 
           <section className="space-y-6">
             <h3 className="font-semibold text-purple-500">
-              01. IDENTITÉ DU FILM
+              {t("upload.sections.identity")}
             </h3>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Field label="Titre du court métrage" required>
+              <Field label={t("upload.fields.title.label")} required>
                 <TextInput
                   name="title"
                   value={form.title}
                   onChange={update}
                   className={inputClass}
                 />
-                <div className={help}>Titre original (langue du film).</div>
+                <div className={help}>{t("upload.fields.title.help")}</div>
               </Field>
 
-              <Field label="Traduction anglaise" required>
+              <Field label={t("upload.fields.titleEn.label")} required>
                 <TextInput
                   name="title_en"
                   value={form.title_en}
                   onChange={update}
                   className={inputClass}
                 />
-                <div className={help}>Titre en anglais (obligatoire).</div>
+                <div className={help}>{t("upload.fields.titleEn.help")}</div>
               </Field>
 
-              <Field label="Langue" required>
+              <Field label={t("upload.fields.language.label")} required>
                 <Select
                   name="language"
                   value={form.language}
                   onChange={update}
                   className={inputClass}
                 >
-                  <option value="">Choisir une langue</option>
-                  <option value="fr">Français</option>
-                  <option value="en">Anglais</option>
-                  <option value="es">Espagnol</option>
-                  <option value="it">Italien</option>
-                  <option value="de">Allemand</option>
-                  <option value="pt">Portugais</option>
-                  <option value="ar">Arabe</option>
-                  <option value="nl">Néerlandais</option>
-                  <option value="ru">Russe</option>
-                  <option value="zh">Chinois</option>
-                  <option value="ja">Japonais</option>
-                  <option value="ko">Coréen</option>
+                  <option value="">{t("upload.fields.language.choose")}</option>
+                  {[
+                    "fr",
+                    "en",
+                    "es",
+                    "it",
+                    "de",
+                    "pt",
+                    "ar",
+                    "nl",
+                    "ru",
+                    "zh",
+                    "ja",
+                    "ko",
+                  ].map((code) => (
+                    <option key={code} value={code}>
+                      {t(`upload.fields.language.options.${code}`)}
+                    </option>
+                  ))}
                 </Select>
-                <div className={help}>
-                  Langue principale des dialogues / narration.
-                </div>
+                <div className={help}>{t("upload.fields.language.help")}</div>
               </Field>
 
-              <Field label="Pays" required>
+              <Field label={t("upload.fields.country.label")} required>
                 <Select
                   name="country"
                   value={form.country}
@@ -532,10 +537,10 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                 >
                   <option value="">
                     {countriesLoading
-                      ? "Chargement des pays…"
+                      ? t("upload.fields.country.loading")
                       : countriesErr
-                        ? "Erreur de chargement"
-                        : "Choisir un pays"}
+                        ? t("upload.fields.country.error")
+                        : t("upload.fields.country.choose")}
                   </option>
                   {countries.map((c) => (
                     <option key={c} value={c}>
@@ -550,84 +555,76 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                   </div>
                 ) : null}
 
-                <div className={help}>
-                  Pays de production (ou pays principal du projet).
-                </div>
+                <div className={help}>{t("upload.fields.country.help")}</div>
               </Field>
 
-              <Field label="Durée (en secondes)" required>
+              <Field label={t("upload.fields.duration.label")} required>
                 <TextInput
                   name="duration"
                   value={form.duration}
                   onChange={update}
-                  placeholder="60"
+                  placeholder={t("upload.fields.duration.placeholder")}
                   className={inputClass}
                 />
-                <div className={help}>Ex : 60 (en secondes).</div>
+                <div className={help}>{t("upload.fields.duration.help")}</div>
               </Field>
 
-              <Field label="Lien YouTube (optionnel)">
+              <Field label={t("upload.fields.youtube.label")}>
                 <TextInput
                   name="youtube_video_id"
                   value={form.youtube_video_id}
                   onChange={update}
                   className={inputClass}
                 />
-                <div className={help}>Optionnel (lien YouTube).</div>
+                <div className={help}>{t("upload.fields.youtube.help")}</div>
               </Field>
             </div>
 
-            <Field label="Tags (optionnel)">
+            <Field label={t("upload.fields.tags.label")}>
               <TagInput value={tags} onChange={setTags} />
-              <div className={help}>
-                Ex : Sci-fi, AI, Drama… (aide à la recherche).
-              </div>
+              <div className={help}>{t("upload.fields.tags.help")}</div>
             </Field>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Field label="Synopsis (original)" required>
+              <Field label={t("upload.fields.synopsis.label")} required>
                 <TextArea
                   name="synopsis"
                   value={form.synopsis}
                   onChange={update}
                   className={inputClass}
                 />
-                <div className={help}>
-                  Résumé clair, 2–6 phrases idéalement.
-                </div>
+                <div className={help}>{t("upload.fields.synopsis.help")}</div>
               </Field>
 
-              <Field label="Synopsis (anglais)" required>
+              <Field label={t("upload.fields.synopsisEn.label")} required>
                 <TextArea
                   name="synopsis_en"
                   value={form.synopsis_en}
                   onChange={update}
                   className={inputClass}
                 />
-                <div className={help}>Version anglaise obligatoire.</div>
+                <div className={help}>{t("upload.fields.synopsisEn.help")}</div>
               </Field>
             </div>
           </section>
 
           <section className="space-y-6">
             <h3 className="font-semibold text-purple-500">
-              02. DÉCLARATION USAGE IA
+              {t("upload.sections.ai")}
             </h3>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Field label="Résumé technique" required>
+              <Field label={t("upload.fields.techResume.label")} required>
                 <TextArea
                   name="tech_resume"
                   value={form.tech_resume}
                   onChange={update}
                   className={inputClass}
                 />
-                <div className={help}>
-                  Comment l’IA a été utilisée techniquement.
-                </div>
+                <div className={help}>{t("upload.fields.techResume.help")}</div>
               </Field>
 
-              <Field label="Méthodologie créative" required>
+              <Field label={t("upload.fields.creativeResume.label")} required>
                 <TextArea
                   name="creative_resume"
                   value={form.creative_resume}
@@ -635,27 +632,29 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                   className={inputClass}
                 />
                 <div className={help}>
-                  Ton processus créatif (étapes, workflow, intention).
+                  {t("upload.fields.creativeResume.help")}
                 </div>
               </Field>
             </div>
 
-            <Field label="Outils IA utilisés" required>
+            <Field label={t("upload.fields.aiTech.label")} required>
               <TextInput
                 name="ai_tech"
                 value={form.ai_tech}
                 onChange={update}
                 className={inputClass}
               />
-              <div className={help}>Liste des outils IA (virgules).</div>
+              <div className={help}>{t("upload.fields.aiTech.help")}</div>
             </Field>
           </section>
 
           <section className="space-y-6">
-            <h3 className="font-semibold text-purple-500">04. FICHIERS</h3>
+            <h3 className="font-semibold text-purple-500">
+              {t("upload.sections.files")}
+            </h3>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Field label="Vidéo" required>
+              <Field label={t("upload.fields.video.label")} required>
                 <input
                   type="file"
                   name="video"
@@ -669,10 +668,10 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                     uploading ? "opacity-60 cursor-not-allowed" : "",
                   ].join(" ")}
                 />
-                <div className={help}>Fichier vidéo final (mp4 conseillé).</div>
+                <div className={help}>{t("upload.fields.video.help")}</div>
               </Field>
 
-              <Field label="Cover" required>
+              <Field label={t("upload.fields.cover.label")} required>
                 <input
                   type="file"
                   name="cover"
@@ -686,10 +685,10 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                     uploading ? "opacity-60 cursor-not-allowed" : "",
                   ].join(" ")}
                 />
-                <div className={help}>Vignette principale (jpg/png).</div>
+                <div className={help}>{t("upload.fields.cover.help")}</div>
               </Field>
 
-              <Field label="Still 1" required>
+              <Field label={t("upload.fields.still1.label")} required>
                 <input
                   type="file"
                   accept="image/*"
@@ -702,10 +701,10 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                     uploading ? "opacity-60 cursor-not-allowed" : "",
                   ].join(" ")}
                 />
-                <div className={help}>Image fixe obligatoire.</div>
+                <div className={help}>{t("upload.fields.still1.help")}</div>
               </Field>
 
-              <Field label="Still 2 (optionnel)">
+              <Field label={t("upload.fields.still2.label")}>
                 <input
                   type="file"
                   accept="image/*"
@@ -718,10 +717,10 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                     uploading ? "opacity-60 cursor-not-allowed" : "",
                   ].join(" ")}
                 />
-                <div className={help}>Optionnel.</div>
+                <div className={help}>{t("upload.fields.still2.help")}</div>
               </Field>
 
-              <Field label="Still 3 (optionnel)">
+              <Field label={t("upload.fields.still3.label")}>
                 <input
                   type="file"
                   accept="image/*"
@@ -734,10 +733,10 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                     uploading ? "opacity-60 cursor-not-allowed" : "",
                   ].join(" ")}
                 />
-                <div className={help}>Optionnel.</div>
+                <div className={help}>{t("upload.fields.still3.help")}</div>
               </Field>
 
-              <Field label="Sous-titres (.srt)" required>
+              <Field label={t("upload.fields.subtitles.label")} required>
                 <input
                   type="file"
                   name="subtitles"
@@ -752,14 +751,14 @@ export default function VideoUploadForm({ formRef, onCanProceedChange }) {
                     uploading ? "opacity-60 cursor-not-allowed" : "",
                   ].join(" ")}
                 />
-                <div className={help}>Ajoute au moins un .srt.</div>
+                <div className={help}>{t("upload.fields.subtitles.help")}</div>
               </Field>
             </div>
           </section>
 
           <div className="flex justify-center pt-2">
             <button type="submit" className="hidden" disabled={uploading}>
-              ENVOYER
+              SEND
             </button>
           </div>
 

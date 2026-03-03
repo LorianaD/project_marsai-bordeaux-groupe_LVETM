@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   DirectorForm,
   VideoUploadForm,
@@ -6,21 +7,19 @@ import {
 } from "../components/Form/Participation/ui";
 
 export default function ParticipationUploadPage() {
+  const { t } = useTranslation("participation");
+
   // Step courant (1: réalisateur, 2: upload, 3: équipe + certificat)
   const [step, setStep] = useState(1);
 
-  // ✅ NEW: bloque Step2 -> Step3 tant que Step2 n'est pas complet
+  // bloque Step2 -> Step3 tant que Step2 n'est pas complet
   const [canGoStep3, setCanGoStep3] = useState(false);
 
   // Ref vers l’API exposée par VideoUploadForm: { openConfirm(), requestSubmit() }
   const videoFormRef = useRef(null);
 
-  // On garde tout l'objet ownership (pas juste ownershipCertified)
+  // On garde tout l'objet ownership
   const [ownership, setOwnership] = useState({});
-
-  // IMPORTANT: on supprime l'auto-jump vers step 2
-  // On arrive toujours au step 1.
-  // (Le step 1 se pré-remplit depuis directorProfile dans DirectorForm)
 
   // Sync ownership depuis localStorage (+ écoute storage)
   useEffect(() => {
@@ -61,13 +60,11 @@ export default function ParticipationUploadPage() {
   function submitVideoFromStep3() {
     if (!canSend) return;
 
- 
     if (videoFormRef.current?.openConfirm) {
       videoFormRef.current.openConfirm();
       return;
     }
 
-    // fallback (au cas où)
     if (videoFormRef.current?.requestSubmit) {
       videoFormRef.current.requestSubmit();
       return;
@@ -78,7 +75,7 @@ export default function ParticipationUploadPage() {
     <div className="min-h-screen px-4 py-10 pt-[100px]">
       <div className="mx-auto w-full max-w-5xl">
         <h1 className="mb-10 text-center text-3xl font-semibold dark:text-white">
-          FORMULAIRE DE PARTICIPATION
+          {t("page.title")}
         </h1>
 
         {/* Indicateur step */}
@@ -88,7 +85,7 @@ export default function ParticipationUploadPage() {
               step === 1 ? "font-semibold text-white" : "text-neutral-400"
             }
           >
-            1. Réalisateur
+            {t("page.steps.1")}
           </span>
           <span className="text-neutral-300">→</span>
           <span
@@ -96,7 +93,7 @@ export default function ParticipationUploadPage() {
               step === 2 ? "font-semibold text-white" : "text-neutral-400"
             }
           >
-            2. Upload vidéo
+            {t("page.steps.2")}
           </span>
           <span className="text-neutral-300">→</span>
           <span
@@ -104,7 +101,7 @@ export default function ParticipationUploadPage() {
               step === 3 ? "font-semibold text-white" : "text-neutral-400"
             }
           >
-            3. Équipe & certificat
+            {t("page.steps.3")}
           </span>
         </div>
 
@@ -123,7 +120,7 @@ export default function ParticipationUploadPage() {
             <div className="rounded-2xl bg-white p-6 text-neutral-900 md:p-10 dark:bg-black dark:text-white">
               <VideoUploadForm
                 formRef={videoFormRef}
-                onCanProceedChange={setCanGoStep3} 
+                onCanProceedChange={setCanGoStep3}
               />
 
               {/* Nav step 2 */}
@@ -133,7 +130,7 @@ export default function ParticipationUploadPage() {
                   onClick={() => setStep(1)}
                   className="rounded-xl border border-purple-400 px-10 py-3 font-semibold text-purple-500"
                 >
-                  PRÉCÉDENT
+                  {t("page.prev")}
                 </button>
 
                 <button
@@ -147,12 +144,10 @@ export default function ParticipationUploadPage() {
                       : "cursor-not-allowed bg-purple-300 opacity-60",
                   ].join(" ")}
                   title={
-                    canGoStep3
-                      ? "Continuer"
-                      : "Complète tous les champs obligatoires + fichiers du step 2"
+                    canGoStep3 ? t("page.next") : t("page.nextDisabledHint")
                   }
                 >
-                  SUIVANT →
+                  {t("page.next")}
                 </button>
               </div>
             </div>
@@ -176,19 +171,16 @@ export default function ParticipationUploadPage() {
                     : "cursor-not-allowed bg-purple-300 opacity-60",
                 ].join(" ")}
                 title={
-                  canSend
-                    ? "Envoyer la participation"
-                    : "Valide la propriété + promo + conditions + âge + captcha pour envoyer"
+                  canSend ? t("page.sendHint") : t("page.sendDisabledHint")
                 }
               >
-                ENVOYER
+                {t("page.send")}
               </button>
             </div>
 
             {!canSend ? (
               <div className="text-center text-sm text-neutral-300">
-                Pour activer ENVOYER : coche les cases + captcha dans
-                “Validation finale”.
+                {t("page.sendDisabledText")}
               </div>
             ) : null}
           </div>

@@ -38,6 +38,9 @@ import juryEN from "./locales/en/jury.json";
 import juryFR from "./locales/fr/jury.json";
 import galleryFR from "./locales/fr/gallery.json";
 import galleryEN from "./locales/en/gallery.json";
+import participationFR from "./locales/fr/participation.json";
+import participationEN from "./locales/en/participation.json";
+
 
 i18n
   .use(LanguageDetector)
@@ -64,6 +67,7 @@ i18n
         zodErrors: zodFR,
         jury: juryFR,
         gallery: galleryFR,
+        participation: participationFR,
       },
       en: {
         header: headerEN,
@@ -80,6 +84,7 @@ i18n
         zodErrors: zodEN,
         jury: juryEN,
         gallery: galleryEN,
+        participation: participationEN,
       },
     },
 

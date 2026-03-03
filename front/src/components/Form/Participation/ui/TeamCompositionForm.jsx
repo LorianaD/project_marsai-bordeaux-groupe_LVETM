@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Field, TextInput, Select } from "./Field";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 export default function TeamCompositionForm({ onPrev }) {
+  const { t } = useTranslation("participation");
   const help = "mt-2 text-xs italic text-neutral-500 dark:text-neutral-300";
 
   // Collaborateur en cours
@@ -101,24 +103,28 @@ export default function TeamCompositionForm({ onPrev }) {
             type="button"
             className="absolute inset-0 bg-black/60"
             onClick={() => setTermsOpen(false)}
-            aria-label="Fermer"
+            aria-label={t("countryPicker.closeAria")}
           />
           <div className="absolute left-1/2 top-1/2 w-[min(92vw,860px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-black/10">
             <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-6 py-4">
               <div className="text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900">
-                Conditions d’utilisation — MarsAI
+                {t("team.final.modalTitle")}
               </div>
               <button
                 type="button"
                 onClick={() => setTermsOpen(false)}
                 className="rounded-xl bg-neutral-900 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
               >
-                Fermer
+                {t("team.final.close")}
               </button>
             </div>
 
+            {/* NOTE: le contenu long des conditions est laissé tel quel pour l’instant.
+               Si tu veux, je te le mets aussi en i18n (FR/EN) mais c’est un gros bloc. */}
             <div className="max-h-[70vh] overflow-auto p-6 text-sm leading-7 text-neutral-700">
-              <h3 className="text-base font-extrabold text-neutral-900">1) Objet</h3>
+              <h3 className="text-base font-extrabold text-neutral-900">
+                1) Objet
+              </h3>
               <p className="mt-2">
                 MarsAI est un festival amateur international de courts métrages
                 réalisés avec l’aide d’outils d’intelligence artificielle. Les
@@ -196,13 +202,12 @@ export default function TeamCompositionForm({ onPrev }) {
         </div>
       ) : null}
 
-      {/* ✅ DARK MODE FIX: card */}
+      {/* card */}
       <div className="rounded-2xl bg-white p-8 text-neutral-900 dark:bg-black dark:text-white">
         <h2 className="text-center text-2xl font-semibold text-purple-500">
-          04. COMPOSITION DE L’ÉQUIPE
+          {t("team.title")}
         </h2>
 
-        {/* ✅ DARK MODE FIX */}
         <div className="mt-8 rounded-2xl bg-neutral-100 p-6 dark:bg-neutral-900">
           <div className="mb-4 flex justify-end">
             <button
@@ -210,55 +215,55 @@ export default function TeamCompositionForm({ onPrev }) {
               onClick={addContributor}
               className="rounded-full bg-neutral-700 px-6 py-2 text-sm font-semibold text-white"
             >
-              + Ajouter collaborateur
+              {t("team.addCollaborator")}
             </button>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            <Field label="Civilité" required>
+            <Field label={t("team.fields.civility.label")} required>
               <Select
                 name="gender"
                 value={current.gender}
                 onChange={updateCurrent}
                 className="bg-white text-neutral-900 dark:bg-neutral-800 dark:text-white"
               >
-                <option value="Mr">M.</option>
-                <option value="Mrs">Mme</option>
+                <option value="Mr">{t("team.fields.civility.mr")}</option>
+                <option value="Mrs">{t("team.fields.civility.mrs")}</option>
               </Select>
-              <div className={help}>Civilité du collaborateur.</div>
+              <div className={help}>{t("team.fields.civility.help")}</div>
             </Field>
 
-            <Field label="Prénom et nom" required>
+            <Field label={t("team.fields.fullName.label")} required>
               <TextInput
                 name="full_name"
                 value={current.full_name}
                 onChange={updateCurrent}
-                placeholder="Ex : Jean Dupont"
+                placeholder={t("team.fields.fullName.placeholder")}
                 className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
-              <div className={help}>Nom complet tel qu’il apparaîtra au générique.</div>
+              <div className={help}>{t("team.fields.fullName.help")}</div>
             </Field>
 
-            <Field label="Profession" required>
+            <Field label={t("team.fields.profession.label")} required>
               <TextInput
                 name="profession"
                 value={current.profession}
                 onChange={updateCurrent}
-                placeholder="Ex : Monteur / Compositeur / Voix-off"
+                placeholder={t("team.fields.profession.placeholder")}
                 className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
-              <div className={help}>Rôle exact dans le projet.</div>
+              <div className={help}>{t("team.fields.profession.help")}</div>
             </Field>
 
-            <Field label="Email" required>
+            <Field label={t("team.fields.email.label")} required>
               <TextInput
                 name="email"
                 value={current.email}
                 onChange={updateCurrent}
-                placeholder="email@exemple.com"
+                placeholder={t("team.fields.email.placeholder")}
                 className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
-              <div className={help}>Email du collaborateur (si nécessaire).</div>
+              <div className={help}>{t("team.fields.email.help")}</div>
             </Field>
           </div>
 
@@ -270,33 +275,32 @@ export default function TeamCompositionForm({ onPrev }) {
                   className="flex items-center justify-between rounded-xl bg-white p-3 text-sm text-neutral-800 dark:bg-neutral-800 dark:text-white"
                 >
                   <div>
-                    <span className="font-semibold">{c.full_name}</span> — {c.profession} —{" "}
-                    {c.email}
+                    <span className="font-semibold">{c.full_name}</span> —{" "}
+                    {c.profession} — {c.email}
                   </div>
                   <button
                     type="button"
                     onClick={() => removeContributor(i)}
                     className="text-red-500 hover:underline"
                   >
-                    Supprimer
+                    {t("team.remove")}
                   </button>
                 </div>
               ))}
             </div>
           ) : (
             <div className="mt-6 text-sm text-neutral-500 dark:text-neutral-300">
-              Aucun contributeur ajouté pour l’instant.
+              {t("team.empty")}
             </div>
           )}
         </div>
 
-        {/* ✅ DARK MODE FIX */}
         <div className="mt-8 rounded-2xl bg-neutral-300 p-6 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
-          <div className="mb-3 font-semibold">CERTIFICAT DE PROPRIÉTÉ</div>
+          <div className="mb-3 font-semibold">
+            {t("team.certificate.title")}
+          </div>
           <p className="text-xs leading-relaxed">
-            En soumettant ce dossier, vous certifiez sur l'honneur être l'auteur
-            original de l'œuvre et détenir l'intégralité des droits de diffusion.
-            Vous acceptez que MARS.AI utilise ces éléments pour la promotion du festival.
+            {t("team.certificate.text")}
           </p>
 
           <div className="mt-4 space-y-2 text-sm">
@@ -306,7 +310,7 @@ export default function TeamCompositionForm({ onPrev }) {
                 checked={!!ownership?.ownershipCertified}
                 onChange={() => toggleOwnership("ownershipCertified")}
               />
-              Je certifie être l’auteur original et détenir les droits.
+              {t("team.certificate.checks.ownershipCertified")}
             </label>
 
             <label className="flex items-center gap-3">
@@ -315,15 +319,14 @@ export default function TeamCompositionForm({ onPrev }) {
                 checked={!!ownership?.promoConsent}
                 onChange={() => toggleOwnership("promoConsent")}
               />
-              J’accepte l’utilisation pour la promotion du festival.
+              {t("team.certificate.checks.promoConsent")}
             </label>
           </div>
         </div>
 
-        {/* ✅ DARK MODE FIX */}
         <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-black">
           <div className="mb-4 text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900 dark:text-white">
-            Validation finale
+            {t("team.final.title")}
           </div>
 
           <div className="space-y-3 text-sm text-neutral-800 dark:text-neutral-200">
@@ -335,13 +338,13 @@ export default function TeamCompositionForm({ onPrev }) {
                 onChange={() => toggleOwnership("termsAccepted")}
               />
               <span>
-                J’accepte les{" "}
+                {t("team.final.terms")}{" "}
                 <button
                   type="button"
                   onClick={() => setTermsOpen(true)}
                   className="font-semibold text-purple-600 underline"
                 >
-                  conditions d’utilisation
+                  {t("team.final.termsLink")}
                 </button>{" "}
                 du festival.
               </span>
@@ -354,7 +357,7 @@ export default function TeamCompositionForm({ onPrev }) {
                 checked={!!ownership?.ageConfirmed}
                 onChange={() => toggleOwnership("ageConfirmed")}
               />
-              <span>Je confirme avoir plus de 18 ans.</span>
+              <span>{t("team.final.age")}</span>
             </label>
           </div>
 
@@ -365,17 +368,17 @@ export default function TeamCompositionForm({ onPrev }) {
               onExpired={() => setCaptchaOk("")}
             />
             <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-300">
-              Coche le captcha pour finaliser la soumission.
+              {t("team.final.captchaHelp")}
             </div>
           </div>
 
           {!canFinish ? (
             <div className="mt-5 text-sm text-red-600 dark:text-red-300">
-              Pour valider, coche les cases + captcha.
+              {t("team.final.missing")}
             </div>
           ) : (
             <div className="mt-5 text-sm font-semibold text-green-600">
-              ✅ Validation OK
+              {t("team.final.ok")}
             </div>
           )}
         </div>
@@ -386,7 +389,7 @@ export default function TeamCompositionForm({ onPrev }) {
             onClick={onPrev}
             className="rounded-xl border border-purple-400 px-10 py-3 font-semibold text-purple-500"
           >
-            PRÉCÉDENT
+            {t("page.prev")}
           </button>
         </div>
       </div>
