@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function JuryForm({
@@ -11,6 +11,7 @@ export default function JuryForm({
   onSubmit,
 }) {
   const { t } = useTranslation("jury");
+  const fileInputId = useId();
 
   const [form, setForm] = useState({
     name: "",
@@ -25,10 +26,12 @@ export default function JuryForm({
   });
 
   useEffect(() => {
-    if (initialValues) {
-      setForm((prev) => ({ ...prev, ...initialValues }));
-    }
+    if (initialValues) setForm((prev) => ({ ...prev, ...initialValues }));
   }, [initialValues]);
+
+  const fileName = useMemo(() => {
+    return form.imgFile?.name || "";
+  }, [form.imgFile]);
 
   if (!open) return null;
 
@@ -37,11 +40,15 @@ export default function JuryForm({
 
     if (type === "checkbox") {
       setForm((f) => ({ ...f, [name]: checked ? 1 : 0 }));
-    } else if (type === "file") {
-      setForm((f) => ({ ...f, imgFile: files?.[0] || null }));
-    } else {
-      setForm((f) => ({ ...f, [name]: value }));
+      return;
     }
+
+    if (type === "file") {
+      setForm((f) => ({ ...f, imgFile: files?.[0] || null }));
+      return;
+    }
+
+    setForm((f) => ({ ...f, [name]: value }));
   }
 
   function handleSubmit(e) {
@@ -51,137 +58,261 @@ export default function JuryForm({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-2xl rounded-3xl bg-white p-8 shadow-xl dark:bg-neutral-900">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-extrabold">
-            {mode === "create"
-              ? t("form.titleCreate")
-              : t("form.titleEdit")}
-          </h2>
+      <div className="w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-neutral-900">
+        {/* Header */}
+        <div className="flex items-start justify-between px-8 pb-5 pt-7">
+          <div>
+            <h2 className="text-2xl font-extrabold">
+              {mode === "create" ? t("form.titleCreate") : t("form.titleEdit")}
+            </h2>
+            <p className="mt-1 text-sm text-neutral-600 dark:text-white/60">
+              {t("form.helper")}
+            </p>
+          </div>
 
           <button
             onClick={onClose}
-            className="text-sm font-bold text-neutral-500 hover:text-neutral-800 dark:text-white/60 dark:hover:text-white"
+            className="grid h-10 w-10 place-items-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
+            aria-label={t("form.actions.close")}
+            type="button"
           >
             ✕
           </button>
         </div>
 
-        {error && (
-          <div className="mb-4 rounded-xl bg-red-100 px-4 py-3 text-sm text-red-700 dark:bg-red-500/20 dark:text-red-200">
-            {error}
-          </div>
-        )}
+        {/* Body */}
+        <div className="px-8 pb-8">
+          {error && (
+            <div className="mb-5 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          {/* First name */}
-          <input
-            name="first_name"
-            value={form.first_name}
-            onChange={handleChange}
-            placeholder={t("form.fields.firstName")}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
+          <form onSubmit={handleSubmit} className="grid gap-5">
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <Field
+                label={t("form.labels.firstName")}
+                required
+                hint={t("form.hints.firstName")}
+              >
+                <Input
+                  name="first_name"
+                  value={form.first_name}
+                  onChange={handleChange}
+                  placeholder={t("form.placeholders.firstName")}
+                />
+              </Field>
 
-          {/* Last name */}
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder={t("form.fields.lastName")}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
+              <Field
+                label={t("form.labels.lastName")}
+                required
+                hint={t("form.hints.lastName")}
+              >
+                <Input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder={t("form.placeholders.lastName")}
+                />
+              </Field>
+            </div>
 
-          {/* Profession */}
-          <input
-            name="profession"
-            value={form.profession}
-            onChange={handleChange}
-            placeholder={t("form.fields.profession")}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
+            {/* Row 2 */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <Field
+                label={t("form.labels.role")}
+                required
+                hint={t("form.hints.role")}
+              >
+                <Input
+                  name="role_label"
+                  value={form.role_label}
+                  onChange={handleChange}
+                  placeholder={t("form.placeholders.role")}
+                />
+              </Field>
 
-          {/* Role */}
-          <input
-            name="role_label"
-            value={form.role_label}
-            onChange={handleChange}
-            placeholder={t("form.fields.role")}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
+              <Field
+                label={t("form.labels.profession")}
+                hint={t("form.hints.profession")}
+              >
+                <Input
+                  name="profession"
+                  value={form.profession}
+                  onChange={handleChange}
+                  placeholder={t("form.placeholders.profession")}
+                />
+              </Field>
+            </div>
 
-          {/* Bio */}
-          <textarea
-            name="bio"
-            value={form.bio}
-            onChange={handleChange}
-            placeholder={t("form.fields.bio")}
-            rows={4}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
+            {/* Bio */}
+            <Field label={t("form.labels.bio")} hint={t("form.hints.bio")}>
+              <Textarea
+                name="bio"
+                value={form.bio}
+                onChange={handleChange}
+                placeholder={t("form.placeholders.bio")}
+              />
+            </Field>
 
-          {/* Filmography */}
-          <input
-            name="filmography_url"
-            value={form.filmography_url}
-            onChange={handleChange}
-            placeholder={t("form.fields.filmography")}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
-
-          {/* Sort order */}
-          <input
-            type="number"
-            name="sort_order"
-            value={form.sort_order}
-            onChange={handleChange}
-            placeholder={t("form.fields.sortOrder")}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
-
-          {/* President checkbox */}
-          <label className="flex items-center gap-2 text-sm font-semibold">
-            <input
-              type="checkbox"
-              name="is_president"
-              checked={Number(form.is_president) === 1}
-              onChange={handleChange}
-            />
-            {t("form.fields.isPresident")}
-          </label>
-
-          {/* Image */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleChange}
-            className="rounded-xl border px-4 py-2 dark:bg-white/5"
-          />
-
-          {/* Buttons */}
-          <div className="mt-4 flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full border px-5 py-2 text-sm font-bold"
+            {/* Filmography */}
+            <Field
+              label={t("form.labels.filmography")}
+              hint={t("form.hints.filmography")}
             >
-              {t("form.actions.cancel")}
-            </button>
+              <Input
+                name="filmography_url"
+                value={form.filmography_url}
+                onChange={handleChange}
+                placeholder={t("form.placeholders.filmography")}
+              />
+            </Field>
 
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded-full bg-gradient-to-r from-blue-600 to-pink-500 px-6 py-2 text-sm font-extrabold text-white disabled:opacity-50"
-            >
-              {saving
-                ? t("form.actions.saving")
-                : mode === "create"
-                  ? t("form.actions.create")
-                  : t("form.actions.update")}
-            </button>
-          </div>
-        </form>
+            {/* Order + president */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <Field
+                label={t("form.labels.sortOrder")}
+                hint={t("form.hints.sortOrder")}
+              >
+                <Input
+                  type="number"
+                  name="sort_order"
+                  value={form.sort_order}
+                  onChange={handleChange}
+                  placeholder={t("form.placeholders.sortOrder")}
+                />
+              </Field>
+
+              <div className="flex items-end">
+                <label className="flex w-full items-center gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-4 text-sm font-semibold text-neutral-800 dark:border-white/10 dark:bg-white/5 dark:text-white/80">
+                  <input
+                    type="checkbox"
+                    name="is_president"
+                    checked={Number(form.is_president) === 1}
+                    onChange={handleChange}
+                  />
+                  <span>{t("form.labels.isPresident")}</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Photo */}
+            <div>
+              <div className="text-sm font-semibold text-neutral-800 dark:text-white/85">
+                {t("form.labels.photo")}
+              </div>
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-sm text-neutral-600 dark:text-white/60">
+                  {fileName ? (
+                    <>
+                      <span className="font-semibold text-neutral-800 dark:text-white/85">
+                        {t("form.file.selected")}:
+                      </span>{" "}
+                      {fileName}
+                    </>
+                  ) : (
+                    t("form.file.none")
+                  )}
+                </div>
+
+                {/* Hidden native input */}
+                <input
+                  id={fileInputId}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="hidden"
+                />
+
+                {/* Custom button */}
+                <label
+                  htmlFor={fileInputId}
+                  className="inline-flex cursor-pointer items-center justify-center rounded-full border border-neutral-200 bg-white px-5 py-2 text-sm font-bold text-neutral-800 hover:bg-neutral-50 dark:border-white/10 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10"
+                >
+                  {t("form.actions.addPhoto")}
+                </label>
+              </div>
+
+              <div className="mt-1 text-xs text-neutral-500 dark:text-white/45">
+                {t("form.hints.photo")}
+              </div>
+            </div>
+
+            {/* Footer buttons */}
+            <div className="mt-2 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-full border border-neutral-200 bg-white px-6 py-2 text-sm font-bold text-neutral-800 hover:bg-neutral-50 dark:border-white/10 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10"
+              >
+                {t("form.actions.cancel")}
+              </button>
+
+              <button
+                type="submit"
+                disabled={saving}
+                className="rounded-full bg-gradient-to-r from-blue-600 to-pink-500 px-7 py-2 text-sm font-extrabold text-white shadow-sm disabled:opacity-50"
+              >
+                {saving
+                  ? t("form.actions.saving")
+                  : mode === "create"
+                    ? t("form.actions.create")
+                    : t("form.actions.update")}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+  );
+}
+
+/** UI helpers (pure tailwind, no logic) */
+
+function Field({ label, required, hint, children }) {
+  return (
+    <div>
+      <div className="flex items-baseline justify-between">
+        <div className="text-sm font-semibold text-neutral-800 dark:text-white/85">
+          {label} {required ? <span className="text-pink-500">*</span> : null}
+        </div>
+        {hint ? (
+          <div className="text-xs text-neutral-500 dark:text-white/45">
+            {hint}
+          </div>
+        ) : null}
+      </div>
+      <div className="mt-2">{children}</div>
+    </div>
+  );
+}
+
+function Input(props) {
+  return (
+    <input
+      {...props}
+      className="
+        w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm
+        text-neutral-900 placeholder:text-neutral-400
+        outline-none focus:ring-2 focus:ring-blue-500/25
+        dark:border-white/10 dark:bg-white/5 dark:text-white/90 dark:placeholder:text-white/35
+      "
+    />
+  );
+}
+
+function Textarea(props) {
+  return (
+    <textarea
+      {...props}
+      rows={props.rows ?? 4}
+      className="
+        w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm
+        text-neutral-900 placeholder:text-neutral-400
+        outline-none focus:ring-2 focus:ring-blue-500/25
+        dark:border-white/10 dark:bg-white/5 dark:text-white/90 dark:placeholder:text-white/35
+      "
+    />
   );
 }
