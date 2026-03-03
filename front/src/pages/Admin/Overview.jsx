@@ -1,6 +1,7 @@
 // src/pages/Admin/Overview.jsx
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAuthHeaders } from "../../utils/authHeaders.js";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const TOP_FILMS_ENDPOINT = "/api/videos/admin/leaderboard";
@@ -202,7 +203,7 @@ export default function Overview() {
       setErr("");
 
       const res = await fetch(`${API_BASE}${TOP_FILMS_ENDPOINT}`, {
-        headers: { Accept: "application/json" },
+        headers: getAuthHeaders({ Accept: "application/json" }),
       });
 
       const data = await res.json().catch(() => null);

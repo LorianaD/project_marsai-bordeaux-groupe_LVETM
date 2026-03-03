@@ -69,7 +69,7 @@ function isSelectorFromToken() {
       .trim()
       .toLowerCase();
 
-    return role === "selector" || role === "selectionneur";
+    return role === "selector";
   } catch {
     return false;
   }
