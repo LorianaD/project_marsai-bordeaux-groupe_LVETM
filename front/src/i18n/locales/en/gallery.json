@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "festivalName": {
+      "mars": "Mars",
+      "ai": "AI"
+    },
+    "message": "The Festival will be online between {{startDay}} and {{endFullDate}}. You will find the short films on this page at that date!",
+    "badge": {
+      "before": "Festival opens in",
+      "during": "Festival closes in",
+      "after": "The festival is over"
+    },
+    "thanks": "Thanks for following MarsAI ✨",
+    "targetDateLabel": "Target date:",
+    "countdown": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    }
+  },
+
+  "title": {
+    "line1": "THE FILM",
+    "line2": "GALLERY"
+  },
+
+  "search": {
+    "placeholder": "Search films, directors, countries..."
+  },
+
+  "states": {
+    "loading": "Loading…",
+    "errorGeneric": "Error"
+  },
+
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "summary": "PAGE {{page}} OF {{totalPages}} — {{total}} FILMS FOUND"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "festivalName": {
+      "mars": "Mars",
+      "ai": "AI"
+    },
+    "message": "Le Festival sera en ligne entre le {{startDay}} et le {{endFullDate}}, Vous retrouverez les courts-métrages dans cette page à cette date!",
+    "badge": {
+      "before": "Ouverture du festival dans",
+      "during": "Clôture du festival dans",
+      "after": "Le festival est terminé"
+    },
+    "thanks": "Merci d’avoir suivi MarsAI ✨",
+    "targetDateLabel": "Date cible :",
+    "countdown": {
+      "days": "Jours",
+      "hours": "Heures",
+      "minutes": "Minutes",
+      "seconds": "Secondes"
+    }
+  },
+
+  "title": {
+    "line1": "LA GALERIE DES",
+    "line2": "FILMS"
+  },
+
+  "search": {
+    "placeholder": "Hinted search text"
+  },
+
+  "states": {
+    "loading": "Chargement…",
+    "errorGeneric": "Erreur"
+  },
+
+  "pagination": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "summary": "PAGE {{page}} SUR {{totalPages}} — {{total}} FILMS TROUVÉS"
+  }
+}
