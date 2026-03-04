@@ -16,6 +16,7 @@ import CmsBlock from "../Titles/CmsBlock.jsx";
 import CmsFieldsBlock from "../Titles/CmsFieldsBlock.jsx";
 import CmsFieldsRow from "../Titles/CmsFieldsRow.jsx";
 import CmsInputColor from "../Fields/CmsImputColor";
+import saveCmsSection from "../../../../utils/saveCmsSection.js";
 
 function SectionPartners({ forcedLocale }) {
 
@@ -104,57 +105,7 @@ function SectionPartners({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set([  ]);
-
-            const sharedLinkKeys = new Set([  ]);
-
-            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = values[`${key}_is_active`];
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // si vide on continue sans rien changer
-                    if (empty) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    })
-
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Hero mise à jour");
 

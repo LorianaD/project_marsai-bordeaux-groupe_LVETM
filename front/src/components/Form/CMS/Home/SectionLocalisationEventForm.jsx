@@ -16,6 +16,7 @@ import CmsInputColor from "../Fields/CmsImputColor";
 import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock";
 import CmsFieldsRow from "../Titles/CmsFieldsRow";
 import CmsTextarea from "../Fields/CmsTextarea";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
 function SectionLocalisationEventForm({ forcedLocale }) {
 
@@ -148,57 +149,7 @@ function SectionLocalisationEventForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set([ "logo", "eyebrow_icon" ]);
-
-            const sharedLinkKeys = new Set([ "maps_link" ]);
-
-            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = values[`${key}_is_active`];
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // si vide on continue sans rien changer
-                    if (empty) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    })
-
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Localisation de l'événement mise à jour");
 

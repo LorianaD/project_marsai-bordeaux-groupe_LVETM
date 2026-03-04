@@ -4,13 +4,13 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
 import { useEffect, useState } from "react";
 import CmsTextarea from "../Fields/CmsTextarea";
-import { updateContentApi } from "../../../../services/CMS/UpdateContentApi";
 import CmsInputColor from "../Fields/CmsImputColor";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
 import useCmsContent from "../../../../hooks/useCmsContent";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 import CmsFormHeader from "../Titles/CmsFormHeader";
 import CmsBlock from "../Titles/CmsBlock";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
 function SectionAwardForm({ forcedLocale }) {
 
@@ -118,49 +118,7 @@ function SectionAwardForm({ forcedLocale }) {
         try {
             // console.log("try dans handleSubmit OK");
 
-            const sharedLinkKeys = new Set([ "ctaSeeMore_link" ]);
-
-            const sharedKeys = new Set([ ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            // boucle pour traiter chaque champs un par un
-            for (let i = 0; i < fields.length; i++) {
-                
-                // nom du champ
-                const key = fields[i];
-                // console.log(key);
-                
-                // valeur actuelle du formulaire
-                const val = values[key];
-                // console.log(val);
-
-                const targetLocales = localesToSave(key);
-
-                let is_active = values[`${key}_is_active`];
-                
-                for (const loc of targetLocales) {
-
-                    // gestion des texte
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // texte vide
-                    if (empty) continue;
-
-                    // texte non vide
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    });
-
-                }
-                
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section mise à jour");
 

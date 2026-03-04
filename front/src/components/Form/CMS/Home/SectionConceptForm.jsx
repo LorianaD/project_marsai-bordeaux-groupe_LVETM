@@ -16,6 +16,8 @@ import CmsBlock from "../Titles/CmsBlock.jsx";
 import CmsTitleBlock from "../Titles/CmsTitleBlock.jsx";
 import CmsFieldsBlock from "../Titles/CmsFieldsBlock.jsx";
 import CmsFieldsRow from "../Titles/CmsFieldsRow.jsx";
+import { localesToSave } from "../../../../utils/cmsLocales.js";
+import saveCmsSection from "../../../../utils/saveCmsSection.js";
 
 function SectionConceptForm({ forcedLocale }) {
 
@@ -127,69 +129,9 @@ function SectionConceptForm({ forcedLocale }) {
 
         try {
 
-            // console.log("try dans handleSubmit OK");
+            // console.log("try dans handleSubmit OK");          
 
-            const sharedLinkKeys = new Set([]);
-
-            const sharedKeys = new Set([ ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);            
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-
-                const targetLocales = localesToSave(key);
-
-                let is_active;
-
-                // cherche la key est verifie si elle contient card + un numéro +_
-                const cardMatch = key.match(/^card(\d+)_/);
-                
-                if (cardMatch) {
-                    is_active = values[`card${cardMatch[1]}_title_is_active`];
-                } else {
-                    is_active = values[`${key}_is_active`];
-                }
-
-
-
-                // IMAGE
-                if (val instanceof File) {
-                    await updateImageApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,
-                    });
-                    continue;
-                }
-
-                // TEXTE VIDE
-                const empty = val === undefined || val === null || String(val).trim() === "";
-
-                // si vide on continue sans rien changer
-                if (empty) continue;
-
-                // TEXTE NON VIDE
-                for (const loc of targetLocales) {
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    });
-                }
-                
-                console.log("SEND:", key, val, targetLocales);
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Concept mise à jour");
 
