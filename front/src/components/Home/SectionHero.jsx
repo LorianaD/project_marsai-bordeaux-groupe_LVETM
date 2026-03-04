@@ -45,7 +45,7 @@ function SectionHero() {
                     {/* LOGO, TITRE, ECT. */}
                     <div className="flex py-[24px] flex-col justify-center items-center gap-[clamp(1rem,2vw,3rem)] self-stretch z-20">
 
-                        <div className="flex flex-col justify-center items-center gap-[10px] self-stretch">
+                        <div className="flex flex-col justify-center items-center gap-[50px] self-stretch">
                             
                             <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
 
@@ -56,14 +56,14 @@ function SectionHero() {
                                 )}
 
                                 {isVisible(content, section, "protocol") && (
-                                    <p className="text-[rgba(0,0,0,0.60)] text-center text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                                    <p className="text-[rgba(0,0,0,0.60)] text-center text-[14px] font-bold leading-[15px] tracking-[10px] uppercase">
                                         {content?.[section]?.protocol || t("hero.protocol")}
                                     </p>
                                 )}
 
                             </div>
                             
-                            <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold text-center uppercase text-[clamp(48px,6vw,192px)] tracking-[clamp(-2.4px,-0.5vw,-9.6px)] leading-[clamp(48px,6vw,192px)]">
+                            <h1 className="flex items-center justify-center self-stretch text-[#FFFFFF] font-bold text-center uppercase text-[clamp(48px,10vw,200px)] tracking-[clamp(-2.4px,-0.5vw,-9.6px)] leading-[clamp(48px,6vw,192px)]">
                                 {isVisible(content, section, "title_main") && (
                                     <span>
                                         {content?.[section]?.title_main || t("hero.title_main")}
@@ -77,7 +77,7 @@ function SectionHero() {
                                 )}
                             </h1>
 
-                            <p className="text-[#FFFFFF] text-[clamp(16px,2.2vw,35px)] font-bold tracking-[0.5px] uppercase text-center">
+                            <p className="text-[#FFFFFF] text-[clamp(16px,2.2vw,35px)] font-bold tracking-[10px] uppercase text-center">
 
                                 {isVisible(content, section, "tagline_before") && (
                                     <span>
@@ -100,7 +100,7 @@ function SectionHero() {
                             </p>
                         </div>
 
-                        <div className="flex flex-col items-center justify-center gap-2 md:gap-1.5 px-1 self-stretch text-white/40 text-center text-[18px] md:text-[24px] font-normal leading-[1.625]">
+                        <div className="flex flex-col items-center justify-center gap-2 md:gap-1.5 px-1 self-stretch text-white/40 text-center text-[18px] md:text-[24px] font-normal leading-[1,65] tracking-[2px]">
                             
                             {isVisible(content, section, "desc1") && (
                                 <p>{content?.[section]?.desc1 || t("hero.desc1")}</p>
