@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
-import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
 import CmsInput from "../Fields/CmsInput";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInputImage from "../Fields/CmsInputImage";
@@ -14,6 +13,7 @@ import CmsTitleBlock from "../Titles/CmsTitleBlock.jsx";
 import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock.jsx";
 import CmsBlock from "../Titles/CmsBlock.jsx";
 import CmsFieldsBlock from "../Titles/CmsFieldsBlock.jsx";
+import saveCmsSection from "../../../../utils/saveCmsSection.js";
 
 function SectionHeroForm({ forcedLocale }) {
 
@@ -159,57 +159,7 @@ function SectionHeroForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set([ "media", "protocol_icon", "ctaParticipate_signe", "ctaLearnMore_signe" ]);
-
-            const sharedLinkKeys = new Set([ "ctaParticipate_link", "ctaLearnMore_link" ]);
-
-            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = values[`${key}_is_active`];
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // si vide on continue sans rien changer
-                    if (empty) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    })
-
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Hero mise à jour");
 

@@ -10,6 +10,7 @@ import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInputImage from "../Fields/CmsInputImage";
 import useCmsContent from "../../../../hooks/useCmsContent";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
 function SectionGoalForm({ forcedLocale }) {
 
@@ -113,56 +114,7 @@ function SectionGoalForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-
-                let is_active;
-
-                // cherche la key est verifie si elle contient card + un numéro +_
-                const cardMatch = key.match(/^card(\d+)_/);
-                
-                if (cardMatch) {
-                    is_active = values[`card${cardMatch[1]}_title_is_active`];
-                } else {
-                    is_active = values[`${key}_is_active`];
-                }
-
-
-
-                // IMAGE
-                if (val instanceof File) {
-                    await updateImageApi({
-                        page,
-                        section,
-                        locale,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,
-                    });
-                    continue;
-                }
-
-                // TEXTE VIDE
-                const empty = val === undefined || val === null || String(val).trim() === "";
-
-                // si vide on continue sans rien changer
-                if (empty) continue;
-
-                // TEXTE NON VIDE
-                await updateContentApi({
-                    page,
-                    section,
-                    locale,
-                    content_key: key,
-                    value: val,
-                    order_index: i,
-                    is_active,    
-                })
-                
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Concept mise à jour");
 
