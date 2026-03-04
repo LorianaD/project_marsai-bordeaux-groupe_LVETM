@@ -11,6 +11,7 @@ import SectionClosingEventForm from "../../Form/CMS/Home/SectionClosingEventForm
 import SectionLocalisationEventForm from "../../Form/CMS/Home/SectionLocalisationEventForm.jsx";
 import SectionProjectedStatsForm from "../../Form/CMS/Home/SectionProjectedStatsForm.jsx";
 import SectionPartners from "../../Form/CMS/Home/SectionPartners";
+import FaqAdmin from "../Faq/FaqAdmin.jsx";
 
 // Import formulaire CMS GalleryPage
 import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm";
@@ -83,6 +84,7 @@ function CmsCentralization() {
             label: "FAQ",
             sections: [
                 { id: "hero", label: "Hero", component: FaqSectionHeroForm },
+                { id: "faqAdmin", label: "FaqAdmin", component: FaqAdmin },
             ],
         },
         {

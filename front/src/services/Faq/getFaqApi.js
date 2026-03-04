@@ -1,14 +1,25 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function getAllFaq() {
-    const res = await fetch(`${API_URL}/api/faq`,{
-        method: "GET",
-    });
+    try{
+        const res = await fetch(`${API_URL}/api/faq`,{
+            method: "GET",
+        });
 
-    if (!res.ok) throw new Error(`Failed to retrieve FAQ ${res.status}`);
-
-    const data = await res.json();
-    return data;
+        if (!res.ok) {
+            //erreur serveur
+            throw new Error("faq_display.errors.fetch_http");
+        }
+    
+        const data = await res.json();
+        return data;
+    }catch(error){
+        //erreur réseau
+        if(error instanceof TypeError){
+            throw new Error("faq_display.errors.fetch_network");
+        }
+        throw error;
+    }
 }
 
 export default getAllFaq;
