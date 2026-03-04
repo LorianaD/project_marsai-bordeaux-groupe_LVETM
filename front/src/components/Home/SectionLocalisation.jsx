@@ -1,28 +1,42 @@
 import Localisation from "../Maps/Localisation"
 import iconLocalisation from "../../assets/imgs/icones/IconLocalisation.svg"
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router"
+import useCmsContent from "../../hooks/useCmsContent";
+import { isVisible, isSectionVisible } from "../../utils/isVisible";
+import { resolveCmsAsset } from "../../utils/cmsAssets";
 
 function SectionLocalisation() {
 
-    const { t } = useTranslation("home");
+    const { t, i18n } = useTranslation("home");
+    const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
     const spaces = t("localisationEvent.spaces", {
         returnObjects: true,
         defaultValue: []
     });
+
+    const section = "localisationEvent";
+
+    // cherche les données en bdd
+    const { content, loading, message } = useCmsContent(locale);
+
+    const eyebrowIconSrc = resolveCmsAsset(content?.[section]?.eyebrow_icon);
 
     return(
         <section className="flex flex-col justify-center items-center gap-[30px] p-[20px] md:py-[100px] md:px-[75px] self-stretch text-[#000000] dark:text-[#FFFFFF] w-full">
             
             <div className="flex items-start w-full">
                 {/* eyebrow */}
-                <div className="max-w-[200px] h-[42px] flex items-center justify-center gap-[9px] px-[25px] py-[9px] rounded-full border border-[rgba(138,138,138,0.10)] bg-[rgba(0,0,0,0.05)]">
-                    <div className="w-[16px] h-[16px]">
-                        <img src={iconLocalisation} alt="" />
+                {(
+                    <div className="max-w-[200px] h-[42px] flex items-center justify-center gap-[9px] px-[25px] py-[9px] rounded-full border border-[rgba(138,138,138,0.10)] bg-[rgba(0,0,0,0.05)]">
+                        <div className="w-[16px] h-[16px]">
+                            <img src={eyebrowIconSrc} alt="" />
+                        </div>
+                        <p className="text-center text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase">
+                            {content?.[section]?.eyebrow  || t("localisationEvent.eyebrow")}
+                        </p>
                     </div>
-                    <p className="text-center text-[12px] font-bold leading-[16px] tracking-[1.2px] uppercase">
-                        {t("localisationEvent.eyebrow")}
-                    </p>
-                </div>
+                )}
             </div>
 
             {/*  */}
