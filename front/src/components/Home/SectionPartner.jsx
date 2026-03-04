@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import GetPartnerApi from "../../services/Partner/GetPartnetApi";
+import useCmsContent from "../../hooks/useCmsContent";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function SectionPartner() {
 
-    const { t } = useTranslation("home");
+    const { t, i18n } = useTranslation("home");
+    const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+    const section = "partnersSection";
 
     const [partners, setPartners] = useState([]);
     const [loading, setLoading] = useState(true);
     const [Message, setMessage] = useState("");
 
-    let isMounted = true;
+    const { content, message } = useCmsContent(locale);
 
     async function GetAllPartner() {
         // console.log("Fonction GetAllPartner OK");
@@ -48,15 +52,15 @@ function SectionPartner() {
             <div className="flex md:h-[91px] flex-col items-center gap-[16px] self-stretch">
                 <div className="flex md:h-[91px] flex-col items-center gap-[16px] shrink-0 self-stretch">
                     <div className="w-[48px] h-[1px] shrink-0 bg-black dark:bg-[#FFFFFF]"></div>
-                    <p className="text-center text-[10px] font-bold leading-[15px] tracking-[4px] uppercase">Nos Soutiens</p>
+                    <p className="text-center text-[10px] font-bold leading-[15px] tracking-[4px] uppercase">{content?.[section]?.eyebrow}</p>
                     <div className="w-[48px] h-[1px] shrink-0 bg-black dark:bg-[#FFFFFF]"></div>
                 </div>
                 <h2 className="text-center text-[36px] md:text-[60px] font-bold leading-[40px] md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase w-full">
                     <span>
-                        {t("partnersSection.title_main")}
+                        {content?.[section]?.title_main || t("partnersSection.title_main")}
                     </span>
-                    <span className="block md:inline text-[#00D3F2]">
-                        {t("partnersSection.title_accent")}
+                    <span className={`block md:inline text-[${content?.[section]?.title_accent_color}]`}>
+                        {content?.[section]?.title_accent || t("partnersSection.title_accent")}
                     </span>
                 </h2>
             </div>

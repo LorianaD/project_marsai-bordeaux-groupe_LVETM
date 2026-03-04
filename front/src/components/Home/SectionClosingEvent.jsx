@@ -45,7 +45,7 @@ function SectionClosingEvent() {
                             )}
 
                             {isVisible(content, section, "title_accent") && (
-                                <span className="block text-[#F6339A] italic">
+                                <span className={`block text-[${content?.[section]?.title_accent_color}] italic`}>
                                     {content?.[section]?.title_accent || t("closingEvent.title_accent")}
                                 </span>
                             )}
