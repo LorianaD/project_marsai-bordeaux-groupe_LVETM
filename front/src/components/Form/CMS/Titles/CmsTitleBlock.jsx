@@ -16,3 +16,5 @@ function CmsTitleBlock({ title, toggleName, values, handleChange, page, section,
 }
 
 export default CmsTitleBlock
+
+// <CmsTitleBlock title="Gestion des boutons"/>
