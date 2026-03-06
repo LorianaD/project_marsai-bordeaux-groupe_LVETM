@@ -1,5 +1,5 @@
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
+import iconPaintDark from "../../../../assets/imgs/icones/IconPaintDark.svg";
+import iconPaint from "../../../../assets/imgs/icones/IconPaint.svg";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 
 function CmsFormHeader({ title, toggleName, values, handleChange, page, section, locale }) {
