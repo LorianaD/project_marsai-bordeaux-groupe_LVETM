@@ -11,20 +11,26 @@ export function buildCmsMap(rows, locale) {
         if (row.locale !== locale) continue;
 
         // récupére les infos utils
+        const page = row.page;
         const section = row.section;
         const key = row.content_key;
 
-        // créer la section si elle n'existe pas
-        if (!map[section]) map[section] = {};
+        if (!page || !section || !key) continue;
+
+        // créer la page si elle n'existe pas
+        if (!map[page]) map[page] = {};
+
+        // crée section si elle n'existe pas
+        if (!map[page][section]) map[page][section] = {};
 
         // gere les valeur
-        map[section][key] = row.value;
+        map[page][section][key] = row.value;
 
         // gere le is_active pour la visibilité
-        map[section][`${key}_is_active`] = Number(row.is_active ?? 1);
+        map[page][section][`${key}_is_active`] = Number(row.is_active ?? 1);
 
         // gere l'ordre
-        map[section][`${key}_order_index`] = Number(row.order_index ?? 0);
+        map[page][section][`${key}_order_index`] = Number(row.order_index ?? 0);
     }
 
     return map;

@@ -3,7 +3,7 @@ import GetAllContentApi from "../services/CMS/GetAllContentApi";
 import { buildCmsMap } from "../utils/buildCmsMap";
 
 // FONCTION QUI VA CHERCHER LE CONTENU EN BDD
-function useCmsContent(locale) {
+function useCmsContent(page, locale) {
     // console.log("Fonction useCmsContent OK");
 
     const [content, setContent] = useState({});
@@ -49,7 +49,7 @@ function useCmsContent(locale) {
 
         load();
 
-    }, [locale]);
+    }, [page, locale]);
 
     return { content, loading, message };    
 
