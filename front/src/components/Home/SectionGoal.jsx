@@ -57,6 +57,10 @@ function SectionGoal() {
     // console.log("goal card1_icon =", content?.goal?.card1_icon);
     // console.log("goal object =", content?.goal);
 
+    const card1Icon = resolveCmsAsset(content?.[section]?.card1_icon);
+    const card2Icon = resolveCmsAsset(content?.[section]?.card2_icon);
+    const card3Icon = resolveCmsAsset(content?.[section]?.card3_icon);
+
     return(
         <>
             {isSectionVisible(content, section) && (
@@ -66,10 +70,10 @@ function SectionGoal() {
                     
                         <h2 className="text-[36px] md:text-[60px] font-bold md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase leading-none w-full py-[20px]">
                             {isVisible(content, section, "title_main") && (
-                                <span className="block">{content?.[section]?.title_main || t("goal.title_main")} </span>
+                                <span className="block">{content?.[section]?.title_main} </span>
                             )}
                             {isVisible(content, section, "title_accent") && (
-                                <span className="block text-[#F6339A]">{content?.[section]?.title_accent || t("goal.title_accent")}</span>
+                                <span className="block text-[#F6339A]">{content?.[section]?.title_accent}</span>
                             )}
                         </h2>
                     
@@ -81,13 +85,13 @@ function SectionGoal() {
                         {isVisible(content, section, "card1_title") && (
                             <div className="md:w-[400px] rounded-[48px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] p-[48px] flex flex-col gap-[24px] dark:border-white/10 dark:bg-white/5 md:h-[400px]">
                                 <div className="flex w-[64px] h-[64px] justify-center items-center rounded-[24px] bg-[rgba(0,212,146,0.10)]">
-                                    <img src={resolveCmsAsset(content?.[section]?.card1_icon) || t("goal.cards.card1.icon")} alt="" className="w-[32px] h-[32px] shrink-[0]"/>
+                                    <img src={card1Icon} alt="" className="w-[32px] h-[32px] shrink-[0]"/>
                                 </div>
                                 <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[24px] font-bold leading-[32px] tracking-[-1.2px] uppercase text-left w-144px dark:text-[#FFFFFFF]">
-                                    {content?.[section]?.card1_title || t("goal.cards.card1.title")}
+                                    {content?.[section]?.card1_title}
                                 </h3>
                                 <p className="text-[#000000] dark:text-[#FFFFFF] text-[14px] font-bold leading-[23px] tracking-[1.4px] uppercase text-left">
-                                    {content?.[section]?.card1_description || t("goal.cards.card1.description")}
+                                    {content?.[section]?.card1_description}
                                 </p>
                             </div>
                         )}
@@ -96,13 +100,13 @@ function SectionGoal() {
                         {isVisible(content, section, "card2_title") && (
                             <div className="md:w-[400px] rounded-[48px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] p-[48px] flex flex-col gap-[24px] dark:border-white/10 dark:bg-white/5 md:h-[400px]">
                                 <div className="flex w-[64px] h-[64px] justify-center items-center rounded-[24px] bg-[rgba(0,184,219,0.10)]">
-                                    <img src={resolveCmsAsset(content?.[section]?.card2_icon) || t("goal.cards.card2.icon")} alt="" className="w-[32px] h-[32px] shrink-[0]"/>
+                                    <img src={card2Icon} alt="" className="w-[32px] h-[32px] shrink-[0]"/>
                                 </div>
                                 <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[24px] font-bold leading-[32px] tracking-[-1.2px] uppercase text-left w-144px">
-                                    {content?.[section]?.card2_title || t("goal.cards.card2.title")}
+                                    {content?.[section]?.card2_title}
                                 </h3>
                                 <p className="text-[#000000] dark:text-[#FFFFFF] text-[14px] font-bold leading-[23px] tracking-[1.4px] uppercase text-left">
-                                    {content?.[section]?.card2_description || t("goal.cards.card2.description")}
+                                    {content?.[section]?.card2_description}
                                 </p>
                             </div>
                         )}
@@ -111,13 +115,13 @@ function SectionGoal() {
                         {isVisible(content, section, "card3_title") && (
                             <div className="md:w-[400px] rounded-[48px] border border-[rgba(0,0,0,0.1)] bg-[rgba(0,0,0,0.05)] p-[48px] flex flex-col gap-[24px] dark:border-white/10 dark:bg-white/5 md:h-[400px]">
                                 <div className="flex w-[64px] h-[64px] justify-center items-center rounded-[24px] bg-[rgba(173,70,255,0.10)]">
-                                    <img src={resolveCmsAsset(content?.[section]?.card3_icon) || t("goal.cards.card3.icon")} alt="" className="w-[32px] h-[32px] shrink-[0]"/>
+                                    <img src={card3Icon} alt="" className="w-[32px] h-[32px] shrink-[0]"/>
                                 </div>
                                 <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[24px] font-bold leading-[32px] tracking-[-1.2px] uppercase text-left w-144px">
-                                    {content?.[section]?.card3_title || t("goal.cards.card3.title")}
+                                    {content?.[section]?.card3_title}
                                 </h3>
                                 <p className="text-[#000000] dark:text-[#FFFFFF] text-[14px] font-bold leading-[23px] tracking-[1.4px] uppercase text-left">
-                                    {content?.[section]?.card3_description || t("goal.cards.card3.description")}
+                                    {content?.[section]?.card3_description}
                                 </p>
                             </div>
                         )}
