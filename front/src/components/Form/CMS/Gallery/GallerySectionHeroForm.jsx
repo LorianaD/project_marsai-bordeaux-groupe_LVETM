@@ -117,6 +117,7 @@ function GallerySectionHeroForm( forcedLocale ) {
                             <CmsSubtitleBlock title="Gestion du titre principale"/>
                             <CmsFieldsBlock>
                                 <CmsInput name="title_main" label="Titre" value={values.title_main} onChange={handleChange} placeholder={t("")} />
+                                <CmsInput name="title_accent" label="Titre" value={values.title_main} onChange={handleChange} placeholder={t("")} />
                             </CmsFieldsBlock>
                         </CmsBlock>
                     </CmsBlock>
