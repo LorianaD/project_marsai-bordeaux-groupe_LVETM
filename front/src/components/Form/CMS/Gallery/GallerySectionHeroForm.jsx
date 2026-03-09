@@ -11,8 +11,9 @@ import CmsBlock from "../Titles/CmsBlock";
 import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock";
 import CmsFieldsBlock from "../Titles/CmsFieldsBlock";
 import CmsInput from "../Fields/CmsInput";
+import CmsHideToggle from "../Fields/CmsHideToggle";
 
-function GallerySectionHeroForm( forcedLocale ) {
+function GallerySectionHeroForm({ forcedLocale }) {
     const { t, i18n } = useTranslation("gallery");
     const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
 
@@ -26,6 +27,8 @@ function GallerySectionHeroForm( forcedLocale ) {
     const fields = [
 
         "section_visibility",
+        "title_main",
+        "title_accent"
 
     ]
     // console.log("Champs:", fields);
@@ -36,13 +39,16 @@ function GallerySectionHeroForm( forcedLocale ) {
         section_visibility:"1",
         section_visibility_is_active: 1,
 
-        title: "",
-        title_is_active: 1,
+        title_main: "",
+        title_main_is_active: 1,
+
+        title_accent: "",
+        title_accent_is_active: 1,
 
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -53,14 +59,12 @@ function GallerySectionHeroForm( forcedLocale ) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
         // construit les valeurs initiales depuis le CMS
-        const built = buildInitialValuesFromCms(fields, cmsSection, {
-            fileFields: [],
-        });
+        const built = buildInitialValuesFromCms(fields, cmsSection);
 
         setValues(built);
 
@@ -68,7 +72,7 @@ function GallerySectionHeroForm( forcedLocale ) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     useEffect(()=> {
         setHasHydrated(false);
@@ -105,20 +109,20 @@ function GallerySectionHeroForm( forcedLocale ) {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-12.5 flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
 
                 {/***** Titre du formulaire : Gestion de la Section Palmares *****/}
                 <CmsFormHeader title="Gestion de la Section Hero" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
 
-                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <div className="flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
                     <CmsBlock>
                         <CmsTitleBlock title="Gestion du titre"/>
                         <CmsFieldsBlock>
-                            <CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("")} rightSlot={
-                                <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                            <CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("title.line1")} rightSlot={
+                                <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
-                            <CmsInput name="title_accent" label="Titre accent" value={values.title_accent} onChange={handleChange} placeholder={t("")} rightSlot={
-                                <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                            <CmsInput name="title_accent" label="Titre accent" value={values.title_accent} onChange={handleChange} placeholder={t("title.line2")} rightSlot={
+                                <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
                         </CmsFieldsBlock>
                     </CmsBlock>
@@ -126,7 +130,7 @@ function GallerySectionHeroForm( forcedLocale ) {
 
                 {/**** Footer du formulaire : bouton de submission ****/}
                 <div className="w-full flex justify-center">
-                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                    <BtnSubmitForm loading={loading} className="flex w-50 h-13.25 items-center justify-center gap-3.25 px-5.25 py-2.5 rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                         Mettre à jour
                     </BtnSubmitForm>
                 </div>
@@ -137,18 +141,3 @@ function GallerySectionHeroForm( forcedLocale ) {
 }
 
 export default GallerySectionHeroForm
-
-//         {/* Title */}
-// <div className="mb-8">
-//   <h1 className="font-extrabold leading-[1.05] tracking-tight" style={{ fontSize: "clamp(48px, 6vw, 80px)" }} >
-
-//     <span className="block text-blue-600">
-//          {t("title.line1")}
-//     </span>
-
-//       <span className="block bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
-//           {t("title.line2")}
-//       </span>
-
-//   </h1>
-// </div>
