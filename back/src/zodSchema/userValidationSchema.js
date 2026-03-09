@@ -40,10 +40,7 @@ export const passwordSchema = z.object ({
 
 export const createAdminSchema = z.object({
 
-    role: z
-        .enum(["admin", "super_admin", "selector"]),
-
-    first_name: z
+    firstname: z
         .string({message:"Firstname must be a string."})
         .trim()
         .min(1, "Firstname is required.")
@@ -53,7 +50,7 @@ export const createAdminSchema = z.object({
         "Firstname can only contain letters, spaces, apostrophes or hyphens."
         ),
 
-    last_name: z
+    lastname: z
         .string({message:"Lastname must be a string."})
         .trim()
         .min(1, "Lastname is required.")
@@ -63,3 +60,7 @@ export const createAdminSchema = z.object({
         "Lastname can only contain letters, spaces, apostrophes or hyphens."
         ), 
 })
+
+export const roleSchema = z.object({
+    role: z.enum(["admin", "superadmin", "selector"]),
+});
