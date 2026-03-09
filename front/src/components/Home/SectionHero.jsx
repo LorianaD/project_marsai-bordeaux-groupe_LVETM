@@ -50,11 +50,11 @@ function SectionHero() {
                     )}
 
                     {/* LOGO, TITRE, ECT. */}
-                    <div className="flex py-[24px] flex-col justify-center items-center gap-[clamp(1rem,2vw,3rem)] self-stretch z-20">
+                    <div className="flex py-6 flex-col justify-center items-center gap-[clamp(1rem,2vw,3rem)] self-stretch z-20">
 
-                        <div className="flex flex-col justify-center items-center gap-[50px] self-stretch">
+                        <div className="flex flex-col justify-center items-center gap-12.5 self-stretch">
                             
-                            <div className="flex px-[17px] py-[9px] justify-center items-start gap-[8px]">
+                            <div className="flex px-4.25 py-2.25 justify-center items-start gap-2">
 
                                 {isVisible(content, page, section, "protocol_icon") && protocolIconSrc && (
                                     <div>
@@ -63,7 +63,7 @@ function SectionHero() {
                                 )}
 
                                 {isVisible(content, page, section, "protocol") && (
-                                    <p className="text-[rgba(0,0,0,0.60)] text-center text-[14px] font-bold leading-[15px] tracking-[10px] uppercase">
+                                    <p className="text-[rgba(0,0,0,0.60)] text-center text-[14px] font-bold leading-3.75 tracking-[10px] uppercase">
                                         {content?.[page]?.[section]?.protocol || t("hero.protocol")}
                                     </p>
                                 )}
@@ -78,7 +78,7 @@ function SectionHero() {
                                 )}
 
                                 {isVisible(content, page, section, "title_accent") && (
-                                    <span className="bg-gradient-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent">
+                                    <span className="bg-linear-to-b from-[#51A2FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent">
                                         {content?.[page]?.[section]?.title_accent  || t("hero.title_accent")}
                                     </span>
                                 )}
@@ -93,7 +93,7 @@ function SectionHero() {
                                 )}
 
                                 {isVisible(content, page, section, "tagline_highlight") && (
-                                    <span className="bg-gradient-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent" >
+                                    <span className="bg-linear-to-r from-[#AD46FF] via-[#AD46FF] to-[#FF2B7F] bg-clip-text text-transparent" >
                                         {" "}{content?.[page]?.[section]?.tagline_highlight || t("hero.tagline_highlight")}{" "}
                                     </span>
                                 )}
@@ -119,33 +119,33 @@ function SectionHero() {
 
                         </div>
 
-                        <div className="flex flex-col items-center justify-center px-[50px] md:flex-row md:items-start md:justify-end gap-6 md:px-[220px]">
-                            <Link to={content?.[page]?.[section]?.ctaParticipate_link || t("hero.ctaParticipate_link")} className="flex h-[68px] items-center justify-end gap-[30px] p-[25px] rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
+                        <div className="flex flex-col items-center justify-center px-12.5 md:flex-row md:items-start md:justify-end gap-6 md:px-55">
+                            <Link to={content?.[page]?.[section]?.ctaParticipate_link || t("hero.ctaParticipate_link")} className="flex h-17 items-center justify-end gap-7.5 p-6.25 rounded-full bg-white shadow-[0_0_30px_0_rgba(255,255,255,0.1)]">
 
                                 {isVisible(content, page, section, "ctaParticipate") && (
-                                    <span className="text-black text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
+                                    <span className="text-black text-center text-[14px] font-bold leading-5 tracking-[1.4px] uppercase">
                                         {content?.[page]?.[section]?.ctaParticipate || t("hero.ctaParticipate")}
                                     </span>
                                 )}
 
                                 {isVisible(content, page, section, "ctaParticipate_signe") && ctaParticipate_signeSrc && (
-                                    <div className="w-[20px] h-[20px]">
+                                    <div className="w-5 h-5">
                                         <img src={ctaParticipate_signeSrc || t("hero.ctaParticipate_signe")} alt=""/>
                                     </div>
                                 )}
 
                             </Link>
 
-                            <Link to={content?.[page]?.[section]?.ctaLearnMore_link || t("hero.ctaLearnMore_link")} className="flex items-center justify-center gap-5 p-[25px] rounded-full border border-white/10 bg-white/5 text-white">
+                            <Link to={content?.[page]?.[section]?.ctaLearnMore_link || t("hero.ctaLearnMore_link")} className="flex items-center justify-center gap-5 p-6.25 rounded-full border border-white/10 bg-white/5 text-white">
                                 
                                 {isVisible(content, page, section, "ctaLearnMore") && (
-                                    <span className=" text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
+                                    <span className=" text-center text-[14px] font-bold leading-5 tracking-[1.4px] uppercase">
                                         {content?.[page]?.[section]?.ctaLearnMore || t("hero.ctaLearnMore")}
                                     </span>
                                 )}
 
                                 {isVisible(content, page, section, "ctaLearnMore_signe") && ctaLearnMore_signeSrc && (
-                                    <div className="w-[20px] h-[20px]">
+                                    <div className="w-5 h-5">
                                         <img src={ctaLearnMore_signeSrc || t("hero.ctaLearnMore_signe")} />
                                     </div>
                                 )}

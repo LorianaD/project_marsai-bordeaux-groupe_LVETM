@@ -10,13 +10,14 @@ function SectionPartner() {
     const { t, i18n } = useTranslation("home");
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
+    const page = "home";
     const section = "partnersSection";
 
     const [partners, setPartners] = useState([]);
     const [loading, setLoading] = useState(true);
     const [Message, setMessage] = useState("");
 
-    const { content, message } = useCmsContent(locale);
+    const { content, message } = useCmsContent(page, locale);
 
     async function GetAllPartner() {
         // console.log("Fonction GetAllPartner OK");
@@ -50,40 +51,40 @@ function SectionPartner() {
 
     return(
         <>
-            { isSectionVisible(content, section) && (
-                <section className="flex flex-col items-start gap-[48px] p-[20px] md:gap-[80px] md:px-[75px] md:py-[100px] self-stretch">
+            { isSectionVisible(content, page, section) && (
+                <section className="flex flex-col items-start gap-12 p-5 md:gap-20 md:px-18.75 md:py-25 self-stretch">
                     
-                    <div className="flex md:h-[91px] flex-col items-center gap-[16px] self-stretch">
+                    <div className="flex md:h-22.75 flex-col items-center gap-4 self-stretch">
                         
                         {/* Sur-titre */}
-                        {isVisible(content, section, "eyebrow") && (
-                            <div className="flex md:h-[91px] flex-col items-center gap-[16px] shrink-0 self-stretch">
-                                <div className="w-[48px] h-[1px] shrink-0 bg-black dark:bg-[#FFFFFF]"></div>
-                                <p className="text-center text-[10px] font-bold leading-[15px] tracking-[4px] uppercase">{content?.[section]?.eyebrow}</p>
-                                <div className="w-[48px] h-[1px] shrink-0 bg-black dark:bg-[#FFFFFF]"></div>
+                        {isVisible(content, page, section, "eyebrow") && (
+                            <div className="flex md:h-22.75 flex-col items-center gap-7 shrink-0 self-stretch">
+                                <div className="w-12 h-px shrink-0 bg-black dark:bg-[#FFFFFF]"></div>
+                                <p className="text-center text-[10px] font-bold leading-3.75 tracking-[4px] uppercase">{content?.[page]?.[section]?.eyebrow}</p>
+                                <div className="w-12 h-px shrink-0 bg-black dark:bg-[#FFFFFF]"></div>
                             </div>
                         )}
 
                         {/* Titre */}
-                        <h2 className="text-center text-[36px] md:text-[60px] font-bold leading-[40px] md:leading-[60px] tracking-[-1.8px] md:tracking-[-3px] uppercase w-full">
-                            {isVisible(content, section, "title_main") && (
+                        <h2 className="text-center text-[36px] md:text-[60px] font-bold leading-10 md:leading-15 tracking-[-1.8px] md:tracking-[-3px] uppercase w-full">
+                            {isVisible(content, page, section, "title_main") && (
                                 <span>
-                                    {content?.[section]?.title_main || t("partnersSection.title_main")}
+                                    {content?.[page]?.[section]?.title_main || t("partnersSection.title_main")}
                                 </span>
                             )}
-                            {isVisible(content, section, "title_accent") && (
-                                <span className={`block md:inline text-[${content?.[section]?.title_accent_color}]`}>
-                                    {content?.[section]?.title_accent || t("partnersSection.title_accent")}
+                            {isVisible(content, page, section, "title_accent") && (
+                                <span className={`block md:inline text-[${content?.[page]?.[section]?.title_accent_color}]`}>
+                                    {content?.[page]?.[section]?.title_accent || t("partnersSection.title_accent")}
                                 </span>
                             )}
                         </h2>
                     </div>
 
                     {/* Logos des partenaires */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-[16px] self-stretch">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 self-stretch">
                         {partners.length > 0 && partners.map((p) => (
-                            <div key={ p.id ?? p.name } className="flex items-center justify-center self-stretch justify-self-stretch row-span-1 col-span-1 rounded-[24px] border border-[rgba(128,128,128,0.05)] bg-[rgba(128,128,128,0.05)] dark:border-[rgba(255,255,255,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
-                                <div className="w-[175px] md:w-[300px] md:h-[200px] flex items-center justify-center">
+                            <div key={ p.id ?? p.name } className="flex items-center justify-center self-stretch justify-self-stretch row-span-1 col-span-1 rounded-3xl border border-[rgba(128,128,128,0.05)] bg-[rgba(128,128,128,0.05)] dark:border-[rgba(255,255,255,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
+                                <div className="w-43.75 md:w-75 md:h-50 flex items-center justify-center">
                                     <img src={`${API_URL}${p.img}`} alt={p.name} />
                                 </div>
                             </div>

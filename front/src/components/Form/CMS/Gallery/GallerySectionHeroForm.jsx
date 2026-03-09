@@ -113,13 +113,14 @@ function GallerySectionHeroForm( forcedLocale ) {
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                     <CmsBlock>
                         <CmsTitleBlock title="Gestion du titre"/>
-                        <CmsBlock>
-                            <CmsSubtitleBlock title="Gestion du titre principale"/>
-                            <CmsFieldsBlock>
-                                <CmsInput name="title_main" label="Titre" value={values.title_main} onChange={handleChange} placeholder={t("")} />
-                                <CmsInput name="title_accent" label="Titre" value={values.title_main} onChange={handleChange} placeholder={t("")} />
-                            </CmsFieldsBlock>
-                        </CmsBlock>
+                        <CmsFieldsBlock>
+                            <CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("")} rightSlot={
+                                <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                            />
+                            <CmsInput name="title_accent" label="Titre accent" value={values.title_accent} onChange={handleChange} placeholder={t("")} rightSlot={
+                                <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
+                            />
+                        </CmsFieldsBlock>
                     </CmsBlock>
                 </div>
 
