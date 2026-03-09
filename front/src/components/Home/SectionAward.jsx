@@ -23,9 +23,10 @@ function SectionAward() {
 
   const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
+  const page = "home";
   const section = "award";
 
-  const { content, loading: cmsLoading } = useCmsContent(locale);
+  const { content, loading: cmsLoading } = useCmsContent(page, locale);
 
   useEffect(() => {
     let isMounted = true;
@@ -70,48 +71,48 @@ function SectionAward() {
 
   return (
     <>
-      {isSectionVisible(content, section) && (
-        <section className="flex flex-col items-center justify-center gap-[25px] md:gap-[80px] p-[25px] md:px-[100px] self-stretch">
+      {isSectionVisible(content, page, section) && (
+        <section className="flex flex-col items-center justify-center gap-6.25 md:gap-20 p-6.25 md:px-25 self-stretch">
 
-          <div className="flex flex-col md:flex-row justify-between items-end self-stretch shrink-[0] gap-[20px] p-[20px]">
+          <div className="flex flex-col md:flex-row justify-between items-end self-stretch shrink-0 gap-5 p-5">
             <div>
-              {isVisible(content, section, "eyebrow") && (
-                <div className="flex items-center gap-[12px]">
-                  <div className="w-[32px] h-[1px] shrink-[0] bg-[#2B7FFF]" />
-                  <p className="text-[#2B7FFF] text-[12px] font-bold leading-[16px] tracking-[4.8px] uppercase">
-                    {content?.[section]?.eyebrow}
+              {isVisible(content, page, section, "eyebrow") && (
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-px shrink-0 bg-[#2B7FFF]" />
+                  <p className="text-[#2B7FFF] text-[12px] font-bold leading-4 tracking-[4.8px] uppercase">
+                    {content?.[page]?.[section]?.eyebrow}
                   </p>
                 </div>
               )}
-              <h2 className="text-[#000000] text-[48px] md:text-[96px] font-bold leading-[48px] md:leading-[96px] tracking-[-2.4px] md:tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
-                {isVisible(content, section, "title1") && (
+              <h2 className="text-[#000000] text-[48px] md:text-[96px] font-bold leading-12 md:leading-24 tracking-[-2.4px] md:tracking-[-4.8px] uppercase dark:text-[#FFFFFF]">
+                {isVisible(content, page, section, "title1") && (
                   <span className="block">
-                    {content?.[section]?.title1}
+                    {content?.[page]?.[section]?.title1}
                   </span>
                 )}
-                {isVisible(content, section, "title2") && (
-                  <span className="block bg-gradient-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
-                    {content?.[section]?.title2}
+                {isVisible(content, page, section, "title2") && (
+                  <span className="block bg-linear-to-b from-black to-[rgba(144,144,144,0.2)] bg-clip-text text-transparent dark:from-white dark:to-white/20">
+                    {content?.[page]?.[section]?.title2}
                   </span>
                 )}
               </h2>
-              {isVisible(content, section, "description") && (
+              {isVisible(content, page, section, "description") && (
                 <p className="text-[#000000] text-[20px] leading-[32.5px] text-left dark:text-[#FFFFFF]">
-                  {content?.[section]?.description}
+                  {content?.[page]?.[section]?.description}
                 </p>
               )}
             </div>
 
             
-            {isVisible(content, section, "ctaSeeMore") && (
+            {isVisible(content, page, section, "ctaSeeMore") && (
               <Link
-                to={content?.[section]?.ctaSeeMore_link || "/gallery"}
-                className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-[20px] gap-[10px]"
+                to={content?.[page]?.[section]?.ctaSeeMore_link || "/gallery"}
+                className="flex justify-center items-center bg-[rgba(194,122,255,0.52)] rounded-[20px] px-5 gap-2.5"
               >
-                <span className="flex text-[#FFFFFF] text-center text-[14px] font-bold leading-[20px] tracking-[1.4px] uppercase">
-                  {content?.[section]?.ctaSeeMore}
+                <span className="flex text-[#FFFFFF] text-center text-[14px] font-bold leading-5 tracking-[1.4px] uppercase">
+                  {content?.[page]?.[section]?.ctaSeeMore}
                 </span>
-                <div className="flex justify-center items-center w-[20px] h-[20px]">
+                <div className="flex justify-center items-center w-5 h-5">
                   <img src={arrowSrc} alt="" className="" />
                 </div>
               </Link>
@@ -169,11 +170,11 @@ function SectionAward() {
                     </Link>
                     
 
-                    <div className="flex h-[175px] flex-col items-start gap-2 pt-[40px] px-[40px] pb-0 self-stretch">
-                      <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-[36px] tracking-[-1.5px] uppercase text-left">
+                    <div className="flex h-43.75 flex-col items-start gap-2 pt-10 px-10 pb-0 self-stretch">
+                      <h3 className="text-[#000000] dark:text-[#FFFFFF] text-[30px] font-bold leading-9 tracking-[-1.5px] uppercase text-left">
                         {title}
                       </h3>
-                      <p className="text-[#000000] dark:text-white/80 text-[10px] font-bold leading-[15px] tracking-[3px] uppercase">
+                      <p className="text-[#000000] dark:text-white/80 text-[10px] font-bold leading-3.75 tracking-[3px] uppercase">
                         {director}
                       </p>
                     </div>

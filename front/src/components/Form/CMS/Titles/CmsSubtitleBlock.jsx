@@ -19,3 +19,5 @@ function CmsSubtitleBlock({ title, toggleName, values, handleChange, page, secti
 }
 
 export default CmsSubtitleBlock
+
+// <CmsSubtitleBlock title="Gestion du premier bouton" toggleName="ctaParticipate" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
