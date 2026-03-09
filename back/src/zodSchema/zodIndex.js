@@ -6,7 +6,7 @@
 export { emailSchema } from "./userValidationSchema.js";
 export { passwordSchema } from "./userValidationSchema.js";
 export { createAdminSchema } from "./userValidationSchema.js";
-
+export { roleSchema } from "./userValidationSchema.js";
 //Validation des ajouts dans admin_video.
 export { createAdminVideoSchema } from "./adminVideoValidationSchema.js";
 
