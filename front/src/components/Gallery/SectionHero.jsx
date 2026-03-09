@@ -18,7 +18,7 @@ function SectionHero() {
     return (
         <>
             {isSectionVisible(content, page, section) && (
-                <section className="mb-8">
+                <section className="mb-8 flex flex-col gap-5">
                     {/* Title */}
                     <h2
                         className="font-extrabold leading-[1.05] tracking-tight"
@@ -37,6 +37,11 @@ function SectionHero() {
                             </span>
                         )}
                     </h2>
+                    {isVisible(content, page, section, "description") && (
+                        <p>
+                            {content?.[page]?.[section]?.description}
+                        </p>
+                    )}
                 </section>
             )}
         </>

@@ -28,7 +28,8 @@ function GallerySectionHeroForm({ forcedLocale }) {
 
         "section_visibility",
         "title_main",
-        "title_accent"
+        "title_accent",
+        "description"
 
     ]
     // console.log("Champs:", fields);
@@ -44,6 +45,9 @@ function GallerySectionHeroForm({ forcedLocale }) {
 
         title_accent: "",
         title_accent_is_active: 1,
+
+        description: "",
+        description_is_active: 1
 
     })
     const [message, setMessage] = useState("");
@@ -123,6 +127,17 @@ function GallerySectionHeroForm({ forcedLocale }) {
                             />
                             <CmsInput name="title_accent" label="Titre accent" value={values.title_accent} onChange={handleChange} placeholder={t("title.line2")} rightSlot={
                                 <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+                        </CmsFieldsBlock>
+                    </CmsBlock>
+                </div>
+
+                <div className="flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
+                    <CmsBlock>
+                        <CmsTitleBlock title="Gestion de la description"/>
+                        <CmsFieldsBlock>
+                            <CmsInput name="description" label="Description" value={values.description} onChange={handleChange} placeholder={t("description")} rightSlot={
+                                <CmsHideToggle name="description" value={values.description_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
                         </CmsFieldsBlock>
                     </CmsBlock>

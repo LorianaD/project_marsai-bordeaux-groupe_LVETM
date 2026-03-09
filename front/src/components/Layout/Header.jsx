@@ -71,7 +71,7 @@ function Header() {
     const logoSrc = resolveCmsAsset(content?.[page]?.[section]?.logo);
 
     const firstLabel = content?.[page]?.[section]?.first;
-    const firstLink  = content?.[section]?.first_link;
+    const firstLink  = content?.[page]?.[section]?.first_link;
 
     const secondeLabel = content?.[page]?.[section]?.seconde;
     const secondeLink  = content?.[page]?.[section]?.seconde_link;
