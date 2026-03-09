@@ -14,7 +14,7 @@ import SectionPartners from "../../Form/CMS/Home/SectionPartners";
 import FaqAdmin from "../Faq/FaqAdmin.jsx";
 
 // Import formulaire CMS GalleryPage
-import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm";
+import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm.jsx";
 
 // Import formulaires CMS JuryPage
 import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
@@ -62,7 +62,7 @@ function CmsCentralization() {
             pageId: "gallery",
             label: "Gallerie",
             sections: [
-                { id: "hero", label: "Hero", component: GallerySectionHeroForm},
+                { id: "hero", label: "Hero", component: GallerySectionHeroForm },
             ],            
         },
         {

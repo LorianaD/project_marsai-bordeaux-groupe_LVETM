@@ -78,7 +78,7 @@ function HeaderForm({ forcedLocale }) {
 
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -90,7 +90,7 @@ function HeaderForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -105,7 +105,7 @@ function HeaderForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -140,14 +140,14 @@ function HeaderForm({ forcedLocale }) {
 
     return (
         <section className="w-full">
-            <form onSubmit={handleSubmit} className="w-full p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={handleSubmit} className="w-full p-12.5 flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
                 
                 {/***** Titre du formulaire *****/}
                 <CmsFormHeader title="Gestion de la Header" />
 
                 <div className="w-full">
 
-                    <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
+                    <div className="flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit] w-full">
                         
                         <CmsBlock>
 
@@ -161,7 +161,7 @@ function HeaderForm({ forcedLocale }) {
 
                     </div>
 
-                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                    <div className="flex flex-col pb-2.5 justify-start gap-7.5 self-stretch uppercase placeholder:uppercase w-full">
 
                         <CmsTitleBlock title="Gestion de la navigation"/>
 
@@ -200,7 +200,7 @@ function HeaderForm({ forcedLocale }) {
 
                     </div>
 
-                    <div className="flex flex-col items-start justify-center pb-[10px] gap-[50px] self-stretch font-[Outfit] w-full uppercase placeholder:uppercase ">
+                    <div className="flex flex-col items-start justify-center pb-2.5 gap-12.5 self-stretch font-[Outfit] w-full uppercase placeholder:uppercase ">
                         
                         <CmsTitleBlock title="Gestion des boutons"/>
 
@@ -226,7 +226,7 @@ function HeaderForm({ forcedLocale }) {
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
+                    <BtnSubmitForm loading={loading} className="flex h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
                         Mettre à jour
                     </BtnSubmitForm>
                 </div>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import VideoCard from "../components/Videos/VideoCard.jsx";
+import SectionHero from "../components/Gallery/SectionHero.jsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const PAGE_SIZE = 20;
@@ -90,7 +91,7 @@ function CountdownHero() {
               <span className="text-neutral-900 dark:text-white">
                 {t("hero.festivalName.mars")}
               </span>
-              <span className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
                 {t("hero.festivalName.ai")}
               </span>
             </h2>
@@ -226,24 +227,11 @@ export default function Gallery() {
   }, [filtered, page]);
 
   return (
-    <div className="bg-white text-neutral-900 dark:bg-neutral-950 dark:text-white p-[100px] w-full">
+    <div className="bg-white text-neutral-900 dark:bg-neutral-950 dark:text-white p-25 w-full">
       <div className="mx-auto w-full max-w-6xl px-6 py-10">
         <CountdownHero />
 
-        {/* Title */}
-        <div className="mb-8">
-          <h1
-            className="font-extrabold leading-[1.05] tracking-tight"
-            style={{ fontSize: "clamp(48px, 6vw, 80px)" }}
-          >
-            <span className="block text-blue-600">{t("title.line1")}</span>
-            <span className="block">
-              <span className="bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
-                {t("title.line2")}
-              </span>
-            </span>
-          </h1>
-        </div>
+        <SectionHero/>
 
         {/* Search */}
         <div className="mb-10 flex justify-center">
