@@ -76,7 +76,7 @@ function SectionGoalForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -87,7 +87,7 @@ function SectionGoalForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -102,7 +102,7 @@ function SectionGoalForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     async function handleSubmit(event) {
         // console.log("Fonction handleSubmit OK");
@@ -147,7 +147,7 @@ function SectionGoalForm({ forcedLocale }) {
                     <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
 
-                <div className="flex flex-col pb-[10px] md:flex-row justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                <div className="flex flex-col pb-[10px] md:flex-wrap md:justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
                     <CmsInput name="title_main" label="Titre principal (en Blanc)" value={values.title_main} onChange={handleChange} placeholder={t("goal.title_main")} rightSlot={
                         <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                     />

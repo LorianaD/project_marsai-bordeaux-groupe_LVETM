@@ -115,14 +115,14 @@ function SectionEventsForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
     useEffect(() => {
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -134,7 +134,7 @@ function SectionEventsForm({ forcedLocale }) {
         setValues(built);
         setInitialValues(built);
         setHasHydrated(true);
-    }, [content, section, hasHydrated, setValues])
+    }, [content, page, section, hasHydrated, setValues])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue

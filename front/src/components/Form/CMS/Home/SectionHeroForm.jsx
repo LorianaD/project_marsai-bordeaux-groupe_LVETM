@@ -114,7 +114,7 @@ function SectionHeroForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
     
@@ -126,7 +126,7 @@ function SectionHeroForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -141,7 +141,7 @@ function SectionHeroForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -321,7 +321,7 @@ function SectionHeroForm({ forcedLocale }) {
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                    <BtnSubmitForm loading={loading} className="flex h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                         Mettre à jour
                     </BtnSubmitForm>
                 </div>

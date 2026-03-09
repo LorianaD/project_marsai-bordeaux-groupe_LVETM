@@ -542,7 +542,7 @@ function FooterForm({ forcedLocale }) {
                     </div>
 
                     <div className="w-full flex flex-col justify-center">
-                        <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
+                        <BtnSubmitForm loading={loading} className="flex h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
                             Mettre à jour
                         </BtnSubmitForm>
                         {message && <p className="text-sm">{message}</p>}

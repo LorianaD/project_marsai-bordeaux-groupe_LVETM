@@ -76,7 +76,7 @@ function SectionAwardForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -87,7 +87,7 @@ function SectionAwardForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -102,7 +102,7 @@ function SectionAwardForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     useEffect(()=> {
         setHasHydrated(false);
