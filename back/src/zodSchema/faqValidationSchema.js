@@ -4,13 +4,13 @@
 import { z } from "zod";
 
 export const createFaqSchema = z.object({
-    rank: z
+    display_order: z
         .preprocess(
             value => Number(value),// transforme string -> number
             z // schéma qui valide la valeur transformée
-                .number({ message: "Rank is required." })
-                .int({ message: "Rank must be an integer." })
-                .nonnegative({ message: "Rank must be 0 or positive." })
+                .number({ message: "Display order is required." })
+                .int({ message: "Display order must be an integer." })
+                .nonnegative({ message: "Display order must be 0 or positive." })
         ),
         
     question_fr: z

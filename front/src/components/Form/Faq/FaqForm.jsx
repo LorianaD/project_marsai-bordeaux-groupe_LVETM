@@ -35,16 +35,16 @@ function FaqForm({ faq, onChange, onSubmit, onDelete, loading, isEdit = false, f
                 isEdit ? "m-2 w-full max-w-[650px] rounded-[32px]" : "max-w-[900px]"
             } rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[20px] p-4 md:p-[40px]`}
         >
-            <Field label={t("form.label.rank")}>
+            <Field label={t("form.label.display_order")}>
                 <TextInput
-                    name="rank"
+                    name="display_order"
                     type="number"
-                    value={faq.rank}
-                    onChange={(e) => onChange(faq.id, "rank", Number(e.target.value))}
+                    value={faq.display_order}
+                    onChange={(e) => onChange(faq.id, "display_order", Number(e.target.value))}
                 />
             </Field>
             {/* Affichage de l erreur zod dans le back */}
-            <FieldError field="rank" />
+            <FieldError field="display_order" />
 
             <Field label={t("form.label.question_fr")}>
                 <TextArea

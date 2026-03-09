@@ -5,21 +5,21 @@ import { pool } from "../../db/index.js";
 *************************************************/
 
 export const addFaq = async (data)=> {
-    const query = "INSERT INTO faq ( `rank`, question_fr, question_en, answer_fr, answer_en ) VALUES (?, ?, ?, ?, ?)";
+    const query = "INSERT INTO faq ( display_order, question_fr, question_en, answer_fr, answer_en ) VALUES (?, ?, ?, ?, ?)";
 
-    const rank = data.rank;
+    const display_order = data.display_order;
     const question_fr = data.question_fr;
     const question_en = data.question_en;
     const answer_fr = data.answer_fr;
     const answer_en = data.answer_en;
     //valeur à ajouter.
-    const values = [rank, question_fr, question_en, answer_fr, answer_en];
+    const values = [display_order, question_fr, question_en, answer_fr, answer_en];
 
     const [result] = await pool.execute(query, values);
 
     return {
         id: result.insertId,
-        rank,
+        display_order,
         question_fr,
         question_en,
         answer_fr,
