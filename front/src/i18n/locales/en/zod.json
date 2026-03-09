@@ -1,9 +1,9 @@
 {
     "faq": {
-        "rank": {
-            "required": "Rank is required.",
-            "integer": "Rank must be an integer.",
-            "nonnegative": "Rank must be 0 or positive."
+        "display_order": {
+            "required": "Display order is required.",
+            "integer": "Display order must be an integer.",
+            "nonnegative": "Display order must be 0 or positive."
         },
         "question_fr": {
             "string": "Question must be a string.",

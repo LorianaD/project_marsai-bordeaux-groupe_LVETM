@@ -25,7 +25,7 @@ function FaqAdmin() {
     const [loading, setLoading] = useState(false);
     const [faqsEdit, setFaqsEdit] = useState([]);
     const [newFaq, setNewFaq] = useState({
-        rank: 1,
+        display_order: 1,
         question_fr: "",
         question_en: "",
         answer_fr: "",
@@ -81,7 +81,7 @@ function FaqAdmin() {
             alert("Error while adding FAQ");
         } finally {
             setNewFaq({
-                rank: 1,
+                display_order: 1,
                 question_fr: "",
                 question_en: "",
                 answer_fr: "",
