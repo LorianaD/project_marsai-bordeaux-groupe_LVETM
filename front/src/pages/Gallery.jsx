@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import VideoCard from "../components/Videos/VideoCard.jsx";
 import SectionHero from "../components/Gallery/SectionHero.jsx";
 import CountdownHero from "../components/Gallery/CountdownHero.jsx";
-import { isSectionVisible } from "../utils/isVisible.js";
+import { isSectionVisible, isVisible } from "../utils/isVisible.js";
 import useCmsContent from "../hooks/useCmsContent.js";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -16,8 +16,7 @@ export default function Gallery() {
   const pageG = "gallery";
   const countdown = "countdown";
   const hero = "hero";
-  const search = "search";
-  const gallery = "gallery";
+  const grid = "grid";
 
   // cherche les données en bdd
   const { content, message } = useCmsContent(pageG, locale);
@@ -87,6 +86,7 @@ export default function Gallery() {
 
   return (
     <div className="text-neutral-900p-25 w-full">
+
       <div className="mx-auto w-full max-w-6xl px-6 py-10 flex flex-col gap-20">
         
         {isSectionVisible(content, pageG, hero) && (
@@ -98,125 +98,130 @@ export default function Gallery() {
           <CountdownHero />
         )}
 
-        {/* Search */}
-        {isSectionVisible(content, pageG, search) && (
-          <div className="mb-10 flex justify-center">
-            <div className="relative w-full max-w-sm">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t("search.placeholder")}
-                className="
-                  w-full rounded-full px-6 py-3 pr-12 text-sm outline-none
-                  bg-[#EFEAF7] text-neutral-800 placeholder:text-neutral-500
-                  dark:bg-white/10 dark:text-white/90 dark:placeholder:text-white/45
-                  dark:ring-1 dark:ring-white/10
-                  focus:ring-2 focus:ring-blue-500/30
-                "
-              />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-600 dark:text-white/60">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
+        {isSectionVisible(content, pageG, grid) && (
+          <>
+            {/* Search */}
+            {isVisible(content, pageG, grid, "search_visibility") && (
+              <div className="mb-10 flex justify-center">
+                <div className="relative w-full max-w-sm">
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={t("search.placeholder")}
+                    className="
+                      w-full rounded-full px-6 py-3 pr-12 text-sm outline-none
+                      bg-[#EFEAF7] text-neutral-800 placeholder:text-neutral-500
+                      dark:bg-white/10 dark:text-white/90 dark:placeholder:text-white/45
+                      dark:ring-1 dark:ring-white/10
+                      focus:ring-2 focus:ring-blue-500/30
+                    "
                   />
-                </svg>
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Gallery */}
-        {isSectionVisible(content, pageG, gallery) && (
-          <section>
-
-            {loading && (
-              <div className="py-16 text-center text-neutral-500 dark:text-white/60">
-                {t("states.loading")}
-              </div>
-            )}
-
-            
-            {!loading && err && (
-              <div className="py-16 text-center text-red-600 dark:text-red-400">
-                {err}
-              </div>
-            )}
-
-            {!loading && !err && (
-              <>
-                <div className="grid grid-cols-1 justify-items-center gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-                  {pageItems.map((v) => (
-                    <VideoCard key={v.id} video={v} apiBase={API_BASE} />
-                  ))}
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-600 dark:text-white/60">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </span>
                 </div>
+              </div>
+            )}
 
-                {/* Pagination */}
-                <div className="mt-14 flex flex-col items-center gap-4">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
-                      disabled={page === 1}
-                      aria-label={t("pagination.previous")}
-                      className="
-                        grid h-9 w-9 place-items-center rounded-lg border
-                        border-neutral-200 text-neutral-500 hover:bg-neutral-50
-                        disabled:opacity-40
-                        dark:border-white/10 dark:text-white/60 dark:hover:bg-white/5
-                      "
-                    >
-                      ‹
-                    </button>
+            {/* Gallery */}
+            {isVisible(content, pageG, grid, "films_grid_visibility") && (
+              <section>
 
-                    <div className="flex items-center gap-2">
-                      {Array.from({ length: totalPages }).map((_, i) => {
-                        const p = i + 1;
-                        const activeP = p === page;
+                {loading && (
+                  <div className="py-16 text-center text-neutral-500 dark:text-white/60">
+                    {t("states.loading")}
+                  </div>
+                )}
 
-                        return (
-                          <button
-                            key={p}
-                            onClick={() => setPage(p)}
-                            className={
-                              activeP
-                                ? "h-9 w-9 rounded-lg bg-[#6D28D9] text-sm font-semibold text-white"
-                                : "h-9 w-9 rounded-lg text-sm font-semibold text-neutral-700 hover:bg-neutral-100 dark:text-white/70 dark:hover:bg-white/5"
-                            }
-                          >
-                            {p}
-                          </button>
-                        );
-                      })}
+                
+                {!loading && err && (
+                  <div className="py-16 text-center text-red-600 dark:text-red-400">
+                    {err}
+                  </div>
+                )}
+
+                {!loading && !err && (
+                  <>
+                    <div className="grid grid-cols-1 justify-items-center gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                      {pageItems.map((v) => (
+                        <VideoCard key={v.id} video={v} apiBase={API_BASE} />
+                      ))}
                     </div>
 
-                    <button
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                      disabled={page === totalPages}
-                      aria-label={t("pagination.next")}
-                      className="
-                        grid h-9 w-9 place-items-center rounded-lg border
-                        border-neutral-200 text-neutral-500 hover:bg-neutral-50
-                        disabled:opacity-40
-                        dark:border-white/10 dark:text-white/60 dark:hover:bg-white/5
-                      "
-                    >
-                      ›
-                    </button>
-                  </div>
+                    {/* Pagination */}
+                    <div className="mt-14 flex flex-col items-center gap-4">
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => setPage((p) => Math.max(1, p - 1))}
+                          disabled={page === 1}
+                          aria-label={t("pagination.previous")}
+                          className="
+                            grid h-9 w-9 place-items-center rounded-lg border
+                            border-neutral-200 text-neutral-500 hover:bg-neutral-50
+                            disabled:opacity-40
+                            dark:border-white/10 dark:text-white/60 dark:hover:bg-white/5
+                          "
+                        >
+                          ‹
+                        </button>
 
-                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45">
-                    {t("pagination.summary", { page, totalPages, total })}
-                  </div>
-                </div>
-              </>
+                        <div className="flex items-center gap-2">
+                          {Array.from({ length: totalPages }).map((_, i) => {
+                            const p = i + 1;
+                            const activeP = p === page;
+
+                            return (
+                              <button
+                                key={p}
+                                onClick={() => setPage(p)}
+                                className={
+                                  activeP
+                                    ? "h-9 w-9 rounded-lg bg-[#6D28D9] text-sm font-semibold text-white"
+                                    : "h-9 w-9 rounded-lg text-sm font-semibold text-neutral-700 hover:bg-neutral-100 dark:text-white/70 dark:hover:bg-white/5"
+                                }
+                              >
+                                {p}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        <button
+                          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                          disabled={page === totalPages}
+                          aria-label={t("pagination.next")}
+                          className="
+                            grid h-9 w-9 place-items-center rounded-lg border
+                            border-neutral-200 text-neutral-500 hover:bg-neutral-50
+                            disabled:opacity-40
+                            dark:border-white/10 dark:text-white/60 dark:hover:bg-white/5
+                          "
+                        >
+                          ›
+                        </button>
+                      </div>
+
+                      <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-white/45">
+                        {t("pagination.summary", { page, totalPages, total })}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+              </section>
             )}
-
-          </section>
+          </>
         )}
 
       </div>
+
     </div>
   );
 }

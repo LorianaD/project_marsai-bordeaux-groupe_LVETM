@@ -17,6 +17,7 @@ import FaqAdmin from "../Faq/FaqAdmin.jsx";
 // Import formulaire CMS GalleryPage
 import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm.jsx";
 import GallerySectionCountdownForm from "../../Form/CMS/Gallery/GallerySectionCountdownForm.jsx";
+import GalleryFilmsListForm from "../../Form/CMS/Gallery/GalleryFilmsListForm.jsx";
 
 // Import formulaires CMS JuryPage
 import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
@@ -32,6 +33,7 @@ import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
 
 // Import formulaire CMS LegalPage
 import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
+
 
 
 function CmsCentralization() {
@@ -64,7 +66,8 @@ function CmsCentralization() {
             label: "Gallerie",
             sections: [
                 { id: "hero", label: "Hero", component: GallerySectionHeroForm },
-                { id: "other", label: "Compte à rebour", component: GallerySectionCountdownForm }
+                { id: "countdown", label: "Compte à rebour", component: GallerySectionCountdownForm },
+                { id: "films", label: "Gallerie", component: GalleryFilmsListForm }
             ],
         },
         {
