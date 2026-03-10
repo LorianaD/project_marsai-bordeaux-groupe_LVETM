@@ -2,10 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useCmsContent from "../../hooks/useCmsContent";
 
-// Dates festival (heure locale)
-const FESTIVAL_START = new Date(2026, 10, 2, 0, 0, 0); // 02 nov 2026
-const FESTIVAL_END = new Date(2026, 10, 30, 23, 59, 59); // 30 nov 2026
-
 function pad2(n) {
     return String(n).padStart(2, "0");
 }
@@ -26,29 +22,45 @@ function CountdownHero() {
     const { t, i18n } = useTranslation("gallery");
     const [now, setNow] = useState(() => new Date());
 
+    const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
     const page = "gallery";
     const section = "countdown";
 
+    // cherche les données en bdd
+    const { content, loading, message } = useCmsContent(page, locale);
+    
 
+    const startDate = content?.[page]?.[section]?.start_date;
+    const endDate = content?.[page]?.[section]?.end_date;
+
+    // Dates festival (heure locale)
+    const FESTIVAL_START = startDate 
+        ? new Date(`${startDate}T00:00:00`) 
+        : new Date(2026, 10, 2, 0, 0, 0); // 02 nov 2026
+
+    const FESTIVAL_END = endDate
+        ? new Date(`${endDate}T23:59:59`)
+        : new Date(2026, 10, 30, 23, 59, 59); // 30 nov 2026
 
     useEffect(() => {
         const timer = setInterval(() => setNow(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
 
-    const { phase, target, msLeft } = useMemo(() => {
+    const { phase, targetDate, msLeft } = useMemo(() => {
         const n = now.getTime();
         const start = FESTIVAL_START.getTime();
         const end = FESTIVAL_END.getTime();
 
     if (n < start) {
-      return { phase: "before", target: FESTIVAL_START, msLeft: start - n };
+      return { phase: "before", targetDate: FESTIVAL_START, msLeft: start - n };
     }
     if (n >= start && n <= end) {
-      return { phase: "during", target: FESTIVAL_END, msLeft: end - n };
+      return { phase: "during", targetDate: FESTIVAL_END, msLeft: end - n };
     }
-        return { phase: "after", target: FESTIVAL_END, msLeft: 0 };
-    }, [now]);
+        return { phase: "after", targetDate: FESTIVAL_END, msLeft: 0 };
+    }, [now, FESTIVAL_START, FESTIVAL_END]);
 
     const parts = diffParts(msLeft);
 
@@ -59,9 +71,7 @@ function CountdownHero() {
             ? t("hero.badge.during")
             : t("hero.badge.after");
 
-    const locale = i18n.language?.startsWith("fr") ? "fr-FR" : "en-US";
-
-    const targetDateLabel = target.toLocaleDateString(locale, {
+    const targetDateLabel = targetDate.toLocaleDateString(locale, {
         day: "2-digit",
         month: "long",
         year: "numeric",
@@ -72,9 +82,6 @@ function CountdownHero() {
         month: "long",
         year: "numeric",
     });
-
-    // cherche les données en bdd
-    const { content, loading, message } = useCmsContent(page, locale);
     
     if (loading) return null;
     
@@ -95,19 +102,16 @@ function CountdownHero() {
                         style={{ fontSize: "clamp(44px, 6vw, 96px)" }}
                         >
                             <span className="text-neutral-900 dark:text-white">
-                                {t("hero.festivalName.mars")}
+                                {content?.[page]?.[section]?.title_main || t("hero.festivalName.mars")}
                             </span>
                             <span className="bg-linear-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">
-                                {t("hero.festivalName.ai")}
+                                {content?.[page]?.[section]?.title_accent || t("hero.festivalName.ai")}
                             </span>
                         </h2>
 
                         {/* Message */}
                         <p className="max-w-3xl text-sm leading-relaxed text-neutral-700 dark:text-white/75 sm:text-base">
-                            {t("hero.message", {
-                                startDay: "02",
-                                endFullDate,
-                            })}
+                            {content?.[page]?.[section]?.description || t("hero.message")}
                         </p>
 
                         {/* Badge */}
@@ -120,31 +124,31 @@ function CountdownHero() {
                         <div className="mt-5">
                         {phase === "after" ? (
                             <div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-6 py-6 text-center text-sm font-semibold text-neutral-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70">
-                            {t("hero.thanks")}
+                                {t("hero.thanks")}
                             </div>
                         ) : (
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-                            {[
-                                { k: t("hero.countdown.days"), v: parts.days },
-                                { k: t("hero.countdown.hours"), v: pad2(parts.hours) },
-                                { k: t("hero.countdown.minutes"), v: pad2(parts.minutes) },
-                                { k: t("hero.countdown.seconds"), v: pad2(parts.seconds) },
-                            ].map((b) => (
-                                <div
-                                key={b.k}
-                                className="rounded-2xl border border-neutral-200 bg-white/70 px-4 py-5 text-center backdrop-blur dark:border-white/10 dark:bg-white/5"
-                                >
-                                <div
-                                    className="font-extrabold leading-none tracking-tight"
-                                    style={{ fontSize: "clamp(34px, 4.2vw, 64px)" }}
-                                >
-                                    {b.v}
-                                </div>
-                                <div className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-white/60">
-                                    {b.k}
-                                </div>
-                                </div>
-                            ))}
+                                {[
+                                    { k: t("hero.countdown.days"), v: parts.days },
+                                    { k: t("hero.countdown.hours"), v: pad2(parts.hours) },
+                                    { k: t("hero.countdown.minutes"), v: pad2(parts.minutes) },
+                                    { k: t("hero.countdown.seconds"), v: pad2(parts.seconds) },
+                                ].map((b) => (
+                                    <div
+                                    key={b.k}
+                                    className="rounded-2xl border border-neutral-200 bg-white/70 px-4 py-5 text-center backdrop-blur dark:border-white/10 dark:bg-white/5"
+                                    >
+                                    <div
+                                        className="font-extrabold leading-none tracking-tight"
+                                        style={{ fontSize: "clamp(34px, 4.2vw, 64px)" }}
+                                    >
+                                        {b.v}
+                                    </div>
+                                    <div className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-white/60">
+                                        {b.k}
+                                    </div>
+                                    </div>
+                                ))}
                             </div>
                         )}
 
@@ -152,9 +156,9 @@ function CountdownHero() {
                         <div className="mt-4 text-xs text-neutral-500 dark:text-white/45">
                             {phase !== "after" ? (
                             <>
-                                {t("hero.targetDateLabel")}{" "}
+                                {content?.[page]?.[section]?.target || t("hero.targetDateLabel")}{" : "}
                                 <span className="font-semibold text-neutral-700 dark:text-white/70">
-                                {targetDateLabel}
+                                    {targetDateLabel}
                                 </span>
                             </>
                             ) : null}

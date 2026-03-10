@@ -1,5 +1,6 @@
 // Import formulaire CMS Layout
 import HeaderForm from "../../Form/CMS/Layout/HeaderForm";
+import FooterForm from "../../Form/CMS/Layout/FooterForm.jsx";
 
 // Import formulaires CMS HomePage
 import SectionHeroForm from "../../Form/CMS/Home/SectionHeroForm.jsx";
@@ -15,6 +16,7 @@ import FaqAdmin from "../Faq/FaqAdmin.jsx";
 
 // Import formulaire CMS GalleryPage
 import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm.jsx";
+import GallerySectionCountdownForm from "../../Form/CMS/Gallery/GallerySectionCountdownForm.jsx";
 
 // Import formulaires CMS JuryPage
 import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
@@ -30,7 +32,6 @@ import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
 
 // Import formulaire CMS LegalPage
 import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
-import FooterForm from "../../Form/CMS/Layout/FooterForm.jsx";
 
 
 function CmsCentralization() {
@@ -63,7 +64,8 @@ function CmsCentralization() {
             label: "Gallerie",
             sections: [
                 { id: "hero", label: "Hero", component: GallerySectionHeroForm },
-            ],            
+                { id: "other", label: "Compte à rebour", component: GallerySectionCountdownForm }
+            ],
         },
         {
             pageId: "jury",

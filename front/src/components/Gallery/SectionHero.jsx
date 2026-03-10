@@ -16,35 +16,31 @@ function SectionHero() {
     if (loading) return null;
 
     return (
-        <>
-            {isSectionVisible(content, page, section) && (
-                <section className="mb-8 flex flex-col gap-5">
-                    {/* Title */}
-                    <h2
-                        className="font-extrabold leading-[1.05] tracking-tight"
-                        style={{ fontSize: "clamp(48px, 6vw, 80px)" }}
-                    >
-                        {isVisible(content, page, section, "title_main") && (
-                            <span className="block text-blue-600">
-                                {content?.[page]?.[section]?.title_main || t("title.line1")}
-                            </span>
-                        )}
-                        {isVisible(content, page, section, "title_accent") && (
-                            <span className="block">
-                                <span className="bg-linear-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
-                                    {content?.[page]?.[section]?.title_accent || t("title.line2")}
-                                </span>
-                            </span>
-                        )}
-                    </h2>
-                    {isVisible(content, page, section, "description") && (
-                        <p>
-                            {content?.[page]?.[section]?.description}
-                        </p>
-                    )}
-                </section>
+        <section className="mb-8 flex flex-col gap-5">
+            {/* Title */}
+            <h2
+                className="font-extrabold leading-[1.05] tracking-tight"
+                style={{ fontSize: "clamp(48px, 6vw, 80px)" }}
+            >
+                {isVisible(content, page, section, "title_main") && (
+                    <span className="block text-blue-600">
+                        {content?.[page]?.[section]?.title_main || t("title.line1")}
+                    </span>
+                )}
+                {isVisible(content, page, section, "title_accent") && (
+                    <span className="block">
+                        <span className="bg-linear-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+                            {content?.[page]?.[section]?.title_accent || t("title.line2")}
+                        </span>
+                    </span>
+                )}
+            </h2>
+            {isVisible(content, page, section, "description") && (
+                <p>
+                    {content?.[page]?.[section]?.description}
+                </p>
             )}
-        </>
+        </section>
     )
 }
 
