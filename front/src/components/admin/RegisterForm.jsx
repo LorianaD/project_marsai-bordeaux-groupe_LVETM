@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../../services/Auth/RegisterApi.js";
+import { registerUser, registerWithInvite } from "../../services/Auth/RegisterApi.js";
 import AdminSelect from "./AdminSelect.jsx";
 
 function RegisterForm({
@@ -8,7 +8,9 @@ function RegisterForm({
   onSuccess,
   onCancel,
   variant = "register",
+  inviteToken = "",
 }) {
+  const isInviteMode = Boolean(inviteToken);
   const isDashboard = variant === "dashboard";
   const formClass = isDashboard
     ? "flex flex-col gap-3 w-full"
@@ -43,7 +45,7 @@ function RegisterForm({
   const [verifyPassword, setVerifyPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [selectedRole, setSelectedRole] = useState(role);
+  const [selectedRole, setSelectedRole] = useState(selectableRole ? "" : role);
 
   /* =================================================
   fonction pour verifier le formulaire a sa soumission
@@ -64,13 +66,22 @@ function RegisterForm({
     Vérifie si les datas sont bien saisie dans les input sinon renvoi un message d'erreur 
     =================================================================================== */
     if (
-      !email.trim() ||
       !firstName.trim() ||
       !lastName.trim() ||
       !password.trim() ||
       !verifyPassword.trim()
     ) {
       setError("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    if (!isInviteMode && !email.trim()) {
+      setError("Veuillez renseigner un email.");
+      return;
+    }
+
+    if (selectableRole && !isInviteMode && !selectedRole) {
+      setError("Veuillez choisir un rôle.");
       return;
     }
 
@@ -114,21 +125,32 @@ function RegisterForm({
     }
 
     try {
-      const roleToUse = selectableRole ? selectedRole : role;
-      await registerUser(
-        {
-          email: email.trim(),
+      if (isInviteMode) {
+        await registerWithInvite({
+          token: inviteToken,
           firstname: firstName.trim(),
           lastname: lastName.trim(),
           password,
-        },
-        roleToUse,
-      );
+        });
+      } else {
+        const roleToUse = selectableRole ? selectedRole : role;
+        await registerUser(
+          {
+            email: email.trim(),
+            firstname: firstName.trim(),
+            lastname: lastName.trim(),
+            password,
+          },
+          roleToUse,
+        );
+      }
 
       setSuccess(
         onSuccess
           ? "Utilisateur créé avec succès !"
-          : "User created successfully !",
+          : isInviteMode
+            ? "Compte créé avec succès !"
+            : "User created successfully !",
       );
       if (onSuccess) onSuccess();
     } catch (err) {
@@ -178,24 +200,27 @@ function RegisterForm({
         </div>
       </div>
 
-      <div className={isDashboard ? "" : "w-full flex flex-col gap-1"}>
-        <label className={labelClass}>{isDashboard ? "E-mail *" : "E-mail address *"}</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="mon@exemple.com"
-          className={inputClass}
-        />
-      </div>
-
-      {selectableRole && (
+      {!isInviteMode && (
         <div className={isDashboard ? "" : "w-full flex flex-col gap-1"}>
-          <label className={labelClass}>{isDashboard ? "Rôle *" : "Role *"}</label>
+          <label className={labelClass}>{isDashboard ? "E-mail *" : "E-mail address *"}</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="mon@exemple.com"
+            className={inputClass}
+          />
+        </div>
+      )}
+
+      {selectableRole && !isInviteMode && (
+        <div className={isDashboard ? "" : "w-full flex flex-col gap-1"}>
+          <label className={labelClass}>{isDashboard ? "Choix rôle *" : "Role choice *"}</label>
           {isDashboard ? (
             <AdminSelect
               value={selectedRole}
               onChange={setSelectedRole}
+              placeholder="Choix rôle"
               options={[
                 { value: "admin", label: "Administrateur" },
                 { value: "selector", label: "Sélectionneur" },

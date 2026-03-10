@@ -22,3 +22,22 @@ export async function registerUser(data, role) {
   return res.json()
 
 }
+
+// Fonction pour enregistrer un utilisateur avec un token d'invitation
+export async function registerWithInvite(data) {
+  const res = await fetch(`${API}/api/users/register-with-invite`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const result = await res.json();
+    throw new Error(result.error || `Register with invite failed -> ${res.status}`);
+  }
+
+  return res.json();
+}
