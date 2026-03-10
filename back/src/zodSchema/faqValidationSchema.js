@@ -36,4 +36,4 @@ export const createFaqSchema = z.object({
         .trim()
         .min(1, "Answer is required.")
         .max(500, "Answer must not exceed 500 characters."),
-})
+});
