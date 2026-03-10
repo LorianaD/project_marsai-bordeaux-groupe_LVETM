@@ -40,3 +40,6 @@ export { createSocialMediaSchema} from "./socialMediaValidationSchema.js";
 
 //validation des données du formulaire de contact.
 export { contactSchema } from "./contactValidationSchema.js";
+
+//validation des données de la newsletter.
+export { consentSchema } from "./consentValidationSchema.js";
