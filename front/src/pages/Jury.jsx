@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useCmsContent from "../hooks/useCmsContent";
+import { isSectionVisible, isVisible } from "../utils/isVisible";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -12,7 +14,13 @@ function resolveImg(src) {
 }
 
 export default function Jury() {
-  const { t } = useTranslation("jury");
+  const { t, i18n } = useTranslation("jury");
+  const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+  const page = "jury";
+  const hero = "hero";
+
+  const { content, message } = useCmsContent(page, locale);
 
   const [jury, setJury] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,21 +70,37 @@ export default function Jury() {
       );
   }, [jury]);
 
+  if (loading) return null;
+
   return (
-    <div className="pt-[100px]">
+    <div className="pt-25">
       {/* ================= TOP SECTION ================= */}
-      <div className="mx-auto w-full max-w-6xl px-6 pt-16">
-        <h1
-          className="font-extrabold uppercase tracking-tight leading-[0.95]
-                       text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
-        >
-          <span className="block text-black dark:text-white">
-            {t("titleLine1")}
-          </span>
-          <span className="block text-blue-600 dark:text-blue-400">
-            {t("titleLine2")}
-          </span>
-        </h1>
+      
+      <div className="mx-auto w-full max-w-6xl px-6">
+
+        {/* Section Hero */}
+        {isSectionVisible(content, page, hero) && (
+          <section className="flex flex-col gap-10">
+            <h1 className="font-extrabold uppercase tracking-tight leading-[0.95] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+              {isVisible(content, page, hero, "title_main") && (
+                <span className="block text-black dark:text-white">
+                  {content?.[page]?.[hero]?.title_main || t("titleLine1")}
+                </span>
+              )}
+              {isVisible(content, page, hero, "title_accent") && (
+                <span className="block text-blue-600 dark:text-blue-400">
+                  {content?.[page]?.[hero]?.title_accent || t("titleLine2")}
+                </span>
+              )}
+            </h1>
+
+            {isVisible(content, page, hero, "description") && (
+              <p>
+                {content?.[page]?.[hero]?.description}
+              </p>
+            )}
+          </section>
+        )}
 
         {loading ? (
           <div className="py-16 text-center text-black/50 dark:text-white/55">
@@ -94,11 +118,11 @@ export default function Jury() {
           <div className="mt-14 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             {/* President image */}
             <div className="flex justify-center md:justify-start">
-              <div className="relative w-full max-w-[420px] overflow-hidden rounded-[34px] bg-black ring-1 ring-black/10 shadow-xl">
+              <div className="relative w-full max-w-105 overflow-hidden rounded-[34px] bg-black ring-1 ring-black/10 shadow-xl">
                 <img
                   src={resolveImg(president.img)}
                   alt={`${president.first_name || ""} ${president.name || ""}`.trim()}
-                  className="h-[480px] w-full object-cover grayscale"
+                  className="h-120 w-full object-cover grayscale"
                   draggable={false}
                 />
 
@@ -124,8 +148,8 @@ export default function Jury() {
               </h2>
 
               <div
-                className="mt-8 max-w-[520px] rounded-[28px] p-7 text-white
-                              bg-gradient-to-br from-purple-600 via-blue-900 to-black shadow-xl"
+                className="mt-8 max-w-130 rounded-[28px] p-7 text-white
+                              bg-linear-to-br from-purple-600 via-blue-900 to-black shadow-xl"
               >
                 <div className="text-xs tracking-widest text-white/70">
                   {president.profession || t("president.professionFallback")}
@@ -141,7 +165,7 @@ export default function Jury() {
                     target="_blank"
                     rel="noreferrer"
                     className="mt-6 inline-flex rounded-full
-                               bg-gradient-to-r from-purple-500 to-pink-500
+                               bg-linear-to-r from-purple-500 to-pink-500
                                px-6 py-3 text-xs font-bold text-white"
                   >
                     {t("president.filmographyCta")}
@@ -154,14 +178,14 @@ export default function Jury() {
       </div>
 
       {/* ================= MEMBERS GRID ================= */}
-      <div className="mt-20 bg-gradient-to-b from-[#F6ECFF] to-white py-16 dark:from-white/5 dark:to-black">
+      <div className="mt-20 bg-linear-to-b from-[#F6ECFF] to-white py-16 dark:from-white/5 dark:to-black">
         <div className="mx-auto w-full max-w-6xl px-6">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-start">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
               {t("members.title")}
             </h2>
 
-            <p className="max-w-[520px] text-sm text-black/70 dark:text-white/70">
+            <p className="max-w-130 text-sm text-black/70 dark:text-white/70">
               {t("members.description")}
             </p>
           </div>
@@ -179,11 +203,11 @@ export default function Jury() {
                 <img
                   src={resolveImg(m.img)}
                   alt={`${m.first_name || ""} ${m.name || ""}`.trim()}
-                  className="h-[420px] w-full object-cover"
+                  className="h-105 w-full object-cover"
                   draggable={false}
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
                 <div className="absolute bottom-0 w-full p-7">
                   <div className="text-xs tracking-widest text-cyan-400">
