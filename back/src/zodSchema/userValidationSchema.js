@@ -11,7 +11,6 @@ export const emailSchema = z.object ({
         .min(1,"Email is required.")
         .max(255, "Email must not exceed 255 characters.")
         .email({ message: "Email format is invalid." }),
-
 });
 
 export const passwordSchema = z.object ({
@@ -38,13 +37,13 @@ export const passwordSchema = z.object ({
         ),
 });
 
-export const createAdminSchema = z.object({
+export const createUserSchema = z.object({
 
     firstname: z
         .string({message:"Firstname must be a string."})
         .trim()
-        .min(1, "Firstname is required.")
-        .max(100, "Firstname must not exceed 100 characters.")
+        .min(1, "First name is required.")
+        .max(100, "First name must not exceed 100 characters.")
         .regex(
         /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
         "Firstname can only contain letters, spaces, apostrophes or hyphens."
@@ -53,14 +52,35 @@ export const createAdminSchema = z.object({
     lastname: z
         .string({message:"Lastname must be a string."})
         .trim()
-        .min(1, "Lastname is required.")
-        .max(100, "Lastname must not exceed 100 characters.")
+        .min(1, "Last name is required.")
+        .max(100, "Last name must not exceed 100 characters.")
         .regex(
         /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Lastname can only contain letters, spaces, apostrophes or hyphens."
+        "Last name can only contain letters, spaces, apostrophes or hyphens."
         ), 
 })
 
 export const roleSchema = z.object({
     role: z.enum(["admin", "superadmin", "selector"]),
 });
+
+export const createUserSnakeSchema = z.object({
+    name: z
+      .string({ message: "Name must be a string." })
+      .trim()
+      .min(1, "First name is required.")
+      .max(100, "First name must not exceed 100 characters.")
+      .regex(
+        /^[\p{L}\s'-]+$/u,
+        "Firstame can only contain letters, spaces, apostrophes or hyphens."
+      ),
+    last_name: z
+      .string({ message: "Last name must be a string." })
+      .trim()
+      .min(1, "Last name is required.")
+      .max(100, "Last name must not exceed 100 characters.")
+      .regex(
+        /^[\p{L}\s'-]+$/u,
+        "Last name can only contain letters, spaces, apostrophes or hyphens."
+      ),
+    });
