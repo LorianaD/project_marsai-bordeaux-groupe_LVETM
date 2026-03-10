@@ -8,7 +8,7 @@ import { deleteUserController } from "../controllers/users/deleteUser.controller
 //import du middleware zod
 import { validate } from "../middlewares/zod/zodValidator.js";
 //import des schémas zod
-import { emailSchema, passwordSchema, createAdminSchema, roleSchema } from "../zodSchema/zodIndex.js";
+import { emailSchema, passwordSchema, createUserSchema, roleSchema } from "../zodSchema/zodIndex.js";
 
 const router = Router();
 
@@ -20,9 +20,9 @@ router.get('/', verifyToken, isAdmin, getAllUsersController);
 /* ================================
    Routes POST (register par rôle)
 =============================== */
-router.post('/superAdmin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createAdminSchema]),createRegisterController({ fixedRole:'superadmin'}));
-router.post('/admin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createAdminSchema]),createRegisterController({ fixedRole:'admin'}));
-router.post('/selector/register', verifyToken, isAdmin, validate([emailSchema, passwordSchema, createAdminSchema]),createRegisterController({ fixedRole:'selector'}));
+router.post('/superAdmin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'superadmin'}));
+router.post('/admin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'admin'}));
+router.post('/selector/register', verifyToken, isAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'selector'}));
 router.post('/login', validate([emailSchema, passwordSchema]), loginController);
 
 /* ==================

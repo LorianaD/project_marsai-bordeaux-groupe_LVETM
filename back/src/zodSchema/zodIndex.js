@@ -5,8 +5,10 @@
 //Validation des données user.
 export { emailSchema } from "./userValidationSchema.js";
 export { passwordSchema } from "./userValidationSchema.js";
-export { createAdminSchema } from "./userValidationSchema.js";
+export { createUserSchema } from "./userValidationSchema.js";
+export { createUserSnakeSchema } from "./userValidationSchema.js";
 export { roleSchema } from "./userValidationSchema.js";
+
 //Validation des ajouts dans admin_video.
 export { createAdminVideoSchema } from "./adminVideoValidationSchema.js";
 
@@ -35,3 +37,6 @@ export { createMemoSelectorSchema } from "./memoSelectorValidationSchema.js";
 
 //Validation des données des liens social media.
 export { createSocialMediaSchema} from "./socialMediaValidationSchema.js";
+
+//validation des données du formulaire de contact.
+export { contactSchema } from "./contactValidationSchema.js";
