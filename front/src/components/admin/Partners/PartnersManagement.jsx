@@ -50,30 +50,30 @@ function PartnersManagement() {
     }
 
     return(
-        <section>
-            <CmsFormHeader title="Gestion de nos partnaires"/>
+        <section className="w-full">
+            <h3 className="text-[42px] font-extrabold tracking-tight">Gestion de nos partnaires</h3>
             <div className="flex w-full py-10">
-                <table className="w-full table-fixed border-separate border-spacing-y-4">
+                <table className="w-full table-fixed border-separate border-spacing-y-2">
                     <thead>
-                        <tr className="text-left">
-                            <th scope="col"  className="w-[22%] px-4 pb-2">
+                        <tr className="text-left h-20 rounded-xl bg-[#52A3FF]/20 dark:bg-[#52A3FF]/20 border border-black/10 dark:border-white/10">
+                            <th scope="col"  className="w-[25%] px-4 py-2">
                                 Logo
                             </th>
-                            <th scope="col" className="w-[18%] px-4 pb-2">
+                            <th scope="col" className="w-[25%] px-4 py-2">
                                 Nom
                             </th>
-                            <th scope="col" className="w-[40%] px-4 pb-2">
+                            <th scope="col" className="w-[25%] px-4 py-2">
                                 Lien
                             </th>
-                            <th scope="col" className="w-[20%] px-4 pb-2">
+                            <th scope="col" className="w-[25%] px-4 py-2">
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {partners.length > 0 && partners.map((p) => (
-                            <tr key={ p.id ?? p.name } className="align-middle rounded-xl bg-white/5">
-                                <td className="px-4 py-3">
+                            <tr key={ p.id ?? p.name } className="align-middle rounded-xl bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10">
+                                <td className="px-8 py-3">
                                     <img src={`${API_URL}${p.img}`} alt={p.name} className="h-16 w-auto object-contain" />
                                 </td>
                                 <td className="px-4 py-3 font-medium">
