@@ -23,7 +23,7 @@ async function updatePartnerApi(id, { name, url, file }) {
     
 
     if (!res.ok) {
-        throw new Error(data?.message ?? "Erreur update partner");
+        throw new Error(data?.message ?? "Error update partner");
     }
 
     return data;

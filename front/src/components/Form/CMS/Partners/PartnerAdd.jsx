@@ -6,7 +6,7 @@ import { useForm } from "../../../../hooks/useForm.js";
 import { useState } from "react";
 import InsertPartnerApi from "../../../../services/Partner/InsertPartnerApi.js";
 
-function PartnerAdd() {
+function PartnerAdd({ onClose }) {
 
     const { values, handleChange } = useForm({
         name:"",
@@ -49,7 +49,7 @@ function PartnerAdd() {
 
     return(
         <div className="">
-            <button className="flex justify-end w-full p-[20px]">
+            <button type="button" onClick={onClose} className="flex justify-end w-full p-[20px]">
                 <img src={iconClose} alt="" />
             </button>
 

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import GetPartnerApi from "../../../services/Partner/GetPartnerApi";
 import PartnerUpdate from "../../Form/CMS/Partners/PartnerUpdate";
 import CmsFormHeader from "../../Form/CMS/Titles/CmsFormHeader";
+import deletePartnerApi from "../../../services/Partner/DeletePartnerApi";
+import BtnAdd from "../../Buttons/BtnAdd";
+import PartnerAdd from "../../Form/CMS/Partners/PartnerAdd";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,6 +14,13 @@ function PartnersManagement() {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("");
     const [selectedPartner, setSelectedPartner] = useState(null);
+    const [modalType, setModalType] = useState(null);
+
+    function handleCreate() {
+        // console.log("creation ok");
+        setSelectedPartner(null);
+        setModalType("add");
+    }
 
     async function GetAllPartner() {
         // console.log("Fonction GetAllPartner OK");
@@ -40,18 +50,43 @@ function PartnersManagement() {
     }, []);
 
     function handleEdit(partner) {
+
         console.log("Modifier cliqué :", partner);
         
         setSelectedPartner(partner);
+
+        setModalType("edit");
+
     }
 
-    function handleDelete(id) {
-        console.log("Supprimer le partenaire:", id);
+    async function handleDelete(id) {
+        const confirmDelete = window.confirm("Supprimer ce partenaire ?");
+
+        if (!confirmDelete) return;
+
+        try {
+
+            await deletePartnerApi(id);
+
+            setPartners(prev => prev.filter(p => p.id !== id));
+
+        } catch (error) {
+            console.error(error);
+        }
+        
+    }
+
+    function handleCloseModal() {
+        setSelectedPartner(null);
+        setModalType(type);
     }
 
     return(
         <section className="w-full">
             <h3 className="text-[42px] font-extrabold tracking-tight">Gestion de nos partnaires</h3>
+            <div className="pt-5 w-full flex justify-end">
+                <BtnAdd onClick={handleCreate}></BtnAdd>
+            </div>
             <div className="flex w-full py-10">
                 <table className="w-full table-fixed border-separate border-spacing-y-2">
                     <thead>
@@ -99,13 +134,21 @@ function PartnersManagement() {
                     </tbody>
                 </table>
 
-                        {selectedPartner && (
-                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/70 p-4">
-                                <div className="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-black border border-white/10 max-h-[90vh] overflow-y-auto">
-                                    <PartnerUpdate partner={selectedPartner} onClose={() => setSelectedPartner(null)} onUpdated={GetAllPartner} />
-                                </div>
-                            </div>
-                        )}
+                {modalType === "edit" && selectedPartner && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/70 p-4">
+                        <div className="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-black border border-white/10 max-h-[90vh] overflow-y-auto">
+                            <PartnerUpdate partner={selectedPartner} onClose={handleCloseModal} onUpdated={GetAllPartner} />
+                        </div>
+                    </div>
+                )}
+
+                {modalType === "add" && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/70 p-4">
+                        <div className="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-black border border-white/10 max-h-[90vh] overflow-y-auto">
+                            <PartnerAdd onClose={handleCloseModal} onAdded={GetAllPartner}/>
+                        </div>
+                    </div>
+                )}
 
             </div>
         </section>
