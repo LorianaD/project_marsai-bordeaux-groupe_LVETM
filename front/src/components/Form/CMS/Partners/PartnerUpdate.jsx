@@ -5,12 +5,8 @@ import iconClose from "../../../../assets/imgs/icones/x.svg"
 import { useForm } from "../../../../hooks/useForm.js";
 import { useEffect, useState } from "react";
 import updatePartnerApi from "../../../../services/Partner/UpdatePartnerApi.js";
-import { useParams } from "react-router";
-import GetOnePartnerApi from "../../../../services/Partner/GetOnePartnerApi.js";
 
-function PartnerUpdate() {
-
-    const { id } = useParams();
+function PartnerUpdate({ partner, onClose, onUpdated }) {
 
     const { values, handleChange, setValues } = useForm({
         name: "",
@@ -18,50 +14,20 @@ function PartnerUpdate() {
         url: ""
     })
 
-    const [partner, setPartner] = useState(null);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const [loadingPartner, setLoadingPartner] = useState(true);
-
-    //---- Je recupére les informations du partenaire depuis la BDD ----//
-
-    async function loadPartner() {
-        console.log("function loadPartner in the UpdatePartner OK");
-
-        try {
-
-            setLoadingPartner(true);
-
-            const res = await GetOnePartnerApi(id);
-            // console.log(res);
-            
-            const p = res?.data;
-            // console.log(p);
-            
-            setPartner(p);
-
-            // Pré-remplir le formulaire
-            setValues({
-                name: p?.name ?? "",
-                url: p?.url ?? "",
-                file: null,
-            });
-
-        } catch (error) {
-
-            console.error("Impossible de charger le partenaire");
-            setMessage("Impossible de charger le partenaire");
-
-        } finally {
-            setLoadingPartner(false);
-        }
-    }
 
     useEffect(() => {
 
-        loadPartner();
+        if (partner) {
+            setValues({
+                name: partner.name ?? "",
+                url: partner.url ?? "",
+                file: null,
+            })
+        }
 
-    }, [id, setValues]);
+    }, [partner, setValues]);
 
     //---- Je récupére les données depuis le formulaire et je l'envoi à la BDD (avec l'API qui envoi au BACK, ect.) ----//
 
@@ -82,13 +48,14 @@ function PartnerUpdate() {
                 file: values.file,
             };
 
-            const res = await updatePartnerApi(id, payload);
+            const res = await updatePartnerApi(partner.id, payload);
             // console.log(res);
-
-            await loadPartner();
 
             setMessage("Mis à jour !")
             
+            if (onUpdated) {
+                onUpdated();
+            }
             
         } catch (error) {
 
@@ -103,21 +70,17 @@ function PartnerUpdate() {
 
     }
 
-    if (loadingPartner) {
-        return <p className="p-6">Chargement</p>;
-    }
-
     if (!partner) {
         return <p>Partenaire introuvable</p>;
     }
 
     return(
         <div className="">
-            <button className="flex justify-end w-full p-[20px]">
+            <button type="button" onClick={onClose} className="flex justify-end w-full p-5">
                 <img src={iconClose} alt="" />
             </button>
 
-            <form onSubmit={ handleUpdate } className="p-[30px] flex flex-col intems-start gap-[20px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleUpdate } className="p-[30px] flex flex-col items-start gap-5 self-stretch font-[Outfit]">
 
                 <div className="flex p-[10px] items-start gap-[10px] self-stretch">
                     <img src={ iconPaintDark } alt="" className="hidden dark:block"/>

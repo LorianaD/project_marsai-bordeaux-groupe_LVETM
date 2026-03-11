@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import useCmsContent from "../../hooks/useCmsContent";
-import { isSectionVisible, isVisible } from "../../utils/isVisible";
+import { isVisible } from "../../utils/isVisible";
 
 function SectionHero() {
-        // Gére la traduction
+    // Gére la traduction
     const { t, i18n } = useTranslation("gallery");
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
