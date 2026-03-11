@@ -153,9 +153,9 @@ export default function DistributionJury() {
         <main className="min-w-0 w-full">
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="text-[42px] font-extrabold tracking-tight">
+              <h3 className="text-[42px] font-extrabold tracking-tight">
                 {t("admin.title")}
-              </h1>
+              </h3>
               <p className="mt-2 text-sm text-black/60 dark:text-white/60">
                 {t("admin.subtitle")}
               </p>
@@ -163,7 +163,7 @@ export default function DistributionJury() {
 
             <button
               onClick={openCreate}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-pink-500 px-6 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95 active:opacity-90"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-linear-to-r from-blue-600 to-pink-500 px-6 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95 active:opacity-90"
             >
               {t("admin.addButton")}
             </button>

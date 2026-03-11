@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import GetPartnerApi from "../../services/Partner/GetPartnetApi";
+import GetPartnerApi from "../../services/Partner/GetPartnerApi";
 import useCmsContent from "../../hooks/useCmsContent";
 import { isSectionVisible, isVisible } from "../../utils/isVisible";
 const API_URL = import.meta.env.VITE_API_URL;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import GetPartnerApi from "../../services/Partner/GetPartnetApi";
+import GetPartnerApi from "../../services/Partner/GetPartnerApi";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function PartnersGallery() {
@@ -9,16 +9,16 @@ function PartnersGallery() {
     const [message, setMessage] = useState("");
 
     async function GetAllPartner() {
-        console.log("Fonction GetAllPartner OK");
+        // console.log("Fonction GetAllPartner OK");
         
         try {
-            console.log("try in the function GetAllPartner OK");
+            // console.log("try in the function GetAllPartner OK");
             
             setLoading(true);
             setMessage("");
 
             const res = await GetPartnerApi();
-            console.log("API response: ", res);
+            // console.log("API response: ", res);
             
             setPartners(Array.isArray(res.data) ? res.data : []);
 
@@ -34,11 +34,11 @@ function PartnersGallery() {
     }, []);
 
     return(
-        <section className="flex flex-wrap justify-center gap-[30px] py-[50px] md:p-[100px]">
+        <section className="flex flex-wrap justify-center gap-8 py-12 md:p-25">
             {partners.length > 0 && partners.map((p) => (
-                <div key={ p.id ?? p.name } className="flex items-center justify-center self-stretch justify-self-stretch row-span-1 col-span-1 rounded-[24px] border border-[rgba(128,128,128,0.05)] bg-[rgba(128,128,128,0.05)] dark:border-[rgba(255,255,255,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
+                <div key={ p.id ?? p.name } className="flex items-center justify-center self-stretch justify-self-stretch row-span-1 col-span-1 rounded-3xl border border-[rgba(128,128,128,0.05)] bg-[rgba(128,128,128,0.05)] dark:border-[rgba(255,255,255,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
                     <a href={p.url}>
-                        <div className="w-[180px] h-[175px] md:w-[200px] md:h-[200px] flex items-center justify-center p-[10px]">
+                        <div className="w-45 h-44 md:w-50 md:h-50 flex items-center justify-center p-2">
                             <img src={`${API_URL}${p.img}`} alt={p.name} />
                         </div>
                     </a>

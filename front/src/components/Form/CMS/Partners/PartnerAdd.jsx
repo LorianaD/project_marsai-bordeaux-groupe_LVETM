@@ -53,7 +53,7 @@ function PartnerAdd() {
                 <img src={iconClose} alt="" />
             </button>
 
-            <form onSubmit={ handleSubmit } className="p-[30px] flex flex-col intems-start gap-[20px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[30px] flex flex-col items-start gap-[20px] self-stretch font-[Outfit]">
 
                 <div className="flex p-[10px] items-start gap-[10px] self-stretch">
                     <img src={ iconPaintDark } alt="" className="hidden dark:block"/>

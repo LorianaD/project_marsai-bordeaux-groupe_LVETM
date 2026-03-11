@@ -1,25 +1,29 @@
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 import { useForm } from "../../../../hooks/useForm";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
-import saveCmsSection from "../../../../utils/saveCmsSection";
-import CmsFormHeader from "../Titles/CmsFormHeader";
 import useCmsContent from "../../../../hooks/useCmsContent";
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import CmsFormHeader from "../Titles/CmsFormHeader";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
-import CmsTitleBlock from "../Titles/CmsTitleBlock";
 import CmsBlock from "../Titles/CmsBlock";
-import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock";
+import CmsTitleBlock from "../Titles/CmsTitleBlock";
 import CmsFieldsBlock from "../Titles/CmsFieldsBlock";
-import CmsInput from "../Fields/CmsInput";
 import CmsHideToggle from "../Fields/CmsHideToggle";
+import CmsInput from "../Fields/CmsInput";
+import CmsTextarea from "../Fields/CmsTextarea";
+import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock";
+import CmsFieldsRow from "../Titles/CmsFieldsRow";
+import CmsInputDate from "../Fields/CmsInputDate";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
-function GallerySectionHeroForm({ forcedLocale }) {
+function GallerySectionCountdownForm({ forcedLocale }) {
+
     const { t, i18n } = useTranslation("gallery");
     const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
 
     // Page et section
     const page = "gallery";
-    const section = "hero";
+    const section = "countdown";
     // console.log("Page:", page);
     // console.log("Section:", section);
 
@@ -29,7 +33,12 @@ function GallerySectionHeroForm({ forcedLocale }) {
         "section_visibility",
         "title_main",
         "title_accent",
-        "description"
+        "description",
+        "badge",
+        "countdown",
+        "target",
+        "start_date",
+        "end_date"
 
     ]
     // console.log("Champs:", fields);
@@ -47,7 +56,22 @@ function GallerySectionHeroForm({ forcedLocale }) {
         title_accent_is_active: 1,
 
         description: "",
-        description_is_active: 1
+        description_is_active: 1,
+
+        badge: "",
+        badge_is_active: 1,
+
+        countdown: "",
+        countdown_is_active: 1,
+
+        target: "",
+        target_is_active: 1,
+
+        start_date: "",
+        start_date_is_active: 1,
+
+        end_date: "",
+        end_date_is_active: 1
 
     })
     const [message, setMessage] = useState("");
@@ -114,11 +138,11 @@ function GallerySectionHeroForm({ forcedLocale }) {
     return(
         <section>
             <form onSubmit={ handleSubmit } className="p-12.5 flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
-
                 {/***** Titre du formulaire : Gestion de la Section Palmares *****/}
-                <CmsFormHeader title="Gestion de la Section Hero" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
+                <CmsFormHeader title="Gestion du compte à rebour" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
 
                 <div className="flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
+                    
                     <CmsBlock>
                         <CmsTitleBlock title="Gestion du titre"/>
                         <CmsFieldsBlock>
@@ -130,17 +154,46 @@ function GallerySectionHeroForm({ forcedLocale }) {
                             />
                         </CmsFieldsBlock>
                     </CmsBlock>
-                </div>
 
-                <div className="flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
                     <CmsBlock>
-                        <CmsTitleBlock title="Gestion de la description"/>
+                        <CmsTitleBlock title="Gestion de la déscription"/>
                         <CmsFieldsBlock>
-                            <CmsInput name="description" label="Description" value={values.description} onChange={handleChange} placeholder={t("description")} rightSlot={
+                            <CmsTextarea name="description" label="Déscription" value={values.description} onChange={handleChange} placeholder={t("description")} rightSlot={
                                 <CmsHideToggle name="description" value={values.description_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
                         </CmsFieldsBlock>
                     </CmsBlock>
+
+                    <CmsBlock>
+                        <CmsTitleBlock title="Gestion du badge"/>
+                        <CmsFieldsBlock>
+                            <CmsInput name="badge" label="Badge" value={values.badge} onChange={handleChange} placeholder={t("badge")} rightSlot={
+                                <CmsHideToggle name="badge" value={values.badge_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                            />
+                        </CmsFieldsBlock>
+                    </CmsBlock>
+
+                    <CmsBlock>
+                        
+                        <CmsTitleBlock title="Gestion du compte à rebour" toggleName="countdown" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
+                        
+                        <CmsBlock>
+                            <CmsSubtitleBlock title="Gestion de la date"/>
+                            <CmsFieldsRow>
+                                <CmsInputDate name="start_date" label="Date de démarage" value={values.start_date} onChange={handleChange} placeholder={t("Date de début")} />
+                                <CmsInputDate name="end_date" label="Date de fin" value={values.end_date} onChange={handleChange} placeholder={t("Date de fin")} />
+                            </CmsFieldsRow>
+                        </CmsBlock>
+
+                        <CmsBlock>
+                            <CmsSubtitleBlock title="Gestion de la date cible" toggleName="target" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
+                            <CmsFieldsBlock>
+                                <CmsInput name="target" label="Titre" value={values.target} onChange={handleChange} placeholder={t("target")} />
+                            </CmsFieldsBlock>
+                        </CmsBlock>
+                        
+                    </CmsBlock>
+
                 </div>
 
                 {/**** Footer du formulaire : bouton de submission ****/}
@@ -149,10 +202,9 @@ function GallerySectionHeroForm({ forcedLocale }) {
                         Mettre à jour
                     </BtnSubmitForm>
                 </div>
-
             </form>
         </section>
     )
 }
 
-export default GallerySectionHeroForm
+export default GallerySectionCountdownForm

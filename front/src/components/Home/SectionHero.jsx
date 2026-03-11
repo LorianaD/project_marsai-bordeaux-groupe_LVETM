@@ -21,17 +21,8 @@ function SectionHero() {
     const ctaParticipate_signeSrc = resolveCmsAsset(content?.[page]?.[section]?.ctaParticipate_signe);
 
     const ctaLearnMore_signeSrc = resolveCmsAsset(content?.[page]?.[section]?.ctaLearnMore_signe);
-
-    // console.log("hero cms:", content?.hero);
-    // console.log("visibility:", content?.hero?.section_visibility_is_active);
     
     if (loading) return null;
-
-    console.log("CMS content full:", content);
-    console.log("HOME HERO:", content?.home?.hero);
-    console.log("HOME HERO title_main:", content?.home?.hero?.title_main);
-    console.log("HOME HERO title_accent:", content?.home?.hero?.title_accent);
-    console.log("GALLERY HERO:", content?.gallery?.hero);
     
     return(
         <>

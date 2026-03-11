@@ -139,7 +139,7 @@ function Footer() {
 
                 <ul className="mt-8 space-y-6 text-sm">
                   <li>
-                    <Link to={content?.[page]?.[section]?.links_patners_href}>
+                    <Link to={content?.[page]?.[section]?.links_partners_href}>
                       {content?.[page]?.[section]?.links_patners_label || t("links.partners")}
                     </Link>
                   </li>

@@ -7,10 +7,10 @@ function CmsHideToggle({ name, value = 1, values, onChange, page, section, local
     const isActive = Number(value) === 1;
 
     const toggle = async () => {
-        console.log("Fonction toogle OK");
+        // console.log("Fonction toogle OK");
 
         const next = isActive ? 0 : 1;
-        console.log("le isActive est:", next);
+        // console.log("le isActive est:", next);
         
         onChange({
             target: {
