@@ -22,9 +22,6 @@ router.get('/', verifyToken, isAdmin, getAllUsersController);
 /* ================================
    Routes POST (register par rôle)
 =============================== */
-router.post('/superAdmin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createAdminSchema]),createRegisterController({ fixedRole:'superadmin'}));
-router.post('/admin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createAdminSchema]),createRegisterController({ fixedRole:'admin'}));
-router.post('/selector/register', verifyToken, isAdmin, validate([emailSchema, passwordSchema, createAdminSchema]),createRegisterController({ fixedRole:'selector'}));
 router.post('/invite', verifyToken, isSuperAdmin, inviteController);
 router.post('/register-with-invite', registerWithInviteController);
 router.post('/superAdmin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'superadmin'}));
