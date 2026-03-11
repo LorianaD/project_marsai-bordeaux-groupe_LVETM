@@ -1,0 +1,11 @@
+# FRONT
+front/src/App.jsx
+front/src/components/Home/**
+front/src/components/Form/CMS/**
+front/src/components/Buttons/**
+
+# BACK
+back/src/app.js
+back/src/server.js
+back/src/controllers/**
+back/src/services/**
