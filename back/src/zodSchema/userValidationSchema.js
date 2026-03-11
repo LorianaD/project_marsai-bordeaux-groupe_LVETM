@@ -84,3 +84,24 @@ export const createUserSnakeSchema = z.object({
         "Last name can only contain letters, spaces, apostrophes or hyphens."
       ),
     });
+
+    export const createUserJurySchema = z.object({
+        first_name: z
+          .string({ message: "Name must be a string." })
+          .trim()
+          .min(1, "First name is required.")
+          .max(100, "First name must not exceed 100 characters.")
+          .regex(
+            /^[\p{L}\s'-]+$/u,
+            "Firstame can only contain letters, spaces, apostrophes or hyphens."
+          ),
+        name: z
+          .string({ message: "Last name must be a string." })
+          .trim()
+          .min(1, "Last name is required.")
+          .max(100, "Last name must not exceed 100 characters.")
+          .regex(
+            /^[\p{L}\s'-]+$/u,
+            "Last name can only contain letters, spaces, apostrophes or hyphens."
+          ),
+        });

@@ -3,11 +3,7 @@
  *********************************************/
 
 //Validation des données user.
-export { emailSchema } from "./userValidationSchema.js";
-export { passwordSchema } from "./userValidationSchema.js";
-export { createUserSchema } from "./userValidationSchema.js";
-export { createUserSnakeSchema } from "./userValidationSchema.js";
-export { roleSchema } from "./userValidationSchema.js";
+export { emailSchema, createUserSchema, createUserSnakeSchema, createUserJurySchema, roleSchema, passwordSchema} from "./userValidationSchema.js";
 
 //Validation des ajouts dans admin_video.
 export { createAdminVideoSchema } from "./adminVideoValidationSchema.js";
@@ -43,3 +39,6 @@ export { contactSchema } from "./contactValidationSchema.js";
 
 //validation des données de la newsletter.
 export { consentSchema } from "./consentValidationSchema.js";
+
+//validation des données des images.
+export { imageSchema, fileImageSchema, optionalFileImageSchema } from "./imageValidationSchema.js";
