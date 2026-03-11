@@ -1,62 +1,58 @@
-import { z } from "zod";
-
 /********************************************* 
  * Schéma pour l'ajout d'un Juré
  *********************************************/
+import { z } from "zod";
 
-/********************************************
- * Formats et taille d'image acceptés
- *********************************************/
 //contrainte de format et taille pour les vidéos et photos
 const pictureFormats = [".jpg", ".jpeg", ".webp", ".png"];
 
 export const createJurySchema = z.object({
-
-    firstname: z
-        .string({message:"Firstname must be a string."})
+    //intitulé de rôle (requis)
+    role_label: z
+        .string({ message: "Role label must be a string." })
         .trim()
-        .min(1, "Firstname is required.")
-        .max(100, "Firstname must not exceed 100 characters.")
-        .regex(
-        /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Firstname can only contain letters, spaces, apostrophes or hyphens."
-        ),
+        .min(1, "Role label is required.")
+        .max(255, "Role label must not exceed 255 characters."),
 
-    lastname: z
-        .string({message:"Lastname must be a string."})
+    //profession (optionnelle)
+    profession: z
+        .string({ message: "Profession must be a string." })
         .trim()
-        .min(1, "Lastname is required.")
-        .max(100, "Lastname must not exceed 100 characters.")
-        .regex(
-        /^[\p{L}\s'-]+$/u, // Lettres Unicode, espaces, apostrophes et tirets
-        "Lastname can only contain letters, spaces, apostrophes or hyphens."
-        ),
+        .max(100, "Profession must not exceed 100 characters.")
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
 
-    img: z
-        .string({message:"Img must be a string."})
-        .trim()
-        .min(1, "Img is required.")
-        .max(250, "Img must not exceed 250 characters.")
-        .refine(
-            (value) => {
-                // Récuperation et vérification de la validité de l'extension.
-                const extension = value.substring(value.lastIndexOf(".")).toLowerCase();
-                return pictureFormats.includes(extension);
-            },
-            `Unsupported img format. Accepted formats: ${pictureFormats.join(", ")}`
-        ),
-    
+    //bio (optionnelle)
     bio: z
         .string({message:"Bio resume must be a string."})
         .trim()
         .max(500, "Bio resume must not exceed 500 characters.")
-        .or(z.literal(""))
-        .optional(),
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
 
-    profession: z
-        .string({message:"Profession resume must be a string."})
+    //URL de filmographie (optionnelle, mais URL valide si présente)
+    filmography_url: z
+        .string({ message: "Filmography URL must be a string." })
         .trim()
-        .max(100, "Profession resume must not exceed 100 characters.")
-        .or(z.literal(""))
+        .url("Filmography URL must be a valid URL.")
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
+
+    // Ordre d’affichage (entier >= 1, optionnel)
+    sort_order: z
+        .string({ message: "sort_order must be a string." })
+        .trim()
+        //regex pour vérifier que le sort_order est un nombre
+        .regex(/^\d+$/, {
+            message: "sort_order must contain only digits.",
+        })
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
+
+    // Président de jury (0 ou 1, optionnel)
+    is_president: z
+        .enum(["0", "1"], {
+          message: "is_president must be 0 or 1.",
+        })
         .optional(),
-})
+});
