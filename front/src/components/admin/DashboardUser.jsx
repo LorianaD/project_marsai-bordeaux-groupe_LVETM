@@ -6,6 +6,7 @@ import {
 } from "../../services/Admin/Users.api.js";
 import { decodeToken } from "../../utils/decodeToken.js";
 import RegisterForm from "./RegisterForm.jsx";
+import InviteForm from "./InviteForm.jsx";
 import AdminSelect from "./AdminSelect.jsx";
 import ConfirmDialog from "../ConfirmDialog.jsx";
 
@@ -30,6 +31,7 @@ function DashboardUser() {
   const [busyId, setBusyId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showInviteForm, setShowInviteForm] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [roleDialogOpen, setRoleDialogOpen] = useState(false);
@@ -215,6 +217,48 @@ function DashboardUser() {
                   setTimeout(() => setSuccess(""), 3000);
                 }}
                 onCancel={() => setShowAddForm(false)}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Volet invitation */}
+      <div className={`${cardClass} mb-6`}>
+        <button
+          type="button"
+          onClick={() => setShowInviteForm((prev) => !prev)}
+          className="flex w-full cursor-pointer items-center justify-between px-6 py-4 text-left transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+        >
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#E8F4FF] ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">
+              ✉️
+            </span>
+            <span className="text-sm font-semibold text-black/90 dark:text-white/90">
+              Inviter un admin / sélectionneur
+            </span>
+          </div>
+          <span
+            className={`inline-block text-xs text-black/60 transition-transform duration-300 ease-in-out dark:text-white/60 ${showInviteForm ? "rotate-180" : ""}`}
+            aria-hidden
+          >
+            ▼
+          </span>
+        </button>
+
+        <div
+          className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+          style={{ gridTemplateRows: showInviteForm ? "1fr" : "0fr" }}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="border-t border-black/10 px-6 py-5 dark:border-white/10">
+              <InviteForm
+                onSuccess={() => {
+                  setShowInviteForm(false);
+                  setSuccess("Invitation envoyée avec succès.");
+                  setTimeout(() => setSuccess(""), 3000);
+                }}
+                onCancel={() => setShowInviteForm(false)}
               />
             </div>
           </div>
