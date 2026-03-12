@@ -1,5 +1,5 @@
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
+import iconPaintDark from "../../../../assets/imgs/icones/IconPaintDark.svg";
+import iconPaint from "../../../../assets/imgs/icones/IconPaint.svg";
 import iconImg from "../../../../assets/imgs/icones/iconImg.svg";
 import iconClose from "../../../../assets/imgs/icones/x.svg"
 import { useForm } from "../../../../hooks/useForm.js";
