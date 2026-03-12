@@ -1,4 +1,9 @@
 {
+    "hero": {
+        "title_main": "FAQ",
+        "title_accent": "",
+        "description": "Description"
+    },
     "form":{
         "button":{
             "add": "Add",

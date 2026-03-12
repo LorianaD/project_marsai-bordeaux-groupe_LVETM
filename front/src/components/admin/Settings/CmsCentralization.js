@@ -26,7 +26,7 @@ import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
 import PartnersSectionHeroForm from "../../Form/CMS/Partners/PartnerSectionHeroForm";
 
 // Import formulaire CMS ContactPage
-import ContactSectionHeroForm from "../../Form/CMS/Contact/PartnerSectionHeroForm";
+import ContactSectionHeroForm from "../../Form/CMS/Contact/ContactSectionHeroForm.jsx";
 
 // Import formulaire CMS FaqPage
 import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";

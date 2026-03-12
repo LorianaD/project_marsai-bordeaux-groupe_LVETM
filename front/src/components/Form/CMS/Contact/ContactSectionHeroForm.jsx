@@ -12,10 +12,11 @@ import CmsInput from "../Fields/CmsInput";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 
-function FaqSectionHeroForm({ forcedLocale }) {
+
+function ContactSectionHeroForm({ forcedLocale }) {
 
     // Page et section
-    const page = "faq";
+    const page = "contact";
     const section = "hero";
     // console.log("Page:", page, "Section:", section);    
 
@@ -152,4 +153,4 @@ function FaqSectionHeroForm({ forcedLocale }) {
     )
 }
 
-export default FaqSectionHeroForm
+export default ContactSectionHeroForm

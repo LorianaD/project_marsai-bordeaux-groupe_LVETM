@@ -5,10 +5,18 @@
 import { useEffect, useState } from "react";
 import getAllFaq from "../services/Faq/getFaqApi.js";
 import { useTranslation } from "react-i18next";
+import SectionHero from "../components/FAQ/SectionHero.jsx";
+import { isSectionVisible } from "../utils/isVisible.js";
+import useCmsContent from "../hooks/useCmsContent.js";
 
 function Faq() {
+
+    // Page et section
+    const page = "faq";
+    const hero = "hero";
+
     //paramétre i18n
-    const { t, i18n } = useTranslation("faq");
+    const { t, i18n } = useTranslation(page);
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
     //vérifie si la langue active d'i18n est "fr".
@@ -18,7 +26,11 @@ function Faq() {
     const [faqs, setFaqs] = useState([]);
     const [error, setError] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+
+    const { content, message } = useCmsContent(page, locale);
+    
+
 
     //fetch des faqs (***********************commun a public et admin******************************)
     useEffect(() => {
@@ -41,13 +53,15 @@ function Faq() {
         setOpenFaq(openFaq === id ? null : id); //ajoute l'id ou la retire si c'est la meme id
     };
 
+    if (loading) return null;
+
     return(
         <main>
             {/* TITRE DE LA PAGE */}
 			<div className="px-4 md:px-0">
-				<h1 className="font-bold m-10 text-[34px] bg-[linear-gradient(180deg,#51A2FF_0%,#AD46FF_50%,#FF2B7F_100%)] bg-clip-text [-webkit-background-clip:text] text-transparent text-center">
-                    FAQ
-                </h1>
+				{isSectionVisible(content, page, hero) && (
+                    <SectionHero/>
+                )}
                 {/* Affichage des erreurs si il y en a */}
 				{error && (<p className="text-red-500 text-center">{t(error)}</p>)}
 
@@ -62,7 +76,7 @@ function Faq() {
 						<p className="text-center">No FAQ available</p>
 					) : (
 						faqs.map((faq) => (
-							<article key={faq.id} className="m-5 w-full max-w-[900px] mx-auto rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[40px] p-4 md:p-[40px]">
+							<article key={faq.id} className="m-5 w-full max-w-225 mx-auto rounded-4xl border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-10 p-4 md:p-10">
                                 <button onClick={() => toggleFaq(faq.id)}   className="flex w-full justify-between items-center text-left font-semibold text-lg hover:text-blue-500 transition-colors">                                    
                                     <span>{isFrench ? faq.question_fr : faq.question_en}</span>
                                     {/* Flèche d’ouverture de la réponse  */}                                 
