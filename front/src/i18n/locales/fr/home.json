@@ -1,5 +1,6 @@
 {
    "hero": {
+      "medias":"../../public/imgs/backgroundSections/HomeSectionHero.mp4",
       "title_main": "MARS",
       "title_accent":"AI",
       "protocol": "le protocole temporel 2026",

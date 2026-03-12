@@ -17,13 +17,75 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Structure main */
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* html, body {
+  height: 100%;
+  overflow-y: auto;
+  touch-action: pan-y;
+} */
+
+/* body {
+  -webkit-user-select: none;
+  user-select: none;
+} */
+
+/* =============================
+   CHROME / SAFARI AUTOFILL FIX
+   (light + dark, très robuste)
+   ============================= */
+/* =============================
+   CHROME / SAFARI AUTOFILL FIX
+   (works even if .dark is on a div)
+   ============================= */
+
+/* LIGHT */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  -webkit-text-fill-color: #111827 !important;
+  caret-color: #111827 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset !important;
+  box-shadow: 0 0 0px 1000px #f5f5f5 inset !important;
+  transition: background-color 999999s ease-in-out 0s !important;
 }
+
+/* DARK (si un parent a .dark) */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill:active,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus,
+.dark select:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #111827 inset !important; /* neutral-900 */
+  box-shadow: 0 0 0px 1000px #111827 inset !important;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    background-color: #ffffff;
+    color: #242424;
+  }
+}
+
+/*****************************************************************************
+*************************** CSS Micka ****************************************
+****************************************************************************/
 
 /* Force le fond sombre sur les inputs auto-remplis */
 input:-webkit-autofill,
@@ -34,13 +96,6 @@ input:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    background-color: #ffffff;
-    color: #242424;
-  }
-}
-
 /*  Force italique dans CKEditor */
 .ck.ck-editor__main .ck-content em,
 .ck.ck-editor__main .ck-content i {
@@ -49,8 +104,12 @@ input:-webkit-autofill:focus {
 
 /* Dégradé animé bas → haut (texte hero) */
 @keyframes gradient-b-to-t {
-  0% { background-position: 50% 100%; }
-  100% { background-position: 50% 0%; }
+  0% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
 }
 
 .text-gradient-animate-b-to-t {

@@ -1,11 +1,7 @@
 // src/pages/Admin/Overview.jsx
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import AdminHero from "../../components/admin/AdminHero.jsx";
-import AdminLayoutSidebar from "../../components/admin/AdminLayoutSidebar.jsx";
-import AdminSidebarModal from "../../components/admin/AdminSidebarModal.jsx";
-import DashboardUser from "../../components/admin/DashboardUser.jsx";
-import { decodeToken } from "../../utils/decodeToken.js";
+import { Link } from "react-router-dom";
+import { getAuthHeaders } from "../../utils/authHeaders.js";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const TOP_FILMS_ENDPOINT = "/api/videos/admin/leaderboard";
@@ -85,10 +81,10 @@ function MetricCard({
             className={[
               "grid h-10 w-10 place-items-center rounded-2xl ring-1",
               iconBgClass ||
-                "bg-black/[0.03] ring-black/10 dark:bg-white/5 dark:ring-white/10",
+              "bg-black/[0.03] ring-black/10 dark:bg-white/5 dark:ring-white/10",
             ].join(" ")}
           >
-            {/* ✅ Ne plus masquer : fallback si l’icône ne charge pas */}
+            {/* Ne plus masquer : fallback si l’icône ne charge pas */}
             <img
               src={iconSrc}
               alt=""
@@ -200,22 +196,6 @@ export default function Overview() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
-  const [currentUser, setCurrentUser] = useState(null)
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const user = decodeToken();
-    if (!user) {
-      navigate("/admin/login");
-      return;
-    }
-    if (user.role === "selector") {
-      alert("Vous n'avez pas l'autorisation d'acceder a cette page.");
-      localStorage.removeItem("token");
-      navigate("/admin/login");
-    }
-    setCurrentUser(user);
-  }, []);
 
   async function loadAll() {
     try {
@@ -223,7 +203,7 @@ export default function Overview() {
       setErr("");
 
       const res = await fetch(`${API_BASE}${TOP_FILMS_ENDPOINT}`, {
-        headers: { Accept: "application/json" },
+        headers: getAuthHeaders({ Accept: "application/json" }),
       });
 
       const data = await res.json().catch(() => null);
@@ -317,19 +297,6 @@ export default function Overview() {
                 indicateurs de performance.
               </div>
             </div>
-
-
-
-
-          {/* gestion des roles users */}
-          {currentUser?.role === "superadmin" && (
-            <section
-              className="mt-6 overflow-hidden rounded-[22px] border border-black/10 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.06)]
-                  dark:border-white/10 dark:bg-[#0B0F1A]/70 dark:backdrop-blur-xl
-                  dark:shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
-              <DashboardUser />
-            </section>
-          )}
 
             {/* KPI row */}
             <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">

@@ -4,13 +4,13 @@
 import { z } from "zod";
 
 export const createFaqSchema = z.object({
-    rank: z
+    display_order: z
         .preprocess(
             value => Number(value),// transforme string -> number
             z // schéma qui valide la valeur transformée
-                .number({ message: "Stock is required." })
-                .int({ message: "Stock must be an integer." })
-                .nonnegative({ message: "Stock must be 0 or positive." })
+                .number({ message: "Display order is required." })
+                .int({ message: "Display order must be an integer." })
+                .nonnegative({ message: "Display order must be 0 or positive." })
         ),
         
     question_fr: z
@@ -36,4 +36,4 @@ export const createFaqSchema = z.object({
         .trim()
         .min(1, "Answer is required.")
         .max(500, "Answer must not exceed 500 characters."),
-})
+});

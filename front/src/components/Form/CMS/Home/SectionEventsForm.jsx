@@ -1,5 +1,5 @@
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
+import iconPaintDark from "../../../../assets/imgs/icones/IconPaintDark.svg";
+import iconPaint from "../../../../assets/imgs/icones/IconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import CmsTextarea from "../Fields/CmsTextarea";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 import useCmsContent from "../../../../hooks/useCmsContent";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
 function SectionEventsForm({ forcedLocale }) {
 
@@ -31,6 +32,9 @@ function SectionEventsForm({ forcedLocale }) {
 
     // champs des differents éléments dans la section
     const fields = [
+
+        "section_visibility",
+        
         "title_main",
         "title_main_color",
         "title_accent",
@@ -65,6 +69,10 @@ function SectionEventsForm({ forcedLocale }) {
     // console.log(fields);
 
     const { values, setValues, handleChange } = useForm({
+        
+        section_visibility:"",
+        section_visibility_is_active: 1,
+        
         title_main:"",
         title_main_color:"",
         title_main_is_active: 1,
@@ -107,14 +115,14 @@ function SectionEventsForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
     useEffect(() => {
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -126,7 +134,7 @@ function SectionEventsForm({ forcedLocale }) {
         setValues(built);
         setInitialValues(built);
         setHasHydrated(true);
-    }, [content, section, hasHydrated, setValues])
+    }, [content, page, section, hasHydrated, setValues])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -144,45 +152,7 @@ function SectionEventsForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = Number(values[`${key}_is_active`] ?? 1);
-
-                // IMAGE
-                if (val instanceof File) {
-                    await updateImageApi({
-                        page,
-                        section,
-                        locale,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,
-                    });
-                    continue;
-                }
-
-                // TEXTE VIDE
-                const valueChanged = val !== initialValues[key];
-
-                const activeChanged = is_active !== initialValues[`${key}_is_active`];
-
-                if (!valueChanged && !activeChanged) continue;
-
-                // TEXTE NON VIDE
-                await updateContentApi({
-                    page,
-                    section,
-                    locale,
-                    content_key: key,
-                    value: val,
-                    order_index: i,
-                    is_active,    
-                })
-                
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Programme mise à jour");
             setInitialValues(values);
@@ -200,34 +170,42 @@ function SectionEventsForm({ forcedLocale }) {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-auto md:px-auto md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
-                <div className="flex items-center gap-[10px] self-stretch">
-                    <div>
-                        <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                        <img src={ iconPaint } alt="" className="block dark:hidden"/>
+            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <div className="flex items-center justify-between gap-[10px] self-stretch">
+                    <div className="flex items-center gap-[10px]">
+                        <div>
+                            <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
+                            <img src={ iconPaint } alt="" className="block dark:hidden"/>
+                        </div>
+                        <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
+                            Gestion de la Section Programme
+                        </h3>
                     </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                        Gestion de la Section Programme
-                    </h3>
+                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
                 </div>
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
                     
                     {/* GESTION DU TITRE */}
-                    <div className="flex flex-col md:flex-row md:justify-between w-full">
-                        <div className="flex items-center gap-[10px] w-full">
-                            < CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("events.title_main")} rightSlot={
-                                <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
-                            <CmsInputColor name="title_main_color" label="" value={values.title_main_color} onChange={handleChange} />
+                    <div className="w-full">
+                        <div className="pb-[20px]">
+                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
+                                Gestion du titre de la section
+                            </h4>
                         </div>
-                        <div className="flex items-center gap-[10px] w-full">
-                            < CmsInput name="title_accent" label="Titre accent coloré" value={values.title_accent} onChange={handleChange} placeholder={t("events.title_accent")} rightSlot={
-                                <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
-                            />
-                            <CmsInputColor name="title_accent_color" label="" value={values.title_accent_color} onChange={handleChange} />
+                        <div className="flex flex-col gap-[50px] md:flex-wrap md:justify-between w-full">
+                            <div className="flex items-center gap-[10px] w-full">
+                                < CmsInput name="title_main" label="Titre principal" value={values.title_main} onChange={handleChange} placeholder={t("events.title_main")} rightSlot={
+                                    <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                                />
+                            </div>
+                            <div className="flex items-center gap-[10px] w-full">
+                                < CmsInput name="title_accent" label="Titre accent coloré" value={values.title_accent} onChange={handleChange} placeholder={t("events.title_accent")} rightSlot={
+                                    <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
+                                />
+                                <CmsInputColor name="title_accent_color" label="" value={values.title_accent_color} onChange={handleChange} />
+                            </div>
                         </div>
                     </div>
-
                     {/* GESTION DE LA LISTE */}
                     <div className="w-full">
                         <div className="pb-[20px]">
@@ -235,7 +213,7 @@ function SectionEventsForm({ forcedLocale }) {
                                 Gestion de la liste
                             </h4>
                         </div>
-                        <div className="flex flex-col md:flex-row md:justify-between gap-[10px] w-full">
+                        <div className="flex flex-col md:flex-wrap md:justify-between gap-[10px] w-full">
                             {listFields.map((f) => (
                                 < CmsInput key={f.name} name={f.name} label={f.label} value={values[f.name]} onChange={handleChange} placeholder={t(f.placeholderKey)} rightSlot={
                                     <CmsHideToggle name={f.name} value={values[`${f.name}_is_active`]} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -249,7 +227,7 @@ function SectionEventsForm({ forcedLocale }) {
                         <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
                             Gestion du bouton
                         </h4>                        
-                        <div className="flex flex-col md:flex-row w-full gap-[10px]">
+                        <div className="flex flex-col md:flex-wrap w-full gap-[10px]">
                             <CmsInput name="ctaAgenda" label="Intitulé du bouton" value={values.ctaAgenda} onChange={handleChange} placeholder={t("events.ctaAgenda")}/>
                             <CmsInput name="ctaAgenda_link" label="Lien du bouton" value={values.ctaAgenda_link} onChange={handleChange} placeholder={t("events.ctaAgenda_link")}/>
                             <CmsInputImage name="ctaAgenda_icon" label="Icon du bouton" value={values.ctaAgenda_icon} onChange={handleChange} placeholder={t("events.ctaAgenda_icon")}/>
@@ -264,7 +242,7 @@ function SectionEventsForm({ forcedLocale }) {
                         </h4>
 
                         {/* Cards 1 & 2 */}
-                        <div className="flex flex-col md:flex-row gap-[20px]">
+                        <div className="flex flex-col md:flex-wrap gap-[20px]">
 
                             {/* Gestion card 1 */}
                             <div className="flex flex-col w-full gap-[20px] md:gap-[30px]">

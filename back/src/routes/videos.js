@@ -11,32 +11,48 @@ import adminOneVideoController from "../controllers/videos/adminOneVideo.control
 import patchVideoStatusController from "../controllers/videos/patchVideoStatus.controller.js";
 import patchVideoFeaturedController from "../controllers/videos/patchVideoFeatured.controller.js";
 import adminLeaderboardController from "../controllers/videos/adminLeaderboard.controller.js";
+import adminVideoReviewsController from "../controllers/videos/adminVideoReviews.controller.js";
+
+import getMyReviewController from "../controllers/videos/getMyReview.controller.js";
+import upsertMyReviewController from "../controllers/videos/upsertMyReview.controller.js";
 
 import upload from "../middlewares/uploadVideoMiddleware.js";
-import verifyRecaptcha from "../middlewares/verifyRecaptcha.js"; 
+import verifyRecaptcha from "../middlewares/verifyRecaptcha.js";
+import { verifyToken, isSelector, isAdminOrSelector, isAdmin } from "../utils/isAdmin.js";
+
 
 const router = express.Router();
 
 // Route de test
 router.get("/test", testController);
 
-// Routes admin pour gestion complète des vidéos
-router.get("/admin", adminVideosListController);
-router.get("/admin/leaderboard", adminLeaderboardController);
-router.get("/admin/:id", adminOneVideoController);
-router.patch("/admin/:id/status", patchVideoStatusController);
-router.patch("/admin/:id/featured", patchVideoFeaturedController);
+// Routes admin
+router.get("/admin", verifyToken, isAdminOrSelector, adminVideosListController);
+router.get("/admin/leaderboard", verifyToken, isAdminOrSelector, adminLeaderboardController);
+router.get("/admin/:id/reviews", verifyToken, isAdminOrSelector, adminVideoReviewsController);
+router.get("/admin/:id", verifyToken, isAdminOrSelector, adminOneVideoController);
+router.patch("/admin/:id/status", verifyToken, isAdminOrSelector, patchVideoStatusController);
+router.patch("/admin/:id/featured", verifyToken, isAdminOrSelector, patchVideoFeaturedController);
 
-// Liste publique des vidéos publiées
+
+/* =====================================================
+    REVIEW SELECTIONNEUR
+===================================================== */
+
+router.get("/:id/review/me", verifyToken, isSelector, getMyReviewController);
+
+router.put("/:id/review", verifyToken, isSelector, upsertMyReviewController);
+
+// Liste publique
 router.get("/", videosListController);
 
-// Détail public d'une vidéo publiée
+// Détail public
 router.get("/:id", oneVideoController);
 
-// Streaming vidéo
+// Streaming
 router.get("/:id/stream", streamVideoController);
 
-// Upload complet d'une vidéo
+// Upload
 router.post(
   "/",
   upload.fields([
@@ -45,7 +61,7 @@ router.post(
     { name: "stills", maxCount: 10 },
     { name: "subtitles", maxCount: 1 },
   ]),
-  verifyRecaptcha, // AJOUT (après multer car multipart/form-data)
+  verifyRecaptcha,
   uploadVideoController,
 );
 

@@ -1,18 +1,21 @@
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInput from "../Fields/CmsInput";
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useTranslation } from "react-i18next";
 import { useForm } from "../../../../hooks/useForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CmsTextarea from "../Fields/CmsTextarea";
-import { updateContentApi } from "../../../../services/CMS/UpdateContentApi";
 import CmsInputColor from "../Fields/CmsImputColor";
+import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
+import useCmsContent from "../../../../hooks/useCmsContent";
+import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
+import CmsFormHeader from "../Titles/CmsFormHeader";
+import CmsBlock from "../Titles/CmsBlock";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
-function SectionAwardForm() {
+function SectionAwardForm({ forcedLocale }) {
 
     const { t, i18n } = useTranslation("home");
-    const locale = i18n.language.startsWith("fr") ? "fr" : "en";
+    const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
 
     // Page et section
     const page = "home";
@@ -22,21 +25,35 @@ function SectionAwardForm() {
 
     // champs récupérés
     const fields = [
+
+        "section_visibility",
+
         "eyebrow",
+        "eyebrow_color",
+
         "title1",
         "title2",
+
         "description",
+
         "ctaSeeMore",
-        "ctaSeeMore_link"
+        "ctaSeeMore_link",
+        "ctaSeeMore_color"
+
     ]
     // console.log("Champs:", fields);
-    
-    const orderIndexByKey = Object.fromEntries(fields.map((k, i) => [k, i]));
 
     // données envoyé à useForm
-    const { values, handleChange } = useForm({
+    const { values, setValues, handleChange } = useForm({
+
+        section_visibility:"1",
+        section_visibility_is_active: 1,
+
         eyebrow:"",
         eyebrow_is_active: 1,
+
+        eyebrow_color:"",
+        eyebrow_color_is_active: 1,
 
         title1:"",
         title1_is_active: 1,
@@ -50,10 +67,46 @@ function SectionAwardForm() {
         ctaSeeMore:"",
         ctaSeeMore_is_active: 1,
 
-        ctaSeeMore_link:""
+        ctaSeeMore_color: "#E1BDFF",
+        ctaSeeMore_color_is_active: 1,
+
+        ctaSeeMore_link:"",
+        ctaSeeMore_link_is_active: 1,
+
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
+    const [initialValues, setInitialValues] = useState({});
+    const [hasHydrated, setHasHydrated] = useState(false);
+
+    useEffect(()=>{
+        if (cmsLoading) {
+            return;
+        }
+
+        if (hasHydrated) return;
+
+        const cmsSection = content?.[page]?.[section];
+
+        if (!cmsSection) return;
+
+        // construit les valeurs initiales depuis le CMS
+        const built = buildInitialValuesFromCms(fields, cmsSection, {
+            fileFields: [],
+        });
+
+        setValues(built);
+
+        setInitialValues(built);
+
+        setHasHydrated(true);
+
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
+
+    useEffect(()=> {
+        setHasHydrated(false);
+    }, [locale]);
 
     async function handleSubmit(event) {
         // console.log("Fonction handleSubmit OK");
@@ -65,37 +118,7 @@ function SectionAwardForm() {
         try {
             // console.log("try dans handleSubmit OK");
 
-            // boucle pour traiter chaque champs un par un
-            for (let i = 0; i < fields.length; i++) {
-                
-                // nom du champ
-                const key = fields[i];
-                // console.log(key);
-                
-                // valeur actuelle du formulaire
-                const val = values[key];
-                // console.log(val);
-
-                let is_active = values[`${key}_is_active`];
-                
-                // gestion des texte
-                const empty = val === undefined || val === null || String(val).trim() === "";
-
-                // texte vide
-                if (empty) continue;
-
-                // texte non vide
-                await updateContentApi({
-                    page,
-                    section,
-                    locale,
-                    content_key: key,
-                    value: val,
-                    order_index: i,
-                    is_active,    
-                })
-                
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section mise à jour");
 
@@ -112,22 +135,16 @@ function SectionAwardForm() {
 
     }
 
+    if (loading) return null;
+
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
-                {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch">
-                    <div>
-                        <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                        <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                    </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                        Gestion de la Section Palmares
-                    </h3>
-                </div>
+                {/***** Titre du formulaire : Gestion de la Section Palmares *****/}
+                <CmsFormHeader title="Gestion de la Section Palmares" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
 
-                <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+                <CmsBlock>
                     {/**** Corp du formulaire : inputs ****/}
                     <div className="w-full flex gap-[20px] items-center">
                         <CmsInput name="eyebrow" label="Titre du projet" value={values.eyebrow} onChange={handleChange} placeholder={t("award.eyebrow")} rightSlot={
@@ -164,11 +181,11 @@ function SectionAwardForm() {
 
                     {/**** Footer du formulaire : bouton de submission ****/}
                     <div className="w-full flex justify-center">
-                        <button type="submit" className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
                             Mettre à jour
-                        </button>
+                        </BtnSubmitForm>
                     </div>
-                </div>
+                </CmsBlock>
 
             </form>
         </section>

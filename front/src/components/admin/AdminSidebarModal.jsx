@@ -67,7 +67,7 @@ export default function AdminSidebarModal({
       />
 
       {/* Panneau de la sidebar */}
-      <aside className="absolute left-6 top-6 h-[calc(100vh-48px)] w-[320px] overflow-hidden rounded-[18px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5 shadow-[0_18px_60px_rgba(0,0,0,0.65)]">
+      <aside className="absolute left-6 top-6 w-[320px] overflow-hidden rounded-[18px] border border-white/10 bg-gradient-to-b from-white/10 to-white/5 shadow-[0_18px_60px_rgba(0,0,0,0.65)]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-5">
           <div className="text-sm font-semibold text-white/85">Mars AI</div>
@@ -81,7 +81,7 @@ export default function AdminSidebarModal({
         </div>
 
         {/* Profil */}
-                        <div className="flex flex-col items-center px-5 pb-5 pt-4">
+        <div className="flex flex-col items-center px-5 pb-5 pt-4">
           <div className="relative">
             <div className="grid h-20 w-20 place-items-center rounded-full bg-[#F6339A]/15 text-3xl ring-2 ring-[#B84DFF]/60">
               👤
@@ -116,7 +116,7 @@ export default function AdminSidebarModal({
 
           <button onClick={() => {
             localStorage.removeItem("token");
-            navigate("/admin/login");
+            navigate("/login");
           }}
           className="mt-4 w-full rounded-xl bg-[#0E1628] py-3 text-sm font-semibold text-white/90 ring-1 ring-white/10 hover:bg-[#111c34]"
           >

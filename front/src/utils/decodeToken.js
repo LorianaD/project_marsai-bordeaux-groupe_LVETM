@@ -1,4 +1,5 @@
-// Decode le token JWT stocké dans le localStorage pour récupérer les infos de l'utilisateur connecté (id, email, role)
+// Lit le payload du token stocké dans localStorage (id, email, role, name, last_name) pour l'utilisateur connecté.
+
 export function decodeToken() {
   const token = localStorage.getItem("token");
 

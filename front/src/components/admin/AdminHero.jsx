@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { decodeToken } from "../../utils/decodeToken.js";
 
-export default function AdminHero() {
 
+/*=====================================================================================================================
+  Hero du dashboard admin affichant un message de bienvenue pour l'utilisateur connecté avec fond et bouton d'action
+======================================================================================================================*/
+export default function AdminHero() {
   const { t } = useTranslation("adminHero");
   const [currentUser, setCurrentUser] = useState(null);
-
 
   useEffect(() => {
     setCurrentUser(decodeToken());
@@ -15,9 +17,9 @@ export default function AdminHero() {
   const name = currentUser?.name ?? "";
 
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-[#F6339A]/60 min-h-[240px]">
+    <div className="relative overflow-hidden rounded-[28px] border border-black/10 dark:border-[#FFFFFF]/20 min-h-[240px]">
       <img
-        src="/imgs/admin-hero.jpg.png"
+        src="/imgs/admin-hero.png"
         alt={t("imageAlt")}
         className="absolute inset-0 h-full w-full object-cover object-center"
         draggable={false}

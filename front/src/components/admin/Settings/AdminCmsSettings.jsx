@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import CmsCentralization from "./CMSCentralization";
+import CmsCentralization from "./CmsCentralization.js";
 
 import CmsHeader from "./CmsHeader";
 import CmsPanel from "./CmsPanel";
@@ -12,7 +12,7 @@ function AdminCmsSettings() {
 
     // gere la langue
     const [forcedLocale, setForcedLocale] = useState("fr");
-    console.log("ForcedLocale:", forcedLocale);
+    // console.log("ForcedLocale:", forcedLocale);
 
     // verifie et recupere la page, si elle existe
     const [activePageId, setActivePageId] = useState(registry[0]?.pageId ?? "home");

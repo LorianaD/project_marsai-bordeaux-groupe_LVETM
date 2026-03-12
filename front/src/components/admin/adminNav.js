@@ -2,13 +2,13 @@ export const ADMIN_NAV = [
   {
     id: "overview",
     label: "Vue d'ensemble",
-    path: "/admin/overview",
+    path: "/admin",
     icon: "AdminOverview.svg",
   },
   {
     id: "dashboard",
-    label: "Dashboard User",
-    path: "/admin/dashboard",
+    label: "Gestion des utilisateurs",
+    path: "/admin/users",
     icon: "AdminUser.svg",
   },
   {
@@ -58,6 +58,12 @@ export const ADMIN_NAV = [
     label: "Newsletters — Builder",
     path: "/admin/newsletters",
     icon: "AdminMessage.svg", // réutilisé
+  },
+  {
+    id: "partners",
+    label: "Partenaires",
+    path: "/admin/partners",
+    icon: "AdminUser.svg",
   },
   {
     id: "settings",

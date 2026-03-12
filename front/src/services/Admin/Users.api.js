@@ -1,12 +1,14 @@
+import { getAuthHeaders } from "../../utils/authHeaders.js";
+
 const API = import.meta.env.VITE_API_URL || "";
 
-// Lister tout les users
+/*========================
+  Lister tout les users
+=========================*/
 export async function getUsers() {
     const res = await fetch(`${API}/api/users`, {
         method: "GET",
-        headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders(),
     });
 
     if (!res.ok) {
@@ -16,14 +18,13 @@ export async function getUsers() {
     return res.json();
 }
 
-// changer le role d'un user
+/*============================
+  changer le role d'un user
+=============================*/
 export async function updateUserRole(id, role) {
     const res = await fetch(`${API}/api/users/${id}/role`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization : `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ role }),
     });
     if (!res.ok) {
@@ -33,13 +34,13 @@ export async function updateUserRole(id, role) {
     return res.json();
 }
 
-// Supprimer un user
+/*====================
+  Supprimer un user
+=====================*/
 export async function deleteUser(id) {
     const res = await fetch(`${API}/api/users/${id}`,{
         method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders(),
     });
 
     if (!res.ok) {
@@ -48,3 +49,24 @@ export async function deleteUser(id) {
     }
     return res.json()
 }
+
+/*==============================
+  Inviter un nouvel utilisateur
+===============================*/
+export async function inviteUser(email, role) {
+    const res = await fetch(`${API}/api/users/invite`, {
+        method: "POST",
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ email, role }),
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || `Erreur lors de l'envoi de l'invitation : ${res.status}`);
+    }
+
+    return res.json();
+}
+
+
+

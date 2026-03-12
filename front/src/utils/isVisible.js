@@ -1,12 +1,12 @@
 // fonctions qui gere l'affichage
-function isVisible(content, section, key) {
+function isVisible(content, page, section, key) {
     // console.log("fonction isVisible OK");
     // console.log("content:", content);
     // console.log("section:", section);
     // console.log("key:", key);
         
     // on recupere le 
-    const contentSection = content?.[section];
+    const contentSection = content?.[page]?.[section];
 
     // il est par defaut visible
     if (!contentSection) {
@@ -34,10 +34,10 @@ function isVisible(content, section, key) {
 
 }
 
-function isSectionVisible(content, section) {
-    console.log("fonction isSectionVisible OK");
+function isSectionVisible(content, page, section) {
+    // console.log("fonction isSectionVisible OK");
     
-    return Number(content?.[section]?.["section_visibility_is_active"] ?? 1) === 1;
+    return Number(content?.[page]?.[section]?.section_visibility_is_active ?? 1) === 1;
 }
 
 export { isVisible, isSectionVisible }

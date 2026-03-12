@@ -1,0 +1,106 @@
+{
+  "titleLine1": "THE MEMBERS",
+  "titleLine2": "OF THE JURY",
+
+  "loading": "Loading…",
+  "errorLoading": "Error while loading the jury.",
+  "noPresidentDefined": "No jury president defined.",
+
+  "president": {
+    "defaultRole": "JURY PRESIDENT",
+    "sectionTitle": "AN EXCEPTIONAL JURY",
+    "sectionTitleAccent": "FOR THE FUTURE",
+    "professionFallback": "—",
+    "bioFallback": "…",
+    "filmographyCta": "VIEW FILMOGRAPHY"
+  },
+
+  "members": {
+    "title": "THE MEMBERS",
+    "description": "AI experts, filmmakers and visionaries gathered to deliberate on the official selection."
+  },
+
+  "admin": {
+    "title": "CAST & JURY",
+    "subtitle": "Add, edit or delete jury members.",
+    "addButton": "+ Add jury member",
+
+    "states": {
+      "loading": "Loading…"
+    },
+
+    "badges": {
+      "president": "President"
+    },
+
+    "actions": {
+      "filmography": "View filmography",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+
+    "confirmDelete": "Delete {{first_name}} {{name}}?",
+
+    "errors": {
+      "load": "Failed to load jury",
+      "save": "Save failed",
+      "delete": "Delete failed",
+      "generic": "Error",
+      "requiredName": "First name and last name are required.",
+      "requiredRole": "Role (role_label) is required."
+    }
+  },
+
+  "form": {
+    "titleCreate": "Add jury member",
+    "titleEdit": "Edit jury member",
+    "helper": "Required fields: first name, last name, role.",
+
+    "labels": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "role": "Role (role_label)",
+      "profession": "Profession",
+      "bio": "Biography",
+      "filmography": "Filmography URL",
+      "sortOrder": "Display order",
+      "isPresident": "Jury president",
+      "photo": "Photo"
+    },
+
+    "placeholders": {
+      "firstName": "e.g. Vanessa",
+      "lastName": "e.g. Biamonti",
+      "role": "e.g. DIRECTOR",
+      "profession": "e.g. Director",
+      "bio": "e.g. Director specialized in experimental cinema…",
+      "filmography": "e.g. https://www.imdb.com/...",
+      "sortOrder": "e.g. 1"
+    },
+
+    "hints": {
+      "firstName": "",
+      "lastName": "",
+      "role": "",
+      "profession": "",
+      "bio": "",
+      "filmography": "",
+      "sortOrder": "",
+      "photo": "Accepted formats: JPG, PNG, WEBP"
+    },
+
+    "file": {
+      "none": "No file selected",
+      "selected": "File"
+    },
+
+    "actions": {
+      "close": "Close",
+      "addPhoto": "Add a photo",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
+      "saving": "Saving…"
+    }
+  }
+}

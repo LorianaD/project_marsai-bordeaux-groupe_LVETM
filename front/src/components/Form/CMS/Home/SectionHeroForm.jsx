@@ -1,9 +1,6 @@
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
-import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi.js";
 import CmsInput from "../Fields/CmsInput";
 import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInputImage from "../Fields/CmsInputImage";
@@ -11,6 +8,12 @@ import CmsInputFile from "../Fields/CmsInputFile.jsx";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm.jsx";
 import useCmsContent from "../../../../hooks/useCmsContent.js";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms.js";
+import CmsFormHeader from "../Titles/CmsFormHeader.jsx";
+import CmsTitleBlock from "../Titles/CmsTitleBlock.jsx";
+import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock.jsx";
+import CmsBlock from "../Titles/CmsBlock.jsx";
+import CmsFieldsBlock from "../Titles/CmsFieldsBlock.jsx";
+import saveCmsSection from "../../../../utils/saveCmsSection.js";
 
 function SectionHeroForm({ forcedLocale }) {
 
@@ -111,7 +114,7 @@ function SectionHeroForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
     
@@ -123,7 +126,7 @@ function SectionHeroForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -138,7 +141,7 @@ function SectionHeroForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -156,57 +159,7 @@ function SectionHeroForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set([ "media", "protocol_icon", "ctaParticipate_signe", "ctaLearnMore_signe" ]);
-
-            const sharedLinkKeys = new Set([ "ctaParticipate_link", "ctaLearnMore_link" ]);
-
-            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = values[`${key}_is_active`];
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // si vide on continue sans rien changer
-                    if (empty) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    })
-
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Hero mise à jour");
 
@@ -223,62 +176,48 @@ function SectionHeroForm({ forcedLocale }) {
 
     return(
         <section>
-            <form onSubmit={ handleSubmit } className="p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={ handleSubmit } className="p-[50px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
                 
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch">
-                    <div>
-                        <img src={ iconPaintDark } alt="" className="hidden dark:block"/>
-                        <img src={ iconPaint } alt="" className="block dark:hidden"/>
-                    </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase">
-                        Gestion de la Section Hero
-                    </h3>
-                    <CmsHideToggle name="section_visibility" value={values.section_visibility_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                </div>
+                <CmsFormHeader title="Gestion de la Section Hero" toggleName="section_visibility" values={values} handleChange={handleChange} page={page} section={section} locale={locale}/>
 
                 <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
 
                     {/* Gestion du protocol */}
-                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
-                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                Gestion du protocol
-                            </h4>
-                        </div>
-                        <div>
-                            < CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
+                    <CmsBlock>
+                        
+                        <CmsTitleBlock title="Gestion du protocol"/>
+                        
+                        <CmsFieldsBlock>
+                            <CmsInput name="protocol" label="Protocol" value={values.protocol} onChange={handleChange} placeholder={t("hero.protocol")}   rightSlot={
                                 <CmsHideToggle name="protocol" value={values.protocol_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} order_index={orderIndexByKey.protocol} />}
                             />
 
                             <CmsInputImage name="protocol_icon" label="Icon du protocol" valueUrl={values.protocol_icon} onChange={handleChange} rightSlot={
                                 <CmsHideToggle name="protocol_icon" value={values.protocol_icon_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
-                        </div>
+                        </CmsFieldsBlock>
 
-                    </div>
+                    </CmsBlock>
 
                     {/* Gestion de la video ou image */}
-                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
-                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                    Gestion du fond
-                                </h4>
-                            </div>
-                            <div  className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
-                                <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} valueUrl={values.media} onChange={handleChange} />
-                            </div>                        
-                        </div>
+                    <CmsBlock>
+                        
+                        <CmsTitleBlock title="Gestion de la vidéo ou de l'image du fond"/>
+                        
+                        <CmsFieldsBlock>
+                            <CmsInputFile name="media" label="Média du fond (vidéo / gif / image)" accept="video/*,image/*" value={values.media} valueUrl={values.media} onChange={handleChange} />
+                        </CmsFieldsBlock>
+
+                    </CmsBlock>
 
 
                     {/* Gestion des Titres */}
-                    <div  className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
-                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                Gestion du Titre
-                            </h4>
-                        </div>
-                        <div className="flex flex-col md:flex-row justify-around w-full pb-[10px] gap-[50px]">
+                    <CmsBlock>
+
+                        <CmsTitleBlock title="Gestion du titre"/>
+
+                        <CmsFieldsBlock>
                             {/* Gestion du titre principal en blanc */}
                             < CmsInput name="title_main" label="Titre principal en Blanc" value={values.title_main} onChange={handleChange} placeholder={t("hero.title_main")} rightSlot={
                                 <CmsHideToggle name="title_main" value={values.title_main_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
@@ -288,18 +227,16 @@ function SectionHeroForm({ forcedLocale }) {
                             < CmsInput name="title_accent" label="Titre accent en dégradé" value={values.title_accent} onChange={handleChange} placeholder={t("hero.title_accent")} rightSlot={
                                 <CmsHideToggle name="title_accent" value={values.title_accent_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />                            
-                        </div>
+                        </CmsFieldsBlock>
 
-                    </div>
+                    </CmsBlock>
 
                     {/* Gestion du slogan */}
-                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
-                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                Gestion du Slogan
-                            </h4>
-                        </div>                        
-                        <div className="flex flex-wrap p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
+                    <CmsBlock>
+
+                        <CmsTitleBlock title="Gestion du slogan"/>
+
+                        <CmsFieldsBlock>
                             < CmsInput name="tagline_before" label="Slogan (avant le point culminant en dégradé)" value={values.tagline_before} onChange={handleChange} placeholder={t("hero.tagline_before")} rightSlot={
                                 <CmsHideToggle name="tagline_before" value={values.tagline_before_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
@@ -311,21 +248,16 @@ function SectionHeroForm({ forcedLocale }) {
                             < CmsInput name="tagline_after" label="Slogan (aprés le point culminant en dégradé)" value={values.tagline_after} onChange={handleChange} placeholder={t("hero.tagline_after")} rightSlot={
                                 <CmsHideToggle name="tagline_after" value={values.tagline_after_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />                            
-                        </div>
+                        </CmsFieldsBlock>
 
-                        
-                    </div>
+                    </CmsBlock>
 
                     {/* Gestion de la Déscription */}
-                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch w-full">
+                    <CmsBlock>
 
-                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                Gestion de la description
-                            </h4>
-                        </div>                       
+                        <CmsTitleBlock title="Gestion de la déscription"/>                       
 
-                        <div className="flex flex-wrap p-[10px] gap-[30px] md:justify-between md:items-end uppercase placeholder:uppercase">
+                        <CmsFieldsBlock>
 
                             {/* Gestion de la déscription ligne 1 */}
 
@@ -339,28 +271,23 @@ function SectionHeroForm({ forcedLocale }) {
                                 <CmsHideToggle name="desc2" value={values.desc2_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />}
                             />
 
-                        </div>
+                        </CmsFieldsBlock>
 
-                    </div>
+                    </CmsBlock>
 
                     {/* Gestion des boutons */}
-                    <div>
-                        <div className="pb-[20px]">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                Gestion des boutons
-                            </h4>
-                        </div>
-                        <div className="flex flex-wrap justify-around items-center gap-[50px] w-full">
-                            {/* Gestion du premier bouton */}
-                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
-                                <div className="flex justify-between items-center">
-                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
-                                        Premier Bouton
-                                    </h5>
-                                    <CmsHideToggle name="ctaParticipate" value={values.ctaParticipate_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                                </div>
+                    <CmsBlock>
 
-                                <div className="flex flex-col gap-[20px]">
+                        <CmsTitleBlock title="Gestion des boutons"/>
+
+                        <CmsBlock>
+
+                            {/* Gestion du premier bouton */}
+                            <CmsBlock>
+
+                                <CmsSubtitleBlock title="Gestion du premier bouton" toggleName="ctaParticipate" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+
+                                <CmsFieldsBlock>
                                     <CmsInput name="ctaParticipate" label="Nom" value={values.ctaParticipate} onChange={handleChange} placeholder={t("hero.ctaParticipate")}/>
 
                                     <CmsInputImage name="ctaParticipate_signe" label="Signe du Premiér bouton" valueUrl={values.ctaParticipate_signe} onChange={handleChange} rightSlot={
@@ -368,19 +295,16 @@ function SectionHeroForm({ forcedLocale }) {
                                     />
 
                                     <CmsInput name="ctaParticipate_link" label="Lien du bouton" value={values.ctaParticipate_link} onChange={handleChange} placeholder={t("hero.ctaParticipate_link")} />
-                                </div>
-                            </div>
+                                </CmsFieldsBlock>
+
+                            </CmsBlock>
 
                             {/* Gestion du deuxiéme bouton */}
-                            <div className="flex flex-col pb-[10px] justify-start gap-[16px] self-stretch uppercase placeholder:uppercase w-full">
+                            <CmsBlock>
 
-                                <div className="flex justify-between items-center">
-                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase">
-                                        Deuxiéme Bouton
-                                    </h5>
-                                    <CmsHideToggle name="ctaLearnMore" value={values.ctaLearnMore_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                                </div>
-                                <div className="flex flex-col gap-[20px]">
+                                <CmsSubtitleBlock title="Gestion du deuxiéme bouton" toggleName="ctaLearnMore" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                                
+                                <CmsFieldsBlock>
                                     <CmsInput name="ctaLearnMore" label="Nom" value={values.ctaLearnMore} onChange={handleChange} placeholder={t("hero.ctaLearnMore")} />
 
                                     <CmsInputImage name="ctaLearnMore_signe" label="Signe du deuxiéme bouton" valueUrl={values.ctaLearnMore_signe} onChange={handleChange} rightSlot={
@@ -388,19 +312,20 @@ function SectionHeroForm({ forcedLocale }) {
                                     />
 
                                     <CmsInput name="ctaLearnMore_link" label="Lien du bouton" value={values.ctaLearnMore_link} onChange={handleChange} placeholder={t("hero.ctaLearnMore_link")} />                                    
-                                </div>
+                                </CmsFieldsBlock>
 
+                            </CmsBlock>
+                        </CmsBlock>
+                    </CmsBlock>
 
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="w-full flex justify-center">
-                        <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
-                            Mettre à jour
-                        </BtnSubmitForm>
-                    </div>
                 </div>
+
+                <div className="w-full flex justify-center">
+                    <BtnSubmitForm loading={loading} className="flex h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                        Mettre à jour
+                    </BtnSubmitForm>
+                </div>
+
             </form>
         </section>
     )

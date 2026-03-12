@@ -7,30 +7,66 @@ import {
 import { sendNewsletterToAllActive } from "../services/newsletterSend.service.js";
 
 export function startNewsletterCron() {
-  // toutes les minutes
-  cron.schedule("* * * * *", async () => {
-    try {
-      const [rows] = await pool.execute(
-        `
-        SELECT id
-        FROM newsletters
-        WHERE status='scheduled'
-          AND scheduled_at IS NOT NULL
-          AND scheduled_at <= NOW()
-        ORDER BY scheduled_at ASC
-        LIMIT 5
-        `,
-      );
+  let running = false;
 
-      for (const r of rows) {
-        const locked = await lockNewsletterForSending(r.id);
-        if (!locked) continue;
-
-        await sendNewsletterToAllActive(r.id);
-        await markNewsletterSent(r.id);
+  cron.schedule(
+    "* * * * *", // toutes les minutes
+    async () => {
+      if (running) {
+        console.log("[newsletterCron] skipped (already running)");
+        return;
       }
-    } catch (e) {
-      console.error("[newsletterCron] error:", e?.message || e);
-    }
-  });
+
+      running = true;
+      const startTime = Date.now();
+
+      try {
+        console.log("[newsletterCron] checking scheduled newsletters...");
+
+        const [rows] = await pool.execute(`
+          SELECT id
+          FROM newsletters
+          WHERE status = 'scheduled'
+            AND scheduled_at IS NOT NULL
+            AND scheduled_at <= NOW()
+          ORDER BY scheduled_at ASC
+          LIMIT 1
+        `);
+
+        if (!rows.length) {
+          console.log("[newsletterCron] nothing to send");
+          return;
+        }
+
+        const newsletterId = rows[0].id;
+
+        const locked = await lockNewsletterForSending(newsletterId);
+        if (!locked) {
+          console.log(
+            `[newsletterCron] newsletter ${newsletterId} already locked`,
+          );
+          return;
+        }
+
+        console.log(`[newsletterCron] sending newsletter ${newsletterId}...`);
+
+        await sendNewsletterToAllActive(newsletterId);
+
+        await markNewsletterSent(newsletterId);
+
+        console.log(
+          `[newsletterCron] newsletter ${newsletterId} sent successfully`,
+        );
+      } catch (e) {
+        console.error("[newsletterCron] error:", e?.stack || e?.message || e);
+      } finally {
+        const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+        console.log(`[newsletterCron] finished in ${duration}s`);
+        running = false;
+      }
+    },
+    {
+      timezone: "Europe/Paris",
+    },
+  );
 }

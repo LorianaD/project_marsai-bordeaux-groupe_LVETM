@@ -19,7 +19,7 @@ function AdminLayout() {
   }
 
   return (
-    <div className="w-full pt-[100px]">
+    <div className="w-full pt-[30px]">
       <AdminSidebarModal
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

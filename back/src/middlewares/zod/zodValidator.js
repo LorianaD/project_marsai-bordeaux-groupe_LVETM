@@ -1,13 +1,3 @@
-/* schema:
-réseau sociaux
-user
-video
-contributor
-still
-cover
-video subtitle
-tag
-*/
 //exemple de route:
 //import { createFaqSchema } from "../../zodSchema/zodIndex";
 // app.post("/users", validate([nameSchema, emailSchema, partnerValidationSchema],{ includeFile: true }), controller);
@@ -20,7 +10,7 @@ import { ZodError } from "zod";
 
 
 /********************************************* 
- * Middleware de validation des films
+ * Middleware de validation des données
  * Fusionne plusieurs schémas Zod pour la validation
  *********************************************/
 export function validate(schemas, options = {}) {
@@ -37,6 +27,12 @@ export function validate(schemas, options = {}) {
 				dataToValidate[field] = req.files[field];
 			});
         }
+
+        if (options.includeFile && req.file) {
+            dataToValidate.file = req.file;
+            // 2) soit tu le mets sous un nom précis (ex: img)
+            // dataToValidate.img = req.file;
+          }
 
         // Fusionner tous les schémas
         let combinedSchema = schemaArray[0];
@@ -62,8 +58,8 @@ export function validate(schemas, options = {}) {
         		});
       		}	
 
-      // Autres erreurs
-      next(error);
+        // Autres erreurs
+        next(error);
     	}
   	};
 }

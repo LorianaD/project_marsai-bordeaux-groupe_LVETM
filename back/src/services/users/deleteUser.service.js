@@ -1,13 +1,17 @@
 import deleteUser from "../../models/users/delete.user.model.js";
 import { pool } from "../../db/index.js";
 
-// service pour supprimer un user
+/*===================================
+   Service pour supprimer un user
+===================================*/
 export async function deleteUserService(id) {
   if (!id) {
     throw new Error("L'ID utilisateur est requis");
   }
 
-// verifie si le user est superadmin 
+/*=====================================
+   Vérifie si le user est superadmin 
+=====================================*/
 const [rows] = await pool.execute("SELECT role FROM users WHERE id = ?", [id]);
 if (rows.length > 0 && rows[0].role === "superadmin") {
     throw new Error("Impossible de supprimer un superadmin");

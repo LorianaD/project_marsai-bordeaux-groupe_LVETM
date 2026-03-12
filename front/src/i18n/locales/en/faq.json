@@ -6,7 +6,7 @@
             "delete": "Delete"
         },
         "label":{
-            "rank": "Rank",
+            "display_order": "Display order",
             "question_fr": "Question FR",
             "question_en": "Question EN",
             "answer_fr": "Answer FR",
@@ -14,6 +14,9 @@
         }
     },
     "faq_display":{
-        "answer": "Answer"
+        "errors": {
+            "fetch_http": "We’re unable to load the questions right now. Please try again later.",
+            "fetch_network": "Unable to connect to the server. Please check your Internet connection and try again."
+        }
     }
 }

@@ -32,6 +32,17 @@ import adminEventParticipantsEN from "./locales/en/adminEventParticipants.json";
 import adminHeroFR from "./locales/fr/adminHero.json";
 import adminHeroEN from "./locales/en/adminHero.json";
 
+import zodFR from "./locales/fr/zod.json";
+import zodEN from "./locales/en/zod.json";
+import juryEN from "./locales/en/jury.json";
+import juryFR from "./locales/fr/jury.json";
+import galleryFR from "./locales/fr/gallery.json";
+import galleryEN from "./locales/en/gallery.json";
+import participationFR from "./locales/fr/participation.json";
+import participationEN from "./locales/en/participation.json";
+import aboutFR from "./locales/fr/about.json";
+import aboutEN from "./locales/en/about.json";
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -54,6 +65,11 @@ i18n
         adminEvents: adminEventsFR,
         adminEventParticipants: adminEventParticipantsFR,
         adminHero: adminHeroFR,
+        zodErrors: zodFR,
+        jury: juryFR,
+        gallery: galleryFR,
+        participation: participationFR,
+        about: aboutFR,
       },
       en: {
         header: headerEN,
@@ -67,10 +83,31 @@ i18n
         adminEvents: adminEventsEN,
         adminEventParticipants: adminEventParticipantsEN,
         adminHero: adminHeroEN,
+        zodErrors: zodEN,
+        jury: juryEN,
+        gallery: galleryEN,
+        participation: participationEN,
+        about: aboutEN,
       },
     },
 
-    ns: ["header", "footer", "home", "detailvideo", "newsletters", "faq", "event", "adminConferenceProgram", "adminEvents", "adminEventParticipants", "adminHero"],
+    ns: [
+      "header",
+      "footer",
+      "about",
+      "home",
+      "gallery",
+      "detailvideo",
+      "jury",
+      "newsletters",
+      "faq",
+      "event",
+      "adminConferenceProgram",
+      "adminEvents",
+      "adminEventParticipants",
+      "adminHero",
+      "zodErrors",
+    ],
     defaultNS: "home",
 
     detection: {

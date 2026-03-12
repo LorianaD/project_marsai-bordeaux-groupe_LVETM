@@ -1,21 +1,38 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/Auth/LoginApi";
+import { decodeToken } from "../../utils/decodeToken.js";
 import { inputLightClasses } from "../../utils/formInputClasses.js";
 
-/**
- * Page de connexion admin — style aligné sur l'espace admin (MARS AI, thème clair/sombre).
- */
+/* ========================
+   Page de connexion admin
+======================== */
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const timeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (loading) {
+      return;
+    }
+
     setError("");
     setSuccess(false);
 
@@ -25,21 +42,26 @@ function LoginForm() {
     }
 
     setLoading(true);
+
     try {
       const result = await loginUser(email, password);
+
+      if (!result?.token) {
+        throw new Error("Token manquant dans la réponse.");
+      }
+
       localStorage.setItem("token", result.token);
       setSuccess(true);
 
-      setTimeout(() => {
-        const token = JSON.parse(atob(result.token.split(".")[1]));
-        if (token.role === "selector") {
-          navigate("/selector/videos");
-        } else {
-          navigate("/admin/overview");
-        }
-      }, 1200);
+      const user = decodeToken();
+      const target = user?.role === "selector" ? "/selector/videos" : "/admin";
 
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        navigate(target, { replace: true });
+      }, 500);
     } catch (err) {
+      if (!isMountedRef.current) return;
       setError(err?.message || "Échec de la connexion.");
     } finally {
       setLoading(false);
@@ -49,7 +71,7 @@ function LoginForm() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-[420px]">
-        {/* En-tête */}
+        {/* ======== En-tête ======== */}
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-black/10 px-4 py-2 text-[18px] font-semibold tracking-[0.2em] uppercase dark:bg-white/10">
             MARS <span className="text-[#F6339A]">AI</span>
@@ -62,7 +84,7 @@ function LoginForm() {
           </p>
         </div>
 
-        {/* Carte formulaire */}
+        {/* ======================== Formulaire de connexion ======================== */}
         <div className="overflow-hidden rounded-3xl border border-black/10 bg-black/5 dark:border-[#F6339A]/60 dark:bg-white/5 p-6 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
@@ -125,7 +147,7 @@ function LoginForm() {
           </form>
         </div>
 
-        {/* Liens */}
+        {/* ===== Liens ===== */}
         <div className="mt-6 flex flex-col items-center gap-2 text-center text-sm">
           <Link
             to="/"

@@ -1,23 +1,27 @@
-import CmsInput from "../CMS/Fields/CmsInput";
-import CmsTextarea from "../CMS/Fields/CmsTextarea";
+import { Field, TextInput, TextArea } from "../Participation/ui/Field";
 import BtnSubmitForm from "../../Buttons/BtnSubmitForm";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
 
 function FaqForm({ faq, onChange, onSubmit, onDelete, loading, isEdit = false, formErrors=[] }) {
-
     //paramétre i18n
-    const { t, i18n } = useTranslation("faq");
+    const { t, i18n } = useTranslation(["faq", "zodErrors"]);
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
 
     //filtrer les erreurs par champ
     const getErrors = (field) =>
         formErrors.filter(e => e.field === field);
+
     //composant pour afficher les erreurs d'un champ
     const FieldError = ({ field }) => (
         <>
-            {getErrors(field).map((e, i) =>(
-                <p key={i} className="text-red-700">{e.message}</p>
-            ))}
+            {getErrors(field).map((e, i) => {
+                //si le message ressemble a un clé i18n
+                if(e.message.startsWith("faq.")) {
+                    return <p key={i} className="text-red-700">{t(e.message, { ns: "zodErrors" })}</p>;
+                }
+                //sinon c'est une erreur backend
+                return <p key={i} className="text-red-700">{e.message}</p>;
+            })}
         </>
     );
 
@@ -31,49 +35,58 @@ function FaqForm({ faq, onChange, onSubmit, onDelete, loading, isEdit = false, f
                 isEdit ? "m-2 w-full max-w-[650px] rounded-[32px]" : "max-w-[900px]"
             } rounded-[32px] border border-black/10 bg-white/5 shadow-[0_15px_25px_-12px_rgba(0,0,0,0.25)] flex flex-col justify-center gap-[20px] p-4 md:p-[40px]`}
         >
-            <CmsInput
-                name="rank"
-                label={t("form.label.rank")}
-                type="number"
-                value={faq.rank}
-                onChange={(e) => onChange(faq.id, "rank", Number(e.target.value))}
-            />
+            <Field label={t("form.label.display_order")}>
+                <TextInput
+                    name="display_order"
+                    type="number"
+                    value={faq.display_order}
+                    onChange={(e) => onChange(faq.id, "display_order", Number(e.target.value))}
+                />
+            </Field>
             {/* Affichage de l erreur zod dans le back */}
-            <FieldError field="rank" />
+            <FieldError field="display_order" />
 
-            <CmsTextarea
-                name="question_fr"
-                label={t("form.label.question_fr")}
-                value={faq.question_fr}
-                onChange={(e) => onChange(faq.id, "question_fr", e.target.value)}
-            />
+            <Field label={t("form.label.question_fr")}>
+                <TextArea
+                    name="question_fr"
+                    value={faq.question_fr}
+                    onChange={(e) => onChange(faq.id, "question_fr", e.target.value)}
+                    rows={4}
+                />
+            </Field>
             {/* Affichage de l erreur zod dans le back */}
             <FieldError field="question_fr" />
 
-            <CmsTextarea
-                name="question_en"
-                label={t("form.label.question_en")}
-                value={faq.question_en}
-                onChange={(e) => onChange(faq.id, "question_en", e.target.value)}
-            />
+            <Field label={t("form.label.question_en")}>
+                <TextArea
+                    name="question_en"
+                    value={faq.question_en}
+                    onChange={(e) => onChange(faq.id, "question_en", e.target.value)}
+                    rows={4}
+                />
+            </Field>
             {/* Affichage de l erreur zod dans le back */}
             <FieldError field="question_en" />
 
-            <CmsTextarea
-                name="answer_fr"
-                label={t("form.label.answer_fr")}
-                value={faq.answer_fr}
-                onChange={(e) => onChange(faq.id, "answer_fr", e.target.value)}
-            />
+            <Field label={t("form.label.answer_fr")}>
+                <TextArea
+                    name="answer_fr"
+                    value={faq.answer_fr}
+                    onChange={(e) => onChange(faq.id, "answer_fr", e.target.value)}
+                    rows={4}
+                />
+            </Field>
             {/* Affichage de l erreur zod dans le back */}
             <FieldError field="answer_fr" />
 
-            <CmsTextarea
-                name="answer_en"
-                label={t("form.label.answer_en")}
-                value={faq.answer_en}
-                onChange={(e) => onChange(faq.id, "answer_en", e.target.value)}
-            />
+            <Field label={t("form.label.answer_en")}>
+                <TextArea
+                    name="answer_en"
+                    value={faq.answer_en}
+                    onChange={(e) => onChange(faq.id, "answer_en", e.target.value)}
+                    rows={4}
+                />
+            </Field>
             {/* Affichage de l erreur zod dans le back */}
             <FieldError field="answer_en" />
 

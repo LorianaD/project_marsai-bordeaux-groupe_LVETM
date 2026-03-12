@@ -1,11 +1,15 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Field, TextInput, Select } from "./Field";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 export default function TeamCompositionForm({ onPrev }) {
-  // Etat du collaborateur en cours de saisie
+  const { t } = useTranslation("participation");
+  const help = "mt-2 text-xs italic text-neutral-500 dark:text-neutral-300";
+
+  // Collaborateur en cours
   const [current, setCurrent] = useState({
     gender: "Mr",
     full_name: "",
@@ -13,7 +17,7 @@ export default function TeamCompositionForm({ onPrev }) {
     email: "",
   });
 
-  // Liste des contributeurs sauvegardée en localStorage
+  // Contributeurs
   const [contributors, setContributors] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("contributors") || "[]");
@@ -23,7 +27,7 @@ export default function TeamCompositionForm({ onPrev }) {
     }
   });
 
-  // Etat des certificats + validations finales
+  // Validations
   const [ownership, setOwnership] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("ownership") || "{}");
@@ -32,10 +36,7 @@ export default function TeamCompositionForm({ onPrev }) {
     }
   });
 
-  //  Token captcha Google
-  const [captchaToken, setCaptchaToken] = useState("");
-
-  //  Modal conditions d'utilisation
+  // Modal conditions
   const [termsOpen, setTermsOpen] = useState(false);
 
   function updateCurrent(e) {
@@ -43,7 +44,6 @@ export default function TeamCompositionForm({ onPrev }) {
     setCurrent((c) => ({ ...c, [name]: value }));
   }
 
-  // Ajoute un contributeur dans la liste
   function addContributor() {
     const ok =
       current.full_name.trim() &&
@@ -58,63 +58,69 @@ export default function TeamCompositionForm({ onPrev }) {
     setCurrent({ gender: "Mr", full_name: "", profession: "", email: "" });
   }
 
-  // Supprime un contributeur
   function removeContributor(i) {
     const next = contributors.filter((_, idx) => idx !== i);
     setContributors(next);
     localStorage.setItem("contributors", JSON.stringify(next));
   }
 
-  // Active ou désactive les certificats / validations
   function toggleOwnership(key) {
-    const next = { ...ownership, [key]: !ownership?.[key] };
-    setOwnership(next);
-    localStorage.setItem("ownership", JSON.stringify(next));
+    setOwnership((prev) => {
+      const next = { ...prev, [key]: !prev?.[key] };
+      localStorage.setItem("ownership", JSON.stringify(next));
+      return next;
+    });
   }
 
-  // Enregistre le token captcha dans le même objet ownership (utile pour upload)
   function setCaptchaOk(token) {
-    const next = { ...ownership, recaptchaToken: token || "" };
-    setOwnership(next);
-    localStorage.setItem("ownership", JSON.stringify(next));
+    setOwnership((prev) => {
+      const next = {
+        ...prev,
+        recaptchaToken: token || "",
+        notRobot: !!token,
+      };
+      localStorage.setItem("ownership", JSON.stringify(next));
+      return next;
+    });
   }
 
-  // Vérifie si la validation finale est possible
   const canFinish = useMemo(() => {
     return (
       !!ownership?.ownershipCertified &&
       !!ownership?.promoConsent &&
       !!ownership?.termsAccepted &&
       !!ownership?.ageConfirmed &&
-      !!captchaToken
+      !!ownership?.recaptchaToken
     );
-  }, [ownership, captchaToken]);
+  }, [ownership]);
 
   return (
     <div className="w-full">
-      {/*  MODALE CONDITIONS */}
+      {/* MODALE CONDITIONS */}
       {termsOpen ? (
         <div className="fixed inset-0 z-[99999]">
           <button
             type="button"
             className="absolute inset-0 bg-black/60"
             onClick={() => setTermsOpen(false)}
-            aria-label="Fermer"
+            aria-label={t("countryPicker.closeAria")}
           />
           <div className="absolute left-1/2 top-1/2 w-[min(92vw,860px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-black/10">
             <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-6 py-4">
               <div className="text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900">
-                Conditions d’utilisation — MarsAI
+                {t("team.final.modalTitle")}
               </div>
               <button
                 type="button"
                 onClick={() => setTermsOpen(false)}
                 className="rounded-xl bg-neutral-900 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
               >
-                Fermer
+                {t("team.final.close")}
               </button>
             </div>
 
+            {/* NOTE: le contenu long des conditions est laissé tel quel pour l’instant.
+               Si tu veux, je te le mets aussi en i18n (FR/EN) mais c’est un gros bloc. */}
             <div className="max-h-[70vh] overflow-auto p-6 text-sm leading-7 text-neutral-700">
               <h3 className="text-base font-extrabold text-neutral-900">
                 1) Objet
@@ -196,62 +202,68 @@ export default function TeamCompositionForm({ onPrev }) {
         </div>
       ) : null}
 
-      <div className="rounded-2xl bg-white p-8">
+      {/* card */}
+      <div className="rounded-2xl bg-white p-8 text-neutral-900 dark:bg-black dark:text-white">
         <h2 className="text-center text-2xl font-semibold text-purple-500">
-          04. COMPOSITION DE L’ÉQUIPE
+          {t("team.title")}
         </h2>
 
-        <div className="mt-8 rounded-2xl bg-neutral-100 p-6">
+        <div className="mt-8 rounded-2xl bg-neutral-100 p-6 dark:bg-neutral-900">
           <div className="mb-4 flex justify-end">
             <button
               type="button"
               onClick={addContributor}
               className="rounded-full bg-neutral-700 px-6 py-2 text-sm font-semibold text-white"
             >
-              + Ajouter collaborateur
+              {t("team.addCollaborator")}
             </button>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            <Field label="Civilité" required>
+            <Field label={t("team.fields.civility.label")} required>
               <Select
                 name="gender"
                 value={current.gender}
                 onChange={updateCurrent}
-                className="bg-white text-neutral-900"
+                className="bg-white text-neutral-900 dark:bg-neutral-800 dark:text-white"
               >
-                <option value="Mr">M.</option>
-                <option value="Mrs">Mme</option>
+                <option value="Mr">{t("team.fields.civility.mr")}</option>
+                <option value="Mrs">{t("team.fields.civility.mrs")}</option>
               </Select>
+              <div className={help}>{t("team.fields.civility.help")}</div>
             </Field>
 
-            <Field label="Prénom et nom" required>
+            <Field label={t("team.fields.fullName.label")} required>
               <TextInput
                 name="full_name"
                 value={current.full_name}
                 onChange={updateCurrent}
-                placeholder="EX: JEAN DUPOND"
-                className="bg-white text-neutral-900 placeholder:text-neutral-400"
+                placeholder={t("team.fields.fullName.placeholder")}
+                className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
+              <div className={help}>{t("team.fields.fullName.help")}</div>
             </Field>
 
-            <Field label="Profession" required>
+            <Field label={t("team.fields.profession.label")} required>
               <TextInput
                 name="profession"
                 value={current.profession}
                 onChange={updateCurrent}
-                className="bg-white text-neutral-900 placeholder:text-neutral-400"
+                placeholder={t("team.fields.profession.placeholder")}
+                className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
+              <div className={help}>{t("team.fields.profession.help")}</div>
             </Field>
 
-            <Field label="Email" required>
+            <Field label={t("team.fields.email.label")} required>
               <TextInput
                 name="email"
                 value={current.email}
                 onChange={updateCurrent}
-                placeholder="email@exemple.com"
-                className="bg-white text-neutral-900 placeholder:text-neutral-400"
+                placeholder={t("team.fields.email.placeholder")}
+                className="bg-white text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
+              <div className={help}>{t("team.fields.email.help")}</div>
             </Field>
           </div>
 
@@ -260,9 +272,9 @@ export default function TeamCompositionForm({ onPrev }) {
               {contributors.map((c, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-xl bg-white p-3 text-sm"
+                  className="flex items-center justify-between rounded-xl bg-white p-3 text-sm text-neutral-800 dark:bg-neutral-800 dark:text-white"
                 >
-                  <div className="text-neutral-800">
+                  <div>
                     <span className="font-semibold">{c.full_name}</span> —{" "}
                     {c.profession} — {c.email}
                   </div>
@@ -271,25 +283,24 @@ export default function TeamCompositionForm({ onPrev }) {
                     onClick={() => removeContributor(i)}
                     className="text-red-500 hover:underline"
                   >
-                    Supprimer
+                    {t("team.remove")}
                   </button>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="mt-6 text-sm text-neutral-500">
-              Aucun contributeur ajouté pour l’instant.
+            <div className="mt-6 text-sm text-neutral-500 dark:text-neutral-300">
+              {t("team.empty")}
             </div>
           )}
         </div>
 
-        <div className="mt-8 rounded-2xl bg-neutral-300 p-6 text-neutral-700">
-          <div className="mb-3 font-semibold">CERTIFICAT DE PROPRIÉTÉ</div>
+        <div className="mt-8 rounded-2xl bg-neutral-300 p-6 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
+          <div className="mb-3 font-semibold">
+            {t("team.certificate.title")}
+          </div>
           <p className="text-xs leading-relaxed">
-            En soumettant ce dossier, vous certifiez sur l'honneur être l'auteur
-            original de l'œuvre et détenir l'intégralité des droits de
-            diffusion. Vous acceptez que MARS.AI utilise ces éléments pour la
-            promotion du festival.
+            {t("team.certificate.text")}
           </p>
 
           <div className="mt-4 space-y-2 text-sm">
@@ -299,7 +310,7 @@ export default function TeamCompositionForm({ onPrev }) {
                 checked={!!ownership?.ownershipCertified}
                 onChange={() => toggleOwnership("ownershipCertified")}
               />
-              Je certifie être l’auteur original et détenir les droits.
+              {t("team.certificate.checks.ownershipCertified")}
             </label>
 
             <label className="flex items-center gap-3">
@@ -308,18 +319,17 @@ export default function TeamCompositionForm({ onPrev }) {
                 checked={!!ownership?.promoConsent}
                 onChange={() => toggleOwnership("promoConsent")}
               />
-              J’accepte l’utilisation pour la promotion du festival.
+              {t("team.certificate.checks.promoConsent")}
             </label>
           </div>
         </div>
 
-        {/* ✅ VALIDATION FINALE */}
-        <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6">
-          <div className="mb-4 text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900">
-            Validation finale
+        <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-black">
+          <div className="mb-4 text-sm font-extrabold uppercase tracking-[0.12em] text-neutral-900 dark:text-white">
+            {t("team.final.title")}
           </div>
 
-          <div className="space-y-3 text-sm text-neutral-800">
+          <div className="space-y-3 text-sm text-neutral-800 dark:text-neutral-200">
             <label className="flex items-start gap-3">
               <input
                 type="checkbox"
@@ -328,13 +338,13 @@ export default function TeamCompositionForm({ onPrev }) {
                 onChange={() => toggleOwnership("termsAccepted")}
               />
               <span>
-                J’accepte les{" "}
+                {t("team.final.terms")}{" "}
                 <button
                   type="button"
                   onClick={() => setTermsOpen(true)}
                   className="font-semibold text-purple-600 underline"
                 >
-                  conditions d’utilisation
+                  {t("team.final.termsLink")}
                 </button>{" "}
                 du festival.
               </span>
@@ -347,36 +357,28 @@ export default function TeamCompositionForm({ onPrev }) {
                 checked={!!ownership?.ageConfirmed}
                 onChange={() => toggleOwnership("ageConfirmed")}
               />
-              <span>Je confirme avoir plus de 18 ans.</span>
+              <span>{t("team.final.age")}</span>
             </label>
           </div>
 
-          {/* ✅ Google reCAPTCHA v2 */}
           <div className="mt-6">
             <ReCAPTCHA
               sitekey={SITE_KEY}
-              onChange={(token) => {
-                const t = token || "";
-                setCaptchaToken(t);
-                setCaptchaOk(t);
-              }}
-              onExpired={() => {
-                setCaptchaToken("");
-                setCaptchaOk("");
-              }}
+              onChange={(token) => setCaptchaOk(token || "")}
+              onExpired={() => setCaptchaOk("")}
             />
-            <div className="mt-2 text-xs text-neutral-500">
-              Coche le captcha pour finaliser la soumission.
+            <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-300">
+              {t("team.final.captchaHelp")}
             </div>
           </div>
 
           {!canFinish ? (
-            <div className="mt-5 text-sm text-red-600">
-              Pour valider, coche les cases + captcha.
+            <div className="mt-5 text-sm text-red-600 dark:text-red-300">
+              {t("team.final.missing")}
             </div>
           ) : (
             <div className="mt-5 text-sm font-semibold text-green-600">
-              ✅ Validation OK
+              {t("team.final.ok")}
             </div>
           )}
         </div>
@@ -387,7 +389,7 @@ export default function TeamCompositionForm({ onPrev }) {
             onClick={onPrev}
             className="rounded-xl border border-purple-400 px-10 py-3 font-semibold text-purple-500"
           >
-            PRÉCÉDENT
+            {t("page.prev")}
           </button>
         </div>
       </div>

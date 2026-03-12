@@ -1,5 +1,5 @@
-import iconPaintDark from "../../../../assets/imgs/icones/iconPaintDark.svg";
-import iconPaint from "../../../../assets/imgs/icones/iconPaint.svg";
+import iconPaintDark from "../../../../assets/imgs/icones/IconPaintDark.svg";
+import iconPaint from "../../../../assets/imgs/icones/IconPaint.svg";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"
 import { useForm } from "../../../../hooks/useForm";
@@ -9,7 +9,12 @@ import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInput from "../Fields/CmsInput";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
-import { updateContentApi, updateImageApi } from "../../../../services/CMS/UpdateContentApi";
+import saveCmsSection from "../../../../utils/saveCmsSection.js";
+import CmsFormHeader from "../Titles/CmsFormHeader.jsx";
+import CmsTitleBlock from "../Titles/CmsTitleBlock.jsx";
+import CmsFieldsBlock from "../Titles/CmsFieldsBlock.jsx";
+import CmsBlock from "../Titles/CmsBlock.jsx";
+import CmsSubtitleBlock from "../Titles/CmsSubtitleBlock.jsx";
 
 function HeaderForm({ forcedLocale }) {
 
@@ -73,7 +78,7 @@ function HeaderForm({ forcedLocale }) {
 
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -85,7 +90,7 @@ function HeaderForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -100,7 +105,7 @@ function HeaderForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -118,57 +123,7 @@ function HeaderForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set(["logo", "icon_country"]);
-
-            const sharedLinkKeys = new Set(["home_link", "first_link", "seconde_link", "third_link", "btn_link"]);
-
-            const sharedKeys = new Set([...sharedImageKeys, ...sharedLinkKeys]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = values[`${key}_is_active`];
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // si vide on continue sans rien changer
-                    if (empty) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,
-                    })
-
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Header mis à jour");
 
@@ -185,140 +140,93 @@ function HeaderForm({ forcedLocale }) {
 
     return (
         <section className="w-full">
-            <form onSubmit={handleSubmit} className="w-full p-[50px] md:px-[100px] md:py-[100px] flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit]">
+            <form onSubmit={handleSubmit} className="w-full p-12.5 flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit]">
+                
                 {/***** Titre du formulaire *****/}
-                <div className="flex items-center gap-[10px] self-stretch w-full">
-                    <div>
-                        <img src={iconPaintDark} alt="" className="hidden dark:block" />
-                        <img src={iconPaint} alt="" className="block dark:hidden" />
-                    </div>
-                    <h3 className="text-[20px] md:text-[30px] font-bold tracking-[3.2px] uppercase w-full">
-                        Gestion de l' En-tête
-                    </h3>
-                </div>
+                <CmsFormHeader title="Gestion de la Header" />
 
                 <div className="w-full">
 
-                    <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
+                    <div className="flex flex-col items-start justify-center gap-12.5 self-stretch font-[Outfit] w-full">
                         
-                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full w-full">
+                        <CmsBlock>
 
-                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
-                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
-                                    Gestion du logo
-                                </h4>
-                            </div>
-                            <div>
+                            <CmsTitleBlock title="Gestion du logo"/>
+
+                            <CmsFieldsBlock>
                                 <CmsInputImage name="logo" label="Logo" valueUrl={values.logo} onChange={handleChange} page={page} section={section} locale={locale} />
-                            </div>
+                            </CmsFieldsBlock>
 
-                        </div>
+                        </CmsBlock>
 
                     </div>
 
-                    <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                    <div className="flex flex-col pb-2.5 justify-start gap-7.5 self-stretch uppercase placeholder:uppercase w-full">
 
-                        <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
-                            <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase">
-                                Gestion de la navigation
-                            </h4>
-                        </div>
+                        <CmsTitleBlock title="Gestion de la navigation"/>
 
-                        <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                        <CmsBlock>
 
-                            <div className="flex flex-col md:flex-row pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
-                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
-                                    Gestion du deuxiéme lien
-                                </h5>
-                                <CmsHideToggle name="first" value={values.first_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                            </div>
-                            <div className="flex flex-col md:flex-row gap-[20px] w-full">
+                            <CmsSubtitleBlock title="Gestion du deuxiéme lien" toggleName="first" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                            
+                            <CmsFieldsBlock>
                                 < CmsInput name="first" label="Nom" value={values.first} onChange={handleChange} placeholder={t("first")} />
                                 < CmsInput name="first_link" label="Lien" value={values.first_link} onChange={handleChange} placeholder={t("first_link")} />
-                            </div>
+                            </CmsFieldsBlock>
                             
-                        </div>
+                        </CmsBlock>
 
-                        <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                        <CmsBlock>
 
-                            <div className="w-full flex flex-col md:flex-row">
-                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
-                                    Gestion du troisième lien
-                                </h5>
-                                <CmsHideToggle name="seconde" value={values.seconde_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                            </div>
-                            <div className="flex flex-col md:flex-row gap-[20px] w-full">
+                            <CmsSubtitleBlock title="Gestion du troisième lien" toggleName="seconde" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+
+                            <CmsFieldsBlock>
                                 < CmsInput name="seconde" label="Nom" value={values.seconde} onChange={handleChange} placeholder={t("seconde")} />
                                 < CmsInput name="seconde_link" label="Lien" value={values.seconde_link} onChange={handleChange} placeholder={t("seconde_link")} />
-                            </div>
+                            </CmsFieldsBlock>
                             
-                        </div>
+                        </CmsBlock>
 
-                        <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                        <CmsBlock>
 
-                            <div className="w-full flex flex-col md:flex-row">
-                                <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
-                                    Gestion du quatriéme lien
-                                </h5>
-                                <CmsHideToggle name="third" value={values.third_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                            </div>
-                            <div className="flex flex-col md:flex-row gap-[20px] w-full">
+                            <CmsSubtitleBlock title="Gestion du quatriéme lien" toggleName="third" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                            
+                            <CmsFieldsBlock>
                                 < CmsInput name="third" label="Nom" value={values.third} onChange={handleChange} placeholder={t("third")} />
                                 < CmsInput name="third_link" label="Lien" value={values.third_link} onChange={handleChange} placeholder={t("third_link")} />
-                            </div>
+                            </CmsFieldsBlock>
                             
-                        </div>
+                        </CmsBlock>
 
                     </div>
 
-                    <div className="flex flex-col items-start justify-center gap-[50px] self-stretch font-[Outfit] w-full">
+                    <div className="flex flex-col items-start justify-center pb-2.5 gap-12.5 self-stretch font-[Outfit] w-full uppercase placeholder:uppercase ">
                         
-                        <div className="flex flex-col pb-[10px] justify-start gap-[30px] self-stretch uppercase placeholder:uppercase w-full">
+                        <CmsTitleBlock title="Gestion des boutons"/>
 
-                            <div className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
-                                <h4 className="text-[16px] md:text-[20px] font-bold tracking-[3.2px] uppercase w-full">
-                                    Gestion des boutons
-                                </h4>
-                            </div>
-                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                        <CmsBlock>
 
-                                <div className="w-full flex flex-col md:flex-row">
-                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
-                                        Gestion du premier bouton
-                                    </h5>
-                                    <CmsHideToggle name="btn" value={values.btn_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                                </div>
+                            <CmsSubtitleBlock title="Gestion du premier bouton" toggleName="btn" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
 
-                                <div className="flex flex-col md:flex-row gap-[20px] w-full">
-                                    < CmsInput name="btn" label="Nom" value={values.btn} onChange={handleChange} placeholder={t("btn")} />
-                                    < CmsInput name="btn_link" label="Lien" value={values.btn_link} onChange={handleChange} placeholder={t("btn_link")} />
-                                </div>
-                                
-                            </div>
+                            <CmsFieldsBlock>
+                                <CmsInput name="btn" label="Nom" value={values.btn} onChange={handleChange} placeholder={t("btn")} />
+                                <CmsInput name="btn_link" label="Lien" value={values.btn_link} onChange={handleChange} placeholder={t("btn_link")} />
+                            </CmsFieldsBlock>
+                            
+                        </CmsBlock>
 
-                            <div className="flex flex-col pb-[10px] justify-start gap-[20px] self-stretch uppercase placeholder:uppercase w-full">
+                        <CmsBlock>
 
-                                <div className="w-full flex flex-col md:flex-row">
-                                    <h5 className="text-[14px] md:text-[16px] font-bold tracking-[3.2px] uppercase w-full">
-                                        Gestion du bouton switch des langues
-                                    </h5>
-                                    <CmsHideToggle name="icon_country" value={values.icon_country_is_active} values={values} onChange={handleChange} page={page} section={section} locale={locale} />
-                                </div>
-
-                                {/* <div className="flex flex-col md:flex-row gap-[20px] w-full">
-                                    <CmsInputImage name="icon_country" label="Icon" valueUrl={values.icon_country} onChange={handleChange} page={page} section={section} locale={locale} />
-                                </div> */}
-                                
-                            </div>                            
-
-                        </div>
+                            <CmsSubtitleBlock title="Gestion du bouton switch des langues" toggleName="icon_country" values={values} handleChange={handleChange} page={page} section={section} locale={locale} />
+                            
+                        </CmsBlock>
 
                     </div>
 
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <BtnSubmitForm loading={loading} className="flex w-[200px] h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333]">
+                    <BtnSubmitForm loading={loading} className="flex h-[53px] items-center justify-center gap-[13px] px-[21px] py-[10px] rounded-[5px] border border-[#DBE3E6] bg-white dark:border-[rgba(0,0,0,0.11)] dark:bg-[#333] w-full">
                         Mettre à jour
                     </BtnSubmitForm>
                 </div>
