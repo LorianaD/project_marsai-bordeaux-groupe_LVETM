@@ -63,7 +63,7 @@ export default function AdminConferenceProgramContent() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
- 
+
       let dayForApi = form.day;
       if (form.day && form.day.includes("-")) {
         const d = new Date(form.day + "T12:00:00");
