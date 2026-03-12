@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import GetPartnerApi from "../../../services/Partner/GetPartnerApi";
 import PartnerUpdate from "../../Form/CMS/Partners/PartnerUpdate";
-import CmsFormHeader from "../../Form/CMS/Titles/CmsFormHeader";
 import deletePartnerApi from "../../../services/Partner/DeletePartnerApi";
 import BtnAdd from "../../Buttons/BtnAdd";
 import PartnerAdd from "../../Form/CMS/Partners/PartnerAdd";
@@ -83,10 +82,14 @@ function PartnersManagement() {
 
     return(
         <section className="w-full">
-            <h3 className="text-[42px] font-extrabold tracking-tight">Gestion de nos partnaires</h3>
-            <div className="pt-5 w-full flex justify-end">
-                <BtnAdd onClick={handleCreate}></BtnAdd>
+            <div className="flex justify-between pr-6">
+                <h3 className="text-[42px] font-extrabold tracking-tight">Gestion de nos partnaires</h3>
+                <div className="pt-5 flex justify-end">
+                    <BtnAdd onClick={handleCreate}></BtnAdd>
+                </div>
             </div>
+
+
             <div className="flex w-full py-10">
                 <table className="w-full table-fixed border-separate border-spacing-y-2">
                     <thead>
@@ -100,7 +103,7 @@ function PartnersManagement() {
                             <th scope="col" className="w-[25%] px-4 py-2">
                                 Lien
                             </th>
-                            <th scope="col" className="w-[25%] px-4 py-2">
+                            <th scope="col" className="w-[20%] px-4 py-2">
                                 Action
                             </th>
                         </tr>

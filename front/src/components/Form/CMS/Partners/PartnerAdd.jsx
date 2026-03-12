@@ -53,8 +53,8 @@ function PartnerAdd({ onClose, onAdded }) {
 
     return(
         <div className="">
-            <button className="flex justify-end w-full p-[20px]">
-                <img src={iconClose} alt="" />
+            <button type="button" onClick={() => onClose?.()} className="flex justify-end w-full p-5">
+                <img src={iconClose} alt="Fermer la fenêtre" />
             </button>
 
             <form onSubmit={ handleSubmit } className="p-8 flex flex-col items-start gap-5 self-stretch font-[Outfit]">
