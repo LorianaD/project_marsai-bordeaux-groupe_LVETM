@@ -2,13 +2,13 @@ import updatePartner from "../../models/partner/update.model.js";
 import getOnePartner from "../../models/partner/getOne.model.js";
 
 async function UpdatePartner(req, res, next) {
-    console.log("Controller UpdatePartner OK");
+    // console.log("Controller UpdatePartner OK");
 
     try {
-        console.log("try in the controller UpdatePartner OK");
+        // console.log("try in the controller UpdatePartner OK");
 
         const { id } = req.params;
-        console.log(id);
+        // console.log(id);
         
         const partnerExist = await getOnePartner(id);
 
@@ -23,10 +23,10 @@ async function UpdatePartner(req, res, next) {
 
         const name = req.body.name;
         const url = req.body.url;
-        console.log(name, url);
+        // console.log(name, url);
 
         const nextImg = req.file ? `/uploads/logoPartners/${req.file.filename}` : partnerExist.img;
-        console.log(nextImg);
+        // console.log(nextImg);
 
         const nextName = typeof name === "string" && name.trim() !== "" ? name.trim() : partnerExist.name;
         const nextUrl = typeof url === "string" && url.trim() !== "" ? url.trim() : partnerExist.url;

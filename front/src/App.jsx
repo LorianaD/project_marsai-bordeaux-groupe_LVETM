@@ -51,14 +51,12 @@ export default function App() {
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
-        <Route path="/partner" element={<PartnersPage />} />
+        <Route path="/partners" element={<PartnersPage />} />
         <Route path="/about" element={<About />} />
 
         {/* Newsletter */}
         <Route path="/newsletter/confirm" element={<NewsletterConfirm />} />
         <Route path="/newsletter/unsubscribe" element={<NewsletterUnsubscribe />} />
-
-
 
         {/* auth/admin */}
         <Route path="/register" element={<AdminRegister />} />

@@ -1,5 +1,6 @@
 // Import formulaire CMS Layout
 import HeaderForm from "../../Form/CMS/Layout/HeaderForm";
+import FooterForm from "../../Form/CMS/Layout/FooterForm.jsx";
 
 // Import formulaires CMS HomePage
 import SectionHeroForm from "../../Form/CMS/Home/SectionHeroForm.jsx";
@@ -11,9 +12,12 @@ import SectionClosingEventForm from "../../Form/CMS/Home/SectionClosingEventForm
 import SectionLocalisationEventForm from "../../Form/CMS/Home/SectionLocalisationEventForm.jsx";
 import SectionProjectedStatsForm from "../../Form/CMS/Home/SectionProjectedStatsForm.jsx";
 import SectionPartners from "../../Form/CMS/Home/SectionPartners";
+import FaqAdmin from "../Faq/FaqAdmin.jsx";
 
 // Import formulaire CMS GalleryPage
-import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm";
+import GallerySectionHeroForm from "../../Form/CMS/Gallery/GallerySectionHeroForm.jsx";
+import GallerySectionCountdownForm from "../../Form/CMS/Gallery/GallerySectionCountdownForm.jsx";
+import GalleryFilmsListForm from "../../Form/CMS/Gallery/GalleryFilmsListForm.jsx";
 
 // Import formulaires CMS JuryPage
 import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
@@ -22,14 +26,14 @@ import JurySectionHeroForm from "../../Form/CMS/Jury/JurySectionHeroForm";
 import PartnersSectionHeroForm from "../../Form/CMS/Partners/PartnerSectionHeroForm";
 
 // Import formulaire CMS ContactPage
-import ContactSectionHeroForm from "../../Form/CMS/Contact/PartnerSectionHeroForm";
+import ContactSectionHeroForm from "../../Form/CMS/Contact/ContactSectionHeroForm.jsx";
 
 // Import formulaire CMS FaqPage
 import FaqSectionHeroForm from "../../Form/CMS/Faq/FaqSectionHeroForm";
 
 // Import formulaire CMS LegalPage
 import LegalSectionHeroForm from "../../Form/CMS/Legal/LegalSectionHeroForm";
-import FooterForm from "../../Form/CMS/Layout/FooterForm.jsx";
+
 
 
 function CmsCentralization() {
@@ -61,8 +65,10 @@ function CmsCentralization() {
             pageId: "gallery",
             label: "Gallerie",
             sections: [
-                { id: "hero", label: "Hero", component: GallerySectionHeroForm},
-            ],            
+                { id: "hero", label: "Hero", component: GallerySectionHeroForm },
+                { id: "countdown", label: "Compte à rebour", component: GallerySectionCountdownForm },
+                { id: "films", label: "Gallerie", component: GalleryFilmsListForm }
+            ],
         },
         {
             pageId: "jury",
@@ -83,6 +89,7 @@ function CmsCentralization() {
             label: "FAQ",
             sections: [
                 { id: "hero", label: "Hero", component: FaqSectionHeroForm },
+                { id: "faqAdmin", label: "FaqAdmin", component: FaqAdmin },
             ],
         },
         {

@@ -1,4 +1,9 @@
 {
+    "hero": {
+        "title_main": "",
+        "title_accent": "FAQ",
+        "description": "Déscription"
+    },
     "form":{
         "button":{
             "add": "Ajouter",
@@ -6,11 +11,17 @@
             "delete": "Supprimer"
         },
         "label":{
-            "rank": "Rang",
+            "display_order": "Ordre d'affichage",
             "question_fr": "Question FR",
             "question_en": "Question EN",
             "answer_fr": "Réponse FR",
             "answer_en": "Réponse EN"
+        }
+    },
+    "faq_display":{
+        "errors": {
+            "fetch_http": "Nous n'arrivons pas à charger les questions pour le moment. Merci de réessayer plus tard.",
+            "fetch_network": "Impossible de se connecter au serveur. Vérifiez votre connexion Internet ou réessayez dans quelques instants."
         }
     }
 }

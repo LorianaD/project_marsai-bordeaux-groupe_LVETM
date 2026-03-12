@@ -10,6 +10,7 @@ import CmsHideToggle from "../Fields/CmsHideToggle";
 import CmsInput from "../Fields/CmsInput";
 import CmsInputImage from "../Fields/CmsInputImage";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
 
 function SectionClosingEventForm({ forcedLocale }) {
@@ -105,7 +106,7 @@ function SectionClosingEventForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
     
@@ -117,7 +118,7 @@ function SectionClosingEventForm({ forcedLocale }) {
 
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -132,7 +133,7 @@ function SectionClosingEventForm({ forcedLocale }) {
 
         setHasHydrated(true);
 
-    }, [cmsLoading, content, section, hasHydrated, setValues, locale])
+    }, [cmsLoading, content, page, section, hasHydrated, setValues, locale])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -150,57 +151,7 @@ function SectionClosingEventForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set([ "eyebrow_icon", "card_icon" ]);
-
-            const sharedLinkKeys = new Set([ "card_ctaBooking_link" ]);
-
-            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = values[`${key}_is_active`];
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const empty = val === undefined || val === null || String(val).trim() === "";
-
-                    // si vide on continue sans rien changer
-                    if (empty) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    })
-
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section de la soirée de clôture mise à jour");
 

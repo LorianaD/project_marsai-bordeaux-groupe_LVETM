@@ -229,7 +229,7 @@ export default function JuryForm({
               <button
                 type="submit"
                 disabled={saving}
-                className="rounded-full bg-gradient-to-r from-blue-600 to-pink-500 px-7 py-2 text-sm font-extrabold text-white shadow-sm disabled:opacity-50"
+                className="rounded-full bg-linear-to-r from-blue-600 to-pink-500 px-7 py-2 text-sm font-extrabold text-white shadow-sm disabled:opacity-50"
               >
                 {saving
                   ? t("form.actions.saving")

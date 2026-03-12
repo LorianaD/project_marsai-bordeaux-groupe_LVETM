@@ -6,7 +6,7 @@ import { pool } from "../../db/index.js";
 
 export const findAllFaq = async ()=> {
 
-    const query = "SELECT id, question_fr, question_en, answer_fr, answer_en, `rank` FROM faq ORDER BY `rank` ASC"
+    const query = "SELECT id, question_fr, question_en, answer_fr, answer_en, display_order FROM faq ORDER BY display_order ASC"
 
     const [ rows ] = await pool.execute(query);
     

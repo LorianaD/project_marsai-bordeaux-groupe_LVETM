@@ -1,16 +1,29 @@
+import { useTranslation } from "react-i18next";
+import SectionHero from "../components/Legal/SectionHero";
+import { isSectionVisible } from "../utils/isVisible";
+import useCmsContent from "../hooks/useCmsContent";
+
 export default function Legal() {
+
+  // Page et section
+  const page = "legal";
+  const hero = "hero";
+
+  //paramétre i18n
+  const { t, i18n } = useTranslation(page);
+  const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+  const { content, loading, message } = useCmsContent(page, locale);
+
+  if (loading) return null;
+
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto w-full max-w-6xl px-6 py-16">
-        {/* Title */}
-        <header className="text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight">
-            Mentions légales
-          </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-black/60 dark:text-white/60">
-            Informations légales relatives au site et au projet MarsAI.
-          </p>
-        </header>
+
+        {isSectionVisible(content, page, hero) && (
+          <SectionHero/>
+        )}
 
         {/* Content */}
         <div className="mt-12 space-y-8">

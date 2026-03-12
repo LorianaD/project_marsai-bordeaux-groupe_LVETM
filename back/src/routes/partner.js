@@ -7,6 +7,7 @@ import AddPartnerController from "../controllers/partner/AddPartner.controller.j
 import GetAllPartnerController from "../controllers/partner/GetAllPartner.controller.js";
 import UpdatePartnerController from "../controllers/partner/UpdatePartner.controller.js";
 import GetOnePartnerController from "../controllers/partner/GetOnePartner.controller.js";
+import DeletePartnerController from "../controllers/partner/DeletePartner.controller.js";
 
 const router = Router();
 
@@ -19,5 +20,8 @@ router.post("/", uploadPartner.single("img"), AddPartnerController);
 
 // route put pour l'update
 router.put("/:id", uploadPartner.single("file"), UpdatePartnerController);
+
+// route DELETE pour delete
+router.delete("/:id", DeletePartnerController);
 
 export default router;

@@ -12,6 +12,7 @@ import CmsTextarea from "../Fields/CmsTextarea";
 import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 import useCmsContent from "../../../../hooks/useCmsContent";
 import buildInitialValuesFromCms from "../../../../utils/buildInitialValuesFromCms";
+import saveCmsSection from "../../../../utils/saveCmsSection";
 
 function SectionEventsForm({ forcedLocale }) {
 
@@ -114,14 +115,14 @@ function SectionEventsForm({ forcedLocale }) {
     })
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { content, loading: cmsLoading } = useCmsContent(locale);
+    const { content, loading: cmsLoading } = useCmsContent(page, locale);
     const [initialValues, setInitialValues] = useState({});
     const [hasHydrated, setHasHydrated] = useState(false);
 
     useEffect(() => {
         if (hasHydrated) return;
 
-        const cmsSection = content?.[section];
+        const cmsSection = content?.[page]?.[section];
 
         if (!cmsSection) return;
 
@@ -133,7 +134,7 @@ function SectionEventsForm({ forcedLocale }) {
         setValues(built);
         setInitialValues(built);
         setHasHydrated(true);
-    }, [content, section, hasHydrated, setValues])
+    }, [content, page, section, hasHydrated, setValues])
 
     // reinitialise quand locale change // Remplie le formulaire avec les données de la BDD
     // fait que les données dans les champs sont chargé par raport à la langue
@@ -151,58 +152,7 @@ function SectionEventsForm({ forcedLocale }) {
 
             // console.log("try dans handleSubmit OK");
 
-            const sharedImageKeys = new Set([ "ctaAgenda_icon", "card1_icon", "card2_icon", "card3_icon" ]);
-
-            const sharedLinkKeys = new Set([ "ctaAgenda_link", "card1_link", "card2_link", "card3_link" ]);
-
-            const sharedKeys = new Set([ ...sharedImageKeys, ...sharedLinkKeys ]);
-
-            const localesToSave = (key) => (sharedKeys.has(key) ? ["fr", "en"] : [locale]);
-
-            for (let i = 0; i < fields.length; i++) {
-                const key = fields[i];
-                const val = values[key];
-                const is_active = Number(values[`${key}_is_active`] ?? 1);
-
-                const targetLocales = localesToSave(key);
-
-                for (const loc of targetLocales) {
-
-                    // IMAGE
-                    if (val instanceof File) {
-                        await updateImageApi({
-                            page,
-                            section,
-                            locale: loc,
-                            content_key: key,
-                            value: val,
-                            order_index: i,
-                            is_active,
-                        });
-                        continue;
-                    }
-
-                    // TEXTE VIDE
-                    const valueChanged = val !== initialValues[key];
-
-                    const activeChanged = is_active !== initialValues[`${key}_is_active`];
-
-                    if (!valueChanged && !activeChanged) continue;
-
-                    // TEXTE NON VIDE
-                    await updateContentApi({
-                        page,
-                        section,
-                        locale: loc,
-                        content_key: key,
-                        value: val,
-                        order_index: i,
-                        is_active,    
-                    })
-                    
-                }
-
-            }
+            await saveCmsSection({ page, section, locale, fields, values });
 
             setMessage("Section Programme mise à jour");
             setInitialValues(values);

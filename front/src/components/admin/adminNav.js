@@ -60,6 +60,12 @@ export const ADMIN_NAV = [
     icon: "AdminMessage.svg", // réutilisé
   },
   {
+    id: "partners",
+    label: "Partenaires",
+    path: "/admin/partners",
+    icon: "AdminUser.svg",
+  },
+  {
     id: "settings",
     label: "Configuration",
     path: "/admin/settings",

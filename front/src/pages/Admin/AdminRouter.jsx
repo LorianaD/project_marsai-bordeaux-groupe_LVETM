@@ -17,6 +17,7 @@ import AdminSettings from "./AdminSettings";
 import AdminLeaderboard from "./AdminLeaderboard";
 import AdminMessages from "./AdminMessages";
 import AdminUsers from "./AdminUsers";
+import AdminPartners from "./AdminPartners";
 
 
 export function AdminRouter() {
@@ -35,6 +36,7 @@ export function AdminRouter() {
         <Route path="settings" element={<AdminSettings />} />
         <Route path="leaderboard" element={<AdminLeaderboard />} />
         <Route path="messages" element={<AdminMessages />} />
+        <Route path="partners" element={<AdminPartners />}/>
 
         {/* Newsletter */}
         <Route path="newsletter" element={<AdminNewsletter />} />
