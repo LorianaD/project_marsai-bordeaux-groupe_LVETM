@@ -50,5 +50,23 @@ export async function deleteUser(id) {
     return res.json()
 }
 
+/*==============================
+  Inviter un nouvel utilisateur
+===============================*/
+export async function inviteUser(email, role) {
+    const res = await fetch(`${API}/api/users/invite`, {
+        method: "POST",
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ email, role }),
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || `Erreur lors de l'envoi de l'invitation : ${res.status}`);
+    }
+
+    return res.json();
+}
+
 
 

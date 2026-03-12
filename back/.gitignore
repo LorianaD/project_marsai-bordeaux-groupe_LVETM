@@ -1,4 +1,9 @@
 .env
+<<<<<<< P3MR
+back/.env
+front/.env
+node_modules/
+=======
 node_modules/
 
 uploads/covers/*
@@ -14,3 +19,4 @@ uploads/logoPartners/*
 !uploads/subtitles/.gitkeep
 !uploads/images/.gitkeep
 !uploads/logoPartners/.gitkeep
+>>>>>>> main

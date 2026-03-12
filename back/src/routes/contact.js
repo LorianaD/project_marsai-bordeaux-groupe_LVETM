@@ -1,10 +1,14 @@
 import { Router } from "express";
 import { createContactMessage } from "../models/contact.model.js";
+//import du middleware zod
+import { validate } from "../middlewares/zod/zodValidator.js";
+//import du schéma zod
+import { contactSchema, emailSchema, createUserSnakeSchema } from "../zodSchema/zodIndex.js";
 
 const router = Router();
 
 // Enregistre un message envoyé via le formulaire contact
-router.post("/", async (req, res, next) => {
+router.post("/", validate([contactSchema, emailSchema, createUserSnakeSchema]), async (req, res, next) => {
   try {
     const { name, last_name, subject, email, message } = req.body || {};
 

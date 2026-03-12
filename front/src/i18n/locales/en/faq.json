@@ -11,7 +11,7 @@
             "delete": "Delete"
         },
         "label":{
-            "rank": "Rank",
+            "display_order": "Display order",
             "question_fr": "Question FR",
             "question_en": "Question EN",
             "answer_fr": "Answer FR",

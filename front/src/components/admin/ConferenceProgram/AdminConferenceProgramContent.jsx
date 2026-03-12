@@ -12,6 +12,27 @@ const COLORS = [
   { value: "bg-emerald-400", labelKey: "colorGreen" },
 ];
 
+function normalizeWeekday(raw) {
+  if (!raw) return null;
+  const map = {
+    Monday: "Monday",
+    Tuesday: "Tuesday",
+    Wednesday: "Wednesday",
+    Thursday: "Thursday",
+    Friday: "Friday",
+    Saturday: "Saturday",
+    Sunday: "Sunday",
+    Lundi: "Monday",
+    Mardi: "Tuesday",
+    Mercredi: "Wednesday",
+    Jeudi: "Thursday",
+    Vendredi: "Friday",
+    Samedi: "Saturday",
+    Dimanche: "Sunday",
+  };
+  return map[raw] ?? null;
+}
+
 function formatDayLabel(dayStr) {
   if (!dayStr) return "—";
   const d = new Date(dayStr + "T12:00:00");
@@ -63,8 +84,23 @@ export default function AdminConferenceProgramContent() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
+
+
+      let dayForApi = null;
+      if (form.day && form.day.includes("-")) {
+        const d = new Date(form.day + "T12:00:00");
+        if (!Number.isNaN(d.getTime())) {
+          dayForApi = d.toLocaleDateString("en-GB", { weekday: "long" });
+        }
+      } else if (editing && editing.day) {
+        dayForApi = normalizeWeekday(editing.day);
+      } else if (!editing && !form.day) {
+        alert("Veuillez choisir un jour pour la conférence.");
+        return;
+      }
+
       const payload = {
-        day: form.day || null,
+        day: dayForApi,
         time: form.time,
         title: form.title,
         speaker: form.speaker || null,
