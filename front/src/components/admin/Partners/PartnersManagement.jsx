@@ -22,6 +22,11 @@ function PartnersManagement() {
         setModalType("add");
     }
 
+    function handleCloseModal() {
+        setSelectedPartner(null);
+        setModalType(null);
+    }
+
     async function GetAllPartner() {
         // console.log("Fonction GetAllPartner OK");
         
@@ -51,7 +56,7 @@ function PartnersManagement() {
 
     function handleEdit(partner) {
 
-        console.log("Modifier cliqué :", partner);
+        // console.log("Modifier cliqué :", partner);
         
         setSelectedPartner(partner);
 
@@ -74,11 +79,6 @@ function PartnersManagement() {
             console.error(error);
         }
         
-    }
-
-    function handleCloseModal() {
-        setSelectedPartner(null);
-        setModalType(type);
     }
 
     return(
@@ -137,7 +137,10 @@ function PartnersManagement() {
                 {modalType === "edit" && selectedPartner && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/70 p-4">
                         <div className="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-black border border-white/10 max-h-[90vh] overflow-y-auto">
-                            <PartnerUpdate partner={selectedPartner} onClose={handleCloseModal} onUpdated={GetAllPartner} />
+                            <PartnerUpdate partner={selectedPartner} onClose={handleCloseModal} onUpdated={()=> {
+                                GetAllPartner(); 
+                                handleCloseModal()
+                            }} />
                         </div>
                     </div>
                 )}
@@ -145,7 +148,10 @@ function PartnersManagement() {
                 {modalType === "add" && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/70 p-4">
                         <div className="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-black border border-white/10 max-h-[90vh] overflow-y-auto">
-                            <PartnerAdd onClose={handleCloseModal} onAdded={GetAllPartner}/>
+                            <PartnerAdd onClose={handleCloseModal} onAdded={()=> {
+                                GetAllPartner(); 
+                                handleCloseModal()
+                            }}/>
                         </div>
                     </div>
                 )}
