@@ -63,8 +63,17 @@ export default function AdminConferenceProgramContent() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
+
+      let dayForApi = form.day;
+      if (form.day && form.day.includes("-")) {
+        const d = new Date(form.day + "T12:00:00");
+        if (!Number.isNaN(d.getTime())) {
+          dayForApi = d.toLocaleDateString("en-GB", { weekday: "long" });
+        }
+      }
+
       const payload = {
-        day: form.day || null,
+        day: dayForApi || null,
         time: form.time,
         title: form.title,
         speaker: form.speaker || null,

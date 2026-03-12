@@ -23,7 +23,7 @@ export async function insert(data) {
             data.sort_order ?? 0,
         ]
     );
-    return { id: result.insertId, ...data };
+    return { id: result.insertId, ...data , };
 }
 export const create = insert;
 
