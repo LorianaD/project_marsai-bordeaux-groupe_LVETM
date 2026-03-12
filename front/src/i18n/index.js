@@ -42,6 +42,8 @@ import participationFR from "./locales/fr/participation.json";
 import participationEN from "./locales/en/participation.json";
 import aboutFR from "./locales/fr/about.json";
 import aboutEN from "./locales/en/about.json";
+import contactFR from "./locales/fr/contact.json";
+import contactEN from "./locales/en/contact.json";
 
 i18n
   .use(LanguageDetector)
@@ -70,6 +72,7 @@ i18n
         gallery: galleryFR,
         participation: participationFR,
         about: aboutFR,
+        contact: contactFR
       },
       en: {
         header: headerEN,
@@ -88,6 +91,7 @@ i18n
         gallery: galleryEN,
         participation: participationEN,
         about: aboutEN,
+        contact: contactEN
       },
     },
 
@@ -107,6 +111,7 @@ i18n
       "adminEventParticipants",
       "adminHero",
       "zodErrors",
+      "contact"
     ],
     defaultNS: "home",
 

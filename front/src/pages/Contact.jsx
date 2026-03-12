@@ -1,27 +1,40 @@
+import { useTranslation } from "react-i18next";
+import SectionHero from "../components/Contact/SectionHero.jsx";
 import ContactForm from "../components/Form/Contact/ContactForm.jsx";
+import useCmsContent from "../hooks/useCmsContent.js";
+import { isSectionVisible } from "../utils/isVisible.js";
 
 export default function Contact() {
-  return (
-    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <div className="mx-auto w-full max-w-6xl px-6">
-        {/* Titre */}
-        <div className="pt-16 text-center">
-          <h1 className="text-[38px] font-extrabold tracking-[0.35em] text-black dark:text-white">
-            CONTACT
-          </h1>
-        </div>
 
-        {/* Texte d'information */}
-        <div className="mt-10 flex justify-center">
-          <p className="w-full max-w-[820px] text-center text-[11px] leading-relaxed text-black/70 dark:text-white/70">
-            
-          </p>
-        </div>
+  // Page et section
+  const page = "contact";
+  const hero = "hero";
+  const form = "form";
+
+  //paramétre i18n
+  const { t, i18n } = useTranslation(page);
+  const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
+
+  const { content, loading, message } = useCmsContent(page, locale);
+
+  if (loading) return null;
+
+  return (
+    <div className="min-h-screen">
+      <div className="w-full">
+
+        {/* Titre */}
+        {isSectionVisible(content, page, hero) && (
+          <SectionHero/>
+        )}
 
         {/* Formulaire */}
-        <div className="mt-16 flex justify-center pb-16">
-          <ContactForm />
-        </div>
+        {isSectionVisible(content, page, form) && (
+          <div className="p-4 flex justify-center">
+            <ContactForm />
+          </div>
+        )}
+
       </div>
     </div>
   );

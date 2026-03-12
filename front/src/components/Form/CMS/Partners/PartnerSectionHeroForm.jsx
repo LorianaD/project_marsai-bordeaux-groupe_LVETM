@@ -14,13 +14,15 @@ import BtnSubmitForm from "../../../Buttons/BtnSubmitForm";
 
 function PartnersSectionHeroForm({ forcedLocale }) {
 
-        const { t, i18n } = useTranslation("home");
-    const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
-
     // Page et section
     const page = "partners";
     const section = "hero";
-    // console.log("Page:", page, "Section:", section);
+    // console.log("Page:", page, "Section:", section);    
+
+    const { t, i18n } = useTranslation(page);
+    const locale = forcedLocale ?? (i18n.language.startsWith("fr") ? "fr" : "en");
+
+
 
     // champs des differents éléments dans la section
     const fields = [
