@@ -210,6 +210,7 @@ export default function AdminConferenceProgramContent() {
                   type="text"
                   value={form.title}
                   onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
+                  maxLength={80}
                   required
                   className="mt-1 w-full rounded-xl border border-black/10 bg-black/5 px-3 py-2 dark:bg-white/5"
                 />
@@ -220,6 +221,7 @@ export default function AdminConferenceProgramContent() {
                   type="text"
                   value={form.speaker}
                   onChange={(e) => setForm((f) => ({ ...f, speaker: e.target.value }))}
+                  maxLength={80}
                   placeholder={t("placeholderSpeaker")}
                   className="mt-1 w-full rounded-xl border border-black/10 bg-black/5 px-3 py-2 dark:bg-white/5"
                 />
