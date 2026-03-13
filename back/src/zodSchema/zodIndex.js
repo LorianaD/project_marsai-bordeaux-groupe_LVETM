@@ -1,6 +1,6 @@
-/**********************************************
+ /**********************************************
  **** Regroupement de tout les schema zod *****
- *********************************************/
+**********************************************/
 
 //Validation des données user.
 export { emailSchema, createUserSchema, createUserSnakeSchema, createUserJurySchema, roleSchema, passwordSchema} from "./userValidationSchema.js";
@@ -43,3 +43,6 @@ export { contactSchema } from "./contactValidationSchema.js";
 
 //validation des données de la newsletter.
 export { consentSchema } from "./consentValidationSchema.js";
+
+//validation des données du CMS.
+export { cmsTextUpdateSchema, cmsActiveUpdateSchema, cmsFileUpdateSchema } from "./cmsValidationSchema.js";
