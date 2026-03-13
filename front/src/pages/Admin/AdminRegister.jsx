@@ -1,5 +1,5 @@
 import RegisterForm from "../../components/admin/RegisterForm.jsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 
 // ==================================
 // Page d'enregistrement utilisateurs
@@ -9,9 +9,9 @@ function AdminRegister() {
   const [searchParams] = useSearchParams();
   const inviteToken = searchParams.get("token") || "";
 
-  /* evite d'ouvrir /register sans invite */
+  /* evite d'ouvrir /register sans invitation par token */
   if (!inviteToken) {
-    return <Navigate to="login" replace />
+    return <Navigate to="/login" replace />
   }
 
   return (

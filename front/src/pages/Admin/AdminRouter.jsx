@@ -1,8 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
-
 import AdminLayout from "../../components/Layout/AdminLayout";
 import AdminGuard from "../../components/admin/AdminGuard";
-
 import Overview from "./Overview";
 import AdminNewsletterEditor from "./AdminNewsletterEditor";
 import AdminNewsletters from "./AdminNewsletters";
@@ -17,6 +15,9 @@ import AdminSettings from "./AdminSettings";
 import AdminLeaderboard from "./AdminLeaderboard";
 import AdminMessages from "./AdminMessages";
 import AdminUsers from "./AdminUsers";
+import AdminPartners from "./AdminPartners";
+import { decodeToken } from "../../utils/decodeToken.js";
+
 
 
 export function AdminRouter() {
