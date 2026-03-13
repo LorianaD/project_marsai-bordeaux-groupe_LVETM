@@ -16,8 +16,8 @@ export async function getAllConferenceProgram(req, res) {
 
 export async function getProgramAdmin(req, res) {
     try {
-      const items = await conferenceProgramModel.findAll();
-      return res.status(200).json(items);
+    const items = await conferenceProgramModel.findAll();
+    return res.status(200).json(items);
     } catch (err) {
       console.error("getProgramAdmin error:", err);
       return res.status(500).json({ error: "Erreur serveur" });
@@ -28,8 +28,12 @@ export async function getProgramAdmin(req, res) {
  
 export async function createItem(req, res) {
     try {
-      const { day, time, title, speaker, color, sort_order } = req.body;
+      const { date, day, time, title, speaker, color, sort_order } = req.body;
+
+      // Pour l'instant on accepte toujours `day` (enum) pour compatibilité.
+      // `date` sera remplie par le front + zod dès que votre collègue aura fait la migration.
       const created = await conferenceProgramModel.create({
+        date: date || null,
         day: day || null,
         time,
         title,
@@ -48,10 +52,11 @@ export async function createItem(req, res) {
   export async function updateItem(req, res) {
     try {
       const { id } = req.params;
-      const { day, time, title, speaker, color, sort_order } = req.body;
+      const { date, day, time, title, speaker, color, sort_order } = req.body;
       const existing = await conferenceProgramModel.findById(id);
       if (!existing) return res.status(404).json({ error: "Créneau introuvable" });
       const updated = await conferenceProgramModel.update(id, {
+        date: date ?? existing.date ?? null,
         day: day ?? existing.day ?? null,
         time,
         title,
