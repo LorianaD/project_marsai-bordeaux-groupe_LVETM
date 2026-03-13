@@ -24,12 +24,16 @@ export { createFilmSchema } from "./filmValidationSchema.js";
 
 //Validation des données des jurés.
 export { createJurySchema } from "./juryCreationValidation.js";
+//validation des données des images des jurés.
+export { juryImageSchema, fileJuryImageSchema, optionalFileJuryImageSchema } from "./imageValidationSchema.js";
 
 //Validation des ajouts dans memo_selector.
 export { createMemoSelectorSchema } from "./memoSelectorValidationSchema.js";
 
 //Validation des données du partenaire commercial.
-// export { createPartenerSchema } from "./partenerValidationSchema.js";
+export { createPartnerSchema } from "./partnerValidationSchema.js";
+//validation des données des images des partenaires commercial.
+export { partnerImageSchema, filePartnerImageSchema, optionalFilePartnerImageSchema } from "./imageValidationSchema.js";
 
 //Validation des données des liens social media.
 export { createSocialMediaSchema} from "./socialMediaValidationSchema.js";
@@ -39,6 +43,3 @@ export { contactSchema } from "./contactValidationSchema.js";
 
 //validation des données de la newsletter.
 export { consentSchema } from "./consentValidationSchema.js";
-
-//validation des données des images.
-export { imageSchema, fileImageSchema, optionalFileImageSchema } from "./imageValidationSchema.js";

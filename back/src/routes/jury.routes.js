@@ -7,13 +7,13 @@ import { uploadJury } from "../middlewares/uploadJury.js";
 //import du middleware zod
 import { validate } from "../middlewares/zod/zodValidator.js";
 //import des schémas zod
-import { createUserJurySchema, createJurySchema, fileImageSchema, optionalFileImageSchema } from "../zodSchema/zodIndex.js";
+import { createUserJurySchema, createJurySchema, fileJuryImageSchema, optionalFileJuryImageSchema } from "../zodSchema/zodIndex.js";
 
 const router = Router();
 
 router.get("/", GetAllJuryController);
-router.post("/", uploadJury.single("img"), validate([createUserJurySchema, createJurySchema, fileImageSchema] ,{ includeFile: true }), CreateJuryController);
-router.put("/:id", uploadJury.single("img"), validate([createUserJurySchema, createJurySchema, optionalFileImageSchema] ,{ includeFile: true }), UpdateJuryController);
+router.post("/", uploadJury.single("img"), validate([createUserJurySchema, createJurySchema, fileJuryImageSchema] ,{ includeFile: true }), CreateJuryController);
+router.put("/:id", uploadJury.single("img"), validate([createUserJurySchema, createJurySchema, optionalFileJuryImageSchema] ,{ includeFile: true }), UpdateJuryController);
 router.delete("/:id", DeleteJuryController);
 
 export default router;
