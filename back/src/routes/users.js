@@ -17,11 +17,12 @@ const router = Router();
 /* ================
    Routes GET
 ================ */
-router.get('/', verifyToken, isAdmin, getAllUsersController);
+router.get('/', verifyToken, isSuperAdmin, getAllUsersController);
 
 /* ================================
    Routes POST (register par rôle)
 =============================== */
+
 router.post('/invite', verifyToken, isSuperAdmin, inviteController);
 router.post('/register-with-invite', registerWithInviteController);
 router.post('/superAdmin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'superadmin'}));

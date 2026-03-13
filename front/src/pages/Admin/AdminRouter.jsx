@@ -17,19 +17,33 @@ import AdminSettings from "./AdminSettings";
 import AdminLeaderboard from "./AdminLeaderboard";
 import AdminMessages from "./AdminMessages";
 import AdminUsers from "./AdminUsers";
-import AdminPartners from "./AdminPartners";
 
 
 export function AdminRouter() {
+  const user = decodeToken();
   return (
     <Routes>
-      <Route element={<AdminGuard><AdminLayout /></AdminGuard>}>
-
+      <Route
+        element={
+          <AdminGuard>
+            <AdminLayout />
+          </AdminGuard>
+        }
+      >
         {/* Admin */}
         <Route index element={<Overview />} />
-        <Route path="users" element={<AdminUsers />}/>
+        
+        <Route path="users" 
+        element={
+          user?.role === "superadmin"
+           ? <AdminUsers /> 
+           : <Navigate to="/admin" replace />} />
+
         <Route path="events" element={<AdminEvents />} />
-        <Route path="events/:eventId/participants"element={<AdminEventParticipants />} />
+        <Route
+          path="events/:eventId/participants"
+          element={<AdminEventParticipants />}
+        />
         <Route path="conference-program" element={<AdminConferenceProgram />} />
         <Route path="videos" element={<AdminVideos />} />
         <Route path="distribution-jury" element={<DistributionJury />} />
@@ -46,7 +60,6 @@ export function AdminRouter() {
 
         {/* fallback admin */}
         <Route path="*" element={<Navigate to="/admin" replace />} />
-    
       </Route>
     </Routes>
   );

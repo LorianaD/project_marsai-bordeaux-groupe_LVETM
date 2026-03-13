@@ -67,11 +67,6 @@ function RegisterForm({
   =============================*/
     setError("");
     setSuccess("");
-    if (isInviteMode) {
-      setTimeout(() => {
-        navigate("/login", {replace: true});
-      }, 1000);
-    }
 
     /* ================================================================================== 
     Vérifie si les datas sont bien saisie dans les input sinon renvoi un message d'erreur 
@@ -144,7 +139,7 @@ function RegisterForm({
           password,
         });
 
-        if (eisInviteMode) {
+        if (isInviteMode) {
           setTimeout(() => {
             navigate("/login", {replace: true});
           }, 1000);

@@ -46,6 +46,11 @@ export default function AdminLayoutSidebar({ active }) {
           {ADMIN_NAV.map((link) => {
             const isActive = link.id === active;
 
+            /* Cache la gestion des users si le role n'est pas superadmin */
+            if (link.path === "/admin/users" && currentUser?.role !== "superadmin") {
+              return null;
+            }
+
             return (
               <button
                 key={link.id}
