@@ -25,5 +25,6 @@ export const fileImageSchema = z.object({
 
 //pour les images optionnelles
 export const optionalFileImageSchema = z.object({
-    file: imageSchema.optional(),
+    file: imageSchema
+       .optional(),
 });
