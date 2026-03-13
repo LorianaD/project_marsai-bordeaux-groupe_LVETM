@@ -1,4 +1,4 @@
-import { isAdmin, isSuperAdmin, verifyToken } from "../utils/isAdmin.js";
+import { isSuperAdmin, verifyToken } from "../utils/isAdmin.js";
 import { Router } from "express";
 import createRegisterController from '../controllers/users/register.controller.js';
 import { loginController } from '../controllers/users/login.controller.js';
@@ -17,16 +17,17 @@ const router = Router();
 /* ================
    Routes GET
 ================ */
-router.get('/', verifyToken, isAdmin, getAllUsersController);
+router.get('/', verifyToken, isSuperAdmin, getAllUsersController);
 
 /* ================================
    Routes POST (register par rôle)
 =============================== */
+
 router.post('/invite', verifyToken, isSuperAdmin, inviteController);
 router.post('/register-with-invite', registerWithInviteController);
 router.post('/superAdmin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'superadmin'}));
 router.post('/admin/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'admin'}));
-router.post('/selector/register', verifyToken, isAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'selector'}));
+router.post('/selector/register', verifyToken, isSuperAdmin, validate([emailSchema, passwordSchema, createUserSchema]),createRegisterController({ fixedRole:'selector'}));
 router.post('/login', validate([emailSchema, passwordSchema]), loginController);
 
 /* ==================

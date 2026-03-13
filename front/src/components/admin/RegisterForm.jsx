@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { registerUser, registerWithInvite } from "../../services/Auth/RegisterApi.js";
 import AdminSelect from "./AdminSelect.jsx";
+import { useNavigate } from "react-router-dom";
+
+
 
 function RegisterForm({
+  
+
   role = "admin",
   selectableRole = false,
   onSuccess,
@@ -10,6 +15,7 @@ function RegisterForm({
   variant = "register",
   inviteToken = "",
 }) {
+  const navigate = useNavigate();
   const isInviteMode = Boolean(inviteToken);
   const isDashboard = variant === "dashboard";
   const formClass = isDashboard
@@ -132,6 +138,13 @@ function RegisterForm({
           lastname: lastName.trim(),
           password,
         });
+
+        if (isInviteMode) {
+          setTimeout(() => {
+            navigate("/login", {replace: true});
+          }, 1000);
+        }
+
       } else {
         const roleToUse = selectableRole ? selectedRole : role;
         await registerUser(
