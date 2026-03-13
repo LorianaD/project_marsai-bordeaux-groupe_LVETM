@@ -17,11 +17,11 @@ export const conferenceProgramSchema = z.object({
         .string({ message: "Title must be a string." })
         .trim()
         .min(1, "Title is required.")
-        .max(255, "Title must not exceed 255 characters."),
+        .max(80, "Title must not exceed 255 characters."),
     speaker: z
         .string({ message: "Speaker must be a string." })
         .trim()
-        .max(255, "Speaker must not exceed 255 characters.")
+        .max(80, "Speaker must not exceed 255 characters.")
         .optional()
         .or(z.literal("").transform(() => undefined)),
     color: z

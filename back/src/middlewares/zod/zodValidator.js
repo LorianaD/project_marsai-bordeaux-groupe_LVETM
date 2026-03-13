@@ -35,6 +35,7 @@ export function validate(schemas, options = {}) {
             }
 
             // Valider les données
+            console.log("Data to validate (brut du front):", dataToValidate);//A enlever
             const validatedData = combinedSchema.parse(dataToValidate);
             req.body = validatedData;
 
