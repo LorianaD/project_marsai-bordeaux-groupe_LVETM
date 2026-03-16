@@ -1,8 +1,12 @@
-import app from "./app.js"
-import "dotenv/config";
+// src/server.js
+
+import "dotenv/config"; // ⚠️ DOIT être chargé avant les autres imports
+
+import app from "./app.js";
 import { testConnection } from "./db/index.js";
 import { startNewsletterCron } from "./jobs/newsletterCron.job.js";
 
+// Lancement du cron pour les newsletters
 startNewsletterCron();
 
 console.log("HAS REFRESH TOKEN?", !!process.env.YOUTUBE_REFRESH_TOKEN);
@@ -14,7 +18,9 @@ if (!PORT) {
   process.exit(1);
 }
 
-// Test DB au démarrage
+// ----------------------------
+// Test de connexion MySQL
+// ----------------------------
 try {
   console.log("try dans server.js pour le test");
   await testConnection();
@@ -28,6 +34,9 @@ try {
   process.exit(1);
 }
 
-app.listen(PORT, ()=>{
+// ----------------------------
+// Lancement du serveur
+// ----------------------------
+app.listen(PORT, () => {
   console.log(`server lancé sur ${PORT}`);
-})
+});
