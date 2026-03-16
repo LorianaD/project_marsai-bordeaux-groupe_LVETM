@@ -20,6 +20,11 @@ import upload from "../middlewares/uploadVideoMiddleware.js";
 import verifyRecaptcha from "../middlewares/verifyRecaptcha.js";
 import { verifyToken, isSelector, isAdminOrSelector, isAdmin } from "../utils/isAdmin.js";
 
+//import du middleware zod
+import { validate } from "../middlewares/zod/zodValidator.js";
+//import des schémas zod
+import { uploadFilmFilesSchema, createFilmSchema } from "../zodSchema/zodIndex.js";
+
 
 const router = express.Router();
 
@@ -62,6 +67,7 @@ router.post(
     { name: "subtitles", maxCount: 1 },
   ]),
   verifyRecaptcha,
+  validate([createFilmSchema, uploadFilmFilesSchema], { includeFile: true }),
   uploadVideoController,
 );
 

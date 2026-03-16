@@ -19,9 +19,6 @@ export { publishEventSchema } from "./eventValidationSchema.js";
 //Validation des données de la faq.
 export { createFaqSchema } from "./faqValidationSchema.js";
 
-//Validation des données de la vidéo.
-export { createFilmSchema } from "./filmValidationSchema.js";
-
 //Validation des données des jurés.
 export { createJurySchema } from "./juryCreationValidation.js";
 //validation des données des images des jurés.
@@ -46,3 +43,6 @@ export { consentSchema } from "./consentValidationSchema.js";
 
 //validation des données du CMS.
 export { cmsTextUpdateSchema, cmsActiveUpdateSchema, cmsFileUpdateSchema } from "./cmsValidationSchema.js";
+
+//validation du formulaire de participation.
+export { uploadFilmFilesSchema,createFilmSchema } from "./filmValidationSchema.js";
