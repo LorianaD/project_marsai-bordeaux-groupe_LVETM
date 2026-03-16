@@ -1,0 +1,8 @@
+# FRONT
+front/src/components/Home/**
+front/src/components/Form/CMS/**
+front/src/components/Buttons/**
+
+# BACK
+back/src/controllers/cms
+back/src/services/cms
