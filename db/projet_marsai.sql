@@ -1518,12 +1518,6 @@ ALTER TABLE `still`
   ADD CONSTRAINT `fk_still_video` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE;
 
 --
--- Contraintes pour la table `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id`) REFERENCES `cms` (`id`);
-
---
 -- Contraintes pour la table `video_review`
 --
 ALTER TABLE `video_review`
