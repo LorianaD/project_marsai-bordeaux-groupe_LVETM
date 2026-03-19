@@ -13,6 +13,7 @@ function NavMobile({onClose, onToggleLang, OnIsFr}) {
 
     const { t, i18n } = useTranslation("header");
 
+    const page = "layout";
     const section = "header"
 
     const locale = i18n.language?.startsWith("fr") ? "fr" : "en";
@@ -33,43 +34,43 @@ function NavMobile({onClose, onToggleLang, OnIsFr}) {
     };
 
     // cherche les données en bdd
-    const { content, loading, message } = useCmsContent(locale);
+    const { content, loading, message } = useCmsContent(page, locale);
 
     if (loading) return null;
 
-    const logoSrc = resolveCmsAsset(content?.[section]?.logo);
+    const logoSrc = resolveCmsAsset(content?.[page]?.[section]?.logo);
 
-    const firstLabel = content?.[section]?.first;
-    const firstLink  = content?.[section]?.first_link;
+    const firstLabel = content?.[page]?.[section]?.first;
+    const firstLink  = content?.[page]?.[section]?.first_link;
 
-    const secondeLabel = content?.[section]?.seconde;
-    const secondeLink  = content?.[section]?.seconde_link;
+    const secondeLabel = content?.[page]?.[section]?.seconde;
+    const secondeLink  = content?.[page]?.[section]?.seconde_link;
 
-    const thirdLabel = content?.[section]?.third;
-    const thirdLink = content?.[section]?.third_link;
+    const thirdLabel = content?.[page]?.[section]?.third;
+    const thirdLink = content?.[page]?.[section]?.third_link;
 
-    const btnLabel = content?.[section]?.btn;
-    const btnLink = content?.[section]?.btn_link;
+    const btnLabel = content?.[page]?.[section]?.btn;
+    const btnLink = content?.[page]?.[section]?.btn_link;
 
     const handleLinkClick = () => {
         onClose?.();
     };
 
     return(
-        <div className="overscroll-auto flex flex-col items-start w-full h-screen gap-[20px] p-[10px] rounded-[30px] bg-white dark:bg-black shadow-[0_0_12px_0_rgba(0,0,0,0.25)] text-[#3B82F6] dark:text-[#FFFFFF]">
+        <div className="overscroll-auto flex flex-col items-start w-full h-screen gap-5 p-3 rounded-[30px] bg-white dark:bg-black shadow-[0_0_12px_0_rgba(0,0,0,0.25)] text-[#3B82F6] dark:text-[#FFFFFF]">
 
             {/* Header */}
-            <div className="flex items-center justify-between self-stretch p-[8px] w-full">
+            <div className="flex items-center justify-between self-stretch p-2 w-full">
                 
                 <Link to="/">
-                    <div className="h-full max-w-[100px] min-w-[20px]">
+                    <div className="h-full max-w-25 min-w-5">
                         <img src={logoSrc} alt="Logo" className="w-full" draggable={false}/>
                     </div>
                 </Link>
                 <button
                     type="button"
                     onClick={onClose}
-                    className="flex w-[36px] h-[36px] flex-col items-center justify-center p-[8px] shrink-0"
+                    className="flex w-9 h-9 flex-col items-center justify-center p-2 shrink-0"
                 >
                     <img src={ closeMenuIcon } alt="" />
                 </button>
@@ -81,7 +82,7 @@ function NavMobile({onClose, onToggleLang, OnIsFr}) {
 
                 <div className="w-full">
 
-                    <ul className="flex flex-col items-start justify-center self-stretch p-[10px] gap-[41px] w-full text-[16px] font-bold leading-[15px] tracking-[3px] uppercase">
+                    <ul className="flex flex-col items-start justify-center self-stretch p-3 gap-10 w-full text-[16px] font-bold leading-4 tracking-[3px] uppercase">
                         <li><Link to="/" onClick={onClose}>{content?.[section]?.home || t("home")}</Link></li>
                         {isVisible(content, section, "first") && firstLabel && firstLink && (
                             <li>
@@ -108,10 +109,10 @@ function NavMobile({onClose, onToggleLang, OnIsFr}) {
 
                 </div>
 
-                <div className="flex items-center justify-center gap-[20px] w-full">
+                <div className="flex items-center justify-center gap-5 w-full">
                     
                     {isVisible(content, section, "btn") && btnLabel && btnLink && (
-                        <Link to={btnLink} onClick={handleLinkClick} className="flex items-center justify-center gap-[10px] px-[40px] py-[10px] rounded-[20px] bg-[linear-gradient(90deg,#2B7FFF_0%,#9810FA_100%)] text-white text-center text-[16px] font-bold leading-[16px] uppercase">
+                        <Link to={btnLink} onClick={handleLinkClick} className="flex items-center justify-center gap-3 px-10 py-3 rounded-[20px] bg-[linear-gradient(90deg,#2B7FFF_0%,#9810FA_100%)] text-white text-center text-[16px] font-bold leading-4 uppercase">
                             {btnLabel}
                         </Link>
                     )}
@@ -121,7 +122,7 @@ function NavMobile({onClose, onToggleLang, OnIsFr}) {
                         <button
                             type="button"
                             onClick={toggleLang}
-                            className="h-[46px] cursor-pointer flex items-center justify-center rounded-lg dark:bg-white/10 dark:p-0.5"
+                            className="h-12 cursor-pointer flex items-center justify-center rounded-lg dark:bg-white/10 dark:p-0.5"
                             aria-label={isFr ? "Switch to English" : "Passer en français"}
                             title={isFr ? "English" : "Français"}
                         >
